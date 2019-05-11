@@ -11,7 +11,7 @@ module.exports = {
           }
         ]
       },
-      resolve: {
+    resolve: {
         extensions: ['*', '.js', '.jsx']
     },
     output: {
@@ -21,8 +21,8 @@ module.exports = {
     },
     plugins: [
         new webpack.HotModuleReplacementPlugin()
-      ],
-      devServer: {
+    ],
+    devServer: {
         contentBase: './dist',
         hot: true
     }

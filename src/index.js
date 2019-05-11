@@ -1,10 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+
+import {App} from './components/App';
+
 import LCC from 'lightning-container';
 
-const title = 'Clarity Forms App Exchange';
-
 ReactDOM.render(
-  <div>{title}</div>,
+    <App>
+        Onboarding
+    </App>,
   document.getElementById('app')
 );
