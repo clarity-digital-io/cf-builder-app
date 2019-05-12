@@ -1,21 +1,36 @@
-import React from 'react';
+import React, { useState, useEffect, createContext } from 'react';
+import { BuilderContext } from '../Context';
 import styled from 'styled-components';
-
 import Main from '../Elements/Theme';
 
-export const App = ({ children }) => {
+const App = ({ children }) => {
 
     return (
-
         <Layout>
-
-        { children }
-
-    </Layout>
+            <BuilderProvider>
+                { children }
+            </BuilderProvider>
+        </Layout>
     )
 
 }
 
+
+const BuilderProvider = ({ children }) => {
+
+    return (
+        <BuilderContext.Provider>
+            { children }
+        </BuilderContext.Provider>
+    )
+}
+
+
 const Layout = styled.div`
-    padding: 2em;
+    background: ${Main.color.white};
+    border: 1px solid ${Main.color.light};
+    margin: 0em; 
+    border-radius: 2px;
 `;
+
+export default App; 
