@@ -1,13 +1,15 @@
 import React, { useEffect, useContext } from 'react';
-import LCC from 'lightning-container';
+import { call } from '../../../RemoteActions';
 
 import { types } from '../types';
 
-import {DragDropUpdateContext,  DesignContext } from '../index';
+import { BuilderContext, DragDropUpdateContext,  DesignContext } from '../../../Context';
 
 export const useDrag = () => {
 
     const { addEvent, removeEvent } = useContext(DragDropUpdateContext); 
+
+    const { form: Id } = useContext(BuilderContext); 
 
     const { update, setUpdate, questions, setQuestions } = useContext(DesignContext); 
 
@@ -41,7 +43,8 @@ export const useDrag = () => {
                     types,
                     questions,
                     source,
-                    destination
+                    destination, 
+                    Id
                 );
 
                 return items; 
@@ -65,19 +68,12 @@ export const useDrag = () => {
     useEffect(() => {
 
         if(update) {
-            send(questions, setUpdate)
+            call("ClarityFormBuilder.save", [JSON.stringify(questions)], (result, e) => resultHandler(result, e, setUpdate));
         }
 
     }, [update]);
-    console.log(update);
-    return { update, questions };
-}
 
-const send = (questions, setUpdate) => {
-    LCC.callApex("ClarityFormBuilder.save",
-        JSON.stringify(questions),
-        (result, e) => resultHandler(result, e, setUpdate),
-        { escape: true });
+    return { update, questions };
 }
 
 const resultHandler = (result, e, setUpdate) => {
@@ -107,13 +103,13 @@ const reorder = (list, startIndex, endIndex) => {
     return sorted;
 };
 
-const move = (source, destination, droppableSource, droppableDestination) => {
+const move = (source, destination, droppableSource, droppableDestination, formId) => {
 
     const typesClone = Array.from(source);
 
     let [create] = typesClone.splice(droppableSource.index, 1);
 
-    let orderedQuestion = clean(create, droppableDestination.index);
+    let orderedQuestion = clean(create, droppableDestination.index, formId);
 
     destination.splice(droppableDestination.index, 0, orderedQuestion);
 
@@ -124,6 +120,7 @@ const clean = (question, index, surveyId) => {
     return {
         title    : question.name, 
         order    : index, 
-        type     : question.type
+        type     : question.type,
+        formId   : formId
     }
 }

@@ -4,9 +4,7 @@ import { DragDropContext } from 'react-beautiful-dnd';
 import DesignLayout from '../../Elements/Layout/design';
 import Design from './design';
 
-export const DragDropUpdateContext = createContext();
-
-export const DesignContext = createContext();
+import { DragDropUpdateContext,  DesignContext } from '../../Context';
 
 export const DragDrop = () => { 
 
