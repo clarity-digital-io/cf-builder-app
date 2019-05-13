@@ -116,7 +116,7 @@ const move = (source, destination, droppableSource, droppableDestination, formId
     return destination;
 };
 
-const clean = (question, index, surveyId) => {
+const clean = (question, index, formId) => {
     return {
         title    : question.name, 
         order    : index, 
