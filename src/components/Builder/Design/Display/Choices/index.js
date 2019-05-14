@@ -8,7 +8,7 @@ import React from 'react';
 
 export const getType = (question) => {
 
-    switch (question.type) {
+    switch (question.Type__c) {
         case 'MultipleChoice':
             return <div>MultipleChoice</div>
             break; 
@@ -43,7 +43,7 @@ export const getType = (question) => {
             return <div>Number</div>
             break;
         default:
-            return <div>{ question.type }</div>
+            return <div>{ question.Type__c }</div>
             break;
     }
 

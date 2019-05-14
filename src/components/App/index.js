@@ -18,12 +18,18 @@ const App = ({ children }) => {
 }
 
 const BuilderProvider = ({ children }) => {
-
-    const  [form, setForm] = useState({ Id: null, Name: '' });
+    
+    const  [form, setForm] = useState({ Id: null, Name: '', State: 'New' });
 
     useEffect(() => {
 
-        call("ClarityFormBuilder.createForm", [], (result, e) => resultHandler(result, e, setForm));
+        let url = new URLSearchParams(window.location.search);
+
+        let recordId = url.get('recordId');
+
+        recordId ? 
+            setForm({ Id: recordId, State: 'Edit' }) :
+            call("ClarityFormBuilder.createForm", [], (result, e) => createHandler(result, e, setForm))
         
     }, [])
 
@@ -34,7 +40,7 @@ const BuilderProvider = ({ children }) => {
     )
 }
 
-const resultHandler = (result, e, setForm) => {
+const createHandler = (result, e, setForm) => {
     setForm({ Id: result });
 }
 

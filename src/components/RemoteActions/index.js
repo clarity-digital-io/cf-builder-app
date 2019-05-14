@@ -2,7 +2,7 @@ import LCC from 'lightning-container';
 
 export const call = (func, params, callback) => {
 
-    process.env.NODE_ENV == 'development' ? mockCall(func, params, callback) : prodCall(func, params, callback); 
+    process.env.NODE_ENV == 'development' ? mockCall(func.split('.')[1], params, callback) : prodCall(func, params, callback); 
     
 }
 
@@ -25,7 +25,18 @@ const prodCall = (func, params, callback) => {
 }
 
 const mockCall = (func, params, callback) => {
-    callback('Test', { Id: 1, Name: 'Test'});
+
+    switch (func) {
+        case 'createForm':
+            callback(1); 
+            break;
+        case 'getQuestions':
+            callback([{ Type__c: 'Comment', Title__c: 'Comment', Order__c: 0 }]); 
+            break;
+    
+        default:
+            break;
+    }
 }
 
 const handler = () => {

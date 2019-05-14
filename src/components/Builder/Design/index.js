@@ -1,13 +1,14 @@
-import React, { useState, useEffect, createContext } from 'react';
+import React, { useState, useEffect, useContext, createContext } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
+import { call } from '../../RemoteActions';
 
 import DesignLayout from '../../Elements/Layout/design';
 import Design from './design';
 
-import { DragDropUpdateContext,  DesignContext } from '../../Context';
+import { BuilderContext, DragDropUpdateContext, DesignContext } from '../../Context';
 
 export const DragDrop = () => { 
-
+    
     return (
         <DesignLayout>
             <DragDropUpdateProvider>
@@ -53,16 +54,31 @@ const DragDropUpdateProvider = ({ children }) => {
 }
 
 const DesignProvider = ({ children }) => {
-    
-    const [update, setUpdate] = useState(false); 
+
+    const { form } = useContext(BuilderContext);
 
     const [questions, setQuestions] = useState([]); 
 
+    useEffect(() => {
+
+        if(form.State == 'Edit') {
+            call("ClarityFormBuilder.getQuestions", [form.Id], (result, e) => fetchHandler(result, e, setQuestions))
+        }
+
+    }, [])
+
     const [activeQuestion, setActiveQuestion] = useState([]); 
 
+    const [update, setUpdate] = useState(false); 
+
     return (
-        <DesignContext.Provider value={{ update, setUpdate, activeQuestion, setActiveQuestion, questions, setQuestions }}>
+        <DesignContext.Provider value={{ activeQuestion, setActiveQuestion, update, setUpdate, questions, setQuestions }}>
             { children }
         </DesignContext.Provider>
     )
+}
+
+const fetchHandler = (result, e, setQuestions) => {
+    console.log(result); 
+    setQuestions(result);
 }

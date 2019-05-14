@@ -1,5 +1,4 @@
 import React from 'react';
-import DesignLayout from '../../Elements/Layout/design';
 
 import View from '../../Elements/View';
 import Box from '../../Elements/Box';

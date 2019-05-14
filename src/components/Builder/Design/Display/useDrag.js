@@ -3,13 +3,13 @@ import { call } from '../../../RemoteActions';
 
 import { types } from '../types';
 
-import { BuilderContext, DragDropUpdateContext,  DesignContext } from '../../../Context';
+import { BuilderContext, DragDropUpdateContext, DesignContext } from '../../../Context';
 
 export const useDrag = () => {
 
     const { addEvent, removeEvent } = useContext(DragDropUpdateContext); 
 
-    const { form: Id } = useContext(BuilderContext); 
+    const { form } = useContext(BuilderContext); 
 
     const { update, setUpdate, questions, setQuestions } = useContext(DesignContext); 
 
@@ -44,7 +44,7 @@ export const useDrag = () => {
                     questions,
                     source,
                     destination, 
-                    Id
+                    form.Id
                 );
 
                 return items; 
@@ -118,9 +118,9 @@ const move = (source, destination, droppableSource, droppableDestination, formId
 
 const clean = (question, index, formId) => {
     return {
-        title    : question.name, 
-        order    : index, 
-        type     : question.type,
-        formId   : formId
+        Title__c        : question.name, 
+        Order__c        : index, 
+        Type__c         : question.type,
+        Clarity_Form__c : formId
     }
 }
