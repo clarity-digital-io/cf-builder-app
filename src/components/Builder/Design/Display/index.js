@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled, { css } from 'styled-components';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 
@@ -8,15 +8,18 @@ import Main from '../../../Elements/Theme';
 import { Question } from './question'; 
 
 import { useDrag } from './useDrag';
+import { DesignContext } from '../../../Context';
 
 export const Display = () => {
+
+    const { questionUpdate } = useContext(DesignContext);
 
     const { update, questions } = useDrag(); 
 
     return (
         <FormDesign>
 
-            <Card update={update}>
+            <Card update={questionUpdate || update}>
 
                 <Droppable droppableId="question">
                     {(provided, snapshot) => (
@@ -27,8 +30,8 @@ export const Display = () => {
                             {
                                 questions.map((item, index) => (
                                     <Draggable
-                                        key={`question${item.id}${index}`}
-                                        draggableId={`question${item.id}${index}`}
+                                        key={`question${item.Id}${index}`}
+                                        draggableId={`question${item.Id}${index}`}
                                         index={index}>
                                         {(provided, snapshot) => <GenerateQuestion item={item} provided={provided} snapshot={snapshot} />}
                                     </Draggable>
@@ -93,7 +96,7 @@ const DropView = styled(View)`
 `;
 
 const Card = ({ update, children }) => {
-    console.log(update);
+
     return (                   
         <article className="slds-card">
             <div className="slds-card__header slds-grid">

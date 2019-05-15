@@ -3,7 +3,7 @@ import React from 'react';
 import View from '../../Elements/View';
 import Box from '../../Elements/Box';
 
-import { Question } from './Question';
+import { QuestionState } from './Question';
 import { Display } from './Display';
 
 const Design = () => {
@@ -11,7 +11,7 @@ const Design = () => {
     return [
         <View className="col-xs-12 col-sm-3 col-md-3 col-lg-3" scroll>
             <Box padding='0'>
-                <Question />
+                <QuestionState />
             </Box> 
         </View>,
 

@@ -1,63 +1,104 @@
-import React from 'react';
-import styled, { css } from 'styled-components';
-import { Droppable, Draggable } from 'react-beautiful-dnd';
-import Main from '../../../Elements/Theme';
+import React, { useContext, useEffect } from 'react';
+import styled from 'styled-components';
+
+import { call } from '../../../RemoteActions'; 
 import View from '../../../Elements/View';
+import {Button} from '../../../Elements/Button';
+import Main from '../../../Elements/Theme';
 
-import { types } from '../types';
+import { NewQuestion } from './new';
+import { EditQuestion } from './edit';
+import { DesignContext } from '../../../Context';
 
-export const Question = () => {
+export const QuestionState = () => {
 
-    const getListStyle = isDraggingOver => ({
-        background: isDraggingOver ? Main.color.light : Main.color.white,
-        width: '100%'
-    });
+    const { activeQuestion, questionState } = useContext(DesignContext);
 
-    return (
-        <Droppable isDropDisabled={true} droppableId="new">
-            {(provided, snapshot) => (
-                <View
-                    full
-                    key={'DroppableView'}
-                    ref={provided.innerRef}
-                    style={getListStyle(snapshot.isDraggingOver)}>
-                    {types.map((type, index) => {
-                        return (
-                            <Draggable
-                                key={type.id}
-                                draggableId={`item-${type.id}`}
-                                index={index}>
-                                {(provided, snapshot) => (
-                                    <SelectableNew
-                                        key={type.id}
-                                        ref={provided.innerRef}
-                                        {...provided.draggableProps}
-                                        {...provided.dragHandleProps}
-                                        isDragging={snapshot.isDragging}>
-                                        {type.name}
-                                    </SelectableNew>
-                                )}
-                            </Draggable>
-                        )
-                    })}
-                    {provided.placeholder}
-                </View>
-            )}
-        </Droppable>
-    )
+    const getState = (state) => {
+
+        switch (state) {
+            case 'NEW':
+                return <NewQuestion />
+                break;
+            case 'EDIT': 
+                return <Save><EditQuestion type={activeQuestion.Type__c} /></Save>
+            case 'LOGIC': 
+                return <Save><div>logic</div></Save>
+            case 'CALCULATOR': 
+                return <Save><div>calculator</div></Save>
+            case 'SETTINGS': 
+                return <Save><div>settings</div></Save>
+            default:
+                return null;
+                break;
+        }
+
+    }
+
+    return getState(questionState)
 
 }
 
+const Save = ({ children }) => {
 
-const SelectableNew = styled.div`
-    user-select: 'none';
-    font-size: .85em;
-    font-weight: 900;
-    border-bottom: 1px solid ${Main.color.light};
-    padding: 1.5em;
+    const { activeQuestion, setQuestionState, questionUpdate, setQuestionUpdate, setQuestions } = useContext(DesignContext);
 
-    ${props => props.isDragging == true && css`
-        box-shadow: 1px 1px 5px ${Main.color.grey};
-        background: ${Main.color.white};
-    `}
+    useEffect(() => {
+
+        if(questionUpdate) {
+            call("ClarityFormBuilder.saveQuestion", [JSON.stringify(activeQuestion)], (result, e) => resultHandler(result, e, setQuestionUpdate, setQuestions, activeQuestion));
+        }
+
+    }, [questionUpdate])
+
+    return [
+        
+        <View className="row end-xs">
+            <View className="col-xs-12">
+                <ViewStyle>
+                    <Button neutral onClick={() => setQuestionState('NEW')}
+                        >Add New Field</Button>
+                    <Button action onClick={() => setQuestionUpdate(true)}>
+
+                        {
+                            questionUpdate ? 'Saving...' : 'Save Changes'
+                        }
+
+                    </Button>
+                </ViewStyle>
+            </View>
+        </View>,
+        <View className="row">
+            <View className="col-xs-12">
+                <View className="Box">{ children }</View>
+            </View>
+        </View>
+
+    ]
+}
+
+const resultHandler = (result, e, setQuestionUpdate, setQuestions, activeQuestion) => {
+    
+    setQuestions(questions => {
+
+        return questions.map(question => {
+            console.log(question, result);
+            if(question.Id == result) {
+                console.log(result);
+                return activeQuestion; 
+            }
+
+            return question; 
+
+        })
+
+    });
+
+    setQuestionUpdate(false);
+
+}
+
+const ViewStyle = styled.div`
+    padding: .5em;
+    border-bottom: 1px solid ${Main.color.light}
 `;

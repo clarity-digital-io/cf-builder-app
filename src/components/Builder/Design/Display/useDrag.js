@@ -68,7 +68,8 @@ export const useDrag = () => {
     useEffect(() => {
 
         if(update) {
-            call("ClarityFormBuilder.save", [JSON.stringify(questions)], (result, e) => resultHandler(result, e, setUpdate));
+            console.log('huh', update);
+            call("ClarityFormBuilder.save", [JSON.stringify(questions)], (result, e) => resultHandler(result, e, setUpdate, setQuestions));
         }
 
     }, [update]);
@@ -76,8 +77,23 @@ export const useDrag = () => {
     return { update, questions };
 }
 
-const resultHandler = (result, e, setUpdate) => {
-    console.log(result, e); 
+const resultHandler = (result, e, setUpdate, setQuestions) => {
+    console.log(':(')
+    setQuestions(questions => {
+
+        let updated = questions.map(question => {
+
+            if(!question.Id) {
+                question.Id = result[0]; 
+            } 
+            return question;
+
+        });
+
+        return updated; 
+
+    });
+
     setUpdate(false);
 }
 
@@ -86,22 +102,28 @@ const reorder = (list, startIndex, endIndex) => {
     const [removed] = result.splice(startIndex, 1);
     result.splice(endIndex, 0, removed);
 
+    return sort(result);
+};
+
+const sort = (result) => {
+
     let sorted = result.map((r, i) => {
-        r.order = i;
+        r.Order__c = i;
         return r; 
     });
 
     sorted = sorted.sort((a, b) => {
-        if(a.order < b.order) {
+        if(a.Order__c < b.Order__c) {
             return -1; 
         }
-        if(a.order > b.order) {
+        if(a.Order__c > b.Order__c) {
             return 1; 
         }
     });
 
-    return sorted;
-};
+    return sorted; 
+
+}
 
 const move = (source, destination, droppableSource, droppableDestination, formId) => {
 
@@ -113,7 +135,7 @@ const move = (source, destination, droppableSource, droppableDestination, formId
 
     destination.splice(droppableDestination.index, 0, orderedQuestion);
 
-    return destination;
+    return sort(destination);
 };
 
 const clean = (question, index, formId) => {
@@ -121,6 +143,7 @@ const clean = (question, index, formId) => {
         Title__c        : question.name, 
         Order__c        : index, 
         Type__c         : question.type,
-        Clarity_Form__c : formId
+        Clarity_Form__c : formId,
+        Required__c     : false
     }
 }

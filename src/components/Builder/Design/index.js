@@ -67,18 +67,34 @@ const DesignProvider = ({ children }) => {
 
     }, [])
 
-    const [activeQuestion, setActiveQuestion] = useState([]); 
+    const [activeQuestion, setActiveQuestion] = useState({}); 
+
+    const [questionState, setQuestionState] = useState('NEW'); 
 
     const [update, setUpdate] = useState(false); 
 
+    const [questionUpdate, setQuestionUpdate] = useState(false); 
+
     return (
-        <DesignContext.Provider value={{ activeQuestion, setActiveQuestion, update, setUpdate, questions, setQuestions }}>
+        <DesignContext.Provider value={{ questionUpdate, setQuestionUpdate, questionState, setQuestionState, activeQuestion, setActiveQuestion, update, setUpdate, questions, setQuestions }}>
             { children }
         </DesignContext.Provider>
     )
 }
 
 const fetchHandler = (result, e, setQuestions) => {
-    console.log(result); 
-    setQuestions(result);
+    setQuestions(sort(result));
+}
+
+const sort = (result) => {
+
+    return result.sort((a, b) => {
+        if(a.Order__c < b.Order__c) {
+            return -1; 
+        }
+        if(a.Order__c > b.Order__c) {
+            return 1; 
+        }
+    });
+
 }

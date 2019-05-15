@@ -31,9 +31,12 @@ const mockCall = (func, params, callback) => {
             callback(1); 
             break;
         case 'getQuestions':
-            callback([{ Type__c: 'Comment', Title__c: 'Comment', Order__c: 0 }]); 
+            callback([{ Id: 1, Type__c: 'Comment', Title__c: 'Comment', Order__c: 0 }]); 
             break;
-    
+        case 'save': 
+            callback([2]);
+        case 'saveQuestion':
+            callback(2);
         default:
             break;
     }
