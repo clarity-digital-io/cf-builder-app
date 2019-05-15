@@ -3,8 +3,9 @@ import styled, { css } from 'styled-components';
 import { DesignContext } from '../../../Context';
 
 import View from '../../../Elements/View';
+import ViewStyle from '../../../Elements/View/style';
+
 import Box from '../../../Elements/Box';
-import Main from '../../../Elements/Theme';
 import { Multiple } from './multiple'; 
 
 const getQuestionType = (type) => {
@@ -93,39 +94,29 @@ export const EditQuestion = () => {
                     <ViewStyle space border>
 
                         <h1>Question</h1>
+
                         <ViewStyle>
+                            
                             <div className="slds-form-element">
                                 <label className="slds-form-element__label" htmlFor="text-input-id-1">Label</label>
                                 <div className="slds-form-element__control">
                                     <input onChange={(e) => updateActiveQuestion(e)} value={ activeQuestion.Title__c } type="text" id="text-input-id-1" placeholder="Placeholder Text" className="slds-input" />
                                 </div>
                             </div>
+
                         </ViewStyle>
+                        
                     </ViewStyle>
 
-                    <ViewStyle>
-                        Type Specific here { getQuestionType(activeQuestion.Type__c) }
+                    <ViewStyle space border>
+
+                        { 
+                            getQuestionType(activeQuestion.Type__c) 
+                        }
+
                     </ViewStyle>
                 </Box>  
             </View>
         </View>
     )
 }
-
-const ViewStyle = styled.div`
-
-    padding: 1em 0em 1em 0;
-
-    h1 {
-        font-weight: 900;
-        padding-bottom: 1em;
-    }
-
-    ${props => props.border && css`
-        border-bottom: 1px solid ${Main.color.light}
-    `}
-
-    ${props => props.space && css`
-        padding: 2em 1em 2em 1em; 
-    `}
-`;

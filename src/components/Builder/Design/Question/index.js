@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import { call } from '../../../RemoteActions'; 
 import View from '../../../Elements/View';
+
 import {Button} from '../../../Elements/Button';
 import Main from '../../../Elements/Theme';
 
@@ -56,8 +57,7 @@ const Save = ({ children }) => {
         <View className="row end-xs">
             <View className="col-xs-12">
                 <ViewStyle>
-                    <Button neutral onClick={() => setQuestionState('NEW')}
-                        >Add New Field</Button>
+                    <Button neutral onClick={() => setQuestionState('NEW')}>Add New Field</Button>
                     <Button action onClick={() => setQuestionUpdate(true)}>
 
                         {

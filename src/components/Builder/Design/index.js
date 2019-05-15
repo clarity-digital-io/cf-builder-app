@@ -83,6 +83,7 @@ const DesignProvider = ({ children }) => {
 }
 
 const fetchHandler = (result, e, setQuestions) => {
+    console.log(result);
     setQuestions(sort(result));
 }
 
