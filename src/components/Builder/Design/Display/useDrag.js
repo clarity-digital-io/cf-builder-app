@@ -68,7 +68,6 @@ export const useDrag = () => {
     useEffect(() => {
 
         if(update) {
-            console.log('huh', update);
             call("ClarityFormBuilder.save", [JSON.stringify(questions)], (result, e) => resultHandler(result, e, setUpdate, setQuestions));
         }
 

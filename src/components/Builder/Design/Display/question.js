@@ -12,20 +12,18 @@ export const Question = ({ question }) => {
 
     const { setQuestionState, setActiveQuestion, activeQuestion } = useContext(DesignContext);
 
-    const [active, setActive] = useState((question.Id != null && (question.Id == activeQuestion.Id)));
-
     const update = (state) => {
-        setActive(true);
         setActiveQuestion(question);
         setQuestionState(state)
     }
 
     return (
-        <ViewStyle active={ active }>
+        <ViewStyle active={ question.Id != null && (question.Id == activeQuestion.Id) }>
             <View className="row middle-xs">
 
                 <View className="col-xs-12 col-sm-6 col-md-6 col-lg-9">
                     <Box padding='0'>
+                        { question.Required__c ? <span id="required">*</span> : '' }
                         { question.Title__c }
                     </Box> 
                 </View>
@@ -78,10 +76,13 @@ const Options = styled.ul`
 const ViewStyle = styled.div`
     padding: 1em;
     margin-bottom: 1em;
+    border-left: ${props => props.active ? `2px solid ${Main.color.body}` : "white"};
 
     .active {
         background: ${Main.color.body}
     }
 
-    border-left: ${props => props.active ? `2px solid ${Main.color.body}` : "white"};
+    span#required {
+        color: ${Main.color.alert};
+    }
 `;
