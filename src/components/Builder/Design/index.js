@@ -57,6 +57,8 @@ const DesignProvider = ({ children }) => {
 
     const { form } = useContext(BuilderContext);
 
+    const [activeQuestionOptions, setActiveQuestionOptions] = useState([]); 
+
     const [questions, setQuestions] = useState([]); 
 
     useEffect(() => {
@@ -69,6 +71,14 @@ const DesignProvider = ({ children }) => {
 
     const [activeQuestion, setActiveQuestion] = useState({}); 
 
+    useEffect(() => {
+
+        if(activeQuestion.Type__c == 'MultipleChoice') {
+            call("ClarityFormBuilder.getQuestionOptions", [activeQuestion.Id], (result, e) => optionFetchHandler(result, e, setActiveQuestionOptions))
+        }
+
+    }, [activeQuestion]);
+
     const [questionState, setQuestionState] = useState('NEW'); 
 
     const [update, setUpdate] = useState(false); 
@@ -76,7 +86,7 @@ const DesignProvider = ({ children }) => {
     const [questionUpdate, setQuestionUpdate] = useState(false); 
 
     return (
-        <DesignContext.Provider value={{ questionUpdate, setQuestionUpdate, questionState, setQuestionState, activeQuestion, setActiveQuestion, update, setUpdate, questions, setQuestions }}>
+        <DesignContext.Provider value={{ activeQuestionOptions, setActiveQuestionOptions, questionUpdate, setQuestionUpdate, questionState, setQuestionState, activeQuestion, setActiveQuestion, update, setUpdate, questions, setQuestions }}>
             { children }
         </DesignContext.Provider>
     )
@@ -85,6 +95,11 @@ const DesignProvider = ({ children }) => {
 const fetchHandler = (result, e, setQuestions) => {
     console.log(result);
     setQuestions(sort(result));
+}
+
+const optionFetchHandler = (result, e, setActiveQuestionOptions) => {
+    console.log('optionFetchHandler', result); 
+    setActiveQuestionOptions(result);
 }
 
 const sort = (result) => {

@@ -35,8 +35,16 @@ const mockCall = (func, params, callback) => {
             break;
         case 'save': 
             callback([2]);
+            break;
+        case 'saveQuestionWithOptions': 
+            callback(2);
+            break;
+        case 'getQuestionOptions':
+            callback([{ Id: 31, Label__c: 'Option 1', Clarity_Form_Question__c: 2},{ Id: 32, Label__c: 'Option 2', Clarity_Form_Question__c: 2}]);
+            break;
         case 'saveQuestion':
             callback(2);
+            break;
         default:
             break;
     }

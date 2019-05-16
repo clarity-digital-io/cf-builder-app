@@ -4,16 +4,21 @@ import { DesignContext } from '../../../Context';
 
 export const Multiple = () => {
 
-    const { activeQuestion } = useContext(DesignContext);
+    const { activeQuestion, activeQuestionOptions, setActiveQuestionOptions } = useContext(DesignContext);
 
-    console.log(activeQuestion);
+    const [newValue, setNewValue] = useState('');
 
     const handleKeyDown = (e) => {
 
         if (e.key === 'Enter') {
 
-            console.log(e.target.value); 
-            console.log('do validate');
+            let value = e.target.value;
+            
+            setActiveQuestionOptions(options => {
+                return [{ Label__c: value, Clarity_Form_Question__c: activeQuestion.Id }].concat(activeQuestionOptions);
+            })
+
+            setNewValue('');
 
         }
 
@@ -26,7 +31,7 @@ export const Multiple = () => {
             <ViewStyle>
 
                 <div className="slds-form-element__control">
-                    <input onKeyDown={(e) => handleKeyDown(e)} type="text" id="text-input-id-1" placeholder="Add Option" className="slds-input" />
+                    <input onChange={(e) => setNewValue(e.target.value)} onKeyDown={(e) => handleKeyDown(e)} value={newValue} type="text" id="New" placeholder="Add Option" className="slds-input" />
                 </div>
 
             </ViewStyle>
@@ -34,17 +39,15 @@ export const Multiple = () => {
             <ViewStyle>
 
                 {
-                    activeQuestion.Clarity_Form_Question_Options__r ? 
-                        activeQuestion.Clarity_Form_Question_Options__r.map(option => {
+                    activeQuestionOptions.map(option => {
 
-                            return (
-                                <div className="slds-form-element__control">
-                                    <input value={option.Label__c} type="text" id="text-input-id-1" placeholder="Option" className="slds-input" />
-                                </div>
-                            )
+                        return (
+                            <div className="slds-form-element__control">
+                                <input onKeyDown={(e) => handleKeyDown(e)} value={option.Label__c} type="text" id={option.Id} placeholder="Option" className="slds-input" />
+                            </div>
+                        )
 
-                        }) :
-                        null
+                    }) 
                 }
 
 

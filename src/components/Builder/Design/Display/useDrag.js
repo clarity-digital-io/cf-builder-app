@@ -77,7 +77,7 @@ export const useDrag = () => {
 }
 
 const resultHandler = (result, e, setUpdate, setQuestions) => {
-    console.log(':(')
+
     setQuestions(questions => {
 
         let updated = questions.map(question => {

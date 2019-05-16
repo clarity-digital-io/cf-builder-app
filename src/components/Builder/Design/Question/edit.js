@@ -108,7 +108,7 @@ export const EditQuestion = () => {
                         
                     </ViewStyle>
 
-                    <ViewStyle space border>
+                    <ViewStyle space border scroll>
 
                         { 
                             getQuestionType(activeQuestion.Type__c) 

@@ -42,12 +42,16 @@ export const QuestionState = () => {
 
 const Save = ({ children }) => {
 
-    const { activeQuestion, setQuestionState, questionUpdate, setQuestionUpdate, setQuestions } = useContext(DesignContext);
+    const { activeQuestionOptions, activeQuestion, setQuestionState, questionUpdate, setQuestionUpdate, setQuestions } = useContext(DesignContext);
 
     useEffect(() => {
 
-        if(questionUpdate) {
+        if(questionUpdate && activeQuestionOptions.length == 0) {
             call("ClarityFormBuilder.saveQuestion", [JSON.stringify(activeQuestion)], (result, e) => resultHandler(result, e, setQuestionUpdate, setQuestions, activeQuestion));
+        }
+
+        if(questionUpdate && activeQuestionOptions.length) {
+            call("ClarityFormBuilder.saveQuestionWithOptions", [JSON.stringify(activeQuestion), JSON.stringify(activeQuestionOptions)], (result, e) => resultHandler(result, e, setQuestionUpdate, setQuestions, activeQuestion));
         }
 
     }, [questionUpdate])
@@ -78,7 +82,7 @@ const Save = ({ children }) => {
 }
 
 const resultHandler = (result, e, setQuestionUpdate, setQuestions, activeQuestion) => {
-    
+    console.log(result);
     setQuestions(questions => {
 
         return questions.map(question => {

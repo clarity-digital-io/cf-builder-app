@@ -18,6 +18,11 @@ const ViewStyle = styled.div`
         padding: 2em 1em 2em 1em; 
     `}
 
+    ${props => props.scroll && css`
+        overflow: scroll;
+        height: 56vh;
+    `}
+
 `;
 
 export default ViewStyle;
