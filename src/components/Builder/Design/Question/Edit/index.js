@@ -1,11 +1,11 @@
-import React, { useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styled, { css } from 'styled-components';
-import { DesignContext } from '../../../Context';
+import { DesignContext } from '../../../../Context';
 
-import View from '../../../Elements/View';
-import ViewStyle from '../../../Elements/View/style';
+import View from '../../../../Elements/View';
+import ViewStyle from '../../../../Elements/View/style';
 
-import Box from '../../../Elements/Box';
+import Box from '../../../../Elements/Box';
 import { Multiple } from './multiple'; 
 
 const getQuestionType = (type) => {
@@ -44,7 +44,7 @@ const getQuestionType = (type) => {
 
 export const EditQuestion = () => {
 
-    const { activeQuestion, setActiveQuestion } = useContext(DesignContext); 
+    const { activeQuestion, setActiveQuestion, setEdit } = useContext(DesignContext); 
 
     const updateRequiredStatus = (e) => {
 

@@ -6,7 +6,6 @@ import { BuilderContext } from '../Context';
 const Builder = () => {
 
     const { form } = useContext(BuilderContext);
-    console.log(form);
     
     return (
         <BuilderLayout>

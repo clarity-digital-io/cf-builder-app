@@ -10,11 +10,12 @@ import { DesignContext } from '../../../Context';
 
 export const Question = ({ question }) => {
 
-    const { setQuestionState, setActiveQuestion, activeQuestion } = useContext(DesignContext);
+    const { setQuestionState, setActiveQuestion, activeQuestion, setEdit } = useContext(DesignContext);
 
     const update = (state) => {
         setActiveQuestion(question);
-        setQuestionState(state)
+        setQuestionState(state);
+        setEdit(question.Id);
     }
 
     return (
@@ -32,6 +33,7 @@ export const Question = ({ question }) => {
                     <Box padding='0'>
                         <Options>
                             <li onClick={() => update('EDIT')}>Edit</li>
+                            <li onClick={() => update('AUTOMATE')}>Automate</li>
                             <li onClick={() => update('LOGIC')}>Logic</li>
                             <li onClick={() => update('CALCULATOR')}>Calculator</li>
                             <li onClick={() => console.log('delete')} id="delete">Delete</li>

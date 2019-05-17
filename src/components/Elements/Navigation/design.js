@@ -1,27 +1,32 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import Main from '../Theme'; 
+import { BuilderContext } from '../../Context';
 
 const DesignNavigation = () => {
+
+    const { form, setForm } = useContext(BuilderContext);
+
+    const select = (nav) => {
+
+        setForm(form => {
+            return { ...form, NavState: nav }
+        });
+
+    }
 
     return (
         <Nav>
 
             <ul>
-                <li>
-                    <a>
-                        <div><span>Questions</span></div>
-                    </a>
+                <li onClick={() => select('QUESTIONS')}>
+                    <div><span>Questions</span></div>
                 </li>
-                <li>
-                    <a>
-                        <div><span>Design</span></div>
-                    </a>
+                <li onClick={() => select('DESIGN')}>
+                    <div><span>Design</span></div>
                 </li>
-                <li>
-                    <a>
-                        <div><span>Activity</span></div>
-                    </a>
+                <li onClick={() => select('SETTINGS')}>
+                    <div><span>Settings</span></div>
                 </li>
             </ul>
 
@@ -31,7 +36,7 @@ const DesignNavigation = () => {
 }
 
 const Nav = styled.nav`
-    border-right: 1px solid ${Main.color.light};
+    border-right: 1px solid ${Main.color.greyBorder};
     background: ${Main.color.white};
     height: 94vh; 
 
@@ -39,24 +44,19 @@ const Nav = styled.nav`
         list-style: none;
     }
 
-    a {
+    div {
         cursor: pointer;
         text-decoration: none !important;
         display: block;
         color: ${Main.color.body};
-        padding: .5em;
+        padding: 1em;
         font-size: .95em;
-        border-bottom: 1px solid ${Main.color.light};
+        border-bottom: 1px solid ${Main.color.greyBorder};
         text-align: left;
     }
 
-    div {
-        padding: .5em; 
-    }
-
-    span {
-        vertical-align: middle;
-        margin-left: .5em;
+    div:hover {
+        font-weight: 900;
     }
 
 `;

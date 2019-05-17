@@ -15,7 +15,7 @@ const prodCall = (func, params, callback) => {
         case 1:
             LCC.callApex(func, params[0], callback, { escape: true });
             break;
-        case 1:
+        case 2:
             LCC.callApex(func, params[0], params[1], callback, { escape: true });
             break;
         default:

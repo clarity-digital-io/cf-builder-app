@@ -5,7 +5,7 @@ const Main = {
         white: '#fff',
         light : '#f5f5f5',
         silver: '#efefef',
-        greyBorder: '#e2e2e2', 
+        greyBorder: '#dfdddc', 
         grey: '#696969', 
         body : '#000', 
         bright : '#040cd5',

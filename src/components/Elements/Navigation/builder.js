@@ -1,11 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
+import LCC from 'lightning-container';
 
 import Main from '../Theme'; 
 import View from '../View';
 import Box from '../Box';
 
 const BuilderNavigation = () => {
+
+    const preview = () => {
+        LCC.sendMessage({name: "Preview", value: 'formId'});
+    }
 
     return (
         <Nav>
@@ -14,16 +19,10 @@ const BuilderNavigation = () => {
                     <Box padding='0'>
                         <ul>
                             <li>
-                                <a>Design</a>
+                                Design
                             </li>
-                            <li>
-                                <a>Collect</a>
-                            </li>
-                            <li>
-                                <a>Responses</a>
-                            </li>
-                            <li>
-                                <a id="preview">Preview</a>
+                            <li id="preview" onClick={() => preview()}>
+                                Preview
                             </li>
                         </ul>
                     </Box>
@@ -39,7 +38,7 @@ const BuilderNavigation = () => {
 const Nav = styled.nav`
     font-size: .95em;
     font-weight: 100;
-    border-bottom: 1px solid ${Main.color.silver};
+    border-bottom: 1px solid ${Main.color.greyBorder};
     background: ${Main.color.white};
 
     ul {
@@ -48,32 +47,22 @@ const Nav = styled.nav`
 
     li {
         display: inline-block;
-        border-right: 1px solid ${Main.color.silver};
-    }
-
-    #preview {
-        font-weight: 900; 
-        display: inline-block;
-        border: none;
-    }
-
-    a {
+        border-right: 1px solid ${Main.color.greyBorder};
         text-decoration: none !important;
+        color: ${Main.color.body};
+        padding: 1em 6em 1em 6em;
+        cursor: pointer;
+    }
+
+    li:hover {
+        text-decoration: none !important; 
+        background: ${Main.color.light};
+        font-weight: 900;
+    }
+
+    li#preview {
         display: inline-block;
         color: ${Main.color.body};
-        padding: 1em 4em 1em 4em;
-    }
-
-
-    #preview {
-        font-weight: 900;
-        color: ${Main.color.body};
-    }
-
-    a:hover {
-        text-decoration: none !important; 
-        color: ${Main.color.body};
-        font-weight: 900;
     }
 `;
 

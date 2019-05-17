@@ -17,7 +17,7 @@ const DesignLayout = ({ children }) => {
             <View className="row" full>
                 <View className="col-xs-12 col-sm-1 col-md-1 col-lg-1">
                     <Box padding='0'>
-                        
+
                         <DesignNavigation />
 
                     </Box> 

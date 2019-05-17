@@ -3,12 +3,14 @@ import styled from 'styled-components';
 
 import { call } from '../../../RemoteActions'; 
 import View from '../../../Elements/View';
+import ViewStyle from '../../../Elements/View/style';
 
 import {Button} from '../../../Elements/Button';
 import Main from '../../../Elements/Theme';
 
 import { NewQuestion } from './new';
-import { EditQuestion } from './edit';
+import { EditQuestion } from './Edit';
+import { AutomateQuestion } from './Automate';
 import { DesignContext } from '../../../Context';
 
 export const QuestionState = () => {
@@ -23,6 +25,8 @@ export const QuestionState = () => {
                 break;
             case 'EDIT': 
                 return <Save><EditQuestion type={activeQuestion.Type__c} /></Save>
+            case 'AUTOMATE': 
+                return <Save><AutomateQuestion type={activeQuestion.Type__c} /></Save>
             case 'LOGIC': 
                 return <Save><div>logic</div></Save>
             case 'CALCULATOR': 
@@ -42,7 +46,7 @@ export const QuestionState = () => {
 
 const Save = ({ children }) => {
 
-    const { activeQuestionOptions, activeQuestion, setQuestionState, questionUpdate, setQuestionUpdate, setQuestions } = useContext(DesignContext);
+    const { activeQuestionOptions, setActiveQuestionOptions, activeQuestion, setQuestionState, questionUpdate, setQuestionUpdate, setQuestions } = useContext(DesignContext);
 
     useEffect(() => {
 
@@ -51,7 +55,11 @@ const Save = ({ children }) => {
         }
 
         if(questionUpdate && activeQuestionOptions.length) {
-            call("ClarityFormBuilder.saveQuestionWithOptions", [JSON.stringify(activeQuestion), JSON.stringify(activeQuestionOptions)], (result, e) => resultHandler(result, e, setQuestionUpdate, setQuestions, activeQuestion));
+            call(
+                "ClarityFormBuilder.saveQuestionWithOptions", 
+                [JSON.stringify(activeQuestion), JSON.stringify(activeQuestionOptions)], 
+                (result, e) => resultOptionHandler(result, e, setQuestionUpdate, setQuestions, activeQuestion, setActiveQuestionOptions)
+            );
         }
 
     }, [questionUpdate])
@@ -60,7 +68,7 @@ const Save = ({ children }) => {
         
         <View className="row end-xs">
             <View className="col-xs-12">
-                <ViewStyle>
+                <ViewStyle top border>
                     <Button neutral onClick={() => setQuestionState('NEW')}>Add New Field</Button>
                     <Button action onClick={() => setQuestionUpdate(true)}>
 
@@ -82,7 +90,7 @@ const Save = ({ children }) => {
 }
 
 const resultHandler = (result, e, setQuestionUpdate, setQuestions, activeQuestion) => {
-    console.log(result);
+
     setQuestions(questions => {
 
         return questions.map(question => {
@@ -100,7 +108,25 @@ const resultHandler = (result, e, setQuestionUpdate, setQuestions, activeQuestio
 
 }
 
-const ViewStyle = styled.div`
-    padding: .5em;
-    border-bottom: 1px solid ${Main.color.light}
-`;
+const resultOptionHandler = (result, e, setQuestionUpdate, setQuestions, activeQuestion, setActiveQuestionOptions) => {
+    
+    let options = result.Options;
+    let resultQuestion = result.Question[0];
+    console.log(options, resultQuestion);
+    setQuestions(questions => {
+
+        return questions.map(question => {
+            if(question.Id == resultQuestion.Id) {
+                return activeQuestion; 
+            }
+
+            return question; 
+
+        })
+
+    });
+    console.log(options); 
+    setActiveQuestionOptions(options);    
+
+    setQuestionUpdate(false);
+}

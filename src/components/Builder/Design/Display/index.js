@@ -127,9 +127,8 @@ const Card = ({ update, children }) => {
 
             </div>
             <footer className="slds-card__footer">
-                <a className="slds-card__footer-action" href="javascript:void(0);">View All
-                <span className="slds-assistive-text">Accounts</span>
-                </a>
+                <button class="slds-button slds-button_neutral">Cancel</button>
+                <button class="slds-button slds-button_brand">Send</button>
             </footer>
         </article>
     )

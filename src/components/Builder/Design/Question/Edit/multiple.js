@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
-import ViewStyle from '../../../Elements/View/style';
-import { DesignContext } from '../../../Context';
+import ViewStyle from '../../../../Elements/View/style';
+import { DesignContext } from '../../../../Context';
 
 export const Multiple = () => {
 
