@@ -76,6 +76,7 @@ const DesignProvider = ({ children }) => {
     useEffect(() => {
 
         if(edit) {
+            console.log(edit);
             call("ClarityFormBuilder.getQuestionOptions", [activeQuestion.Id], (result, e) => optionFetchHandler(result, e, setActiveQuestionOptions))
         }
 
@@ -99,6 +100,7 @@ const fetchHandler = (result, e, setQuestions) => {
 }
 
 const optionFetchHandler = (result, e, setActiveQuestionOptions) => {
+    console.log(result);
     setActiveQuestionOptions(result);
 }
 

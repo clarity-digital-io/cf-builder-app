@@ -15,7 +15,7 @@ const BuilderLayout = ({children}) => {
 }
 
 const App = styled.div`
-    min-height: 94vh;
+    min-height: 92vh;
     background: ${Main.color.light};
 
 `;

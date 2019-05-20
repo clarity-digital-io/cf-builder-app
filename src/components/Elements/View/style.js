@@ -37,7 +37,7 @@ const ViewStyle = styled.div`
 
     ${props => props.scroll && css`
         overflow: scroll;
-        height: 51vh;
+        height: 43vh;
     `}
 
     ${props => props.scrollAutomate && css`

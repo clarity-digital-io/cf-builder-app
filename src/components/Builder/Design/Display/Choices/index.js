@@ -24,9 +24,6 @@ export const getType = (question) => {
         case 'Comment':
             return <div>Comment</div>
             break;
-        case 'Star':
-            return <div>Star</div>
-            break; 
         case 'NetPromoterScore':
             return <div>NetPromoterScore</div>
             break;

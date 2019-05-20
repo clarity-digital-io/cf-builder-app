@@ -20,9 +20,6 @@ const getQuestionType = (type) => {
         case 'Comment':
             return <div>Comment</div>
             break;
-        case 'Star':
-            return <div>star</div>
-            break; 
         case 'NetPromoterScore':
             return <div>NetPromoterScore</div>
             break;
