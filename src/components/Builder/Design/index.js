@@ -76,11 +76,22 @@ const DesignProvider = ({ children }) => {
     useEffect(() => {
 
         if(edit) {
-            console.log(edit);
             call("ClarityFormBuilder.getQuestionOptions", [activeQuestion.Id], (result, e) => optionFetchHandler(result, e, setActiveQuestionOptions))
         }
 
     }, [edit]);
+
+    const [activeFlowDesign, setActiveFlowDesign] = useState({}); 
+
+    const [automate, setAutomate] = useState(null); 
+
+    useEffect(() => {
+
+        if(automate) {
+            call("ClarityFormBuilder.getFlowDesign", [activeQuestion.Id], (result, e) => designFlowFetchHandler(result, e, setActiveFlowDesign))
+        }
+
+    }, [automate])
 
     const [questionState, setQuestionState] = useState('NEW'); 
 
@@ -88,8 +99,42 @@ const DesignProvider = ({ children }) => {
 
     const [questionUpdate, setQuestionUpdate] = useState(false); 
 
+    const [questionToDelete, setQuestionToDelete] = useState(null);
+
+    useEffect(() => {
+
+        if(questionToDelete) {
+
+            let updatedOnDelete = sortDelete(questions.filter(question => question.Id != questionToDelete));
+            
+            call("ClarityFormBuilder.deleteQuestion", [JSON.stringify(updatedOnDelete), questionToDelete], (result, e) => deleteResultHandler(result, e, setQuestions));
+        
+        }
+
+    }, [questionToDelete]);
+
     return (
-        <DesignContext.Provider value={{ setEdit, activeQuestionOptions, setActiveQuestionOptions, questionUpdate, setQuestionUpdate, questionState, setQuestionState, activeQuestion, setActiveQuestion, update, setUpdate, questions, setQuestions }}>
+        <DesignContext.Provider 
+            value={{ 
+                automate, 
+                setAutomate, 
+                activeFlowDesign, 
+                setActiveFlowDesign, 
+                questionToDelete, 
+                setQuestionToDelete, 
+                setEdit, 
+                activeQuestionOptions, 
+                setActiveQuestionOptions, 
+                questionUpdate, 
+                setQuestionUpdate, 
+                questionState, 
+                setQuestionState, 
+                activeQuestion, 
+                setActiveQuestion, 
+                update, 
+                setUpdate, 
+                questions, 
+                setQuestions }}>
             { children }
         </DesignContext.Provider>
     )
@@ -100,8 +145,16 @@ const fetchHandler = (result, e, setQuestions) => {
 }
 
 const optionFetchHandler = (result, e, setActiveQuestionOptions) => {
-    console.log(result);
     setActiveQuestionOptions(result);
+}
+
+const designFlowFetchHandler = (result, e, setActiveFlowDesign) => {
+    setActiveFlowDesign(result);
+}
+
+const deleteResultHandler = (result, e, setQuestions) => {
+    console.log(result);
+    setQuestions(sort(result));
 }
 
 const sort = (result) => {
@@ -114,5 +167,25 @@ const sort = (result) => {
             return 1; 
         }
     });
+
+}
+
+const sortDelete = (result) => {
+
+    let sorted = result.map((r, i) => {
+        r.Order__c = i;
+        return r; 
+    });
+
+    sorted = sorted.sort((a, b) => {
+        if(a.Order__c < b.Order__c) {
+            return -1; 
+        }
+        if(a.Order__c > b.Order__c) {
+            return 1; 
+        }
+    });
+
+    return sorted; 
 
 }

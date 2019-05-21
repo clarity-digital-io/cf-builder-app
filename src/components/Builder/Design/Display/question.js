@@ -7,36 +7,45 @@ import Main from '../../../Elements/Theme'
 
 import { getType } from './Choices'; 
 import { DesignContext } from '../../../Context';
+import { useDrag } from './useDrag';
 
 export const Question = ({ question }) => {
 
-    const { setQuestionState, setActiveQuestion, activeQuestion, setEdit } = useContext(DesignContext);
+    const { setAutomate, setQuestionState, setActiveQuestion, activeQuestion, setEdit, setQuestionToDelete } = useContext(DesignContext);
 
-    const update = (state) => {
+    const { } = useDrag(); 
+
+    const edit = (state) => {
         setActiveQuestion(question);
         setQuestionState(state);
         setEdit(question.Id);
+    }
+
+    const automate = (state) => {
+        setActiveQuestion(question);
+        setQuestionState(state);
+        setAutomate(question.Id);
     }
 
     return (
         <ViewStyle active={ question.Id != null && (question.Id == activeQuestion.Id) }>
             <View className="row middle-xs">
 
-                <View className="col-xs-12 col-sm-6 col-md-6 col-lg-9">
+                <View className="col-xs-12 col-sm-6 col-md-6 col-lg-8">
                     <Box padding='0'>
                         { question.Required__c ? <span id="required">*</span> : '' }
                         { question.Title__c }
                     </Box> 
                 </View>
 
-                <View className="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+                <View className="col-xs-12 col-sm-6 col-md-6 col-lg-4">
                     <Box padding='0'>
                         <Options>
-                            <li onClick={() => update('EDIT')}>Edit</li>
-                            <li onClick={() => update('AUTOMATE')}>Automate</li>
+                            <li onClick={() => edit('EDIT')}>Edit</li>
+                            <li onClick={() => automate('AUTOMATE')}>Automate</li>
                             <li onClick={() => update('LOGIC')}>Logic</li>
                             <li onClick={() => update('CALCULATOR')}>Calculator</li>
-                            <li onClick={() => console.log('delete')} id="delete">Delete</li>
+                            <li onClick={() => setQuestionToDelete(question.Id)} id="delete">Delete</li>
                         </Options>
                     </Box> 
                 </View>

@@ -41,7 +41,27 @@ const getQuestionType = (type) => {
 
 export const AutomateQuestion = () => {
 
-    const { activeQuestion } = useContext(DesignContext); 
+    const { activeQuestion, activeFlowDesign, setActiveFlowDesign } = useContext(DesignContext); 
+
+    const updateActivate = (e) => {
+        
+        let checked = e.target.checked;
+
+        // setActiveFlowDesign(question => {
+        //     return { ...question, Required__c: checked }
+        // })
+
+    }
+
+    const updateFormSubmissionStatus = (e) =>{
+
+        let checked = e.target.checked;
+
+        // setActiveFlowDesign(question => {
+        //     return { ...question, Required__c: checked }
+        // })
+
+    }
 
     return (
         <View className="row middle-xs">
@@ -73,7 +93,7 @@ export const AutomateQuestion = () => {
                             <div className="slds-form-element">
                                 <label className="slds-checkbox_toggle slds-grid">
                                     <span className="slds-form-element__label slds-m-bottom_none">Activate</span>
-                                    <input type="checkbox" name="checkbox-toggle-14" value="checkbox-toggle-14" aria-describedby="checkbox-toggle-14" />
+                                    <input type="checkbox" checked={activeFlowDesign.Active__c} onClick={(e) => updateActivate(e)}  name="checkbox-toggle-14" value="checkbox-toggle-14" aria-describedby="checkbox-toggle-14" />
                                     <span id="checkbox-toggle-14" className="slds-checkbox_faux_container" aria-live="assertive">
                                     <span className="slds-checkbox_faux"></span>
                                     </span>
@@ -87,7 +107,7 @@ export const AutomateQuestion = () => {
                             <div className="slds-form-element">
                                 <label className="slds-checkbox_toggle slds-grid">
                                     <span className="slds-form-element__label slds-m-bottom_none">Only On Form Submission</span>
-                                    <input type="checkbox" name="checkbox-toggle-14" value="checkbox-toggle-14" aria-describedby="checkbox-toggle-14" />
+                                    <input type="checkbox" checked={activeFlowDesign.Form_Submission__c} onClick={(e) => updateFormSubmissionStatus(e)} name="checkbox-toggle-14" value="checkbox-toggle-14" aria-describedby="checkbox-toggle-14" />
                                     <span id="checkbox-toggle-14" className="slds-checkbox_faux_container" aria-live="assertive">
                                     <span className="slds-checkbox_faux"></span>
                                     </span>

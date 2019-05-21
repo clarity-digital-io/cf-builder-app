@@ -25,7 +25,8 @@ const prodCall = (func, params, callback) => {
 }
 
 const mockCall = (func, params, callback) => {
-
+    let date = new Date();
+    let timestamp = date.getTime();
     switch (func) {
         case 'createForm':
             callback(1); 
@@ -34,7 +35,7 @@ const mockCall = (func, params, callback) => {
             callback([{ Id: 1, Type__c: 'Comment', Title__c: 'Comment', Order__c: 0 }]); 
             break;
         case 'save': 
-            callback([2]);
+            callback([timestamp]);
             break;
         case 'saveQuestionWithOptions': 
             callback(2);
@@ -44,6 +45,15 @@ const mockCall = (func, params, callback) => {
             break;
         case 'saveQuestion':
             callback(2);
+            break;
+        case 'deleteQuestion':
+            callback([{ Id: 1, Type__c: 'Comment', Title__c: 'Comment', Order__c: 0 }]);
+            break;
+        case 'getFlowDesign':
+            callback({ Id: 31, Clarity_Form_Question__c: 123, Form_Submission__c: true, Active__c: false, Values__c: '' });
+            break;
+        case 'saveFlowDesign':
+            callback([]);
             break;
         default:
             break;

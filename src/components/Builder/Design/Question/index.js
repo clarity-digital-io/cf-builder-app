@@ -46,7 +46,15 @@ export const QuestionState = () => {
 
 const Save = ({ children }) => {
 
-    const { activeQuestionOptions, setActiveQuestionOptions, activeQuestion, setQuestionState, questionUpdate, setQuestionUpdate, setQuestions } = useContext(DesignContext);
+    const { 
+        activeQuestionOptions, 
+        setActiveQuestionOptions, 
+        activeQuestion, 
+        setQuestionState, 
+        questionUpdate, 
+        setQuestionUpdate, 
+        setQuestions 
+    } = useContext(DesignContext);
 
     useEffect(() => {
 
@@ -60,6 +68,10 @@ const Save = ({ children }) => {
                 [JSON.stringify(activeQuestion), JSON.stringify(activeQuestionOptions)], 
                 (result, e) => resultOptionHandler(result, e, setQuestionUpdate, setQuestions, activeQuestion, setActiveQuestionOptions)
             );
+        }
+
+        if(questionUpdate && activeFlowDesign) {
+            
         }
 
     }, [questionUpdate])
