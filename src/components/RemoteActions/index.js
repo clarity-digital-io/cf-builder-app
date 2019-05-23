@@ -61,6 +61,9 @@ const mockCall = (func, params, callback) => {
                 'FlowDesign': [{ Id: 31, Clarity_Form_Question__c: 123, Form_Submission__c: true, Active__c: false }]
             });
             break;
+        case 'getLookupsAvailable': 
+            callback(['Account', 'Case', 'Contact', 'Opportunity', 'AccountRole']);
+            break; 
         default:
             break;
     }

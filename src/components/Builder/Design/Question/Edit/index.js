@@ -7,6 +7,7 @@ import ViewStyle from '../../../../Elements/View/style';
 
 import Box from '../../../../Elements/Box';
 import { Multiple } from './multiple'; 
+import { Lookup } from './lookup'; 
 
 const getQuestionType = (type) => {
 
@@ -35,6 +36,15 @@ const getQuestionType = (type) => {
         case 'Payment':
             return <div>Payment</div>
             break;
+        case 'Number':
+            return <div>Number</div>
+            break;
+        case 'Lookup':
+            return <Lookup />
+            break;
+        case 'RecordGroup':
+            return <Lookup />
+            break;
         default:
             return <div>{ type }</div>
             break;
@@ -44,7 +54,7 @@ const getQuestionType = (type) => {
 
 export const EditQuestion = () => {
 
-    const { activeQuestion, setActiveQuestion, setEdit } = useContext(DesignContext); 
+    const { activeQuestion, setActiveQuestion, loading } = useContext(DesignContext); 
 
     const updateRequiredStatus = (e) => {
 
@@ -109,9 +119,9 @@ export const EditQuestion = () => {
                     </ViewStyle>
 
                     <ViewStyle space border scroll>
-
-                        { 
-                            getQuestionType(activeQuestion.Type__c) 
+                    
+                        {
+                            loading ? 'Loading' : getQuestionType(activeQuestion.Type__c) 
                         }
 
                     </ViewStyle>

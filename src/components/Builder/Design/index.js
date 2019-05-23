@@ -77,7 +77,19 @@ const DesignProvider = ({ children }) => {
 
     const [edit, setEdit] = useState(null); 
 
+    const [lookups, setLookups] = useState(''); 
+
     useEffect(() => {
+
+        /*
+        *  Need to manage question types to know what to edit
+        */  
+
+        if(edit && questionState == 'EDIT' && activeQuestion.Type__c == 'Lookup') {
+            console.log(edit);
+            call("ClarityFormBuilder.getLookupsAvailable", [], (result, e) => lookupFetchHandler(result, e, setLookups));
+
+        }
 
         if(edit) {
 
@@ -110,6 +122,7 @@ const DesignProvider = ({ children }) => {
     return (
         <DesignContext.Provider 
             value={{ 
+                lookups,
                 loading,
                 activeFlowDesign, 
                 setActiveFlowDesign, 
@@ -132,6 +145,11 @@ const DesignProvider = ({ children }) => {
         </DesignContext.Provider>
     )
 }
+
+const lookupFetchHandler = (result, e, setLookups) => {
+    console.log(result);
+    setLookups(result); 
+} 
 
 const fetchHandler = (result, e, setQuestions) => {
     setQuestions(sort(result));

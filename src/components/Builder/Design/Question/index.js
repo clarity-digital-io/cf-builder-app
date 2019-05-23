@@ -60,9 +60,13 @@ const Save = ({ children }) => {
     } = useContext(DesignContext);
 
     useEffect(() => {
-        console.log(activeFlowDesign);
+
         if(questionUpdate && activeQuestionOptions.length == 0 && questionState == 'EDIT') {
-            call("ClarityFormBuilder.saveQuestion", [JSON.stringify(activeQuestion)], (result, e) => resultHandler(result, e, setQuestionUpdate, setQuestions, activeQuestion));
+            call(
+                "ClarityFormBuilder.saveQuestion", 
+                [JSON.stringify(activeQuestion)], 
+                (result, e) => resultHandler(result, e, setQuestionUpdate, setQuestions, activeQuestion)
+            );
         }
 
         if(questionUpdate && activeQuestionOptions.length && questionState == 'EDIT') {
