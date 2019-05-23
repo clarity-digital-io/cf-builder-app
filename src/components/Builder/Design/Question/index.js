@@ -47,6 +47,9 @@ export const QuestionState = () => {
 const Save = ({ children }) => {
 
     const { 
+        questionState,
+        activeFlowDesign, 
+        setActiveFlowDesign,
         activeQuestionOptions, 
         setActiveQuestionOptions, 
         activeQuestion, 
@@ -57,12 +60,12 @@ const Save = ({ children }) => {
     } = useContext(DesignContext);
 
     useEffect(() => {
-
-        if(questionUpdate && activeQuestionOptions.length == 0) {
+        console.log(activeFlowDesign);
+        if(questionUpdate && activeQuestionOptions.length == 0 && questionState == 'EDIT') {
             call("ClarityFormBuilder.saveQuestion", [JSON.stringify(activeQuestion)], (result, e) => resultHandler(result, e, setQuestionUpdate, setQuestions, activeQuestion));
         }
 
-        if(questionUpdate && activeQuestionOptions.length) {
+        if(questionUpdate && activeQuestionOptions.length && questionState == 'EDIT') {
             call(
                 "ClarityFormBuilder.saveQuestionWithOptions", 
                 [JSON.stringify(activeQuestion), JSON.stringify(activeQuestionOptions)], 
@@ -70,8 +73,12 @@ const Save = ({ children }) => {
             );
         }
 
-        if(questionUpdate && activeFlowDesign) {
-            
+        if(questionUpdate && questionState == 'AUTOMATE') {
+            call(
+                "ClarityFormBuilder.saveFlowDesign", 
+                [JSON.stringify(activeFlowDesign), JSON.stringify(activeQuestionOptions)], 
+                (result, e) => resultFlowHandler(result, e,setQuestionUpdate, setActiveQuestionOptions, setActiveFlowDesign)
+            )
         }
 
     }, [questionUpdate])
@@ -124,7 +131,7 @@ const resultOptionHandler = (result, e, setQuestionUpdate, setQuestions, activeQ
     
     let options = result.Options;
     let resultQuestion = result.Question[0];
-    console.log(options, resultQuestion);
+
     setQuestions(questions => {
 
         return questions.map(question => {
@@ -137,8 +144,18 @@ const resultOptionHandler = (result, e, setQuestionUpdate, setQuestions, activeQ
         })
 
     });
-    console.log(options); 
+
     setActiveQuestionOptions(options);    
 
+    setQuestionUpdate(false);
+}
+
+const resultFlowHandler = (result, e, setQuestionUpdate, setActiveQuestionOptions, setActiveFlowDesign) => {
+    console.log('resultFlowHandler', result);
+    let options = result.Options;
+    let flowDesign = result.FlowDesign[0];
+
+    setActiveQuestionOptions(options);    
+    setActiveFlowDesign(flowDesign);
     setQuestionUpdate(false);
 }

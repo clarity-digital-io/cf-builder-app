@@ -1,10 +1,24 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import ViewStyle from '../../../../Elements/View/style';
 import { DesignContext } from '../../../../Context';
 
 export const Multiple = () => {
 
-    const { activeQuestion, activeQuestionOptions } = useContext(DesignContext);
+    const { activeQuestion, activeQuestionOptions, setActiveQuestionOptions } = useContext(DesignContext);
+    
+    const select = (e) => {
+
+        let checked = e.target.checked;
+
+        let value = e.target.value; 
+
+        setActiveQuestionOptions(options => {
+            return options.map(option => {
+                return { ...option, Active_Flow__c: option.Id == value ? checked : option.Active_Flow__c }
+            })
+        });
+
+    }
 
     return (
         <ViewStyle> 
@@ -21,8 +35,8 @@ export const Multiple = () => {
                             activeQuestionOptions.map(option => {
                                 return (
                                     <span className="slds-button slds-checkbox_button">
-                                        <input type="checkbox" name="radio" id={ option.Id } value={ option.Id }/>
-                                        <label className="slds-checkbox_button__label" for={ option.Id }>
+                                        <input type="checkbox" checked={option.Active_Flow__c} onChange={(e) => select(e)} name="radio" id={ option.Id } value={ option.Id }/>
+                                        <label className="slds-checkbox_button__label" htmlFor={ option.Id }>
                                             <span className="slds-checkbox_faux">{ option.Label__c }</span>
                                         </label>
                                     </span>

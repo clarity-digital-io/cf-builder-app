@@ -41,15 +41,15 @@ const getQuestionType = (type) => {
 
 export const AutomateQuestion = () => {
 
-    const { activeQuestion, activeFlowDesign, setActiveFlowDesign } = useContext(DesignContext); 
+    const { loading, activeQuestion, activeFlowDesign, setActiveFlowDesign } = useContext(DesignContext); 
 
     const updateActivate = (e) => {
         
         let checked = e.target.checked;
 
-        // setActiveFlowDesign(question => {
-        //     return { ...question, Required__c: checked }
-        // })
+        setActiveFlowDesign(design => {
+            return { ...design, Active__c: checked }
+        })
 
     }
 
@@ -57,9 +57,9 @@ export const AutomateQuestion = () => {
 
         let checked = e.target.checked;
 
-        // setActiveFlowDesign(question => {
-        //     return { ...question, Required__c: checked }
-        // })
+        setActiveFlowDesign(design => {
+            return { ...design, Form_Submission__c: checked }
+        })
 
     }
 
@@ -120,8 +120,8 @@ export const AutomateQuestion = () => {
 
                     <ViewStyle space border scrollAutomate> 
 
-                        { 
-                            getQuestionType(activeQuestion.Type__c) 
+                        {
+                            loading ? 'Loading' : getQuestionType(activeQuestion.Type__c) 
                         }
 
                     </ViewStyle>

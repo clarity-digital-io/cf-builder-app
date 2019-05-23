@@ -57,6 +57,8 @@ const DesignProvider = ({ children }) => {
 
     const { form } = useContext(BuilderContext);
 
+    const [loading, setLoading] = useState(true); 
+
     const [activeQuestionOptions, setActiveQuestionOptions] = useState([]); 
 
     const [questions, setQuestions] = useState([]); 
@@ -69,6 +71,8 @@ const DesignProvider = ({ children }) => {
 
     }, [])
 
+    const [activeFlowDesign, setActiveFlowDesign] = useState({}); 
+
     const [activeQuestion, setActiveQuestion] = useState({}); 
 
     const [edit, setEdit] = useState(null); 
@@ -76,22 +80,12 @@ const DesignProvider = ({ children }) => {
     useEffect(() => {
 
         if(edit) {
-            call("ClarityFormBuilder.getQuestionOptions", [activeQuestion.Id], (result, e) => optionFetchHandler(result, e, setActiveQuestionOptions))
+
+            call("ClarityFormBuilder.getQuestionEditDetails", [activeQuestion.Id], (result, e) => optionFetchHandler(result, e, setLoading, setActiveQuestionOptions, setActiveFlowDesign))
+        
         }
 
     }, [edit]);
-
-    const [activeFlowDesign, setActiveFlowDesign] = useState({}); 
-
-    const [automate, setAutomate] = useState(null); 
-
-    useEffect(() => {
-
-        if(automate) {
-            call("ClarityFormBuilder.getFlowDesign", [activeQuestion.Id], (result, e) => designFlowFetchHandler(result, e, setActiveFlowDesign))
-        }
-
-    }, [automate])
 
     const [questionState, setQuestionState] = useState('NEW'); 
 
@@ -116,8 +110,7 @@ const DesignProvider = ({ children }) => {
     return (
         <DesignContext.Provider 
             value={{ 
-                automate, 
-                setAutomate, 
+                loading,
                 activeFlowDesign, 
                 setActiveFlowDesign, 
                 questionToDelete, 
@@ -144,16 +137,13 @@ const fetchHandler = (result, e, setQuestions) => {
     setQuestions(sort(result));
 }
 
-const optionFetchHandler = (result, e, setActiveQuestionOptions) => {
-    setActiveQuestionOptions(result);
-}
-
-const designFlowFetchHandler = (result, e, setActiveFlowDesign) => {
-    setActiveFlowDesign(result);
+const optionFetchHandler = (result, e, setLoading, setActiveQuestionOptions, setActiveFlowDesign) => {
+    setActiveQuestionOptions(result.Options);
+    setActiveFlowDesign(result.FlowDesign[0]);
+    setLoading(false);
 }
 
 const deleteResultHandler = (result, e, setQuestions) => {
-    console.log(result);
     setQuestions(sort(result));
 }
 

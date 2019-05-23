@@ -127,8 +127,8 @@ const Card = ({ update, children }) => {
 
             </div>
             <footer className="slds-card__footer">
-                <button class="slds-button slds-button_neutral">Cancel</button>
-                <button class="slds-button slds-button_brand">Send</button>
+                <button className="slds-button slds-button_neutral">Cancel</button>
+                <button className="slds-button slds-button_brand">Send</button>
             </footer>
         </article>
     )

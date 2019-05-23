@@ -38,10 +38,10 @@ const mockCall = (func, params, callback) => {
             callback([timestamp]);
             break;
         case 'saveQuestionWithOptions': 
-            callback(2);
-            break;
-        case 'getQuestionOptions':
-            callback([{ Id: 31, Label__c: 'Option 1', Clarity_Form_Question__c: 2},{ Id: 32, Label__c: 'Option 2', Clarity_Form_Question__c: 2}]);
+            callback({
+                'Question': [{ Id: 1, Type__c: 'Comment', Title__c: 'Comment', Order__c: 0  }], 
+                'Options': [{ Id: 31, Label__c: 'Option 1', Active_Flow__c: true, Clarity_Form_Question__c: 2},{ Id: 32, Label__c: 'Option 2', Active_Flow__c: false, Clarity_Form_Question__c: 2}]
+            });
             break;
         case 'saveQuestion':
             callback(2);
@@ -49,11 +49,17 @@ const mockCall = (func, params, callback) => {
         case 'deleteQuestion':
             callback([{ Id: 1, Type__c: 'Comment', Title__c: 'Comment', Order__c: 0 }]);
             break;
-        case 'getFlowDesign':
-            callback({ Id: 31, Clarity_Form_Question__c: 123, Form_Submission__c: true, Active__c: false, Values__c: '' });
+        case 'getQuestionEditDetails':
+            callback({
+                'Options' : [{ Id: 31, Label__c: 'Option 1', Active_Flow__c: true, Clarity_Form_Question__c: 2},{ Id: 32, Label__c: 'Option 2', Active_Flow__c: false, Clarity_Form_Question__c: 2}],
+                'FlowDesign': [{ Id: 31, Clarity_Form_Question__c: 123, Form_Submission__c: true, Active__c: false }]
+            });
             break;
         case 'saveFlowDesign':
-            callback([]);
+            callback({
+                'Options' : [{ Id: 31, Label__c: 'Option 1', Active_Flow__c: true, Clarity_Form_Question__c: 2},{ Id: 32, Label__c: 'Option 2', Active_Flow__c: true, Clarity_Form_Question__c: 2}],
+                'FlowDesign': [{ Id: 31, Clarity_Form_Question__c: 123, Form_Submission__c: true, Active__c: false }]
+            });
             break;
         default:
             break;

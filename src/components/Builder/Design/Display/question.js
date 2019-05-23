@@ -5,26 +5,16 @@ import View from '../../../Elements/View'
 import Box from '../../../Elements/Box'
 import Main from '../../../Elements/Theme'
 
-import { getType } from './Choices'; 
 import { DesignContext } from '../../../Context';
-import { useDrag } from './useDrag';
 
 export const Question = ({ question }) => {
 
-    const { setAutomate, setQuestionState, setActiveQuestion, activeQuestion, setEdit, setQuestionToDelete } = useContext(DesignContext);
-
-    const { } = useDrag(); 
+    const { setQuestionState, setActiveQuestion, activeQuestion, setEdit, setQuestionToDelete } = useContext(DesignContext);
 
     const edit = (state) => {
         setActiveQuestion(question);
         setQuestionState(state);
         setEdit(question.Id);
-    }
-
-    const automate = (state) => {
-        setActiveQuestion(question);
-        setQuestionState(state);
-        setAutomate(question.Id);
     }
 
     return (
@@ -42,9 +32,9 @@ export const Question = ({ question }) => {
                     <Box padding='0'>
                         <Options>
                             <li onClick={() => edit('EDIT')}>Edit</li>
-                            <li onClick={() => automate('AUTOMATE')}>Automate</li>
-                            <li onClick={() => update('LOGIC')}>Logic</li>
-                            <li onClick={() => update('CALCULATOR')}>Calculator</li>
+                            <li onClick={() => edit('AUTOMATE')}>Automate</li>
+                            <li onClick={() => edit('LOGIC')}>Logic</li>
+                            <li onClick={() => edit('CALCULATOR')}>Calculator</li>
                             <li onClick={() => setQuestionToDelete(question.Id)} id="delete">Delete</li>
                         </Options>
                     </Box> 
