@@ -28,8 +28,8 @@ const mockCall = (func, params, callback) => {
     let date = new Date();
     let timestamp = date.getTime();
     switch (func) {
-        case 'createForm':
-            callback(1); 
+        case 'startup':
+            callback({Id: 1, Name: 'Clarity Form'}); 
             break;
         case 'getQuestions':
             callback([{ Id: 1, Type__c: 'Comment', Title__c: 'Comment', Order__c: 0 }]); 

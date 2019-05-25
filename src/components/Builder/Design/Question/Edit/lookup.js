@@ -31,7 +31,7 @@ export const Lookup = () => {
                             {
                                 lookups.map((lookup, id) => {
                                     return (
-                                        <option value={lookup}>{lookup}</option>
+                                        <option value={lookup} selected={activeQuestion.Lookup__c == lookup ? true : false}>{lookup}</option>
                                     )
                                 })
                             }

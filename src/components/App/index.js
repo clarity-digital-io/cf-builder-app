@@ -19,29 +19,36 @@ const App = ({ children }) => {
 
 const BuilderProvider = ({ children }) => {
     
-    const  [form, setForm] = useState({ Id: null, Name: '', NavState: 'QUESTIONS', State: 'NEW' });
+    const [form, setForm] = useState({ Id: null, Name: '', NavState: 'QUESTIONS', State: 'NEW' });
+
+    const [lookups, setLookups] = useState([]);
 
     useEffect(() => {
 
         let url = new URLSearchParams(window.location.search);
 
         let recordId = url.get('recordId');
-
-        recordId ? 
-            setForm({ Id: recordId, Name: '',  NavState: 'QUESTIONS', State: 'EDIT' }) :
-            call("ClarityFormBuilder.createForm", [], (result, e) => createHandler(result, e, setForm))
+        console.log(recordId);
+        call("ClarityFormBuilder.startup", [recordId], (result, e) => createHandler(result, e, setForm));
+        console.log('startup');
+        call("ClarityFormBuilder.getLookupsAvailable", [], (result, e) => createLookupsHandler(result, e, setLookups));
         
     }, [])
 
     return (
-        <BuilderContext.Provider value={{ form, setForm }}>
+        <BuilderContext.Provider value={{ form, setForm, lookups }}>
             { children }
         </BuilderContext.Provider>
     )
 }
 
 const createHandler = (result, e, setForm) => {
-    setForm({ Id: result, Name: '', NavState: 'QUESTIONS', State: 'NEW' });
+    console.log(result);
+    setForm({ Id: result.Id, Name: result.Name, NavState: 'QUESTIONS', State: 'NEW' });
+}
+
+const createLookupsHandler = (result, e, setLookups) => {
+    setLookups(result); 
 }
 
 const Layout = styled.div`
