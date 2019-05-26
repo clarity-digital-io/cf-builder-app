@@ -1,16 +1,16 @@
 import React, { useContext, useEffect } from 'react';
-import styled from 'styled-components';
 
 import { call } from '../../../RemoteActions'; 
 import View from '../../../Elements/View';
 import ViewStyle from '../../../Elements/View/style';
 
 import {Button} from '../../../Elements/Button';
-import Main from '../../../Elements/Theme';
 
 import { NewQuestion } from './new';
 import { EditQuestion } from './Edit';
 import { AutomateQuestion } from './Automate';
+import { LogicQuestion } from './Logic';
+
 import { DesignContext } from '../../../Context';
 
 export const QuestionState = () => {
@@ -25,10 +25,13 @@ export const QuestionState = () => {
                 break;
             case 'EDIT': 
                 return <Save><EditQuestion type={activeQuestion.Type__c} /></Save>
+                break;
             case 'AUTOMATE': 
                 return <Save><AutomateQuestion type={activeQuestion.Type__c} /></Save>
+                break;
             case 'LOGIC': 
-                return <Save><div>logic</div></Save>
+                return <Save><LogicQuestion type={activeQuestion.Type__c} /></Save>
+                break;
             case 'CALCULATOR': 
                 return <Save><div>calculator</div></Save>
             case 'SETTINGS': 

@@ -11,7 +11,7 @@ const Builder = () => {
         <BuilderLayout>
 
             {
-                form.Id ? <DragDrop /> : 'Loading'
+                form.Id ? <DragDrop /> : 'Loading Form'
             }
             
         </BuilderLayout>  

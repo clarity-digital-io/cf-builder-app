@@ -30,6 +30,9 @@ export const Lookup = () => {
                         <select class="slds-select" id="select-01" onChange={(e) => updateLookupQuestion(e)}>
                             {
                                 lookups.map((lookup, id) => {
+                                    
+                                    console.log(activeQuestion.Lookup__c, lookup);
+
                                     return (
                                         <option value={lookup} selected={activeQuestion.Lookup__c == lookup ? true : false}>{lookup}</option>
                                     )

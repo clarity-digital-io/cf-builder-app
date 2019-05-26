@@ -64,14 +64,13 @@ const DesignProvider = ({ children }) => {
     const [questions, setQuestions] = useState([]); 
 
     useEffect(() => {
-
-        if(form.State == 'EDIT') {
-            call("ClarityFormBuilder.getQuestions", [form.Id], (result, e) => fetchHandler(result, e, setQuestions))
-        }
+        call("ClarityFormBuilder.getQuestions", [form.Id], (result, e) => fetchHandler(result, e, setQuestions))
 
     }, [])
 
     const [activeFlowDesign, setActiveFlowDesign] = useState({}); 
+
+    const [criteria, setCriteria] = useState([]); 
 
     const [activeQuestion, setActiveQuestion] = useState({}); 
 
@@ -81,7 +80,7 @@ const DesignProvider = ({ children }) => {
 
         if(edit) {
 
-            call("ClarityFormBuilder.getQuestionEditDetails", [activeQuestion.Id], (result, e) => optionFetchHandler(result, e, setLoading, setActiveQuestionOptions, setActiveFlowDesign))
+            call("ClarityFormBuilder.getQuestionEditDetails", [activeQuestion.Id], (result, e) => optionFetchHandler(result, e, setLoading, setActiveQuestionOptions, setActiveFlowDesign, setCriteria))
         
         }
 
@@ -110,6 +109,8 @@ const DesignProvider = ({ children }) => {
     return (
         <DesignContext.Provider 
             value={{ 
+                criteria, 
+                setCriteria,
                 lookups,
                 loading,
                 activeFlowDesign, 
@@ -138,8 +139,9 @@ const fetchHandler = (result, e, setQuestions) => {
     setQuestions(sort(result));
 }
 
-const optionFetchHandler = (result, e, setLoading, setActiveQuestionOptions, setActiveFlowDesign) => {
+const optionFetchHandler = (result, e, setLoading, setActiveQuestionOptions, setActiveFlowDesign, setCriteria) => {
     setActiveQuestionOptions(result.Options);
+    setCriteria(result.Criteria);
     setActiveFlowDesign(result.FlowDesign[0]);
     setLoading(false);
 }

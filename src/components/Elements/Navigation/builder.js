@@ -1,15 +1,18 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import LCC from 'lightning-container';
 
 import Main from '../Theme'; 
 import View from '../View';
 import Box from '../Box';
+import { BuilderContext } from '../../Context';
 
 const BuilderNavigation = () => {
 
+    const { form } = useContext(BuilderContext);
+
     const preview = () => {
-        LCC.sendMessage({name: "Preview", value: 'formId'});
+        LCC.sendMessage({name: "Preview", value: form.Id });
     }
 
     return (

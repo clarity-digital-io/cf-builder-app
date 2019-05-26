@@ -21,14 +21,14 @@ export const Question = ({ question }) => {
         <ViewStyle active={ question.Id != null && (question.Id == activeQuestion.Id) }>
             <View className="row middle-xs">
 
-                <View className="col-xs-12 col-sm-6 col-md-6 col-lg-8">
+                <View className="col-xs-12 col-sm-6 col-md-6 col-lg-7">
                     <Box padding='0'>
                         { question.Required__c ? <span id="required">*</span> : '' }
                         { question.Title__c }
                     </Box> 
                 </View>
 
-                <View className="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+                <View className="col-xs-12 col-sm-6 col-md-6 col-lg-5">
                     <Box padding='0'>
                         <Options>
                             <li onClick={() => edit('EDIT')}>Edit</li>

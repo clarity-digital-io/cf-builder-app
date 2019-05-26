@@ -21,16 +21,20 @@ const BuilderProvider = ({ children }) => {
     
     const [form, setForm] = useState({ Id: null, Name: '', NavState: 'QUESTIONS', State: 'NEW' });
 
-    const [lookups, setLookups] = useState([]);
-
     useEffect(() => {
 
         let url = new URLSearchParams(window.location.search);
 
-        let recordId = url.get('recordId');
-        console.log(recordId);
+        let recordId = url.get('recordId') != null ? url.get('recordId') : '';
+
         call("ClarityFormBuilder.startup", [recordId], (result, e) => createHandler(result, e, setForm));
-        console.log('startup');
+        
+    }, [])
+
+    const [lookups, setLookups] = useState([]);
+
+    useEffect(() => {
+
         call("ClarityFormBuilder.getLookupsAvailable", [], (result, e) => createLookupsHandler(result, e, setLookups));
         
     }, [])
@@ -43,7 +47,6 @@ const BuilderProvider = ({ children }) => {
 }
 
 const createHandler = (result, e, setForm) => {
-    console.log(result);
     setForm({ Id: result.Id, Name: result.Name, NavState: 'QUESTIONS', State: 'NEW' });
 }
 

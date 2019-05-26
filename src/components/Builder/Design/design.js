@@ -9,7 +9,7 @@ import { Display } from './Display';
 import { BuilderContext } from '../../Context';
 
 const Design = () => {
-
+    
     const { form } = useContext(BuilderContext);
 
     const getNavState = (nav) => {
@@ -28,7 +28,7 @@ const Design = () => {
     }
 
     return [
-        <View className="col-xs-12 col-sm-3 col-md-3 col-lg-3" scroll>
+        <View className="col-xs-5 col-sm-4 col-md-4 col-lg-4" scroll>
             <Box padding='0'>
                 
                 { getNavState(form.NavState) }
@@ -36,7 +36,7 @@ const Design = () => {
             </Box> 
         </View>,
 
-        <View className="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+        <View className="col-xs-6 col-sm-7 col-md-7 col-lg-7">
             <Box padding='0'>
                 <Display />
             </Box>                
