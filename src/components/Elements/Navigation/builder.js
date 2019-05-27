@@ -40,9 +40,9 @@ const BuilderNavigation = () => {
 
 const Nav = styled.nav`
     font-size: .95em;
-    font-weight: 100;
-    border-bottom: 1px solid ${Main.color.greyBorder};
-    background: ${Main.color.white};
+    font-weight: 900;
+    border-bottom: 1px solid ${Main.color.grey};
+    background: ${Main.color.body};
 
     ul {
         list-style: none;
@@ -50,22 +50,16 @@ const Nav = styled.nav`
 
     li {
         display: inline-block;
-        border-right: 1px solid ${Main.color.greyBorder};
+        border-right: 1px solid ${Main.color.grey};
         text-decoration: none !important;
-        color: ${Main.color.body};
+        color: ${Main.color.light};
         padding: 1em 6em 1em 6em;
         cursor: pointer;
     }
 
-    li:hover {
-        text-decoration: none !important; 
-        background: ${Main.color.light};
-        font-weight: 900;
-    }
-
     li#preview {
         display: inline-block;
-        color: ${Main.color.body};
+        color: ${Main.color.light};
     }
 `;
 

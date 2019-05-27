@@ -56,7 +56,6 @@ const createLookupsHandler = (result, e, setLookups) => {
 
 const Layout = styled.div`
     background: ${Main.color.white};
-    border: 1px solid ${Main.color.light};
     margin: 0em; 
     border-radius: 2px;
 `;

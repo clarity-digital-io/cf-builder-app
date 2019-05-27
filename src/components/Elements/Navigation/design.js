@@ -37,7 +37,7 @@ const DesignNavigation = () => {
 
 const Nav = styled.nav`
     border-right: 1px solid ${Main.color.greyBorder};
-    background: ${Main.color.white};
+    background: ${Main.color.light};
     height: 94vh; 
 
     ul {
@@ -51,7 +51,6 @@ const Nav = styled.nav`
         color: ${Main.color.body};
         padding: 1em;
         font-size: .95em;
-        border-bottom: 1px solid ${Main.color.greyBorder};
         text-align: left;
     }
 
