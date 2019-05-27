@@ -7,6 +7,7 @@ const ViewStyle = styled.div`
 
     h1 {
         font-weight: 900;
+        font-size: 1.5em;
         padding-bottom: 1em;
     }
 
