@@ -28,6 +28,9 @@ const DesignNavigation = () => {
                 <li onClick={() => select('SETTINGS')}>
                     <div><span>Settings</span></div>
                 </li>
+                <li>
+                    <div><span>Clarity Forms</span></div>
+                </li>
             </ul>
 
         </Nav>
@@ -42,6 +45,15 @@ const Nav = styled.nav`
 
     ul {
         list-style: none;
+        height: 94vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    ul > :last-child {
+        margin-top: auto;
+        font-weight: 900;
+        font-size: 1.2em;
     }
 
     div {

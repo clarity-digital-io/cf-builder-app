@@ -7,6 +7,7 @@ import ViewStyle from '../../../../Elements/View/style';
 import Box from '../../../../Elements/Box';
 import { Multiple } from './multiple'; 
 import { Lookup } from './lookup'; 
+import { RecordGroup } from './recordgroup'; 
 
 const getQuestionType = (type) => {
 
@@ -42,7 +43,7 @@ const getQuestionType = (type) => {
             return <Lookup />
             break;
         case 'RecordGroup':
-            return <Lookup />
+            return <RecordGroup />
             break;
         default:
             return <div>{ type }</div>

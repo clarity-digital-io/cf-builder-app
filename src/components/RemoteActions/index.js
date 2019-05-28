@@ -62,8 +62,11 @@ const mockCall = (func, params, callback) => {
                 'FlowDesign': [{ Id: 31, Clarity_Form_Question__c: 123, Form_Submission__c: true, Active__c: false }]
             });
             break;
-        case 'getLookupsAvailable': 
+        case 'getSObjectsAvailable': 
             callback(['Account', 'Case', 'Contact', 'Opportunity', 'AccountRole']);
+            break; 
+        case 'getRecordGroupFields': 
+            callback(['OwnerId', 'Name']);
             break; 
         default:
             break;

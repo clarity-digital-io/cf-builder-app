@@ -34,7 +34,11 @@ export const Question = ({ question }) => {
                             <li onClick={() => edit('EDIT')}>Edit</li>
                             <li onClick={() => edit('AUTOMATE')}>Automate</li>
                             <li onClick={() => edit('LOGIC')}>Logic</li>
-                            <li onClick={() => edit('CALCULATOR')}>Calculator</li>
+
+                            {
+                                question.Type__c == 'Number' ? <li onClick={() => edit('CALCULATOR')}>Calculator</li> : null 
+                            }
+
                             <li onClick={() => setQuestionToDelete(question.Id)} id="delete">Delete</li>
                         </Options>
                     </Box> 

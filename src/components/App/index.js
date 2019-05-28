@@ -31,16 +31,16 @@ const BuilderProvider = ({ children }) => {
         
     }, [])
 
-    const [lookups, setLookups] = useState([]);
+    const [sObjects, setSObjects] = useState([]);
 
     useEffect(() => {
 
-        call("ClarityFormBuilder.getLookupsAvailable", [], (result, e) => createLookupsHandler(result, e, setLookups));
+        call("ClarityFormBuilder.getSObjectsAvailable", [], (result, e) => getSObjectsHandler(result, e, setSObjects));
         
     }, [])
 
     return (
-        <BuilderContext.Provider value={{ form, setForm, lookups }}>
+        <BuilderContext.Provider value={{ form, setForm, sObjects }}>
             { children }
         </BuilderContext.Provider>
     )
@@ -50,8 +50,8 @@ const createHandler = (result, e, setForm) => {
     setForm({ Id: result.Id, Name: result.Name, NavState: 'QUESTIONS', State: 'NEW' });
 }
 
-const createLookupsHandler = (result, e, setLookups) => {
-    setLookups(result); 
+const getSObjectsHandler = (result, e, setSObjects) => {
+    setSObjects(result); 
 }
 
 const Layout = styled.div`

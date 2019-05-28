@@ -4,7 +4,7 @@ import { DesignContext } from '../../../../Context';
 
 export const Lookup = () => {
 
-    const { lookups, activeQuestion, setActiveQuestion } = useContext(DesignContext);
+    const { sObjects, activeQuestion, setActiveQuestion } = useContext(DesignContext);
 
     const updateLookupQuestion = (e) => {
         
@@ -24,21 +24,20 @@ export const Lookup = () => {
             <ViewStyle>
 
                 <div class="slds-form-element">
-                    <label class="slds-form-element__label" for="select-01">Select Label</label>
+                    <label class="slds-form-element__label" for="select-01">Please Select an Object</label>
                     <div class="slds-form-element__control">
                         <div class="slds-select_container">
-                        <select class="slds-select" id="select-01" onChange={(e) => updateLookupQuestion(e)}>
-                            {
-                                lookups.map((lookup, id) => {
-                                    
-                                    console.log(activeQuestion.Lookup__c, lookup);
-
-                                    return (
-                                        <option value={lookup} selected={activeQuestion.Lookup__c == lookup ? true : false}>{lookup}</option>
-                                    )
-                                })
-                            }
-                        </select>
+                            <select class="slds-select" id="select-01" onChange={(e) => updateLookupQuestion(e)}>
+                                <option>Select</option>
+                                {
+                                    sObjects.map((lookup, id) => {
+                                        
+                                        return (
+                                            <option value={sObject} selected={activeQuestion.Lookup__c == sObject ? true : false}>{sObject}</option>
+                                        )
+                                    })
+                                }
+                            </select>
                         </div>
                     </div>
                 </div>

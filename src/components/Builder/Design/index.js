@@ -7,6 +7,10 @@ import Design from './design';
 
 import { BuilderContext, DragDropUpdateContext, DesignContext } from '../../Context';
 
+/**
+ * This provider can be split up into a DragDrop Provider and an Edit Provider
+ */
+
 export const DragDrop = () => { 
     
     return (
@@ -55,7 +59,7 @@ const DragDropUpdateProvider = ({ children }) => {
 
 const DesignProvider = ({ children }) => {
 
-    const { form, lookups } = useContext(BuilderContext);
+    const { form, sObjects } = useContext(BuilderContext);
 
     const [loading, setLoading] = useState(true); 
 
@@ -64,6 +68,7 @@ const DesignProvider = ({ children }) => {
     const [questions, setQuestions] = useState([]); 
 
     useEffect(() => {
+
         call("ClarityFormBuilder.getQuestions", [form.Id], (result, e) => fetchHandler(result, e, setQuestions))
 
     }, [])
@@ -106,12 +111,31 @@ const DesignProvider = ({ children }) => {
 
     }, [questionToDelete]);
 
+    const [additionalFields, setAdditionalFields] = useState([]);
+
+    const [requiredFields, setRequiredFields] = useState([]);
+
+    const [recordGroupEdit, setRecordGroupEdit] = useState(null);
+
+    useEffect(() => {
+
+        if(recordGroupEdit) {
+
+            call("ClarityFormBuilder.getRecordGroupFields", [activeQuestion.Record_Group__c], (result, e) => getRecordGroupResultHandler(result, e, setRequiredFields, setAdditionalFields));
+
+        }
+
+    }, [recordGroupEdit])
+
     return (
         <DesignContext.Provider 
             value={{ 
+                additionalFields,
+                requiredFields,
+                setRecordGroupEdit,
                 criteria, 
                 setCriteria,
-                lookups,
+                sObjects,
                 loading,
                 activeFlowDesign, 
                 setActiveFlowDesign, 
@@ -133,6 +157,13 @@ const DesignProvider = ({ children }) => {
             { children }
         </DesignContext.Provider>
     )
+}
+
+const getRecordGroupResultHandler = (result, e, setRequiredFields, setAdditionalFields) => {
+    console.log(result);
+
+    setAdditionalFields(result.NotRequired);
+    setRequiredFields(result.Required);
 }
 
 const fetchHandler = (result, e, setQuestions) => {
