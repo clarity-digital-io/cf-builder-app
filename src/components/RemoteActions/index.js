@@ -66,7 +66,7 @@ const mockCall = (func, params, callback) => {
             callback(['Account', 'Case', 'Contact', 'Opportunity', 'AccountRole']);
             break; 
         case 'getRecordGroupFields': 
-            callback(['OwnerId', 'Name']);
+            callback({ Required: {'OwnerId': 'Reference', 'Name': 'Text'}, NotRequired: {'Time': 'Number', 'CustomField': 'Picklist'}});
             break; 
         default:
             break;

@@ -7,7 +7,7 @@ const ViewStyle = styled.div`
 
     h1 {
         font-weight: 900;
-        font-size: 1.5em;
+        font-size: 1.25em;
         padding-bottom: 1em;
     }
 
@@ -34,6 +34,10 @@ const ViewStyle = styled.div`
 
     ${props => props.space && css`
         padding: 2em 1em 2em 1em; 
+    `}
+
+    ${props => props.extraSpace && css`
+        padding-right: 2em; 
     `}
 
     ${props => props.scroll && css`
