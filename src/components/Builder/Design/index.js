@@ -160,8 +160,6 @@ const DesignProvider = ({ children }) => {
 }
 
 const getRecordGroupResultHandler = (result, e, setRequiredFields, setAdditionalFields) => {
-    console.log(result);
-
     setAdditionalFields(result.NotRequired);
     setRequiredFields(result.Required);
 }

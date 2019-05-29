@@ -41,8 +41,8 @@ const BuilderNavigation = () => {
 const Nav = styled.nav`
     font-size: .95em;
     font-weight: 900;
-    border-bottom: 1px solid ${Main.color.grey};
-    background: ${Main.color.body};
+    border-bottom: 1px solid ${Main.color.greyBorder};
+    background: ${Main.color.white};
 
     ul {
         list-style: none;
@@ -50,16 +50,16 @@ const Nav = styled.nav`
 
     li {
         display: inline-block;
-        border-right: 1px solid ${Main.color.grey};
+        border-right: 1px solid ${Main.color.light};
         text-decoration: none !important;
-        color: ${Main.color.light};
+        color: ${Main.color.body};
         padding: 1em 6em 1em 6em;
         cursor: pointer;
     }
 
     li#preview {
         display: inline-block;
-        color: ${Main.color.light};
+        color: ${Main.color.body};
     }
 `;
 

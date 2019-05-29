@@ -51,7 +51,7 @@ const createHandler = (result, e, setForm) => {
 }
 
 const getSObjectsHandler = (result, e, setSObjects) => {
-    setSObjects(result); 
+    setSObjects(result.sort()); 
 }
 
 const Layout = styled.div`
