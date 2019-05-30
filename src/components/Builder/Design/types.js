@@ -82,5 +82,17 @@ export const types = [
         active: false, 
         name: 'Checkbox',
         type: 'Checkbox'
+    }, 
+    {   
+        id: 14, 
+        active: false, 
+        name: 'Attachments',
+        type: 'Attachments'
+    },
+    {   
+        id: 14, 
+        active: false, 
+        name: 'eSignature',
+        type: 'eSignature'
     }
 ];

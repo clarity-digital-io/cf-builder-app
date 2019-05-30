@@ -27,6 +27,9 @@ const BuilderNavigation = () => {
                             <li id="preview" onClick={() => preview()}>
                                 Preview
                             </li>
+                            <li id="preview" onClick={() => preview()}>
+                                PDF Preview
+                            </li>
                         </ul>
                     </Box>
                 </View>
