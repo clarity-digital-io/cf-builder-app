@@ -9,7 +9,7 @@ const ViewStyle = styled.div`
         font-weight: 900;
         font-size: 1.25em;
         margin-bottom: 1em;
-        color: ${Main.color.green};
+        color: ${Main.color.body};
     }
 
     h2 {
