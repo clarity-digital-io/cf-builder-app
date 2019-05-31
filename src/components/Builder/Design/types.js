@@ -47,38 +47,32 @@ export const types = [
         name: 'Email',
         type: 'Email'
     },
-    {
-        id: 9, 
-        active: false, 
-        name: 'Payment',
-        type: 'Payment'
-    }, 
     {   
-        id: 10, 
+        id: 9, 
         active: false, 
         name: 'Number',
         type: 'Number'
     },
     {   
-        id: 11, 
+        id: 10, 
         active: false, 
         name: 'Lookup',
         type: 'Lookup'
     },
     {   
-        id: 12, 
+        id: 11, 
         active: false, 
         name: 'Record Group',
         type: 'RecordGroup'
     },
     {   
-        id: 13, 
+        id: 12, 
         active: false, 
         name: 'Image',
         type: 'Image'
     },
     {   
-        id: 14, 
+        id: 13, 
         active: false, 
         name: 'Checkbox',
         type: 'Checkbox'
@@ -88,11 +82,5 @@ export const types = [
         active: false, 
         name: 'Attachments',
         type: 'Attachments'
-    },
-    {   
-        id: 14, 
-        active: false, 
-        name: 'eSignature',
-        type: 'eSignature'
     }
 ];

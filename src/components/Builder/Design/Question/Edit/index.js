@@ -6,6 +6,7 @@ import ViewStyle from '../../../../Elements/View/style';
 
 import Box from '../../../../Elements/Box';
 import { Multiple } from './multiple'; 
+import { Comment } from './comment'; 
 import { Lookup } from './lookup'; 
 import { RecordGroup } from './recordgroup'; 
 
@@ -19,7 +20,7 @@ const getQuestionType = (type) => {
             return <Multiple />
             break;
         case 'Comment':
-            return <div>Comment</div>
+            return <Comment />
             break;
         case 'Star':
             return <div>star</div>
