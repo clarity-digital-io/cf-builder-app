@@ -8,12 +8,13 @@ const ViewStyle = styled.div`
     h1 {
         font-weight: 900;
         font-size: 1.25em;
-        padding-bottom: 1em;
+        margin-bottom: 1em;
+        color: ${Main.color.green};
     }
 
     h2 {
         font-weight: 900;
-        padding-bottom: 1em;
+        margin-bottom: 1em;
     }
 
     p {

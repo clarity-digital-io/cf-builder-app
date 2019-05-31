@@ -7,6 +7,7 @@ import ViewStyle from '../../../../Elements/View/style';
 import Box from '../../../../Elements/Box';
 import { Multiple } from './multiple'; 
 import { Comment } from './comment'; 
+import { Slider } from './slider'; 
 import { Lookup } from './lookup'; 
 import { RecordGroup } from './recordgroup'; 
 
@@ -29,7 +30,7 @@ const getQuestionType = (type) => {
             return <div>NetPromoterScore</div>
             break;
         case 'Slider':
-            return <div>Slider</div>
+            return <Slider />
             break;
         case 'Email':
             return <div>Email</div>
