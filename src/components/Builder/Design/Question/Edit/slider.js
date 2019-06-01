@@ -1,4 +1,6 @@
 import React, { useState, useContext } from 'react';
+import View from '../../../../Elements/View';
+import Box from '../../../../Elements/Box';
 import ViewStyle from '../../../../Elements/View/style';
 import { DesignContext } from '../../../../Context';
 
@@ -6,36 +8,90 @@ export const Slider = () => {
 
     const { activeQuestion, setActiveQuestion } = useContext(DesignContext);
 
-    // const handleMaxLengthUpdate = (value) => {
+    const updateMin = (e) => {
 
-    //     setActiveQuestion(question => {
-    //         return { ...question, Max_Range__c: value, Min_Range__c: '', Step__c: '' }
-    //     })
+        let value = parseInt(e.target.value); 
 
-    // }
+        if(activeQuestion.Max_Range__c > value) {
+            setActiveQuestion(question => {
+                return { ...question, Min_Range__c: value }
+            })
+        }
+
+    }
+
+    const updateMax = (e) => {
+
+        let value = parseInt(e.target.value); 
+
+        if(activeQuestion.Min_Range__c < value) {
+            setActiveQuestion(question => {
+                return { ...question, Max_Range__c: value }
+            })
+        }
+
+    }
+
+    const updateStep = (e) => {
+
+        let value = parseInt(e.target.value); 
+
+        if(activeQuestion.Max_Range__c > value) {
+            setActiveQuestion(question => {
+                return { ...question, Step__c: value }
+            })
+        }
+
+    }
 
     return (
         <ViewStyle>
             <h1>Slider Settings</h1>
 
-            {/* <ViewStyle>
+            <ViewStyle>
 
-                <div className="slds-form-element">
-                <label className="slds-form-element__label" for="slider-id-01">
-                    <span className="slds-slider-label">
-                    <span className="slds-slider-label__label">Max Character Count</span>
-                    <span className="slds-slider-label__range">0 - 1000</span>
-                    </span>
-                </label>
-                <div className="slds-form-element__control">
-                    <div className="slds-slider">
-                    <input type="range" id="slider-id-01" class="slds-slider__range" min="0" max="1000" value={activeQuestion.Max_Length__c} onChange={(e) => handleMaxLengthUpdate(e.target.value) } />
-                    <span className="slds-slider__value" aria-hidden="true">{activeQuestion.Max_Length__c}</span>
+            <View className="row">
+                <View className="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                    <Box padding='0'>
+
+                    <div class="slds-form-element">
+                    <label class="slds-form-element__label" for="text-input-id-1">Min Range</label>
+                        <div class="slds-form-element__control">
+                            <input id="text-input-id-1" onChange={(e) => updateMin(e)} min="0" max={activeQuestion.Max_Range__c - 1} type="number" class="slds-input" value={activeQuestion.Min_Range__c} />
+                        </div>
                     </div>
-                </div>
-                </div>
 
-            </ViewStyle> */}
+                    </Box>
+                </View>
+                <View className="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                    <Box padding='0'>
+
+                    <div class="slds-form-element">
+                    <label class="slds-form-element__label" for="text-input-id-2">Max Range</label>
+                        <div class="slds-form-element__control">
+                            <input id="text-input-id-2" onChange={(e) => updateMax(e)} min={activeQuestion.Min_Range__c} max="1000" type="number" class="slds-input" value={activeQuestion.Max_Range__c} />
+                        </div>
+                    </div>
+
+                    </Box>
+                </View>
+
+                <View className="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                    <Box padding='0'>
+
+                    <div class="slds-form-element">
+                    <label class="slds-form-element__label" for="text-input-id-3">Step</label>
+                        <div class="slds-form-element__control">
+                            <input id="text-input-id-3" onChange={(e) => updateStep(e)} type="number" class="slds-input" value={activeQuestion.Step__c} />
+                        </div>
+                    </div>
+
+                    </Box>
+                </View>
+
+            </View>
+
+            </ViewStyle>
 
         </ViewStyle>
     )

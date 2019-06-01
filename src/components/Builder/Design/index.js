@@ -61,7 +61,7 @@ const DesignProvider = ({ children }) => {
 
     const { form, sObjects } = useContext(BuilderContext);
 
-    const [loading, setLoading] = useState(true); 
+    const [loading, setLoading] = useState(false); 
 
     const [activeQuestionOptions, setActiveQuestionOptions] = useState([]); 
 
@@ -84,7 +84,8 @@ const DesignProvider = ({ children }) => {
     useEffect(() => {
 
         if(edit) {
-
+            
+            setLoading(true);
             call("ClarityFormBuilder.getQuestionEditDetails", [activeQuestion.Id], (result, e) => optionFetchHandler(result, e, setLoading, setActiveQuestionOptions, setActiveFlowDesign, setCriteria))
         
         }

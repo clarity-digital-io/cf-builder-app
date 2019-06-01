@@ -143,6 +143,11 @@ const clean = (question, index, formId) => {
         Order__c        : index, 
         Type__c         : question.type,
         Clarity_Form__c : formId,
-        Required__c     : false
+        Required__c     : false, 
+        Max_Length__c   : 10, 
+        Min_Range__c    : 0, 
+        Max_Range__c    : 100, 
+        Step__c         : 10
     }
 }
+

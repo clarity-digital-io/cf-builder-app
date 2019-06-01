@@ -32,7 +32,7 @@ const mockCall = (func, params, callback) => {
             callback({Id: 1, Name: 'Clarity Form'}); 
             break;
         case 'getQuestions':
-            callback([{ Id: 1, Type__c: 'Comment', Title__c: 'Comment', Order__c: 0, Max_Length__c: 10 }]); 
+            callback([{ Id: 1, Type__c: 'Comment', Title__c: 'Comment', Order__c: 0, Max_Length__c: 10, Min_Range__c: 0, Max_Range__c: 100, Step__c: 10 }]); 
             break;
         case 'save': 
             callback([timestamp]);

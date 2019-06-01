@@ -22,7 +22,7 @@ const BuilderNavigation = () => {
                     <Box padding='0'>
                         <ul>
                             <li>
-                                Design
+                                Clarity Forms
                             </li>
                             <li id="preview" onClick={() => preview()}>
                                 Preview
@@ -44,11 +44,18 @@ const BuilderNavigation = () => {
 const Nav = styled.nav`
     font-size: .95em;
     font-weight: 900;
-    border-bottom: 1px solid ${Main.color.greyBorder};
+    border-bottom: 1px solid ${Main.color.light};
     background: ${Main.color.white};
 
     ul {
         list-style: none;
+    }
+
+    ul > :first-child {
+ 
+        color: ${Main.color.green};
+        font-weight: 900;
+        font-size: 1em;
     }
 
     li {
