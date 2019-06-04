@@ -23,7 +23,7 @@ export const DesignState = () => {
         <View className="row end-xs">
             <View className="col-xs-12">
                 <ViewStyle top border>
-                    <Button action onClick={() => updateFormDesign(true)}>
+                    <Button cta onClick={() => updateFormDesign(true)}>
                     Save Changes
                     </Button>
                 </ViewStyle>

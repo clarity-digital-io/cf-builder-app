@@ -41,38 +41,40 @@ export const LogicQuestion = () => {
                             <View className="col-xs-12 col-sm-6 col-md-1 col-lg-1">
                             </View>
                             <View className="col-xs-12 col-sm-6 col-md-3 col-lg-3">
-                                <h2>Question</h2>
+                                <Box padding='.5em'><h2>Question</h2></Box>     
                             </View>
                             <View className="col-xs-12 col-sm-6 col-md-2 col-lg-2">
-                                <h2>Operator</h2>
+                                <Box padding='.5em'><h2>Operator</h2></Box>
                             </View>
                             <View className="col-xs-12 col-sm-6 col-md-2 col-lg-2">
-                                <h2>Type</h2>
+                                <Box padding='.5em'><h2>Type</h2></Box>
                             </View>
                             <View className="col-xs-12 col-sm-6 col-md-3 col-lg-3">
-                                <h2>Value</h2>
+                                <Box padding='.5em'><h2>Value</h2></Box>
                             </View>
                         </View>
 
                         <View className="row middle-xs">
                             <View className="col-xs-12 col-sm-12 col-md-1 col-lg-1">
-                                1
+                                <Box padding='.5em'>4</Box>
                             </View>
                             <View className="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-                                <Select options={ questionOptions } />
+                                <Box padding='.5em'><Select options={ questionOptions } /></Box>
                             </View>
                             <View className="col-xs-12 col-sm-12 col-md-2 col-lg-2">
-                                <Select options={ operators } />
+                                <Box padding='.5em'><Select options={ operators } /></Box>
                             </View>
                             <View className="col-xs-12 col-sm-12 col-md-2 col-lg-2">
-                                <Select options={ types } />
+                                <Box padding='.5em'><Select options={ types } /></Box>
                             </View>
                             <View className="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                                <Box padding='.5em'>
                                 <div className="slds-form-element">
                                     <div className="slds-form-element__control">
                                         <input onChange={(e) => updateLogic(e)} type="text" id="text-input-id-1" placeholder="Value" className="slds-input" />
                                     </div>
                                 </div>
+                                </Box>
                             </View>
                         </View>
 

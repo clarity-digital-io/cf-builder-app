@@ -5,6 +5,7 @@ import Box from '../../Elements/Box';
 
 import { QuestionState } from './Question';
 import { DesignState } from './Styling';
+import { AssignmentState } from './Assignment';
 import { Display } from './Display';
 import { BuilderContext } from '../../Context';
 
@@ -21,7 +22,11 @@ const Design = () => {
             case 'DESIGN':
                 return <DesignState />
                 break;
+            case 'ASSIGNMENTS':
+                return <AssignmentState />
+                break;
             default:
+                return 'Settings'
                 break;
         }
 

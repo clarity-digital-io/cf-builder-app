@@ -19,13 +19,16 @@ const DesignNavigation = () => {
         <Nav>
 
             <ul>
-                <li onClick={() => select('QUESTIONS')}>
+                <li className={ form.NavState == 'QUESTIONS' ? 'active' : '' } onClick={() => select('QUESTIONS')}>
                     <div><span>Questions</span></div>
                 </li>
-                <li onClick={() => select('DESIGN')}>
+                <li className={ form.NavState == 'DESIGN' ? 'active' : '' } onClick={() => select('DESIGN')}>
                     <div><span>Design</span></div>
                 </li>
-                <li onClick={() => select('SETTINGS')}>
+                <li className={ form.NavState == 'ASSIGNMENTS' ? 'active' : '' } onClick={() => select('ASSIGNMENTS')}>
+                    <div><span>Assignments</span></div>
+                </li>
+                <li className={ form.NavState == 'SETTINGS' ? 'active' : '' } onClick={() => select('SETTINGS')}>
                     <div><span>Settings</span></div>
                 </li>
             </ul>
@@ -39,6 +42,10 @@ const Nav = styled.nav`
     border-right: 1px solid ${Main.color.light};
     background: ${Main.color.white};
     height: 94vh; 
+
+    .active {
+        font-weight: 900;
+    }
 
     ul {
         list-style: none;

@@ -17,6 +17,10 @@ const ViewStyle = styled.div`
         margin-bottom: 1em;
     }
 
+    h2 span {
+        font-weight: 500;
+    }
+
     p {
         line-height: 2em;
     }

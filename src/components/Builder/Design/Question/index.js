@@ -96,7 +96,7 @@ const Save = ({ children }) => {
             <View className="col-xs-12">
                 <ViewStyle top border>
                     <Button neutral onClick={() => setQuestionState('NEW')}>Add New Field</Button>
-                    <Button action onClick={() => setQuestionUpdate(true)}>
+                    <Button cta onClick={() => setQuestionUpdate(true)}>
 
                         {
                             questionUpdate ? 'Saving...' : 'Save Changes'

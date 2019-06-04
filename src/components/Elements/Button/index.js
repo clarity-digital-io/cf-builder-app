@@ -16,7 +16,7 @@ export const Button = styled.button`
         background: none
     `}
 
-    ${props => props.action && css`
+    ${props => props.cta && css`
         border: 1px solid ${Main.color.green}
         color: ${Main.color.green}
     `}

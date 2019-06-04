@@ -7,6 +7,7 @@ import ViewStyle from '../../../../Elements/View/style';
 import Box from '../../../../Elements/Box';
 import { Multiple } from './multiple'; 
 import { Comment } from './comment'; 
+import { Email } from './email'; 
 import { Slider } from './slider'; 
 import { Lookup } from './lookup'; 
 import { RecordGroup } from './recordgroup'; 
@@ -33,7 +34,7 @@ const getQuestionType = (type) => {
             return <Slider />
             break;
         case 'Email':
-            return <div>Email</div>
+            return <Email />
             break;
         case 'Payment':
             return <div>Payment</div>
