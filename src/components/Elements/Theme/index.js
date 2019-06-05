@@ -7,7 +7,7 @@ const Main = {
         silver: '#efefef',
         greyBorder: '#dfdddc', 
         grey: '#696969', 
-        body : '#000', 
+        body : '#333333', 
         bright : '#040cd5',
         green: '#59d2a2'
     }
