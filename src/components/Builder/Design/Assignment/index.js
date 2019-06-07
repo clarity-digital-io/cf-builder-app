@@ -7,6 +7,8 @@ import Box from '../../../Elements/Box';
 
 import {Button} from '../../../Elements/Button';
 import UserIcon from '../../../Elements/Icons/user';
+import QueueIcon from '../../../Elements/Icons/queue';
+
 import CloseIcon from '../../../Elements/Icons/close';
 import SearchIcon from '../../../Elements/Icons/search';
 
@@ -192,15 +194,23 @@ const LookupItem = ({ user, order, setSelectedUser }) => {
         <li role="presentation" className="slds-listbox__item" key={user.Id} onMouseDown={(e) => setSelectedUser(user)} >
             <div onSelect={(e) => test(e, user)} id={`option${order}`} className="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta" role="option">
                 <span className="slds-media__figure slds-listbox__option-icon">
-                    <span className="slds-icon_container slds-icon-standard-user">
-                    <svg className="slds-icon slds-icon_small" aria-hidden="true">
-                        <UserIcon />
-                    </svg>
-                    </span>
+                    { 
+                        user.Username ?
+                            <span className="slds-icon_container slds-icon-standard-user">
+                                <svg className="slds-icon slds-icon_small" aria-hidden="true">
+                                    <UserIcon />
+                                </svg>
+                            </span> :
+                            <span className="slds-icon_container slds-icon-standard-queue">
+                                <svg className="slds-icon slds-icon_small" aria-hidden="true">
+                                    <QueueIcon />
+                                </svg>
+                            </span> 
+                    }
                 </span>
                 <span className="slds-media__body">
                     <span className="slds-listbox__option-text slds-listbox__option-text_entity">{ user.Name }</span>
-                    <span className="slds-listbox__option-meta slds-listbox__option-meta_entity">{ user.UserName }</span> 
+                    <span className="slds-listbox__option-meta slds-listbox__option-meta_entity">{ user.Username != null ? 'User' : 'Queue' }</span> 
                 </span>
             </div>
         </li>
