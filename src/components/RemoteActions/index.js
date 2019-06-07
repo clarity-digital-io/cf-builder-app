@@ -69,7 +69,7 @@ const mockCall = (func, params, callback) => {
             callback({ Required: {'OwnerId': 'Reference', 'Name': 'Text'}, NotRequired: {'Time': 'Number', 'CustomField': 'Picklist'}});
             break; 
         case 'getUsers':
-            callback([{Id: 1, Name: 'Test User1'}, {Id: 2, Name: 'Test User2'}]);
+            callback([{Id: 1, Name: 'Test User1', UserName: 'User1'}, {Id: 2, Name: 'Test User2', UserName: 'User2'}]);
             break; 
         default:
             break;

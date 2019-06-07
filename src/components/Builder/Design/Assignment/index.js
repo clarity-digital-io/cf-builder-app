@@ -6,6 +6,9 @@ import ViewStyle from '../../../Elements/View/style';
 import Box from '../../../Elements/Box';
 
 import {Button} from '../../../Elements/Button';
+import UserIcon from '../../../Elements/Icons/user';
+import CloseIcon from '../../../Elements/Icons/close';
+import SearchIcon from '../../../Elements/Icons/search';
 
 import { BuilderContext } from '../../../Context';
 
@@ -133,7 +136,7 @@ const Lookup = () => {
                             null :
                             <span className="slds-icon_container slds-icon-standard-account slds-combobox__input-entity-icon" title="User">
                                 <svg className="slds-icon slds-icon_small" aria-hidden="true">
-                                    <use xlinkHref="/assets/icons/standard-sprite/svg/symbols.svg#user"></use>
+                                    <UserIcon />
                                 </svg>
                                 <span className="slds-assistive-text">User</span>
                             </span>
@@ -145,12 +148,12 @@ const Lookup = () => {
                             selectedUser == null ? 
                             <span className={`slds-icon_container slds-icon-utility-search slds-input__icon`}>
                                 <svg className="slds-icon slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
-                                    <use xlinkHref="/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
+                                    <SearchIcon />
                                 </svg>
                             </span> :
                             <button className="slds-button slds-button_icon slds-input__icon slds-input__icon_right" title="Remove selected option" onClick={() => remove()}>
                                 <svg className="slds-button__icon" aria-hidden="true">
-                                    <use xlinkHref="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+                                    <CloseIcon />
                                 </svg>
                                 <span className="slds-assistive-text">Remove selected option</span>
                             </button>
@@ -191,13 +194,13 @@ const LookupItem = ({ user, order, setSelectedUser }) => {
                 <span className="slds-media__figure slds-listbox__option-icon">
                     <span className="slds-icon_container slds-icon-standard-user">
                     <svg className="slds-icon slds-icon_small" aria-hidden="true">
-                        <use xlinkHref="/assets/icons/standard-sprite/svg/symbols.svg#user"></use>
+                        <UserIcon />
                     </svg>
                     </span>
                 </span>
                 <span className="slds-media__body">
                     <span className="slds-listbox__option-text slds-listbox__option-text_entity">{ user.Name }</span>
-                    {/* <span className="slds-listbox__option-meta slds-listbox__option-meta_entity">Account • Austin, TX</span> */}
+                    <span className="slds-listbox__option-meta slds-listbox__option-meta_entity">{ user.UserName }</span> 
                 </span>
             </div>
         </li>
