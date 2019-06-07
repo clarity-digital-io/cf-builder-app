@@ -7,6 +7,7 @@ import ViewStyle from '../../../Elements/View/style';
 import Box from '../../../Elements/Box';
 
 import {Button} from '../../../Elements/Button';
+import {Color} from './color'; 
 
 import { BuilderContext } from '../../../Context';
 
@@ -18,12 +19,32 @@ export const DesignState = () => {
 
     }
 
-    const handleColorChange = (color, e, field) => {
+    const handleButtonColorChange = (color, e, field) => {
+
+        let hex = color.hex;
+
+        setForm(form => {
+            return { ...form, Button_Color__c: hex };
+        });
+
+    }
+
+    const handleBackgroundColorChange = (color, e, field) => {
 
         let hex = color.hex;
 
         setForm(form => {
             return { ...form, Background_Color__c: hex };
+        });
+
+    }
+
+    const handleQuestionColorChange = (color, e, field) => {
+
+        let hex = color.hex;
+
+        setForm(form => {
+            return { ...form, Color__c: hex };
         });
 
     }
@@ -55,22 +76,19 @@ export const DesignState = () => {
 
                                 <ViewStyle space border>
 
-                                    <h2>Questions</h2>
-                                    <TwitterPicker onChange={ (color, e) => handleColorChange(color, e, 'QuestionColor') }/>
+                                    <Color color={form.Color__c} title={'Question'} handleColorChange={handleQuestionColorChange} />
 
                                 </ViewStyle>
 
                                 <ViewStyle space border>
 
-                                    <h2>Background</h2>
-                                    <TwitterPicker onChange={ (color, e) => handleColorChange(color, e, 'BackgroundColor') }/>
+                                    <Color color={form.Background_Color__c} title={'Background'} handleColorChange={handleBackgroundColorChange} />
 
                                 </ViewStyle>
 
                                 <ViewStyle space border>
 
-                                    <h2>Buttons</h2>
-                                    <TwitterPicker />
+                                    <Color color={form.Button_Color__c} title={'Button'} handleColorChange={handleButtonColorChange} />
 
                                 </ViewStyle>
 

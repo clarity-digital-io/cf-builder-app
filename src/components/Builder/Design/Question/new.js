@@ -6,6 +6,8 @@ import View from '../../../Elements/View';
 
 import { types } from '../types';
 
+import DragAction from '../../../Elements/Icons/drag';
+
 export const NewQuestion = () => {
 
     const getListStyle = isDraggingOver => ({
@@ -34,7 +36,13 @@ export const NewQuestion = () => {
                                         {...provided.draggableProps}
                                         {...provided.dragHandleProps}
                                         isDragging={snapshot.isDragging}>
-                                        {type.name}
+                                        <span className="slds-icon_container slds-icon-utility-drag_and_drop" title="Drag and drop this question on the form">
+                                            <DragAction />
+                                            <span className="slds-assistive-text">Drag and drop this question on the form</span>
+                                        </span>
+                                        <span>
+                                            {type.name}
+                                        </span>
                                     </SelectableNew>
                                 )}
                             </Draggable>
@@ -53,7 +61,14 @@ const SelectableNew = styled.div`
     font-size: .85em;
     font-weight: 900;
     border-bottom: 1px solid ${Main.color.light};
-    padding: 1.5em;
+    padding: 1.25em 0 1.25em 0em; 
+    cursor: pointer;
+
+    span {
+        display: inline-block;
+        padding: 0 .5em 0 .5em;
+        vertical-align: middle;
+    }
 
     ${props => props.isDragging == true && css`
         box-shadow: 1px 1px 5px ${Main.color.grey};
