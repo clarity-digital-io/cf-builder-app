@@ -19,7 +19,15 @@ const App = ({ children }) => {
 
 const BuilderProvider = ({ children }) => {
     
-    const [form, setForm] = useState({ Id: null, Name: '', NavState: 'QUESTIONS', State: 'NEW' });
+    const [form, setForm] = useState({ 
+        Id                  : null, 
+        Name                : '', 
+        Color__c            : '#333', 
+        Background_Color__c : '#ffff', 
+        Columns             : '', 
+        NavState            : 'QUESTIONS', 
+        State               : 'NEW' 
+    });
 
     useEffect(() => {
 
@@ -47,7 +55,10 @@ const BuilderProvider = ({ children }) => {
 }
 
 const createHandler = (result, e, setForm) => {
-    setForm({ Id: result.Id, Name: result.Name, NavState: 'QUESTIONS', State: 'NEW' });
+    console.log(result);
+    setForm(form => {
+        return { ...form, Id: result.Id, Name: result.Name, NavState: 'QUESTIONS', State: 'NEW' }
+    });
 }
 
 const getSObjectsHandler = (result, e, setSObjects) => {

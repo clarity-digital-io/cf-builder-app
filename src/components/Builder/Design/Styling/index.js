@@ -17,6 +17,16 @@ export const DesignState = () => {
     const updateFormDesign = () => {
 
     }
+
+    const handleColorChange = (color, e, field) => {
+
+        let hex = color.hex;
+
+        setForm(form => {
+            return { ...form, Background_Color__c: hex };
+        });
+
+    }
     
     return [
         
@@ -46,14 +56,14 @@ export const DesignState = () => {
                                 <ViewStyle space border>
 
                                     <h2>Questions</h2>
-                                    <TwitterPicker />
+                                    <TwitterPicker onChange={ (color, e) => handleColorChange(color, e, 'QuestionColor') }/>
 
                                 </ViewStyle>
 
                                 <ViewStyle space border>
 
                                     <h2>Background</h2>
-                                    <TwitterPicker />
+                                    <TwitterPicker onChange={ (color, e) => handleColorChange(color, e, 'BackgroundColor') }/>
 
                                 </ViewStyle>
 

@@ -43,33 +43,31 @@ const BuilderNavigation = () => {
 
 const Nav = styled.nav`
     font-size: .95em;
-    font-weight: 900;
-    border-bottom: 1px solid ${Main.color.light};
-    background: ${Main.color.white};
+    font-weight: 100;
+    border-bottom: 1px solid ${Main.color.grey};
+    background: ${Main.color.body};
 
     ul {
         list-style: none;
     }
 
     ul > :first-child {
- 
-        color: ${Main.color.green};
-        font-weight: 900;
+        font-weight: 100;
         font-size: 1em;
     }
 
     li {
         display: inline-block;
-        border-right: 1px solid ${Main.color.light};
+        border-right: 1px solid ${Main.color.grey};
         text-decoration: none !important;
-        color: ${Main.color.body};
+        color: ${Main.color.light};
         padding: 1em 6em 1em 6em;
         cursor: pointer;
     }
 
     li#preview {
         display: inline-block;
-        color: ${Main.color.body};
+        color: ${Main.color.light};
     }
 `;
 

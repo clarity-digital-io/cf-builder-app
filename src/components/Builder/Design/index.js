@@ -61,6 +61,8 @@ const DesignProvider = ({ children }) => {
 
     const { form, sObjects } = useContext(BuilderContext);
 
+    const [styles, setStyles] = useState({ BackgroundColor: '#000' });
+
     const [loading, setLoading] = useState(false); 
 
     const [activeQuestionOptions, setActiveQuestionOptions] = useState([]); 
@@ -131,6 +133,8 @@ const DesignProvider = ({ children }) => {
     return (
         <DesignContext.Provider 
             value={{ 
+                styles, 
+                setStyles,
                 additionalFields,
                 requiredFields,
                 setRecordGroupEdit,

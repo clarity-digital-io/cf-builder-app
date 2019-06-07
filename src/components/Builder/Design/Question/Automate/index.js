@@ -7,6 +7,7 @@ import ViewStyle from '../../../../Elements/View/style';
 
 import Box from '../../../../Elements/Box';
 import { Multiple } from './multiple';
+import { Spinner } from '../../../../Elements/Spinner';
 
 const getQuestionType = (type) => {
 
@@ -121,7 +122,7 @@ export const AutomateQuestion = () => {
                     <ViewStyle space border scrollAutomate> 
 
                         {
-                            loading ? 'Loading' : getQuestionType(activeQuestion.Type__c) 
+                            loading ? <Spinner /> : getQuestionType(activeQuestion.Type__c) 
                         }
 
                     </ViewStyle>

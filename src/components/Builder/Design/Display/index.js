@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import styled, { css } from 'styled-components';
+import styled, { css, ThemeProvider } from 'styled-components';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 
 import View from '../../../Elements/View';
@@ -8,7 +8,7 @@ import Main from '../../../Elements/Theme';
 import { Question } from './question'; 
 
 import { useDrag } from './useDrag';
-import { DesignContext } from '../../../Context';
+import { DesignContext, BuilderContext } from '../../../Context';
 
 export const Display = () => {
 
@@ -73,66 +73,77 @@ const GenerateQuestion = ({ item, provided, snapshot }) => {
 
 const SelectableCard = styled.div`
     box-shadow: 1px 1px 5px ${Main.color.silver};
-    background: ${Main.color.white};
     border-radius: 4px; 
 
     ${props => props.isDragging == true && css`
         box-shadow: 1px 1px 5px ${Main.color.grey};
-        background: ${Main.color.white};
     `}
 
 `;
 
 const DropView = styled(View)`
-    background: ${Main.color.white}
     padding: 2em !important; 
     border: 1px dashed ${Main.color.silver};
 
     ${props => props.isDraggingOver == true && css`
         background: ${Main.color.light};
-
     `}
     
 `;
 
 const Card = ({ update, children }) => {
 
-    return (                   
-        <article className="slds-card">
-            <div className="slds-card__header slds-grid">
-                <header className="slds-media slds-media_center slds-has-flexi-truncate">
-                <div className="slds-media__figure">
-                    <span className="slds-icon_container slds-icon-standard-account" title="account">
-                    <svg className="slds-icon slds-icon_small" aria-hidden="true">
-                        <use xlinkHref="/assets/icons/standard-sprite/svg/symbols.svg#account"></use>
-                    </svg>
-                    <span className="slds-assistive-text">account</span>
-                    </span>
-                </div>
-                <div className="slds-media__body">
-                    <h2 className="slds-card__header-title">
-                    <a href="javascript:void(0);" className="slds-card__header-link slds-truncate" title="Accounts">
-                        <span>Accounts</span>
-                    </a>
-                    </h2>
-                </div>
-                <div className="slds-no-flex">
-                    { update ? 'Saving...' : 'Saved' }
-                </div>
-                </header>
-            </div>
-            <div className="slds-card__body slds-card__body_inner">
+    const { form } = useContext(BuilderContext);
 
-                { children }
+    const theme = {
+        background: form.Background_Color__c,
+        questionColor: form.Color__c
+    }
 
-            </div>
-            <footer className="slds-card__footer">
-                <button className="slds-button slds-button_neutral">Cancel</button>
-                <button className="slds-button slds-button_brand">Send</button>
-            </footer>
-        </article>
+    return (    
+        <ThemeProvider theme={theme}>    
+            <ArticleStyling className="slds-card">
+                <div className="slds-card__header slds-grid">
+                    <header className="slds-media slds-media_center slds-has-flexi-truncate">
+                    <div className="slds-media__figure">
+                        <span className="slds-icon_container slds-icon-standard-account" title="account">
+                        <svg className="slds-icon slds-icon_small" aria-hidden="true">
+                            <use xlinkHref="/assets/icons/standard-sprite/svg/symbols.svg#account"></use>
+                        </svg>
+                        <span className="slds-assistive-text">account</span>
+                        </span>
+                    </div>
+                    <div className="slds-media__body">
+                        <h2 className="slds-card__header-title">
+                        <a href="javascript:void(0);" className="slds-card__header-link slds-truncate" title="Accounts">
+                            <span>Accounts</span>
+                        </a>
+                        </h2>
+                    </div>
+                    <div className="slds-no-flex">
+                        { update ? 'Saving...' : 'Saved' }
+                    </div>
+                    </header>
+                </div>
+                <div className="slds-card__body slds-card__body_inner">
+
+                    { children }
+
+                </div>
+                <footer className="slds-card__footer">
+                    <button className="slds-button slds-button_neutral">Cancel</button>
+                    <button className="slds-button slds-button_brand">Send</button>
+                </footer>
+            </ArticleStyling>
+        </ThemeProvider>
     )
 } 
+
+const ArticleStyling = styled.article`
+    background: ${props => props.theme.background} !important;
+    color: ${props => props.theme.questionColor} !important;
+`;
+
 
 const FormDesign = styled.div`
     height: 94vh; 

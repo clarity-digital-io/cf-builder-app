@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import BuilderLayout from '../Elements/Layout/builder';
 import {DragDrop} from './Design';
 import { BuilderContext } from '../Context';
+import { Spinner } from '../Elements/Spinner';
 
 const Builder = () => {
 
@@ -11,7 +12,7 @@ const Builder = () => {
         <BuilderLayout>
 
             {
-                form.Id ? <DragDrop /> : 'Loading Form'
+                form.Id ? <DragDrop /> : <Spinner />
             }
             
         </BuilderLayout>  
