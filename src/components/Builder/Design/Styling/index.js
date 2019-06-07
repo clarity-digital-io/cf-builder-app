@@ -7,6 +7,8 @@ import ViewStyle from '../../../Elements/View/style';
 import Box from '../../../Elements/Box';
 
 import {Button} from '../../../Elements/Button';
+import {Upload} from '../../../Elements/Upload';
+
 import {Color} from './color'; 
 
 import { BuilderContext } from '../../../Context';
@@ -72,6 +74,12 @@ export const DesignState = () => {
 
                                     <h2>Design</h2>
                                     <p>Customize your form's colors and font to fit your brand.</p>
+                                </ViewStyle>
+
+                                <ViewStyle space border>
+
+                                    <Upload />
+
                                 </ViewStyle>
 
                                 <ViewStyle space border>

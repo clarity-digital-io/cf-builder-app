@@ -6,9 +6,9 @@ import { TwitterPicker } from 'react-color';
 export const Color = ({ color, title, handleColorChange }) => {
 
     const [show, setShow] = useState(false);
-    console.log('color', title, color);
+
     return [
-        <div className="slds-color-picker">
+        <div className="slds-color-picker" key="ColorPickerShow">
             <div className="slds-color-picker__summary">
                 <label className="slds-color-picker__summary-label" for="color-picker-summary-input">Choose a { title } Color</label>
                 <button className="slds-button slds-color-picker__summary-button slds-button_icon slds-button_icon-more" title="Choose Color" onClick={() => setShow(show => !show)}>
@@ -22,7 +22,7 @@ export const Color = ({ color, title, handleColorChange }) => {
                 </button>
             </div>
         </div>,
-        <div>
+        <div key="ColorPicker">
         { 
             show ? 
             <ColorStyle><TwitterPicker color={color} onChange={ (color, e) => handleColorChange(color, e, 'QuestionColor') }/></ColorStyle> : 
