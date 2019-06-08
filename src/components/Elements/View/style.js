@@ -26,7 +26,7 @@ const ViewStyle = styled.div`
     }
 
     span {
-        font-weight: 900;
+        font-weight: 500;
     }
 
     ${props => props.top && css `

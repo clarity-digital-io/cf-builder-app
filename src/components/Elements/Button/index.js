@@ -11,9 +11,17 @@ export const Button = styled.button`
     border-radius: 4px; 
     margin-left: .5em;
     font-weight: 900;
+
     ${props => props.neutral && css`
         border: 1px solid ${Main.color.silver}
         background: none
+    `}
+
+    ${props => props.add && css`
+        padding: 0.5em;
+        font-weight: 500; 
+        color: ${Main.color.body};
+        background: ${Main.color.silver};
     `}
 
     ${props => props.cta && css`

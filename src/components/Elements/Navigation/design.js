@@ -31,6 +31,9 @@ const DesignNavigation = () => {
                 <li className={ form.NavState == 'SETTINGS' ? 'active' : '' } onClick={() => select('SETTINGS')}>
                     <div><span>Settings</span></div>
                 </li>
+                <li className={ form.NavState == 'HELP' ? 'active' : '' } onClick={() => select('HELP')}>
+                    <div><span>Help</span></div>
+                </li>
             </ul>
 
         </Nav>
