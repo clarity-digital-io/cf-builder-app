@@ -6,7 +6,8 @@ export const Upload = () => {
 
     return (
         <div className="slds-form-element">
-            <span className="slds-form-element__label" id="file-selector-primary-label">Background Image</span>
+            <label className="slds-form-element__label" id="file-selector-primary-label">Background Image</label>
+
             <div className="slds-form-element__control">
                 <div className="slds-file-selector slds-file-selector_files">
                 <div className="slds-file-selector__dropzone">

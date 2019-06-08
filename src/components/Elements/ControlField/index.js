@@ -167,7 +167,7 @@ const ControlAddRow = ({ setRows }) => {
     
 }
 
-const ControlField = ({ order, type, record, values, setSelection }) => {
+const ControlField2 = ({ order, type, record, values, setSelection }) => {
 
     const [open, setOpen] = useState(false); 
 
@@ -220,6 +220,25 @@ const ControlField = ({ order, type, record, values, setSelection }) => {
                             </ul>
                         </div> 
                     </div>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+const ControlField = ({ order, type, record, values, setSelection }) => {
+    return (
+        <div class="slds-form-element">
+            <div class="slds-form-element__control">
+                <div class="slds-select_container">
+                <select class="slds-select" id="select-01" >
+                    <option value="">Please select</option>
+                    {
+                        values.map(value => {
+                            return <option value={value.Id}>{value.Title__c}</option>
+                        })
+                    }
+                </select>
                 </div>
             </div>
         </div>
