@@ -18,16 +18,25 @@ const App = ({ children }) => {
 }
 
 const BuilderProvider = ({ children }) => {
-    
-    const [form, setForm] = useState({ 
-        Id                  : null, 
-        Name                : '', 
-        Color__c            : '#333', 
-        Background_Color__c : '#ffff', 
-        Columns             : '', 
-        NavState            : 'QUESTIONS', 
-        State               : 'NEW' 
-    });
+
+    const [loading, setLoading] = useState(false); 
+
+    const [assignmentRules, setAssignmentRules] = useState([]);
+
+    const [nav, setNavState] = useState({ NavState: 'QUESTIONS' }); 
+
+    useEffect(() => {
+
+        if(nav.NavState == 'ASSIGNMENTS') {
+            setLoading(true);
+            call("ClarityFormBuilder.getAssignmentRules", [form.Clarity_Form_Assignment__c], (result, e) => assignmentRulesHandler(result, e, setAssignmentRules, setLoading));
+        }
+
+    }, [nav])
+
+    const [style, setStyle] = useState({ Id: null, Color__c: '#333333', Background_Color__c : '#ffff', Columns: '', });
+
+    const [form, setForm] = useState({Id: null, Name: '', Clarity_Form_Style__c: null, Clarity_Form_Assignment__c: null });
 
     useEffect(() => {
 
@@ -35,9 +44,9 @@ const BuilderProvider = ({ children }) => {
 
         let recordId = url.get('recordId') != null ? url.get('recordId') : '';
 
-        call("ClarityFormBuilder.startup", [recordId], (result, e) => createHandler(result, e, setForm));
+        call("ClarityFormBuilder.startup", [recordId], (result, e) => createHandler(result, e, setForm, setStyle));
         
-    }, [])
+    }, []);
 
     const [sObjects, setSObjects] = useState([]);
 
@@ -48,17 +57,29 @@ const BuilderProvider = ({ children }) => {
     }, [])
 
     return (
-        <BuilderContext.Provider value={{ form, setForm, sObjects }}>
+        <BuilderContext.Provider value={{ nav, setNavState, form, style, setStyle, setForm, sObjects }}>
             { children }
         </BuilderContext.Provider>
     )
 }
 
-const createHandler = (result, e, setForm) => {
-    console.log(result);
+const assignmentRulesHandler = (result, e, setAssignmentRules, setLoading) => {
+
+    setLoading(false);
+    console.log('assignmentRulesHandler', result); 
+
+}
+
+const createHandler = (result, e, setForm, setStyle) => {
+
     setForm(form => {
-        return { ...form, Id: result.Id, Name: result.Name, NavState: 'QUESTIONS', State: 'NEW' }
+        return { ...form, Id: result.Id, Name: result.Name, Clarity_Form_Assignment__c: result.Clarity_Form_Assignment__c, Clarity_Form_Style__c: result.Clarity_Form_Style__c }
     });
+
+    setStyle(style => {
+        return { ...style, Id: result.Clarity_Form_Style__c, Background_Color__c: result.Clarity_Form_Style__r.Background_Color__c, Color__c: result.Clarity_Form_Style__r.Color__c }
+    })
+
 }
 
 const getSObjectsHandler = (result, e, setSObjects) => {

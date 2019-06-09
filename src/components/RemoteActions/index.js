@@ -25,11 +25,13 @@ const prodCall = (func, params, callback) => {
 }
 
 const mockCall = (func, params, callback) => {
+
     let date = new Date();
     let timestamp = date.getTime();
+
     switch (func) {
         case 'startup':
-            callback({Id: 1, Name: 'Clarity Form'}); 
+            callback({Id: 1, Name: 'Clarity Form', Clarity_Form_Style__c: 1, Clarity_Form_Style__r: { Background_Color__c: '#333333', Color: '#ffffff', Button_Color__c: '' } }); 
             break;
         case 'getQuestions':
             callback([{ Id: 1, Type__c: 'Comment', Title__c: 'Comment', Order__c: 0, Max_Length__c: 10, Min_Range__c: 0, Max_Range__c: 100, Step__c: 10 }]); 
@@ -70,6 +72,12 @@ const mockCall = (func, params, callback) => {
             break; 
         case 'getUsers':
             callback([{Id: 1, Name: 'Test User1', UserName: 'User1'}, {Id: 2, Name: 'Test User2', UserName: 'User2'}]);
+            break; 
+        case 'getAssignmentRules': 
+            callback([]);
+            break; 
+        case 'saveAssignmentRules':
+            callback([]);
             break; 
         default:
             break;

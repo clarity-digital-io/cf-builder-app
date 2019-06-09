@@ -15,7 +15,7 @@ import { BuilderContext } from '../../../Context';
 
 export const DesignState = () => {
 
-    const { form, setForm } = useContext(BuilderContext);
+    const { style, setStyle } = useContext(BuilderContext);
 
     const updateFormDesign = () => {
 
@@ -25,8 +25,8 @@ export const DesignState = () => {
 
         let hex = color.hex;
 
-        setForm(form => {
-            return { ...form, Button_Color__c: hex };
+        setStyle(style => {
+            return { ...style, Button_Color__c: hex };
         });
 
     }
@@ -35,8 +35,8 @@ export const DesignState = () => {
 
         let hex = color.hex;
 
-        setForm(form => {
-            return { ...form, Background_Color__c: hex };
+        setStyle(style => {
+            return { ...style, Background_Color__c: hex };
         });
 
     }
@@ -45,8 +45,8 @@ export const DesignState = () => {
 
         let hex = color.hex;
 
-        setForm(form => {
-            return { ...form, Color__c: hex };
+        setStyle(style => {
+            return { ...style, Color__c: hex };
         });
 
     }
@@ -84,19 +84,19 @@ export const DesignState = () => {
 
                                 <ViewStyle space border>
 
-                                    <Color color={form.Color__c} title={'Question'} handleColorChange={handleQuestionColorChange} />
+                                    <Color color={style.Color__c} title={'Question'} handleColorChange={handleQuestionColorChange} />
 
                                 </ViewStyle>
 
                                 <ViewStyle space border>
 
-                                    <Color color={form.Background_Color__c} title={'Background'} handleColorChange={handleBackgroundColorChange} />
+                                    <Color color={style.Background_Color__c} title={'Background'} handleColorChange={handleBackgroundColorChange} />
 
                                 </ViewStyle>
 
                                 <ViewStyle space border>
 
-                                    <Color color={form.Button_Color__c} title={'Button'} handleColorChange={handleButtonColorChange} />
+                                    <Color color={style.Button_Color__c} title={'Button'} handleColorChange={handleButtonColorChange} />
 
                                 </ViewStyle>
 

@@ -10,7 +10,7 @@ export const Color = ({ color, title, handleColorChange }) => {
     return [
         <div className="slds-color-picker" key="ColorPickerShow">
             <div className="slds-color-picker__summary">
-                <label className="slds-color-picker__summary-label" for="color-picker-summary-input">Choose a { title } Color</label>
+                <label className="slds-color-picker__summary-label" htmlFor="color-picker-summary-input">Choose a { title } Color</label>
                 <button className="slds-button slds-color-picker__summary-button slds-button_icon slds-button_icon-more" title="Choose Color" onClick={() => setShow(show => !show)}>
                 <span className="slds-swatch" style={{ background : `${color}` }}>
                     <span className="slds-assistive-text">{color}</span>

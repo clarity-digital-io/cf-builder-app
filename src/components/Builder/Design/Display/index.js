@@ -93,11 +93,11 @@ const DropView = styled(View)`
 
 const Card = ({ update, children }) => {
 
-    const { form } = useContext(BuilderContext);
+    const { style } = useContext(BuilderContext);
 
     const theme = {
-        background: form.Background_Color__c,
-        questionColor: form.Color__c
+        background: style.Background_Color__c,
+        questionColor: style.Color__c
     }
 
     return (    

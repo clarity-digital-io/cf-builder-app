@@ -11,7 +11,7 @@ import { Email } from './email';
 import { Slider } from './slider'; 
 import { Lookup } from './lookup'; 
 import { RecordGroup } from './recordgroup'; 
-import { Spinner } from '../../../../Elements/Spinner';
+import { SmallSpinner } from '../../../../Elements/Spinner';
 
 const getQuestionType = (type) => {
 
@@ -125,7 +125,7 @@ export const EditQuestion = () => {
                     <ViewStyle space border scroll>
                     
                         {
-                            loading ? <Spinner /> : getQuestionType(activeQuestion.Type__c) 
+                            loading ? <SmallSpinner /> : getQuestionType(activeQuestion.Type__c) 
                         }
 
                     </ViewStyle>

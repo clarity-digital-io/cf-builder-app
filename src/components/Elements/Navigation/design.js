@@ -5,12 +5,12 @@ import { BuilderContext } from '../../Context';
 
 const DesignNavigation = () => {
 
-    const { form, setForm } = useContext(BuilderContext);
+    const { nav, setNavState } = useContext(BuilderContext);
 
-    const select = (nav) => {
+    const select = (newNav) => {
 
-        setForm(form => {
-            return { ...form, NavState: nav }
+        setNavState(prevNav => {
+            return { ...prevNav, NavState: newNav }
         });
 
     }
@@ -19,19 +19,19 @@ const DesignNavigation = () => {
         <Nav>
 
             <ul>
-                <li className={ form.NavState == 'QUESTIONS' ? 'active' : '' } onClick={() => select('QUESTIONS')}>
+                <li className={ nav.NavState == 'QUESTIONS' ? 'active' : '' } onClick={() => select('QUESTIONS')}>
                     <div><span>Questions</span></div>
                 </li>
-                <li className={ form.NavState == 'DESIGN' ? 'active' : '' } onClick={() => select('DESIGN')}>
+                <li className={ nav.NavState == 'DESIGN' ? 'active' : '' } onClick={() => select('DESIGN')}>
                     <div><span>Design</span></div>
                 </li>
-                <li className={ form.NavState == 'ASSIGNMENTS' ? 'active' : '' } onClick={() => select('ASSIGNMENTS')}>
+                <li className={ nav.NavState == 'ASSIGNMENTS' ? 'active' : '' } onClick={() => select('ASSIGNMENTS')}>
                     <div><span>Assignments</span></div>
                 </li>
-                <li className={ form.NavState == 'SETTINGS' ? 'active' : '' } onClick={() => select('SETTINGS')}>
+                <li className={ nav.NavState == 'SETTINGS' ? 'active' : '' } onClick={() => select('SETTINGS')}>
                     <div><span>Settings</span></div>
                 </li>
-                <li className={ form.NavState == 'HELP' ? 'active' : '' } onClick={() => select('HELP')}>
+                <li className={ nav.NavState == 'HELP' ? 'active' : '' } onClick={() => select('HELP')}>
                     <div><span>Help</span></div>
                 </li>
             </ul>

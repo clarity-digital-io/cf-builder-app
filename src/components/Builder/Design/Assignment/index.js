@@ -4,6 +4,8 @@ import View from '../../../Elements/View';
 import ViewStyle from '../../../Elements/View/style';
 import Box from '../../../Elements/Box';
 import {Button} from '../../../Elements/Button';
+import {SmallSpinner} from '../../../Elements/Spinner';
+
 import { ControlGroup } from '../../../Elements/ControlField';
 
 import { Lookup } from './lookup';
@@ -13,14 +15,14 @@ import { BuilderContext } from '../../../Context';
 
 export const AssignmentState = () => {
 
-    const { form, setForm } = useContext(BuilderContext);
+    const { form, setForm, loading, assignmentRules } = useContext(BuilderContext);
 
     const updateFormDesign = () => {
 
     }
 
     return [
-        
+
         <View className="row end-xs" key={'Header'}>
             <View className="col-xs-12">
                 <ViewStyle top border>
@@ -42,21 +44,31 @@ export const AssignmentState = () => {
 
                     </ViewStyle>
 
-                    <ViewStyle space top border>
+                    {
 
-                        <h2>Step 1: <span>Select the criteria for this rule</span></h2>
+                    loading ? 
+                        <ViewStyle space top border>
+                            <SmallSpinner />
+                        </ViewStyle> :
+                        [
+                            <ViewStyle space top border>
 
-                        <ControlGroup />
+                                <h2>Step 1: <span>Select the criteria for this rule</span></h2>
 
-                    </ViewStyle>
+                                <ControlGroup />
 
-                    <ViewStyle space top border>
+                            </ViewStyle>,
 
-                        <h2>Step 2: <span>Select the user or queue to assign the Form Response to when criteria is met.</span></h2>
+                            <ViewStyle space top border>
 
-                        <Lookup />
+                                <h2>Step 2: <span>Select the user or queue to assign the Form Response to when criteria is met.</span></h2>
 
-                    </ViewStyle>
+                                <Lookup />
+
+                            </ViewStyle>
+                        ]
+
+                    }
 
                 </Box>
             </View>
