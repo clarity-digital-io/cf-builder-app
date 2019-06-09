@@ -54,6 +54,13 @@ const ViewStyle = styled.div`
         overflow: scroll;
         height: 38;
     `}
+
+
+    ${props => props.scrollAssign && css`
+        overflow: scroll;
+        max-height: 56vh;
+    `}
+
 `;
 
 export default ViewStyle;

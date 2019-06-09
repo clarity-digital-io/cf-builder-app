@@ -6,9 +6,7 @@ import { DesignContext } from '../../Context';
 import CloseIcon from '../Icons/close';
 import {Button} from '../Button';
 
-export const ControlGroup = () => {
-
-    const [rows, setRows] = useState([{ Id: 1, Operator__c: 'Equals', Type__c: 'String', Value__c: 'Something', Title__c: "Comment", Field__c: 1, Field_Type__c: 'Comment' }]);
+export const ControlGroup = ({ rows, setRows }) => {
 
     return [
         <ControlHeader key={'Header'} />, 
@@ -28,7 +26,7 @@ const ControlRows = ({ rows, setRows }) => {
 }
 
 const ControlRow = ({ order, row, setRows }) => {
-
+    console.log('ControlRow', row);
     const { questions } = useContext(DesignContext);
 
     const [operators, setOperators] = useState(getCorrectOperators(row.Field_Type__c != null ? row.Field_Type__c : ''));
@@ -38,7 +36,7 @@ const ControlRow = ({ order, row, setRows }) => {
     const setQuestionSelection = (e, order) => {
 
         let value = e.target.value; 
-
+        console.log(value); 
         let question = questions.find(question => question.Id == value); 
 
         setOperators(getCorrectOperators(question.Type__c));
@@ -48,7 +46,22 @@ const ControlRow = ({ order, row, setRows }) => {
         setRows((rows) => {
             return rows.map((row, i) => {
                 if(i == order) {
-                    return { ...row, Title__c: question.Title__c, Field__c: question.Id, Field_Type__c: question.Type__c }
+                    return { ...row, Title__c: question.Title__c, Field__c: question.Id, Field_Type__c: question.Type__c, Operator__c: '' }
+                }
+                return row;
+            })
+        }); 
+
+    }
+
+    const setOperatorSelection = (e, order) => {
+
+        let value = e.target.value; 
+
+        setRows((rows) => {
+            return rows.map((row, i) => {
+                if(i == order) {
+                    return { ...row, Operator__c: value }
                 }
                 return row;
             })
@@ -59,9 +72,16 @@ const ControlRow = ({ order, row, setRows }) => {
     const removeRow = (order) => {
 
         setRows(rows => {
-            let updated = rows.slice();
-            updated.splice(order, 1);
-            return updated;
+
+            let newRows = rows.filter((row, i) => {
+                if(i != order) {
+                    return row; 
+                }
+
+            });
+            console.log('newRows', newRows)
+            return newRows; 
+
         })
 
     }
@@ -75,12 +95,12 @@ const ControlRow = ({ order, row, setRows }) => {
             </View>
             <View className="col-xs-3">
                 <Box padding='.5em'>
-                    <ControlField type={'Question'} order={order} record={row} values={questions} setSelection={setQuestionSelection} />
+                    <ControlField type={'Question'} order={order} record={row.Field__c} values={questions} setSelection={setQuestionSelection} />
                 </Box>
             </View>
             <View className="col-xs-2">
                 <Box padding='.5em'>
-                    <ControlField type={'Operator'} order={order} record={row.Operator__c} values={operators} />
+                    <ControlField type={'Operator'} order={order} record={row.Operator__c} values={operators} setSelection={setOperatorSelection} />
                 </Box>
             </View>
             <View className="col-xs-2">
@@ -133,12 +153,12 @@ const ControlAddRow = ({ setRows }) => {
 
 const ControlField = ({ order, type, record, values, setSelection }) => {
 
-
+    console.log(record, values)
     return (
         <div class="slds-form-element">
             <div class="slds-form-element__control">
                 <div class="slds-select_container">
-                <select class="slds-select" id="select-01" value={record.Id} onChange={(e) => setSelection(e, order)} >
+                <select class="slds-select" id="select-01" value={record} onChange={(e) => setSelection(e, order)} >
                     <option value="">Please select</option>
                     {
                         values.map(value => {

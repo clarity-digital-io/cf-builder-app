@@ -15,9 +15,9 @@ import { BuilderContext } from '../../../Context';
 
 export const AssignmentState = () => {
 
-    const { form, setForm, loading, assignmentRules } = useContext(BuilderContext);
+    const { form, setForm, loading, assignmentRules, setAssignmentRules } = useContext(BuilderContext);
 
-    const updateFormDesign = () => {
+    const updateAssignmentRules = () => {
 
     }
 
@@ -26,7 +26,7 @@ export const AssignmentState = () => {
         <View className="row end-xs" key={'Header'}>
             <View className="col-xs-12">
                 <ViewStyle top border>
-                    <Button cta onClick={() => updateFormDesign(true)}>
+                    <Button cta onClick={() => updateAssignmentRules(true)}>
                     Save Changes
                     </Button>
                 </ViewStyle>
@@ -50,22 +50,25 @@ export const AssignmentState = () => {
                         <ViewStyle space top border>
                             <SmallSpinner />
                         </ViewStyle> :
-                        [
-                            <ViewStyle space top border>
+                        [   
 
-                                <h2>Step 1: <span>Select the criteria for this rule</span></h2>
+                            <ViewStyle space top border scrollAssign>
 
-                                <ControlGroup />
+                            <h2>Step 1: <span>Select the criteria for this rule</span></h2>
+
+                            <ControlGroup rows={assignmentRules} setRows={setAssignmentRules} />
 
                             </ViewStyle>,
 
                             <ViewStyle space top border>
 
-                                <h2>Step 2: <span>Select the user or queue to assign the Form Response to when criteria is met.</span></h2>
+                            <h2>Step 2: <span>Select the user or queue to assign the Form Response to when criteria is met.</span></h2>
 
-                                <Lookup />
+                            <Lookup />
 
                             </ViewStyle>
+
+
                         ]
 
                     }

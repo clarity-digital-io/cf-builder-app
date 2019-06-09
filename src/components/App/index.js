@@ -21,22 +21,11 @@ const BuilderProvider = ({ children }) => {
 
     const [loading, setLoading] = useState(false); 
 
-    const [assignmentRules, setAssignmentRules] = useState([]);
+    const [assign, setAssignment] = useState({ Id: null, Name: '', Assign__c : null, Default_Assign__c: null });
 
-    const [nav, setNavState] = useState({ NavState: 'QUESTIONS' }); 
+    const [style, setStyle] = useState({ Id: null, Color__c: '#333333', Background_Color__c : '#ffff', Columns: '' });
 
-    useEffect(() => {
-
-        if(nav.NavState == 'ASSIGNMENTS') {
-            setLoading(true);
-            call("ClarityFormBuilder.getAssignmentRules", [form.Clarity_Form_Assignment__c], (result, e) => assignmentRulesHandler(result, e, setAssignmentRules, setLoading));
-        }
-
-    }, [nav])
-
-    const [style, setStyle] = useState({ Id: null, Color__c: '#333333', Background_Color__c : '#ffff', Columns: '', });
-
-    const [form, setForm] = useState({Id: null, Name: '', Clarity_Form_Style__c: null, Clarity_Form_Assignment__c: null });
+    const [form, setForm] = useState({Id: null, Name: '', Clarity_Form_Style__c: null, Clarity_Form_Assignment__c: 1 });
 
     useEffect(() => {
 
@@ -44,9 +33,30 @@ const BuilderProvider = ({ children }) => {
 
         let recordId = url.get('recordId') != null ? url.get('recordId') : '';
 
-        call("ClarityFormBuilder.startup", [recordId], (result, e) => createHandler(result, e, setForm, setStyle));
+        call("ClarityFormBuilder.startup", [recordId], (result, e) => createHandler(result, e, setForm, setStyle, setAssignment));
         
     }, []);
+
+    const [assignmentRules, setAssignmentRules] = useState([]);
+
+    const [nav, setNavState] = useState({ NavState: 'QUESTIONS' }); 
+
+    useEffect(() => {
+
+        if(nav.NavState == 'ASSIGNMENTS') {
+
+            setLoading(true);
+            if(assign.Id != null) {
+                console.log('assign', assign); 
+                call("ClarityFormBuilder.getAssignmentRules", [form.Clarity_Form_Assignment__c], (result, e) => assignmentRulesHandler(result, e, setAssignmentRules, setLoading));
+            } else {
+                console.log('assign', assign); 
+                call("ClarityFormBuilder.createAssignment", [`${form.Name} Assignment`, form.Id], (result, e) => assignmentCreateHandler(result, e, setAssignment, setAssignmentRules, setLoading));
+            }
+
+        }
+
+    }, [nav])
 
     const [sObjects, setSObjects] = useState([]);
 
@@ -57,21 +67,42 @@ const BuilderProvider = ({ children }) => {
     }, [])
 
     return (
-        <BuilderContext.Provider value={{ nav, setNavState, form, style, setStyle, setForm, sObjects }}>
+        <BuilderContext.Provider value={{ 
+            assign, 
+            setAssignment,
+            assignmentRules, 
+            setAssignmentRules,
+            nav, 
+            setNavState, 
+            form, 
+            style, 
+            setStyle, 
+            setForm, 
+            sObjects 
+            }}>
             { children }
         </BuilderContext.Provider>
     )
 }
 
-const assignmentRulesHandler = (result, e, setAssignmentRules, setLoading) => {
+const assignmentCreateHandler = (result, e, setAssignment, setAssignmentRules, setLoading) => {
 
     setLoading(false);
-    console.log('assignmentRulesHandler', result); 
+    setAssignment(result); 
+    setAssignmentRules([]);
 
 }
 
-const createHandler = (result, e, setForm, setStyle) => {
+const assignmentRulesHandler = (result, e, setAssignmentRules, setLoading) => {
 
+    console.log('result', result);
+    setAssignmentRules(result); 
+    setLoading(false);
+
+}
+
+const createHandler = (result, e, setForm, setStyle, setAssignment) => {
+    console.log(result);
     setForm(form => {
         return { ...form, Id: result.Id, Name: result.Name, Clarity_Form_Assignment__c: result.Clarity_Form_Assignment__c, Clarity_Form_Style__c: result.Clarity_Form_Style__c }
     });
@@ -79,6 +110,18 @@ const createHandler = (result, e, setForm, setStyle) => {
     setStyle(style => {
         return { ...style, Id: result.Clarity_Form_Style__c, Background_Color__c: result.Clarity_Form_Style__r.Background_Color__c, Color__c: result.Clarity_Form_Style__r.Color__c }
     })
+
+    if(result.Clarity_Form_Assignment__c == null) return;
+
+    setAssignment(assignment => {
+        return { 
+            ...assignment, 
+            Id: result.Clarity_Form_Assignment__c, 
+            Assign__c: result.Clarity_Form_Assignment__r.Assign__c, 
+            Default_Assign__c: result.Clarity_Form_Assignment__r.Default_Assign__c, 
+            Name: result.Clarity_Form_Assignment__r.Name
+        }
+    });
 
 }
 

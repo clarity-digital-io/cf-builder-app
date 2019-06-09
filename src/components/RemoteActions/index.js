@@ -31,7 +31,14 @@ const mockCall = (func, params, callback) => {
 
     switch (func) {
         case 'startup':
-            callback({Id: 1, Name: 'Clarity Form', Clarity_Form_Style__c: 1, Clarity_Form_Style__r: { Background_Color__c: '#333333', Color: '#ffffff', Button_Color__c: '' } }); 
+            callback({
+                Id: 1, 
+                Name: 'Clarity Form', 
+                Clarity_Form_Style__c: 1, 
+                Clarity_Form_Assignment__c: 1,
+                Clarity_Form_Style__r: { Background_Color__c: '#333333', Color: '#ffffff', Button_Color__c: '' }, 
+                Clarity_Form_Assignment__r: { Id: 1, Name: 'Clarity Form Assignment', Assign__c: 1, Default_Assign__c: 2 } 
+            }); 
             break;
         case 'getQuestions':
             callback([{ Id: 1, Type__c: 'Comment', Title__c: 'Comment', Order__c: 0, Max_Length__c: 10, Min_Range__c: 0, Max_Range__c: 100, Step__c: 10 }]); 
@@ -73,8 +80,11 @@ const mockCall = (func, params, callback) => {
         case 'getUsers':
             callback([{Id: 1, Name: 'Test User1', UserName: 'User1'}, {Id: 2, Name: 'Test User2', UserName: 'User2'}]);
             break; 
+        case 'createAssignment':
+            callback({Id: 1, Name: 'Clarity Form Assignment', Assign__c: 1, Default_Assign__c: 2 });
+            break; 
         case 'getAssignmentRules': 
-            callback([]);
+            callback([{ Id: 1, Operator__c: 'Equals', Type__c: 'String', Value__c: 'Something', Field__c: 1, Field_Type__c: 'Comment' }]);
             break; 
         case 'saveAssignmentRules':
             callback([]);
