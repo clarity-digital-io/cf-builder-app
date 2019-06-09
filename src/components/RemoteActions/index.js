@@ -60,7 +60,7 @@ const mockCall = (func, params, callback) => {
             break;
         case 'getQuestionEditDetails':
             callback({
-                'Criteria': [{Id: 31, Clarity_Form_Question__c: 2, Field__c: 'Multiple Choice', Operator__c: 'Equals', Type__c: 'String', Value__c: 'Option 1' }],
+                'Criteria': [{Id: 31, Clarity_Form_Question__c: 2, Field__c: 1, Field_Type__c: 'Comment', Operator__c: 'Equals', Type__c: 'String', Value__c: 'Option 1' }],
                 'Options' : [{ Id: 31, Label__c: 'Option 1', Active_Flow__c: true, Clarity_Form_Question__c: 2},{ Id: 32, Label__c: 'Option 2', Active_Flow__c: false, Clarity_Form_Question__c: 2}],
                 'FlowDesign': [{ Id: 31, Clarity_Form_Question__c: 123, Form_Submission__c: true, Active__c: false }]
             });

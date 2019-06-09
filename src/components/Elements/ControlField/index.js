@@ -6,28 +6,26 @@ import { DesignContext } from '../../Context';
 import CloseIcon from '../Icons/close';
 import {Button} from '../Button';
 
-export const ControlGroup = ({ rows, setRows }) => {
+export const ControlGroup = ({ rows, setRows, questions }) => {
 
     return [
         <ControlHeader key={'Header'} />, 
-        <ControlRows setRows={setRows} rows={rows} key={'Rows'} />,
+        <ControlRows setRows={setRows} rows={rows} key={'Rows'} questions={questions} />,
         <ControlAddRow setRows={setRows} key={'Add'} />
     ]
 }
 
-const ControlRows = ({ rows, setRows }) => {
+const ControlRows = ({ rows, setRows, questions }) => {
 
     return rows.map((row, i) => {
 
-        return <ControlRow key={row.Id} order={i} row={row} setRows={setRows} />
+        return <ControlRow key={row.Id} order={i} row={row} setRows={setRows} questions={questions} />
 
     })
 
 }
 
-const ControlRow = ({ order, row, setRows }) => {
-    console.log('ControlRow', row);
-    const { questions } = useContext(DesignContext);
+const ControlRow = ({ order, row, setRows, questions }) => {
 
     const [operators, setOperators] = useState(getCorrectOperators(row.Field_Type__c != null ? row.Field_Type__c : ''));
 
@@ -153,7 +151,7 @@ const ControlAddRow = ({ setRows }) => {
 
 const ControlField = ({ order, type, record, values, setSelection }) => {
 
-    console.log(record, values)
+    console.log('ControlField', record, values)
     return (
         <div class="slds-form-element">
             <div class="slds-form-element__control">

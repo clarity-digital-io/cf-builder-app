@@ -10,10 +10,12 @@ import { ControlGroup } from '../../../Elements/ControlField';
 
 import { Lookup } from './lookup';
 
-import { BuilderContext } from '../../../Context';
+import { BuilderContext, DesignContext } from '../../../Context';
 
 
 export const AssignmentState = () => {
+
+    const { questions } = useContext(DesignContext);
 
     const { form, setForm, loading, assignmentRules, setAssignmentRules } = useContext(BuilderContext);
 
@@ -56,7 +58,7 @@ export const AssignmentState = () => {
 
                             <h2>Step 1: <span>Select the criteria for this rule</span></h2>
 
-                            <ControlGroup rows={assignmentRules} setRows={setAssignmentRules} />
+                            <ControlGroup rows={assignmentRules} setRows={setAssignmentRules} questions={questions} />
 
                             </ViewStyle>,
 
