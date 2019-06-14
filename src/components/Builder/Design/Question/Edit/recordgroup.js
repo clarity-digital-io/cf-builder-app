@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import ViewStyle from '../../../../Elements/View/style';
 import View from '../../../../Elements/View';
 import {Button} from '../../../../Elements/Button';
+import { call } from '../../../../RemoteActions'; 
 
 import { DesignContext } from '../../../../Context';
 import { Select } from '../../../../Elements/Select';
@@ -9,17 +10,25 @@ import { InputField } from '../../../../Elements/Input';
 
 export const RecordGroup = () => {
 
-    const { sObjects, activeQuestion, setActiveQuestion, setSObjectEdit, setQuestionState } = useContext(DesignContext);
+    const { sObjects, activeQuestion, setActiveQuestion, setQuestions, setQuestionState, setQuestionUpdate } = useContext(DesignContext);
 
     const updateLookupQuestion = (e) => {
         
         let value = e.target.value; 
 
         setActiveQuestion(question => {
-            return { ...question, Record_Group__c: value }
+            return { ...question, Salesforce_Object__c: value }
         })
 
-        setSObjectEdit(value);
+    }
+
+    const saveAndAddFields = () => {
+
+        call(
+            "ClarityFormBuilder.saveQuestion", 
+            [JSON.stringify(activeQuestion)], 
+            (result, e) => resultHandler(result, e, setQuestionUpdate, setQuestions, activeQuestion, setQuestionState)
+        );
 
     }
 
@@ -32,17 +41,39 @@ export const RecordGroup = () => {
                 Create a new Record for any standard or custom object you chose. (At a minimum Required fields will be displayed).
             </p>
 
-            <Select options={sObjects} value={activeQuestion.Record_Group__c} onChange={updateLookupQuestion} />
+            <Select options={sObjects} value={activeQuestion.Salesforce_Object__c} onChange={updateLookupQuestion} />
 
         </ViewStyle>,
         <ViewStyle key={'add'}>
 
-            <Button neutral onClick={() => setQuestionState('SF')}>Save &amp; Add Salesforce Fields</Button>
+            <Button neutral onClick={() => saveAndAddFields()}>Save &amp; Add Salesforce Fields</Button>
 
         </ViewStyle>
     ]
 
 }
+
+const resultHandler = (result, e, setQuestionUpdate, setQuestions, activeQuestion, setQuestionState) => {
+
+    setQuestions(questions => {
+
+        return questions.map(question => {
+            if(question.Id == result) {
+                return activeQuestion; 
+            }
+
+            return question; 
+
+        })
+
+    });
+
+    setQuestionUpdate(false);
+
+    setQuestionState('SF');
+
+}
+
 
 const ControlInput = ({requiredFields}) => {
 

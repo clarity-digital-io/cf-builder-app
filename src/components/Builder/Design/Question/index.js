@@ -91,6 +91,14 @@ const Save = ({ children }) => {
             )
         }
 
+        if(questionUpdate && questionState == 'SF') {
+            call(
+                "ClarityFormBuilder.saveRecordGroupFields", 
+                [JSON.stringify('fields'), JSON.stringify(activeQuestionOptions)], 
+                (result, e) => resultFlowHandler(result, e,setQuestionUpdate, setActiveQuestionOptions, setActiveFlowDesign, setQuestionState)
+            )
+        }
+
     }, [questionUpdate])
 
     return [
@@ -102,7 +110,7 @@ const Save = ({ children }) => {
                     {
                         questionState != 'SF' ? <Button neutral onClick={() => setQuestionState('NEW')}>Add New Field</Button> : <Button neutral onClick={() => setQuestionState('EDIT')}>Back</Button>
                     }
-                    
+
                     <Button cta onClick={() => setQuestionUpdate(true)}>
 
                         {

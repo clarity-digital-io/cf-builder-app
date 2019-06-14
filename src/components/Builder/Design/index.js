@@ -129,12 +129,15 @@ const DesignProvider = ({ children }) => {
         if(sObjectEdit) {
 
             if(activeQuestion.Type__c == 'ConnectedObject') {
-                console.log('form.Connected_Object__c: ' , form.Connected_Object__c); 
-                call("ClarityFormBuilder.getSObjectFields", [form.Connected_Object__c], (result, e) => getSObjectFieldResultHandler(result, e, setRequiredFields, setAdditionalFields, setSObjectEdit));
+                setLoading(true);
+                call("ClarityFormBuilder.getSObjectFields", [form.Connected_Object__c], (result, e) => getSObjectFieldResultHandler(result, e, setRequiredFields, setAdditionalFields, setSObjectEdit, setLoading));
 
-            } else if(activeQuestion.Type__c == 'RecordGroup') {
-                console.log('activeQuestion.Record_Group__c: ' , activeQuestion); 
-                call("ClarityFormBuilder.getSObjectFields", [activeQuestion.Record_Group__c], (result, e) => getSObjectFieldResultHandler(result, e, setRequiredFields, setAdditionalFields, setSObjectEdit));
+            }
+            
+            if(activeQuestion.Type__c == 'RecordGroup') {
+                setLoading(true); 
+                console.log('activeQuestion.Type__c', activeQuestion, loading); 
+                call("ClarityFormBuilder.getSObjectFields", [activeQuestion.Salesforce_Object__c], (result, e) => getSObjectFieldResultHandler(result, e, setRequiredFields, setAdditionalFields, setSObjectEdit, setLoading));
 
             }
 
@@ -180,10 +183,11 @@ const DesignProvider = ({ children }) => {
     )
 }
 
-const getSObjectFieldResultHandler = (result, e, setRequiredFields, setAdditionalFields, setSObjectEdit) => {
-    setSObjectEdit(false);
+const getSObjectFieldResultHandler = (result, e, setRequiredFields, setAdditionalFields, setSObjectEdit, setLoading) => {
+    setSObjectEdit('');
     setAdditionalFields(result.NotRequired);
     setRequiredFields(result.Required);
+    setLoading(false);
 }
 
 const fetchHandler = (result, e, setQuestions) => {
