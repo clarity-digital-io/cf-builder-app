@@ -11,6 +11,7 @@ import { Email } from './email';
 import { Slider } from './slider'; 
 import { Lookup } from './lookup'; 
 import { RecordGroup } from './recordgroup'; 
+import { ConnectedObject } from './connectedobject'; 
 import { SmallSpinner } from '../../../../Elements/Spinner';
 
 const getQuestionType = (type) => {
@@ -24,9 +25,6 @@ const getQuestionType = (type) => {
             break;
         case 'Comment':
             return <Comment />
-            break;
-        case 'Star':
-            return <div>star</div>
             break; 
         case 'NetPromoterScore':
             return <div>NetPromoterScore</div>
@@ -37,9 +35,6 @@ const getQuestionType = (type) => {
         case 'Email':
             return <Email />
             break;
-        case 'Payment':
-            return <div>Payment</div>
-            break;
         case 'Number':
             return <div>Number</div>
             break;
@@ -48,6 +43,9 @@ const getQuestionType = (type) => {
             break;
         case 'RecordGroup':
             return <RecordGroup />
+            break;
+        case 'ConnectedObject':
+            return <ConnectedObject />
             break;
         default:
             return <div>{ type }</div>
@@ -89,19 +87,24 @@ export const EditQuestion = () => {
 
                         <h1>Settings</h1>
 
-                        <ViewStyle>
+                        {
+                            activeQuestion.Type__c != 'ConnectedObject' ?
+                            <ViewStyle>
 
-                            <div className="slds-form-element">
-                                <label className="slds-checkbox_toggle slds-grid">
-                                    <span className="slds-form-element__label slds-m-bottom_none">Required</span>
-                                    <input checked={activeQuestion.Required__c} onClick={(e) => updateRequiredStatus(e)} type="checkbox" name="checkbox-toggle-14" value="checkbox-toggle-14" aria-describedby="checkbox-toggle-14" />
-                                    <span id="checkbox-toggle-14" className="slds-checkbox_faux_container" aria-live="assertive">
-                                    <span className="slds-checkbox_faux"></span>
-                                    </span>
-                                </label>
-                            </div>
+                                <div className="slds-form-element">
+                                    <label className="slds-checkbox_toggle slds-grid">
+                                        <span className="slds-form-element__label slds-m-bottom_none">Required</span>
+                                        <input checked={activeQuestion.Required__c} onClick={(e) => updateRequiredStatus(e)} type="checkbox" name="checkbox-toggle-14" value="checkbox-toggle-14" aria-describedby="checkbox-toggle-14" />
+                                        <span id="checkbox-toggle-14" className="slds-checkbox_faux_container" aria-live="assertive">
+                                        <span className="slds-checkbox_faux"></span>
+                                        </span>
+                                    </label>
+                                </div>
 
-                        </ViewStyle>
+                            </ViewStyle> : 
+                            null
+                        }
+
 
                     </ViewStyle>
 

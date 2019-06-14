@@ -11,9 +11,6 @@
 # production
 /dist
 
-#static resource 
-clarityForms.zip
-
 # misc
 .DS_Store
 .env.local

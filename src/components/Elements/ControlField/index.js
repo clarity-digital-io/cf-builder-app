@@ -1,10 +1,10 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import View from '../View';
 import Box from '../Box';
-import { DesignContext } from '../../Context';
 
 import CloseIcon from '../Icons/close';
 import {Button} from '../Button';
+import { call } from '../../RemoteActions';
 
 export const ControlGroup = ({ rows, setRows, questions }) => {
 
@@ -31,10 +31,26 @@ const ControlRow = ({ order, row, setRows, questions }) => {
 
     const [types, setTypes] = useState(getCorrectTypes(row.Field_Type__c != null ? row.Field_Type__c : ''));
 
+    const [valueField, setValueField] = useState(row.Field_Type__c);
+
+    useEffect(() => {
+
+        if(valueField == 'Boolean') {
+            setOptions(['True', 'False'])
+        }
+
+        if(valueField == 'Picklist') {
+            call("ClarityFormBuilder.getQuestionOptions", [row.Field__c], (result, e) => getOptionsHandler(result, e, setOptions));
+        }
+
+    }, [valueField])
+
+    const [options, setOptions] = useState([]); 
+
     const setQuestionSelection = (e, order) => {
 
         let value = e.target.value; 
-        console.log(value); 
+
         let question = questions.find(question => question.Id == value); 
 
         setOperators(getCorrectOperators(question.Type__c));
@@ -67,6 +83,38 @@ const ControlRow = ({ order, row, setRows, questions }) => {
 
     }
 
+    const setTypeSelection = (e, order) => {
+
+        let value = e.target.value; 
+
+        setRows((rows) => {
+            return rows.map((row, i) => {
+                if(i == order) {
+                    return { ...row, Type__c: value }
+                }
+                return row;
+            })
+        }); 
+
+        setValueField(value); 
+
+    }
+
+    const setValueSelection = (e, order) => {
+
+        let value = e.target.value; 
+
+        setRows((rows) => {
+            return rows.map((row, i) => {
+                if(i == order) {
+                    return { ...row, Value__c: value }
+                }
+                return row;
+            })
+        }); 
+
+    }
+
     const removeRow = (order) => {
 
         setRows(rows => {
@@ -77,7 +125,7 @@ const ControlRow = ({ order, row, setRows, questions }) => {
                 }
 
             });
-            console.log('newRows', newRows)
+
             return newRows; 
 
         })
@@ -93,22 +141,22 @@ const ControlRow = ({ order, row, setRows, questions }) => {
             </View>
             <View className="col-xs-3">
                 <Box padding='.5em'>
-                    <ControlField type={'Question'} order={order} record={row.Field__c} values={questions} setSelection={setQuestionSelection} />
+                    <ControlFieldQuestion order={order} record={row.Field__c} values={questions} setSelection={setQuestionSelection} />
                 </Box>
             </View>
             <View className="col-xs-2">
                 <Box padding='.5em'>
-                    <ControlField type={'Operator'} order={order} record={row.Operator__c} values={operators} setSelection={setOperatorSelection} />
+                    <ControlField order={order} record={row.Operator__c} values={operators} setSelection={setOperatorSelection} />
                 </Box>
             </View>
             <View className="col-xs-2">
                 <Box padding='.5em'>
-                    <ControlField type={'Type'}  order={order} record={row.Type__c} values={types} />
+                    <ControlField order={order} record={row.Type__c} values={types} setSelection={setTypeSelection} />
                 </Box>
             </View>
             <View className="col-xs-3">
                 <Box padding='.5em'>
-                    
+                    { valueField != null ? <ControlValueField options={options} valueField={valueField} order={order} record={row} setSelection={setValueSelection} /> : null }
                 </Box>
             </View>
             <View className="col-xs-1">
@@ -149,9 +197,8 @@ const ControlAddRow = ({ setRows }) => {
     
 }
 
-const ControlField = ({ order, type, record, values, setSelection }) => {
+const ControlFieldQuestion = ({ order, record, values, setSelection }) => {
 
-    console.log('ControlField', record, values)
     return (
         <div class="slds-form-element">
             <div class="slds-form-element__control">
@@ -168,6 +215,69 @@ const ControlField = ({ order, type, record, values, setSelection }) => {
             </div>
         </div>
     )
+}
+
+const ControlField = ({ order, record, values, setSelection }) => {
+
+    return (
+        <div class="slds-form-element">
+            <div class="slds-form-element__control">
+                <div class="slds-select_container">
+                <select class="slds-select" id="select-01" value={record} onChange={(e) => setSelection(e, order)} >
+                    <option value="">Please select</option>
+                    {
+                        values.map(value => {
+                            return <option value={value}>{value}</option>
+                        })
+                    }
+                </select>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+const ControlFieldInput = ({ type, order, record, setSelection }) => {
+
+    return (
+        <div className="slds-form-element">
+            <div className="slds-form-element__control">
+                <input type={type} onChange={(e) => setSelection(e, order)} value={ record } id="text-input-id-1" placeholder="" className="slds-input" />
+            </div>
+        </div>
+    )
+}
+
+const getOptionsHandler = (result, e, setOptions) => {
+    setOptions(result.map(r => r.Label__c)); 
+}
+
+const ControlValueField = ({ options, order, record, setSelection }) => {
+
+    switch (record.Type__c) {
+        case 'String':
+            return <ControlFieldInput type={'text'} order={order} record={record.Value__c} setSelection={setSelection} />
+            break; 
+        case 'Number':
+            return <ControlFieldInput type={'number'} order={order} record={record.Value__c} setSelection={setSelection} />
+            break;
+        case 'Reference':
+            return 'Reference'
+            break;
+        case 'Picklist':
+            return <ControlField order={order} record={record.Value__c} values={options} setSelection={setSelection} />
+            break;
+        case 'Boolean':
+            return <ControlField order={order} record={record.Value__c} values={options} setSelection={setSelection} />
+            break; 
+        case 'Date':
+            return <input type="text" />
+            break;
+        default:
+            return ''
+            break;
+    }
+
 }
 
 const ControlHeader = () => {
@@ -209,27 +319,63 @@ const ControlHeader = () => {
 
 }
 
-const getCorrectOperators = (fieldType) => {
+const getCorrectTypes = (fieldType) => {
 
     switch (fieldType) {
-        case '':
-            return [];
+        case 'MultipleChoice':
+        case 'Dropdown':
+        case 'Ranking':
+        case 'Checkbox':
+        case 'Email':
+            return ['Reference', 'Boolean', 'Picklist']; 
+            break;
+        case 'Lookup':
+            return ['String', 'Reference', 'Boolean', 'Picklist']; 
+            break;
+        case 'Comment':
+        case 'RecordGroup':
+        case 'Attachments':
+            return ['Boolean']; 
+            break; 
+        case 'Date':
+            return ['Reference', 'Boolean', 'Date']; 
+            break;
+        case 'NetPromoterScore':
+        case 'Slider':
+        case 'Number':
+            return ['Reference', 'Number']; 
             break;
         default:
-            return [{Id: 1, Title__c: 'Equals'}, {Id: 2, Title__c: 'Not Equal'}, {Id: 3, Title__c: 'Is Null'}]; 
+            return ['String', 'Reference']; 
             break;
     }
 
 }
 
-const getCorrectTypes = (fieldType) => {
+const getCorrectOperators = (fieldType) => {
 
     switch (fieldType) {
-        case '':
-            return [];
+        case 'MultipleChoice':
+        case 'Dropdown':
+        case 'Ranking':
+        case 'Checkbox':
+        case 'Email':
+        case 'Lookup':
+            return ['Equals', 'Not Equal', 'Is Null']; 
+            break;
+        case 'Comment':
+        case 'RecordGroup':
+        case 'Attachments':
+            return ['Is Null']; 
+            break;
+        case 'NetPromoterScore':
+        case 'Slider':
+        case 'Number':
+        case 'Date':
+            return ['Equals', 'Not Equal', 'Is Null', 'Is Greater than or equal to', 'Is Less than or equal to']; 
             break;
         default:
-            return [{Id: 1, Title__c: 'String'}, {Id: 2, Title__c: 'Reference'}, {Id: 3, Title__c: 'Global Constant'}]; 
+            return ['Equals', 'Not Equal', 'Is Null']; 
             break;
     }
 

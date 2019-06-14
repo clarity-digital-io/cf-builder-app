@@ -25,7 +25,7 @@ const BuilderProvider = ({ children }) => {
 
     const [style, setStyle] = useState({ Id: null, Color__c: '#333333', Background_Color__c : '#ffff', Columns: '' });
 
-    const [form, setForm] = useState({Id: null, Name: '', Clarity_Form_Style__c: null, Clarity_Form_Assignment__c: 1 });
+    const [form, setForm] = useState({Id: null, Name: '', Clarity_Form_Style__c: null, Clarity_Form_Assignment__c: 1, Connected_Object__c: '' });
 
     useEffect(() => {
 
@@ -46,11 +46,10 @@ const BuilderProvider = ({ children }) => {
         if(nav.NavState == 'ASSIGNMENTS') {
 
             setLoading(true);
+
             if(assign.Id != null) {
-                console.log('assign', assign); 
                 call("ClarityFormBuilder.getAssignmentRules", [form.Clarity_Form_Assignment__c], (result, e) => assignmentRulesHandler(result, e, setAssignmentRules, setLoading));
             } else {
-                console.log('assign', assign); 
                 call("ClarityFormBuilder.createAssignment", [`${form.Name} Assignment`, form.Id], (result, e) => assignmentCreateHandler(result, e, setAssignment, setAssignmentRules, setLoading));
             }
 
@@ -66,8 +65,20 @@ const BuilderProvider = ({ children }) => {
         
     }, [])
 
+    const [formUpdate, setFormUpdate] = useState(false); 
+
+    useEffect(() => {
+
+        if(formUpdate && nav.NavState == 'SETTINGS') {
+            call("ClarityFormBuilder.updateForm", [JSON.stringify(form)], (result, e) => updateFormHandler(result, e, setFormUpdate, setForm));
+        }
+
+    }, [formUpdate])
+
     return (
         <BuilderContext.Provider value={{ 
+            formUpdate, 
+            setFormUpdate,
             assign, 
             setAssignment,
             assignmentRules, 
@@ -85,6 +96,13 @@ const BuilderProvider = ({ children }) => {
     )
 }
 
+const updateFormHandler = (result, e, setFormUpdate, setForm) => {
+
+    setFormUpdate(false); 
+    setForm(form);
+
+}
+
 const assignmentCreateHandler = (result, e, setAssignment, setAssignmentRules, setLoading) => {
 
     setLoading(false);
@@ -95,16 +113,24 @@ const assignmentCreateHandler = (result, e, setAssignment, setAssignmentRules, s
 
 const assignmentRulesHandler = (result, e, setAssignmentRules, setLoading) => {
 
-    console.log('result', result);
     setAssignmentRules(result); 
     setLoading(false);
 
 }
 
 const createHandler = (result, e, setForm, setStyle, setAssignment) => {
-    console.log(result);
+
     setForm(form => {
-        return { ...form, Id: result.Id, Name: result.Name, Clarity_Form_Assignment__c: result.Clarity_Form_Assignment__c, Clarity_Form_Style__c: result.Clarity_Form_Style__c }
+        return { 
+            ...form, Id: 
+            result.Id, 
+            Name: result.Name, 
+            Limit__c: result.Limit__c, 
+            End_Date__c: result.End_Date__c, 
+            Connected_Object__c: result.Connected_Object__c, 
+            Clarity_Form_Assignment__c: result.Clarity_Form_Assignment__c, 
+            Clarity_Form_Style__c: result.Clarity_Form_Style__c 
+        }
     });
 
     setStyle(style => {

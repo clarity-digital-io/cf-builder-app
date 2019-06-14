@@ -35,7 +35,6 @@ export const Multiple = () => {
 
             setActiveQuestionOptions((options) => {
                 return options.map((option, index) => {
-                    console.log(index, options, order);
 
                     if(order == index) {
                         return { ...option, Label__c: value }

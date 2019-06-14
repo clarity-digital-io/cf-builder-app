@@ -8,6 +8,7 @@ import {Button} from '../../../Elements/Button';
 
 import { NewQuestion } from './new';
 import { EditQuestion } from './Edit';
+import { SalesforceFields } from './SF';
 import { AutomateQuestion } from './Automate';
 import { LogicQuestion } from './Logic';
 
@@ -26,6 +27,9 @@ export const QuestionState = () => {
             case 'EDIT': 
                 return <Save><EditQuestion type={activeQuestion.Type__c} /></Save>
                 break;
+            case 'SF': 
+                return <Save><SalesforceFields /></Save>
+                break; 
             case 'AUTOMATE': 
                 return <Save><AutomateQuestion type={activeQuestion.Type__c} /></Save>
                 break;
@@ -34,8 +38,7 @@ export const QuestionState = () => {
                 break;
             case 'CALCULATOR': 
                 return <Save><div>calculator</div></Save>
-            case 'SETTINGS': 
-                return <Save><div>settings</div></Save>
+                break; 
             default:
                 return null;
                 break;
@@ -68,7 +71,7 @@ const Save = ({ children }) => {
             call(
                 "ClarityFormBuilder.saveQuestion", 
                 [JSON.stringify(activeQuestion)], 
-                (result, e) => resultHandler(result, e, setQuestionUpdate, setQuestions, activeQuestion)
+                (result, e) => resultHandler(result, e, setQuestionUpdate, setQuestions, activeQuestion, setQuestionState)
             );
         }
 
@@ -76,7 +79,7 @@ const Save = ({ children }) => {
             call(
                 "ClarityFormBuilder.saveQuestionWithOptions", 
                 [JSON.stringify(activeQuestion), JSON.stringify(activeQuestionOptions)], 
-                (result, e) => resultOptionHandler(result, e, setQuestionUpdate, setQuestions, activeQuestion, setActiveQuestionOptions)
+                (result, e) => resultOptionHandler(result, e, setQuestionUpdate, setQuestions, activeQuestion, setActiveQuestionOptions, setQuestionState)
             );
         }
 
@@ -84,7 +87,7 @@ const Save = ({ children }) => {
             call(
                 "ClarityFormBuilder.saveFlowDesign", 
                 [JSON.stringify(activeFlowDesign), JSON.stringify(activeQuestionOptions)], 
-                (result, e) => resultFlowHandler(result, e,setQuestionUpdate, setActiveQuestionOptions, setActiveFlowDesign)
+                (result, e) => resultFlowHandler(result, e,setQuestionUpdate, setActiveQuestionOptions, setActiveFlowDesign, setQuestionState)
             )
         }
 
@@ -95,7 +98,11 @@ const Save = ({ children }) => {
         <View className="row end-xs">
             <View className="col-xs-12">
                 <ViewStyle top border>
-                    <Button neutral onClick={() => setQuestionState('NEW')}>Add New Field</Button>
+
+                    {
+                        questionState != 'SF' ? <Button neutral onClick={() => setQuestionState('NEW')}>Add New Field</Button> : <Button neutral onClick={() => setQuestionState('EDIT')}>Back</Button>
+                    }
+                    
                     <Button cta onClick={() => setQuestionUpdate(true)}>
 
                         {
@@ -115,7 +122,7 @@ const Save = ({ children }) => {
     ]
 }
 
-const resultHandler = (result, e, setQuestionUpdate, setQuestions, activeQuestion) => {
+const resultHandler = (result, e, setQuestionUpdate, setQuestions, activeQuestion, setQuestionState) => {
 
     setQuestions(questions => {
 
@@ -132,9 +139,11 @@ const resultHandler = (result, e, setQuestionUpdate, setQuestions, activeQuestio
 
     setQuestionUpdate(false);
 
+    setQuestionState('NEW')
+
 }
 
-const resultOptionHandler = (result, e, setQuestionUpdate, setQuestions, activeQuestion, setActiveQuestionOptions) => {
+const resultOptionHandler = (result, e, setQuestionUpdate, setQuestions, activeQuestion, setActiveQuestionOptions, setQuestionState) => {
     
     let options = result.Options;
     let resultQuestion = result.Question[0];
@@ -155,14 +164,18 @@ const resultOptionHandler = (result, e, setQuestionUpdate, setQuestions, activeQ
     setActiveQuestionOptions(options);    
 
     setQuestionUpdate(false);
+
+    setQuestionState('NEW')
+
 }
 
-const resultFlowHandler = (result, e, setQuestionUpdate, setActiveQuestionOptions, setActiveFlowDesign) => {
-    console.log('resultFlowHandler', result);
+const resultFlowHandler = (result, e, setQuestionUpdate, setActiveQuestionOptions, setActiveFlowDesign, setQuestionState) => {
     let options = result.Options;
     let flowDesign = result.FlowDesign[0];
 
     setActiveQuestionOptions(options);    
     setActiveFlowDesign(flowDesign);
     setQuestionUpdate(false);
+    setQuestionState('NEW')
+
 }

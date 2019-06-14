@@ -61,11 +61,13 @@ const DesignProvider = ({ children }) => {
 
     const { form, sObjects } = useContext(BuilderContext);
 
-    const [styles, setStyles] = useState({ BackgroundColor: '#000' });
-
     const [loading, setLoading] = useState(false); 
 
     const [activeQuestionOptions, setActiveQuestionOptions] = useState([]); 
+
+    const [activeQuestionRecordFields, setActiveQuestionRecordFields] = useState([]); 
+
+    const [activeQuestionConnectedFields, setActiveQuestionConnectedFields] = useState([]); 
 
     const [questions, setQuestions] = useState([]); 
 
@@ -87,8 +89,10 @@ const DesignProvider = ({ children }) => {
 
         if(edit) {
             
+            setAdditionalFields([])
+            setRequiredFields([])
             setLoading(true);
-            call("ClarityFormBuilder.getQuestionEditDetails", [activeQuestion.Id], (result, e) => optionFetchHandler(result, e, setLoading, setActiveQuestionOptions, setActiveFlowDesign, setCriteria))
+            call("ClarityFormBuilder.getQuestionEditDetails", [activeQuestion.Id], (result, e) => optionFetchHandler(result, e, setLoading, setActiveQuestionOptions, setActiveFlowDesign, setCriteria, setActiveQuestionRecordFields, setActiveQuestionConnectedFields))
         
         }
 
@@ -118,26 +122,38 @@ const DesignProvider = ({ children }) => {
 
     const [requiredFields, setRequiredFields] = useState([]);
 
-    const [recordGroupEdit, setRecordGroupEdit] = useState(null);
+    const [sObjectEdit, setSObjectEdit] = useState(null);
 
     useEffect(() => {
 
-        if(recordGroupEdit) {
+        if(sObjectEdit) {
 
-            call("ClarityFormBuilder.getRecordGroupFields", [activeQuestion.Record_Group__c], (result, e) => getRecordGroupResultHandler(result, e, setRequiredFields, setAdditionalFields));
+            if(activeQuestion.Type__c == 'ConnectedObject') {
+                console.log('form.Connected_Object__c: ' , form.Connected_Object__c); 
+                call("ClarityFormBuilder.getSObjectFields", [form.Connected_Object__c], (result, e) => getSObjectFieldResultHandler(result, e, setRequiredFields, setAdditionalFields, setSObjectEdit));
+
+            } else if(activeQuestion.Type__c == 'RecordGroup') {
+                console.log('activeQuestion.Record_Group__c: ' , activeQuestion); 
+                call("ClarityFormBuilder.getSObjectFields", [activeQuestion.Record_Group__c], (result, e) => getSObjectFieldResultHandler(result, e, setRequiredFields, setAdditionalFields, setSObjectEdit));
+
+            }
 
         }
 
-    }, [recordGroupEdit])
+    }, [sObjectEdit])
 
     return (
         <DesignContext.Provider 
             value={{ 
-                styles, 
-                setStyles,
+                activeQuestionConnectedFields, 
+                setActiveQuestionConnectedFields,
+                activeQuestionRecordFields, 
+                setActiveQuestionRecordFields,
                 additionalFields,
+                setAdditionalFields,
+                setRequiredFields,
                 requiredFields,
-                setRecordGroupEdit,
+                setSObjectEdit,
                 criteria, 
                 setCriteria,
                 sObjects,
@@ -164,7 +180,8 @@ const DesignProvider = ({ children }) => {
     )
 }
 
-const getRecordGroupResultHandler = (result, e, setRequiredFields, setAdditionalFields) => {
+const getSObjectFieldResultHandler = (result, e, setRequiredFields, setAdditionalFields, setSObjectEdit) => {
+    setSObjectEdit(false);
     setAdditionalFields(result.NotRequired);
     setRequiredFields(result.Required);
 }
@@ -173,7 +190,9 @@ const fetchHandler = (result, e, setQuestions) => {
     setQuestions(sort(result));
 }
 
-const optionFetchHandler = (result, e, setLoading, setActiveQuestionOptions, setActiveFlowDesign, setCriteria) => {
+const optionFetchHandler = (result, e, setLoading, setActiveQuestionOptions, setActiveFlowDesign, setCriteria, setActiveQuestionRecordFields, setActiveQuestionConnectedFields) => {
+    setActiveQuestionRecordFields(result.Records);
+    setActiveQuestionConnectedFields(result.Connected);
     setActiveQuestionOptions(result.Options);
     setCriteria(result.Criteria);
     setActiveFlowDesign(result.FlowDesign[0]);

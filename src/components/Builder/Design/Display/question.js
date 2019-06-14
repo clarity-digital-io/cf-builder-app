@@ -24,7 +24,19 @@ export const Question = ({ question }) => {
                 <View className="col-xs-12 col-sm-6 col-md-6 col-lg-7">
                     <Box padding='0'>
                         { question.Required__c ? <span id="required">*</span> : '' }
-                        { question.Title__c }
+                        { question.Type__c }: { question.Title__c }
+
+                        {
+                            question.Type__c == 'ConnectedObject' ? 
+                            <div>Connected Object Field</div> :
+                            null
+                        }
+
+                        {
+                            question.Type__c == 'RecordGroup' ? 
+                            <div>Repeatable Group</div> :
+                            null
+                        }
                     </Box> 
                 </View>
 

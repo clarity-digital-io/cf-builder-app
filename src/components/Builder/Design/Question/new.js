@@ -10,19 +10,13 @@ import DragAction from '../../../Elements/Icons/drag';
 
 export const NewQuestion = () => {
 
-    const getListStyle = isDraggingOver => ({
-        background: isDraggingOver ? Main.color.light : Main.color.white,
-        width: '100%'
-    });
-
     return (
         <Droppable isDropDisabled={true} droppableId="new">
             {(provided, snapshot) => (
                 <View
                     full
                     key={'DroppableView'}
-                    ref={provided.innerRef}
-                    style={getListStyle(snapshot.isDraggingOver)}>
+                    ref={provided.innerRef}>
                     {types.map((type, index) => {
                         return (
                             <Draggable

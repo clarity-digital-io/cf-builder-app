@@ -22,3 +22,6 @@ Clarity_Form_Question_Flow (
 
 # question logic 
 
+# copy 
+
+yarn build && cp dist/bundle.js ../clarity-scratch-org/force-app/main/default/staticresources/ClarityFormsApp && cd .. && cd clarity-scratch-org && sfdx force:source:push

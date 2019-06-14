@@ -1,5 +1,11 @@
 export const types = [
     {   
+        id: 0, 
+        active: false, 
+        name: 'Connected Object',
+        type: 'ConnectedObject'
+    },
+    {   
         id: 1, 
         active: false, 
         name: 'Multiple Choice',

@@ -3,9 +3,9 @@ import { DesignContext } from '../../../../Context';
 
 import View from '../../../../Elements/View';
 import ViewStyle from '../../../../Elements/View/style';
+import {SmallSpinner} from '../../../../Elements/Spinner';
 
 import Box from '../../../../Elements/Box';
-import { Select } from './select'; 
 
 import {ControlGroup } from '../../../../Elements/ControlField'; 
 
