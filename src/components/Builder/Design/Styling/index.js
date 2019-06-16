@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { TwitterPicker } from 'react-color';
 
 import { call } from '../../../RemoteActions'; 
@@ -17,9 +17,21 @@ export const DesignState = () => {
 
     const { style, setStyle } = useContext(BuilderContext);
 
-    const updateFormDesign = () => {
+    const [update, setUpdate] = useState(false);
 
-    }
+    const [file, setFile] = useState('');
+
+    useEffect(() => {
+
+        if(update) {
+            call(
+                "ClarityFormBuilder.updateDesign", 
+                [JSON.stringify(style), file], 
+                (result, e) => resultHandler(result, e, setStyle, setUpdate)
+            );
+        }
+        
+    }, [update]);
 
     const handleButtonColorChange = (color, e, field) => {
 
@@ -50,14 +62,33 @@ export const DesignState = () => {
         });
 
     }
+
+    const uploadChange = (e, d) => {
+
+        let reader = new FileReader(); 
+
+        let files = Array.from(e.target.files);
+
+        reader.readAsDataURL(files[0]);
+
+        reader.onloadend = function () {
+            setStyle(style => {
+                return { ...style, Background_Image__c: reader.result };
+            });
+            
+            let base64result = reader.result.split(',')[1];
+
+            setFile(base64result); 
+        };
+    }
     
     return [
         
         <View className="row end-xs">
             <View className="col-xs-12">
                 <ViewStyle top border>
-                    <Button cta onClick={() => updateFormDesign(true)}>
-                    Save Changes
+                    <Button cta onClick={() => setUpdate(true)}>
+                    { update ? 'Saving...' : 'Save Changes' }
                     </Button>
                 </ViewStyle>
             </View>
@@ -78,7 +109,7 @@ export const DesignState = () => {
 
                                 <ViewStyle space border>
 
-                                    <Upload />
+                                    <Upload onChange={uploadChange} />
 
                                 </ViewStyle>
 
@@ -110,4 +141,10 @@ export const DesignState = () => {
         </View>
 
     ]
+}
+
+const resultHandler = (result, e, setStyle, setUpdate) => {
+    console.log(result); 
+    setUpdate(false);
+    setStyle(result); 
 }

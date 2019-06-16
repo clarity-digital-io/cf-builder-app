@@ -119,7 +119,7 @@ const assignmentRulesHandler = (result, e, setAssignmentRules, setLoading) => {
 }
 
 const createHandler = (result, e, setForm, setStyle, setAssignment) => {
-
+    console.log('result', result); 
     setForm(form => {
         return { 
             ...form, Id: 

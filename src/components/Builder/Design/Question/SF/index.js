@@ -10,7 +10,7 @@ import { SmallSpinner } from '../../../../Elements/Spinner';
 export const SalesforceFields = () => {
 
     const { loading, activeQuestion, requiredFields, additionalFields, setSObjectEdit } = useContext(DesignContext); 
-    console.log('requiredFields: ', requiredFields, 'additionalFields', additionalFields, loading); 
+
     useEffect(() => {
         
         setSObjectEdit(activeQuestion.Type__c);

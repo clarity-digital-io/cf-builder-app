@@ -8,7 +8,7 @@ const DesignNavigation = () => {
     const { nav, setNavState } = useContext(BuilderContext);
 
     const select = (newNav) => {
-
+        console.log('newNav', newNav);
         setNavState(prevNav => {
             return { ...prevNav, NavState: newNav }
         });

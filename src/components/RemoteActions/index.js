@@ -47,7 +47,7 @@ const mockCall = (func, params, callback) => {
             callback({ Id: 1, Name: 'Clarity Form', End_Date__c: null, Connected_Object__c: 'Case', Limit__c: 1000, Clarity_Form_Style__c: 1, Clarity_Form_Assignment__c: 1 })
             break;
         case 'getQuestions':
-            callback([{ Id: 1, Type__c: 'RecordGroup', Title__c: 'Case Record Group', Salesforce_Object__c: 'Case', Order__c: 0, Max_Length__c: 10, Min_Range__c: 0, Max_Range__c: 100, Step__c: 10 }]); 
+            callback([{ Id: 1, Type__c: 'Comment', Title__c: 'Case Record Group', Salesforce_Object__c: 'Case', Order__c: 0, Max_Length__c: 10, Min_Range__c: 0, Max_Range__c: 100, Step__c: 10 }]); 
             break;
         case 'save': 
             callback([timestamp]);
@@ -66,7 +66,7 @@ const mockCall = (func, params, callback) => {
             break;
         case 'getQuestionEditDetails':
             callback({
-                'Criteria': [{Id: 31, Clarity_Form_Question__c: 2, Field__c: 1, Field_Type__c: 'Comment', Operator__c: 'Equals', Type__c: 'String', Value__c: 'Option 1' }],
+                'Criteria': [{Id: 31, Clarity_Form_Question__c: 1, Field__c: 1, Field_Type__c: 'Comment', Operator__c: 'Is Not Null', Type__c: 'Boolean', Value__c: 'True' }],
                 'Options' : [{ Id: 31, Label__c: 'Option 1', Active_Flow__c: true, Clarity_Form_Question__c: 2},{ Id: 32, Label__c: 'Option 2', Active_Flow__c: false, Clarity_Form_Question__c: 2}],
                 'FlowDesign': [{ Id: 31, Clarity_Form_Question__c: 123, Form_Submission__c: true, Active__c: false }]
             });
@@ -93,10 +93,13 @@ const mockCall = (func, params, callback) => {
             callback({Id: 1, Name: 'Clarity Form Assignment', Assign__c: 1, Default_Assign__c: 2 });
             break; 
         case 'getAssignmentRules': 
-            callback([{ Id: 1, Operator__c: 'Equals', Type__c: 'String', Value__c: 'Something', Field__c: 1, Field_Type__c: 'Comment' }]);
+            callback([{ Id: 1, Clarity_Form_Question__c: 1, Field__c: 1, Field_Type__c: 'Comment', Operator__c: 'Is Not Null', Type__c: 'Boolean', Value__c: 'True' }]);
             break; 
         case 'saveAssignmentRules':
             callback([]);
+            break; 
+        case 'updateDesign':
+            callback([{ Background_Color__c: '#FFF', Color: '#333', Button_Color__c: '#333' }]);
             break; 
         default:
             break;

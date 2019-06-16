@@ -27,25 +27,29 @@ const ControlRows = ({ rows, setRows, questions }) => {
 
 const ControlRow = ({ order, row, setRows, questions }) => {
 
-    const [operators, setOperators] = useState(getCorrectOperators(row.Field_Type__c != null ? row.Field_Type__c : ''));
+    const [operators, setOperators] = useState(getCorrectOperators(row.Field_Type__c));
 
-    const [types, setTypes] = useState(getCorrectTypes(row.Field_Type__c != null ? row.Field_Type__c : ''));
+    const [types, setTypes] = useState(getCorrectTypes(row));
 
-    const [valueField, setValueField] = useState(row.Field_Type__c);
+    const [options, setOptions] = useState([]); 
+    
+    const [valueField, setValueField] = useState(row.Type__c);
 
     useEffect(() => {
 
         if(valueField == 'Boolean') {
-            setOptions(['True', 'False'])
+            setOptions(['True'])
+        }
+        console.log('row', row);
+        if(valueField == 'Picklist' && row.Field_Type__c == 'Date') {
+            setOptions(['TODAY', 'YESTERDAY', 'LAST_WEEK', 'LAST_MONTH', 'NEXT_WEEK', 'NEXT_MONTH'])
         }
 
-        if(valueField == 'Picklist') {
+        if(valueField == 'Picklist' && row.Field_Type__c != 'Date') {
             call("ClarityFormBuilder.getQuestionOptions", [row.Field__c], (result, e) => getOptionsHandler(result, e, setOptions));
         }
 
     }, [valueField])
-
-    const [options, setOptions] = useState([]); 
 
     const setQuestionSelection = (e, order) => {
 
@@ -54,8 +58,6 @@ const ControlRow = ({ order, row, setRows, questions }) => {
         let question = questions.find(question => question.Id == value); 
 
         setOperators(getCorrectOperators(question.Type__c));
-
-        setTypes(getCorrectTypes(question.Type__c));
 
         setRows((rows) => {
             return rows.map((row, i) => {
@@ -80,6 +82,8 @@ const ControlRow = ({ order, row, setRows, questions }) => {
                 return row;
             })
         }); 
+
+        setTypes(getCorrectTypes({ ...row, Operator__c: value }));
 
     }
 
@@ -156,7 +160,7 @@ const ControlRow = ({ order, row, setRows, questions }) => {
             </View>
             <View className="col-xs-3">
                 <Box padding='.5em'>
-                    { valueField != null ? <ControlValueField options={options} valueField={valueField} order={order} record={row} setSelection={setValueSelection} /> : null }
+                    <ControlValueField options={options} order={order} record={row} setSelection={setValueSelection} /> 
                 </Box>
             </View>
             <View className="col-xs-1">
@@ -253,7 +257,7 @@ const getOptionsHandler = (result, e, setOptions) => {
 }
 
 const ControlValueField = ({ options, order, record, setSelection }) => {
-
+    console.log('field', options)
     switch (record.Type__c) {
         case 'String':
             return <ControlFieldInput type={'text'} order={order} record={record.Value__c} setSelection={setSelection} />
@@ -271,7 +275,7 @@ const ControlValueField = ({ options, order, record, setSelection }) => {
             return <ControlField order={order} record={record.Value__c} values={options} setSelection={setSelection} />
             break; 
         case 'Date':
-            return <input type="text" />
+            return <ControlFieldInput type={'date'} order={order} record={record.Value__c} setSelection={setSelection} />
             break;
         default:
             return ''
@@ -319,41 +323,60 @@ const ControlHeader = () => {
 
 }
 
-const getCorrectTypes = (fieldType) => {
-
+const getCorrectOperators = (fieldType) => {
+    console.log('fieldType', fieldType)
     switch (fieldType) {
         case 'MultipleChoice':
         case 'Dropdown':
         case 'Ranking':
         case 'Checkbox':
         case 'Email':
-            return ['Reference', 'Boolean', 'Picklist']; 
-            break;
         case 'Lookup':
-            return ['String', 'Reference', 'Boolean', 'Picklist']; 
+            return ['Equals', 'Not Equal', 'Is Not Null']; 
             break;
         case 'Comment':
         case 'RecordGroup':
         case 'Attachments':
-            return ['Boolean']; 
-            break; 
-        case 'Date':
-            return ['Reference', 'Boolean', 'Date']; 
+            return ['Is Not Null']; 
             break;
         case 'NetPromoterScore':
         case 'Slider':
         case 'Number':
-            return ['Reference', 'Number']; 
+        case 'Date':
+            return ['Equals', 'Not Equal', 'Is Not Null', 'Is Greater than or equal to', 'Is Less than or equal to']; 
             break;
         default:
-            return ['String', 'Reference']; 
+            return []; 
             break;
     }
 
 }
 
-const getCorrectOperators = (fieldType) => {
+const getCorrectTypes = (row) => {
 
+    switch (row.Operator__c) {
+        case 'Equals':
+            return getTypeForEquals(row.Field_Type__c); 
+            break;
+        case 'Not Equal':
+            return getTypeForEquals(row.Field_Type__c); 
+            break;
+        case 'Is Not Null':
+            return ['Boolean'];
+            break;
+        case 'Is Greater than or equal to':
+            return getTypeForGLEqual(row.Field_Type__c);
+            break;
+        case 'Is Less than or equal to':
+            return getTypeForGLEqual(row.Field_Type__c);
+            break;
+        default:
+            return [];
+            break;
+    }
+}
+
+const getTypeForGLEqual = (fieldType) => {
     switch (fieldType) {
         case 'MultipleChoice':
         case 'Dropdown':
@@ -361,22 +384,32 @@ const getCorrectOperators = (fieldType) => {
         case 'Checkbox':
         case 'Email':
         case 'Lookup':
-            return ['Equals', 'Not Equal', 'Is Null']; 
-            break;
-        case 'Comment':
-        case 'RecordGroup':
-        case 'Attachments':
-            return ['Is Null']; 
-            break;
         case 'NetPromoterScore':
         case 'Slider':
         case 'Number':
+            return ['Reference', 'Number'];
         case 'Date':
-            return ['Equals', 'Not Equal', 'Is Null', 'Is Greater than or equal to', 'Is Less than or equal to']; 
-            break;
-        default:
-            return ['Equals', 'Not Equal', 'Is Null']; 
-            break;
+            return ['Reference', 'Date', 'Picklist'];
     }
+}
 
+const getTypeForEquals = (fieldType) => {
+
+    switch (fieldType) {
+        case 'MultipleChoice':
+        case 'Dropdown':
+        case 'Ranking':
+        case 'Checkbox':
+            return ['Reference', 'Picklist'];
+            break;  
+        case 'Email':
+        case 'Lookup':
+            return ['Reference', 'String']; 
+        case 'NetPromoterScore':
+        case 'Slider':
+        case 'Number':
+            return ['Reference', 'Number']; 
+        case 'Date':
+            return ['Reference', 'Date', 'Picklist'];
+    }
 }

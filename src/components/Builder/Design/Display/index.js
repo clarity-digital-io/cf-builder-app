@@ -97,7 +97,8 @@ const Card = ({ update, children }) => {
 
     const theme = {
         background: style.Background_Color__c,
-        questionColor: style.Color__c
+        questionColor: style.Color__c, 
+        backgroundImage: style.Background_Image__c
     }
 
     return (    
@@ -135,6 +136,7 @@ const Card = ({ update, children }) => {
 const ArticleStyling = styled.article`
     background: ${props => props.theme.background} !important;
     color: ${props => props.theme.questionColor} !important;
+    background-image: ${props => `url(${props.theme.backgroundImage})`} !important; 
 `;
 
 
