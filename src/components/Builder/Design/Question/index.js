@@ -53,6 +53,8 @@ export const QuestionState = () => {
 const Save = ({ children }) => {
 
     const { 
+        criteria,
+        setCriteria,
         questionState,
         activeFlowDesign, 
         setActiveFlowDesign,
@@ -71,7 +73,7 @@ const Save = ({ children }) => {
             call(
                 "ClarityFormBuilder.saveQuestion", 
                 [JSON.stringify(activeQuestion)], 
-                (result, e) => resultHandler(result, e, setQuestionUpdate, setQuestions, activeQuestion, setQuestionState)
+                (result, e) => resultHandler(result, e, setQuestionUpdate, setQuestions, activeQuestion)
             );
         }
 
@@ -79,7 +81,7 @@ const Save = ({ children }) => {
             call(
                 "ClarityFormBuilder.saveQuestionWithOptions", 
                 [JSON.stringify(activeQuestion), JSON.stringify(activeQuestionOptions)], 
-                (result, e) => resultOptionHandler(result, e, setQuestionUpdate, setQuestions, activeQuestion, setActiveQuestionOptions, setQuestionState)
+                (result, e) => resultOptionHandler(result, e, setQuestionUpdate, setQuestions, activeQuestion, setActiveQuestionOptions)
             );
         }
 
@@ -87,15 +89,27 @@ const Save = ({ children }) => {
             call(
                 "ClarityFormBuilder.saveFlowDesign", 
                 [JSON.stringify(activeFlowDesign), JSON.stringify(activeQuestionOptions)], 
-                (result, e) => resultFlowHandler(result, e,setQuestionUpdate, setActiveQuestionOptions, setActiveFlowDesign, setQuestionState)
+                (result, e) => resultFlowHandler(result, e,setQuestionUpdate, setActiveQuestionOptions, setActiveFlowDesign)
             )
+        }
+
+        if(questionUpdate && questionState == 'LOGIC') {
+            
+            let updatedCriteria = criteria.map(c => { delete c.Id; return c });
+            
+            call(
+                "ClarityFormBuilder.savQuestionWithCriteria", 
+                [JSON.stringify(activeQuestion), JSON.stringify(updatedCriteria)], 
+                (result, e) => resultCriteriaHandler(result, e,setQuestionUpdate, setQuestions, setCriteria, activeQuestion)
+            )
+
         }
 
         if(questionUpdate && questionState == 'SF') {
             call(
                 "ClarityFormBuilder.saveRecordGroupFields", 
                 [JSON.stringify('fields'), JSON.stringify(activeQuestionOptions)], 
-                (result, e) => resultFlowHandler(result, e,setQuestionUpdate, setActiveQuestionOptions, setActiveFlowDesign, setQuestionState)
+                (result, e) => resultFlowHandler(result, e,setQuestionUpdate, setActiveQuestionOptions, setActiveFlowDesign)
             )
         }
 
@@ -130,7 +144,7 @@ const Save = ({ children }) => {
     ]
 }
 
-const resultHandler = (result, e, setQuestionUpdate, setQuestions, activeQuestion, setQuestionState) => {
+const resultHandler = (result, e, setQuestionUpdate, setQuestions, activeQuestion) => {
 
     setQuestions(questions => {
 
@@ -147,11 +161,9 @@ const resultHandler = (result, e, setQuestionUpdate, setQuestions, activeQuestio
 
     setQuestionUpdate(false);
 
-    setQuestionState('NEW')
-
 }
 
-const resultOptionHandler = (result, e, setQuestionUpdate, setQuestions, activeQuestion, setActiveQuestionOptions, setQuestionState) => {
+const resultOptionHandler = (result, e, setQuestionUpdate, setQuestions, activeQuestion, setActiveQuestionOptions) => {
     
     let options = result.Options;
     let resultQuestion = result.Question[0];
@@ -173,17 +185,37 @@ const resultOptionHandler = (result, e, setQuestionUpdate, setQuestions, activeQ
 
     setQuestionUpdate(false);
 
-    setQuestionState('NEW')
+}
+
+const resultCriteriaHandler = (result, e, setQuestionUpdate, setQuestions, setCriteria, activeQuestion) => {
+    
+    let criteria = result.Criteria;
+    let resultQuestion = result.Question[0];
+    console.log('resultCriteriaHandler', criteria, resultQuestion);
+    setQuestions(questions => {
+
+        return questions.map(question => {
+            if(question.Id == resultQuestion.Id) {
+                return activeQuestion; 
+            }
+
+            return question; 
+
+        })
+
+    });
+
+    setCriteria(criteria);
+    setQuestionUpdate(false); 
 
 }
 
-const resultFlowHandler = (result, e, setQuestionUpdate, setActiveQuestionOptions, setActiveFlowDesign, setQuestionState) => {
+const resultFlowHandler = (result, e, setQuestionUpdate, setActiveQuestionOptions, setActiveFlowDesign) => {
     let options = result.Options;
     let flowDesign = result.FlowDesign[0];
 
     setActiveQuestionOptions(options);    
     setActiveFlowDesign(flowDesign);
     setQuestionUpdate(false);
-    setQuestionState('NEW')
 
 }

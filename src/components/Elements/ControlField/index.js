@@ -5,14 +5,48 @@ import Box from '../Box';
 import CloseIcon from '../Icons/close';
 import {Button} from '../Button';
 import { call } from '../../RemoteActions';
+import ViewStyle from '../View/style';
 
-export const ControlGroup = ({ rows, setRows, questions }) => {
+export const ControlGroup = ({ relatedId, value, rows, setRows, setCondition, questions }) => {
 
     return [
         <ControlHeader key={'Header'} />, 
         <ControlRows setRows={setRows} rows={rows} key={'Rows'} questions={questions} />,
-        <ControlAddRow setRows={setRows} key={'Add'} />
+        <ControlAddRow setRows={setRows} relatedId={relatedId} key={'Add'} />,
+        <ControlCondition value={value} setCondition={setCondition} key={'Condition'} />
     ]
+}
+
+const ControlCondition = ({value, setCondition}) => {
+
+    return (
+        <ViewStyle space>
+        <View className="row middle-xs">
+            <View className="col-xs-6">
+
+            <fieldset className="slds-form-element">
+                <div className="slds-form-element__control">
+                    <span className="slds-radio">
+                    <input onChange={(e) => setCondition(e)} type="radio" className="radio" id="AND" checked={value == 'AND'} name="options" disabled="" />
+                    <label className="slds-radio__label" htmlFor="AND">
+                        <span className="slds-radio_faux"></span>
+                        <span className="slds-form-element__label">All of the Conditions are met (AND)</span>
+                    </label>
+                    </span>
+                    <span className="slds-radio">
+                    <input onChange={(e) => setCondition(e)} type="radio" className="radio" id="OR" checked={value == 'OR'} name="options" disabled="" />
+                    <label className="slds-radio__label" htmlFor="OR">
+                        <span className="slds-radio_faux"></span>
+                        <span className="slds-form-element__label">Any of the Conditions are met (OR)</span>
+                    </label>
+                    </span>
+                </div>
+            </fieldset>
+
+            </View>
+        </View>
+        </ViewStyle>
+    )
 }
 
 const ControlRows = ({ rows, setRows, questions }) => {
@@ -40,7 +74,7 @@ const ControlRow = ({ order, row, setRows, questions }) => {
         if(valueField == 'Boolean') {
             setOptions(['True'])
         }
-        console.log('row', row);
+
         if(valueField == 'Picklist' && row.Field_Type__c == 'Date') {
             setOptions(['TODAY', 'YESTERDAY', 'LAST_WEEK', 'LAST_MONTH', 'NEXT_WEEK', 'NEXT_MONTH'])
         }
@@ -177,11 +211,11 @@ const ControlRow = ({ order, row, setRows, questions }) => {
     )
 }
 
-const ControlAddRow = ({ setRows }) => {
+const ControlAddRow = ({ setRows, relatedId }) => {
 
     const add = () => {
         setRows(rows => {
-            return rows.concat([{ Operator__c: '', Type__c: '', Value__c: '', Title__c: '', Field__c: null, Field_Type__c: '' }])
+            return rows.concat([{ Operator__c: '', Type__c: '', Value__c: '', Title__c: '', Field__c: null, Field_Type__c: '', Clarity_Form_Question__c: relatedId }])
         })
     }
 
@@ -257,7 +291,7 @@ const getOptionsHandler = (result, e, setOptions) => {
 }
 
 const ControlValueField = ({ options, order, record, setSelection }) => {
-    console.log('field', options)
+
     switch (record.Type__c) {
         case 'String':
             return <ControlFieldInput type={'text'} order={order} record={record.Value__c} setSelection={setSelection} />
@@ -324,7 +358,7 @@ const ControlHeader = () => {
 }
 
 const getCorrectOperators = (fieldType) => {
-    console.log('fieldType', fieldType)
+
     switch (fieldType) {
         case 'MultipleChoice':
         case 'Dropdown':

@@ -11,11 +11,21 @@ import {ControlGroup } from '../../../../Elements/ControlField';
 
 export const LogicQuestion = () => {
 
-    const { loading, criteria, setCriteria, activeQuestion, questions } = useContext(DesignContext); 
+    const { loading, criteria, setCriteria, activeQuestion, questions, setActiveQuestion } = useContext(DesignContext); 
 
     const [questionOptions, setQuestionOptions] = useState(
         questions.filter(question => question.Title__c != activeQuestion.Title__c)
     )
+
+    const updateCondition = (e) => {
+
+        let checked = e.target.checked;
+        let id = e.target.id; 
+
+        setActiveQuestion(q => {
+            return { ...q, Logic__c: checked ? id : q.Logic__c }
+        })
+    }
 
     return (
         <View className="row middle-xs">
@@ -40,7 +50,7 @@ export const LogicQuestion = () => {
 
                         <h2>Step 1: <span>Select the criteria for this rule</span></h2>
 
-                        <ControlGroup rows={criteria} setRows={setCriteria} questions={questionOptions} />
+                        <ControlGroup relatedId={activeQuestion.Id} value={activeQuestion.Logic__c} rows={criteria} setRows={setCriteria} setCondition={updateCondition} questions={questionOptions} />
 
                         </ViewStyle>
 
