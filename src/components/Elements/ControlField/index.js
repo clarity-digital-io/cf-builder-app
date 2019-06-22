@@ -22,7 +22,7 @@ const ControlCondition = ({value, setCondition}) => {
     return (
         <ViewStyle space>
         <View className="row middle-xs">
-            <View className="col-xs-6">
+            <View className="col-xs-12">
 
             <fieldset className="slds-form-element">
                 <div className="slds-form-element__control">
