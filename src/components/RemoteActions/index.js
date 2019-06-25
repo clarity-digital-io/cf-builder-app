@@ -39,7 +39,7 @@ const mockCall = (func, params, callback) => {
                 Connected_Object__c: 'Account',
                 Clarity_Form_Style__c: 1, 
                 Clarity_Form_Assignment__c: 1,
-                Clarity_Form_Style__r: { Background_Color__c: '#333333', Color: '#ffffff', Button_Color__c: '' }, 
+                Clarity_Form_Style__r: { Background_Color__c: '#333333', Color__c: '#FFFFFF', Button_Color__c: '' }, 
                 Clarity_Form_Assignment__r: { Id: 1, Name: 'Clarity Form Assignment', Assign__c: 1, Default_Assign__c: 2 } 
             }); 
             break;
