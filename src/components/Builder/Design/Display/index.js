@@ -53,11 +53,6 @@ export const Display = () => {
 
 const GenerateQuestion = ({ item, provided, snapshot }) => {
 
-    const getItemStyle = (isDragging, draggableStyle) => ({
-        userSelect: 'none',
-        ...draggableStyle
-    });
-
     return (
         <SelectableCard 
             isDragging={snapshot.isDragging}
@@ -83,12 +78,7 @@ const SelectableCard = styled.div`
 
 const DropView = styled(View)`
     padding: 2em !important; 
-    border: 1px dashed ${Main.color.silver};
-
-    ${props => props.isDraggingOver == true && css`
-        background: ${Main.color.light};
-    `}
-    
+    border: 1px dashed ${Main.color.silver};    
 `;
 
 const Card = ({ update, children }) => {

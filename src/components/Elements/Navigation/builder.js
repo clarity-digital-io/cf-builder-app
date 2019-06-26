@@ -43,7 +43,7 @@ const BuilderNavigation = () => {
 
 const Nav = styled.nav`
     font-size: .95em;
-    font-weight: 100;
+    font-weight: 500;
     border-bottom: 1px solid ${Main.color.grey};
     background: ${Main.color.body};
 
@@ -52,7 +52,7 @@ const Nav = styled.nav`
     }
 
     ul > :first-child {
-        font-weight: 100;
+        font-weight: 500;
         font-size: 1em;
     }
 
