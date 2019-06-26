@@ -184,6 +184,7 @@ const DesignProvider = ({ children }) => {
 }
 
 const getSObjectFieldResultHandler = (result, e, setRequiredFields, setAdditionalFields, setSObjectEdit, setLoading) => {
+    console.log('getSObjectFieldResultHandler', result); 
     setSObjectEdit('');
     setAdditionalFields(result.NotRequired);
     setRequiredFields(result.Required);

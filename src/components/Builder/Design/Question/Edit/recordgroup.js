@@ -12,7 +12,13 @@ export const RecordGroup = () => {
 
     const { sObjects, activeQuestion, setActiveQuestion, setQuestions, setQuestionState, setQuestionUpdate } = useContext(DesignContext);
 
+    const [disabled, setDisabled] = useState(true);
+
     const updateLookupQuestion = (e) => {
+
+        if(value != '') {
+            setDisabled(false);
+        }
         
         let value = e.target.value; 
 
@@ -46,7 +52,7 @@ export const RecordGroup = () => {
         </ViewStyle>,
         <ViewStyle key={'add'}>
 
-            <Button neutral onClick={() => saveAndAddFields()}>Save &amp; Add Salesforce Fields</Button>
+            <Button disabled={disabled} neutral onClick={() => saveAndAddFields()}>Save &amp; Add Salesforce Fields</Button>
 
         </ViewStyle>
     ]

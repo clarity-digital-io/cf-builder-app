@@ -41,7 +41,7 @@ export const SalesforceFields = () => {
                         <h1>Salesforce Fields</h1>
 
                         {
-                            loading ? <SmallSpinner /> : <SalesforceSelects /> 
+                            loading ? <SmallSpinner /> : <SalesforceSelects requiredFields={requiredFields} additionalFields={additionalFields} /> 
                         }
 
                     </ViewStyle>
@@ -52,6 +52,8 @@ export const SalesforceFields = () => {
     )
 }
 
-const SalesforceSelects = () => {
-    return 'SalesforceSelects'
+const SalesforceSelects = ({additionalFields}) => {
+    return Object.keys(additionalFields).map(key => {
+        return key; 
+    })
 }
