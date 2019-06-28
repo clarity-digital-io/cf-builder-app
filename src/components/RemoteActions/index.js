@@ -47,7 +47,29 @@ const mockCall = (func, params, callback) => {
             callback({ Id: 1, Name: 'Clarity Form', End_Date__c: null, Connected_Object__c: 'Case', Limit__c: 1000, Clarity_Form_Style__c: 1, Clarity_Form_Assignment__c: 1 })
             break;
         case 'getQuestions':
-            callback([{ Id: 1, Type__c: 'RecordGroup', Title__c: 'Record Group', Salesforce_Object__c: 'Case', Order__c: 0, Max_Length__c: 10, Min_Range__c: 0, Max_Range__c: 100, Step__c: 10, Logic__c: 'AND' }]); 
+            callback([
+                { Id: 1, Logic__c: 'AND', Type__c: 'Comment', Title__c: 'Comment', Order__c: 1, Max_Length__c: 10, Min_Range__c: 0, Max_Range__c: 100, Step__c: 10, Page__c: 0 }, 
+                { Id: 2, Logic__c: 'AND', Type__c: 'Comment', Title__c: 'Comment', Order__c: 2, Max_Length__c: 10, Min_Range__c: 0, Max_Range__c: 100, Step__c: 10, Page__c: 1 },
+                { Id: 3, Logic__c: 'AND', Type__c: 'Dropdown', Title__c: 'Dropdown', Order__c: 3, Max_Length__c: 10, Min_Range__c: 0, Max_Range__c: 100, Step__c: 10, Page__c: 1, 
+                    Clarity_Form_Question_Options__r: [
+                        { Id: 1, Label__c: 'Option 1', Clarity_Form_Question__c: 1 },
+                        { Id: 2, Label__c: 'Option 2', Clarity_Form_Question__c: 1 },
+                        { Id: 3, Label__c: 'Option 3', Clarity_Form_Question__c: 1 }
+                    ]
+                }, 
+                { Id: 4, Logic__c: 'AND', Type__c: 'Lookup', Title__c: 'Add a Related Account:', Lookup__c: 'Account', Order__c: 4, Max_Length__c: 10, Min_Range__c: 0, Max_Range__c: 100, Step__c: 10, Page__c: 1 }, 
+                { Id: 5, Logic__c: 'OR', Type__c: 'Date', Title__c: 'Date', Order__c: 5, Max_Length__c: 10, Min_Range__c: 0, Max_Range__c: 100, Step__c: 10, Page__c: 0, 
+                    Clarity_Form_Question_Criteria__r: [
+                        { Id: 1, Clarity_Form_Question__c: 5, Field__c: 1, Field_Type__c: 'Comment', Operator__c: 'Is Not Null', Type__c: 'Boolean', Value__c: 'True'  },
+                        { Id: 2, Clarity_Form_Question__c: 5, Field__c: 2, Field_Type__c: 'Comment', Operator__c: 'Is Not Null', Type__c: 'Boolean', Value__c: 'True'  },
+                        { Id: 3, Clarity_Form_Question__c: 5, Field__c: 3, Field_Type__c: 'Comment', Operator__c: 'Is Not Null', Type__c: 'Boolean', Value__c: 'True'  }
+                    ]
+                },
+                { Id: 6, Logic__c: 'AND', Type__c: 'Lookup', Title__c: 'Add a Related Case:', Lookup__c: 'Case', Order__c: 6, Max_Length__c: 10, Min_Range__c: 0, Max_Range__c: 100, Step__c: 10, Page__c: 0 },
+                { Id: 7, Logic__c: 'AND', Type__c: 'RecordGroup', Title__c: 'Create Opportunity Line Items', Salesforce_Object__c: 'OpportunityLineItem', Order__c: 7, Page__c: 2 }, 
+                { Id: 8, Logic__c: 'AND', Type__c: 'REFERENCE', Title__c: 'Add an account:', Field__c: 'OpportunityId', Record_Group__c: 7, Order__c: 0, Page__c: 0 },
+                { Id: 9, Logic__c: 'AND', Type__c: 'Number', Title__c: 'Add the quantity:', Field__c: 'Quantity', Record_Group__c: 7, Order__c: 1, Page__c: 0 }
+            ]); 
             break;
         case 'save': 
             callback([timestamp]);

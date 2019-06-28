@@ -67,8 +67,7 @@ const GenerateQuestion = ({ item, provided, snapshot }) => {
 }
 
 const SelectableCard = styled.div`
-    box-shadow: 1px 1px 5px ${Main.color.silver};
-    border-radius: 4px; 
+    border: 1px dashed ${Main.color.silver};
 
     ${props => props.isDragging == true && css`
         box-shadow: 1px 1px 5px ${Main.color.grey};

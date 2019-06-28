@@ -1,24 +1,31 @@
 import React, { useContext, useState } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import View from '../../../Elements/View'
 import Box from '../../../Elements/Box'
 import Main from '../../../Elements/Theme'
 
-import { DesignContext } from '../../../Context';
+import { DesignContext, BuilderContext } from '../../../Context';
 
 export const Question = ({ question }) => {
+
+    const { navState, setNavState } = useContext(BuilderContext); 
 
     const { setQuestionState, setActiveQuestion, activeQuestion, setEdit, setQuestionToDelete } = useContext(DesignContext);
 
     const edit = (state) => {
+
+        if(navState != 'QUESTIONS') {
+            setNavState('QUESTIONS')
+        }
+
         setActiveQuestion(question);
         setQuestionState(state);
         setEdit(question.Id);
     }
 
     return (
-        <ViewStyle active={ question.Id != null && (question.Id == activeQuestion.Id) }>
+        <QuestionStyle key={'Question'} active={ question.Id != null && (question.Id == activeQuestion.Id) }>
             <View className="row middle-xs">
 
                 <View className="col-xs-12 col-sm-6 col-md-6 col-lg-7">
@@ -51,13 +58,19 @@ export const Question = ({ question }) => {
                                 question.Type__c == 'Number' ? <li onClick={() => edit('CALCULATOR')}>Calculator</li> : null 
                             }
 
+
+                            {
+                                (question.Type__c == 'RecordGroup' && question.Salesforce_Object__c != null) ? <li onClick={() => edit('SF')} id="add">Add Fields</li> : null
+                            }
+
                             <li onClick={() => setQuestionToDelete(question.Id)} id="delete">Delete</li>
                         </Options>
                     </Box> 
                 </View>
 
             </View>
-        </ViewStyle>
+
+        </QuestionStyle>
     )
 }
 
@@ -90,16 +103,17 @@ const Options = styled.ul`
 
 `;
 
-const ViewStyle = styled.div`
-    padding: 1em;
-    margin-bottom: 1em;
-    border-left: ${props => props.active ? `2px solid ${Main.color.body}` : "white"};
+const QuestionStyle = styled.div`
 
-    .active {
-        background: ${Main.color.body}
-    }
+    padding: 1em;
+    border-left: ${props => props.active ? `2px solid ${Main.color.body}` : ""};
 
     span#required {
         color: ${Main.color.alert};
     }
+
+    ${props => props.repeatable && css`
+        border: 1px solid ${Main.color.body}
+    `}
+
 `;

@@ -5,33 +5,25 @@ import { BuilderContext } from '../../Context';
 
 const DesignNavigation = () => {
 
-    const { nav, setNavState } = useContext(BuilderContext);
-
-    const select = (newNav) => {
-        console.log('newNav', newNav);
-        setNavState(prevNav => {
-            return { ...prevNav, NavState: newNav }
-        });
-
-    }
+    const { navState, setNavState } = useContext(BuilderContext);
 
     return (
         <Nav>
 
             <ul>
-                <li className={ nav.NavState == 'QUESTIONS' ? 'active' : '' } onClick={() => select('QUESTIONS')}>
+                <li className={ navState == 'QUESTIONS' ? 'active' : '' } onClick={() => setNavState('QUESTIONS')}>
                     <div><span>Questions</span></div>
                 </li>
-                <li className={ nav.NavState == 'DESIGN' ? 'active' : '' } onClick={() => select('DESIGN')}>
+                <li className={ navState == 'DESIGN' ? 'active' : '' } onClick={() => setNavState('DESIGN')}>
                     <div><span>Design</span></div>
                 </li>
-                <li className={ nav.NavState == 'ASSIGNMENTS' ? 'active' : '' } onClick={() => select('ASSIGNMENTS')}>
+                <li className={ navState == 'ASSIGNMENTS' ? 'active' : '' } onClick={() => setNavState('ASSIGNMENTS')}>
                     <div><span>Assignments</span></div>
                 </li>
-                <li className={ nav.NavState == 'SETTINGS' ? 'active' : '' } onClick={() => select('SETTINGS')}>
+                <li className={ navState == 'SETTINGS' ? 'active' : '' } onClick={() => setNavState('SETTINGS')}>
                     <div><span>Settings</span></div>
                 </li>
-                <li className={ nav.NavState == 'HELP' ? 'active' : '' } onClick={() => select('HELP')}>
+                <li className={ navState == 'HELP' ? 'active' : '' } onClick={() => setNavState('HELP')}>
                     <div><span>Help</span></div>
                 </li>
             </ul>

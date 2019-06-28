@@ -69,11 +69,13 @@ const DesignProvider = ({ children }) => {
 
     const [activeQuestionConnectedFields, setActiveQuestionConnectedFields] = useState([]); 
 
+    const [recordGroup, setRecordGroup] = useState(new Map()); 
+
     const [questions, setQuestions] = useState([]); 
 
     useEffect(() => {
 
-        call("ClarityFormBuilder.getQuestions", [form.Id], (result, e) => fetchHandler(result, e, setQuestions))
+        call("ClarityFormBuilder.getQuestions", [form.Id], (result, e) => fetchHandler(result, e, setQuestions, setRecordGroup))
 
     }, [])
 
@@ -148,6 +150,8 @@ const DesignProvider = ({ children }) => {
     return (
         <DesignContext.Provider 
             value={{ 
+                recordGroup, 
+                setRecordGroup,
                 activeQuestionConnectedFields, 
                 setActiveQuestionConnectedFields,
                 activeQuestionRecordFields, 
@@ -184,15 +188,30 @@ const DesignProvider = ({ children }) => {
 }
 
 const getSObjectFieldResultHandler = (result, e, setRequiredFields, setAdditionalFields, setSObjectEdit, setLoading) => {
-    console.log('getSObjectFieldResultHandler', result); 
     setSObjectEdit('');
     setAdditionalFields(result.NotRequired);
     setRequiredFields(result.Required);
     setLoading(false);
 }
 
-const fetchHandler = (result, e, setQuestions) => {
-    setQuestions(sort(result));
+const fetchHandler = (result, e, setQuestions, setRecordGroup) => {
+
+    let questions = sorted(result); 
+
+    let cleanQuestions = questions.filter(question => question.Record_Group__c == null);
+
+    let recordGroupQuestions = questions.filter(question => question.Type__c == 'RecordGroup');
+
+    let recordGroups = recordGroupQuestions.reduce((accum, question) => {
+
+        return accum.set(question.Id, questions.filter(q => q.Record_Group__c == question.Id))
+
+    }, new Map());
+
+    setQuestions(cleanQuestions);
+
+    setRecordGroup(recordGroups); 
+
 }
 
 const optionFetchHandler = (result, e, setLoading, setActiveQuestionOptions, setActiveFlowDesign, setCriteria, setActiveQuestionRecordFields, setActiveQuestionConnectedFields) => {
@@ -208,9 +227,9 @@ const deleteResultHandler = (result, e, setQuestions) => {
     setQuestions(sort(result));
 }
 
-const sort = (result) => {
+const sorted = (questions) => {
 
-    return result.sort((a, b) => {
+    let result = questions.sort((a, b) => {
         if(a.Order__c < b.Order__c) {
             return -1; 
         }
@@ -218,6 +237,8 @@ const sort = (result) => {
             return 1; 
         }
     });
+
+    return result; 
 
 }
 

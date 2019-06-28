@@ -6,19 +6,12 @@ import { call } from '../../../../RemoteActions';
 
 import { DesignContext } from '../../../../Context';
 import { Select } from '../../../../Elements/Select';
-import { InputField } from '../../../../Elements/Input';
 
 export const RecordGroup = () => {
 
     const { sObjects, activeQuestion, setActiveQuestion, setQuestions, setQuestionState, setQuestionUpdate } = useContext(DesignContext);
 
-    const [disabled, setDisabled] = useState(true);
-
     const updateLookupQuestion = (e) => {
-
-        if(value != '') {
-            setDisabled(false);
-        }
         
         let value = e.target.value; 
 
@@ -52,7 +45,7 @@ export const RecordGroup = () => {
         </ViewStyle>,
         <ViewStyle key={'add'}>
 
-            <Button disabled={disabled} neutral onClick={() => saveAndAddFields()}>Save &amp; Add Salesforce Fields</Button>
+            <Button disabled={activeQuestion.Salesforce_Object__c == '' ? true : false} neutral onClick={() => saveAndAddFields()}>Save &amp; Add Salesforce Fields</Button>
 
         </ViewStyle>
     ]
@@ -77,22 +70,5 @@ const resultHandler = (result, e, setQuestionUpdate, setQuestions, activeQuestio
     setQuestionUpdate(false);
 
     setQuestionState('SF');
-
-}
-
-
-const ControlInput = ({requiredFields}) => {
-
-    return Object.keys(requiredFields).map(field => {
-
-        return <InputField value={field} onChange={null} />
-        
-    })
-
-}
-
-const ControlSelect = ({additionalFields}) => {
-
-    return <Select options={Object.keys(additionalFields)} />
 
 }

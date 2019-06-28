@@ -12,7 +12,7 @@ import { BuilderContext } from '../../Context';
 
 const Design = () => {
     
-    const { nav } = useContext(BuilderContext);
+    const { navState } = useContext(BuilderContext);
 
     const getNavState = (nav) => {
         
@@ -37,7 +37,7 @@ const Design = () => {
         <View className="col-xs-5 col-sm-4 col-md-4 col-lg-4" scroll>
             <Box padding='0'>
                 
-                { getNavState(nav.NavState) }
+                { getNavState(navState) }
 
             </Box> 
         </View>,

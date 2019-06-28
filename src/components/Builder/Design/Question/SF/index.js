@@ -6,10 +6,11 @@ import ViewStyle from '../../../../Elements/View/style';
 
 import Box from '../../../../Elements/Box';
 import { SmallSpinner } from '../../../../Elements/Spinner';
+import { Select } from '../../../../Elements/Select';
 
 export const SalesforceFields = () => {
 
-    const { loading, activeQuestion, requiredFields, additionalFields, setSObjectEdit } = useContext(DesignContext); 
+    const { loading, activeQuestion, questions, requiredFields, additionalFields, setSObjectEdit, recordGroup } = useContext(DesignContext); 
 
     useEffect(() => {
         
@@ -41,7 +42,9 @@ export const SalesforceFields = () => {
                         <h1>Salesforce Fields</h1>
 
                         {
-                            loading ? <SmallSpinner /> : <SalesforceSelects requiredFields={requiredFields} additionalFields={additionalFields} /> 
+                            loading ? 
+                                <SmallSpinner /> : 
+                                <SalesforceSelects fields={recordGroup.get(activeQuestion.Id)} additionalFields={additionalFields} /> 
                         }
 
                     </ViewStyle>
@@ -52,8 +55,46 @@ export const SalesforceFields = () => {
     )
 }
 
-const SalesforceSelects = ({additionalFields}) => {
-    return Object.keys(additionalFields).map(key => {
-        return key; 
-    })
+const SalesforceSelects = ({ fields, additionalFields }) => {
+
+    console.log(fields, additionalFields);
+    return ['test'
+        // <ControlSelects rows={rows} additionalFields={additionalFields} />,
+        // <ControlAddRow setRows={setRows} relatedId={relatedId} key={'Add'} />
+    ]
+
+}
+
+const ControlSelects = ({additionalFields}) => {
+
+    return rows.map()
+
+    return <Select options={Object.keys(additionalFields)} />
+
+}
+
+const ControlAddRow = ({ setRows, relatedId }) => {
+
+    const add = () => {
+
+        setRows(rows => {
+            return rows.concat([{ Operator__c: '', Type__c: '', Value__c: '', Title__c: '', Field__c: null, Field_Type__c: '', Clarity_Form_Question__c: relatedId }])
+        })
+
+    }
+
+    return (
+        <View className="row center-xs middle-xs">
+            <View className="col-xs-1">
+
+                <Button add onClick={() => add()}>Add</Button>
+
+            </View>
+            <View className="col-xs-11">
+
+
+            </View>
+        </View>
+    )
+    
 }

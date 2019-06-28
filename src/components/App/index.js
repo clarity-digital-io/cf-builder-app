@@ -39,11 +39,11 @@ const BuilderProvider = ({ children }) => {
 
     const [assignmentRules, setAssignmentRules] = useState([]);
 
-    const [nav, setNavState] = useState({ NavState: 'QUESTIONS' }); 
+    const [navState, setNavState] = useState('QUESTIONS'); 
 
     useEffect(() => {
 
-        if(nav.NavState == 'ASSIGNMENTS') {
+        if(navState == 'ASSIGNMENTS') {
 
             setLoading(true);
 
@@ -55,7 +55,7 @@ const BuilderProvider = ({ children }) => {
 
         }
 
-    }, [nav])
+    }, [navState])
 
     const [sObjects, setSObjects] = useState([]);
 
@@ -69,7 +69,7 @@ const BuilderProvider = ({ children }) => {
 
     useEffect(() => {
 
-        if(formUpdate && nav.NavState == 'SETTINGS') {
+        if(formUpdate && navState == 'SETTINGS') {
             call("ClarityFormBuilder.updateForm", [JSON.stringify(form)], (result, e) => updateFormHandler(result, e, setFormUpdate, setForm));
         }
 
@@ -83,7 +83,7 @@ const BuilderProvider = ({ children }) => {
             setAssignment,
             assignmentRules, 
             setAssignmentRules,
-            nav, 
+            navState, 
             setNavState, 
             form, 
             style, 
