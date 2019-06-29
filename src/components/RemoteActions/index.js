@@ -112,7 +112,7 @@ const mockCall = (func, params, callback) => {
             callback(['Account', 'Case', 'Contact', 'Opportunity', 'AccountRole']);
             break; 
         case 'getSObjectFields': 
-            callback({ Required: {'OwnerId': 'Reference', 'Name': 'Text'}, NotRequired: {'Time': 'Number', 'CustomField': 'Picklist'}});
+            callback({ Required: {'OwnerId': 'Reference', 'Name': 'Text'}, NotRequired: {'OpportunityId': 'REFERENCE', 'Quantity': 'Number'}});
             break; 
         case 'getUsers':
             callback([{Id: 1, Name: 'Test User1', UserName: 'User1'}, {Id: 2, Name: 'Test User2', UserName: 'User2'}]);
@@ -128,6 +128,9 @@ const mockCall = (func, params, callback) => {
             break; 
         case 'updateDesign':
             callback([{ Background_Color__c: '#FFF', Color: '#333', Button_Color__c: '#333' }]);
+            break; 
+        case 'saveRecordGroupFields':
+            callback([]);
             break; 
         default:
             break;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, createContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { call } from '../../RemoteActions';
 
@@ -65,11 +65,9 @@ const DesignProvider = ({ children }) => {
 
     const [activeQuestionOptions, setActiveQuestionOptions] = useState([]); 
 
-    const [activeQuestionRecordFields, setActiveQuestionRecordFields] = useState([]); 
+    const [recordGroup, setRecordGroup] = useState(new Map()); 
 
     const [activeQuestionConnectedFields, setActiveQuestionConnectedFields] = useState([]); 
-
-    const [recordGroup, setRecordGroup] = useState(new Map()); 
 
     const [questions, setQuestions] = useState([]); 
 
@@ -94,7 +92,7 @@ const DesignProvider = ({ children }) => {
             setAdditionalFields([])
             setRequiredFields([])
             setLoading(true);
-            call("ClarityFormBuilder.getQuestionEditDetails", [activeQuestion.Id], (result, e) => optionFetchHandler(result, e, setLoading, setActiveQuestionOptions, setActiveFlowDesign, setCriteria, setActiveQuestionRecordFields, setActiveQuestionConnectedFields))
+            call("ClarityFormBuilder.getQuestionEditDetails", [activeQuestion.Id], (result, e) => optionFetchHandler(result, e, setLoading, setActiveQuestionOptions, setActiveFlowDesign, setCriteria))
         
         }
 
@@ -154,8 +152,6 @@ const DesignProvider = ({ children }) => {
                 setRecordGroup,
                 activeQuestionConnectedFields, 
                 setActiveQuestionConnectedFields,
-                activeQuestionRecordFields, 
-                setActiveQuestionRecordFields,
                 additionalFields,
                 setAdditionalFields,
                 setRequiredFields,
@@ -214,9 +210,7 @@ const fetchHandler = (result, e, setQuestions, setRecordGroup) => {
 
 }
 
-const optionFetchHandler = (result, e, setLoading, setActiveQuestionOptions, setActiveFlowDesign, setCriteria, setActiveQuestionRecordFields, setActiveQuestionConnectedFields) => {
-    setActiveQuestionRecordFields(result.Records);
-    setActiveQuestionConnectedFields(result.Connected);
+const optionFetchHandler = (result, e, setLoading, setActiveQuestionOptions, setActiveFlowDesign, setCriteria) => {
     setActiveQuestionOptions(result.Options);
     setCriteria(result.Criteria);
     setActiveFlowDesign(result.FlowDesign[0]);

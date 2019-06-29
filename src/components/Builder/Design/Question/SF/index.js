@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { DesignContext } from '../../../../Context';
+import { DesignContext, EditContext } from '../../../../Context';
 
 import View from '../../../../Elements/View';
 import ViewStyle from '../../../../Elements/View/style';
@@ -7,16 +7,22 @@ import ViewStyle from '../../../../Elements/View/style';
 import Box from '../../../../Elements/Box';
 import { SmallSpinner } from '../../../../Elements/Spinner';
 import { Select } from '../../../../Elements/Select';
+import { Button } from '../../../../Elements/Button';
 
 export const SalesforceFields = () => {
 
-    const { loading, activeQuestion, questions, requiredFields, additionalFields, setSObjectEdit, recordGroup } = useContext(DesignContext); 
+    const { activeRecordGroup, setActiveRecordGroup } = useContext(EditContext); 
+
+    const { loading, recordGroup, additionalFields, activeQuestion, setRecordGroup, setSObjectEdit } = useContext(DesignContext); 
 
     useEffect(() => {
         
+        setActiveRecordGroup(recordGroup.get(activeQuestion.Id));
         setSObjectEdit(activeQuestion.Type__c);
 
     }, []);
+
+
 
     return (
         <View className="row middle-xs">
@@ -41,11 +47,14 @@ export const SalesforceFields = () => {
 
                         <h1>Salesforce Fields</h1>
 
-                        {
-                            loading ? 
-                                <SmallSpinner /> : 
-                                <SalesforceSelects fields={recordGroup.get(activeQuestion.Id)} additionalFields={additionalFields} /> 
-                        }
+
+                                <SalesforceSelects 
+                                    records={activeRecordGroup} 
+                                    setRecordGroup={setActiveRecordGroup} 
+                                    relatedId={activeQuestion.Id} 
+                                    additionalFields={additionalFields}
+                                /> 
+               
 
                     </ViewStyle>
 
@@ -55,30 +64,32 @@ export const SalesforceFields = () => {
     )
 }
 
-const SalesforceSelects = ({ fields, additionalFields }) => {
-
-    console.log(fields, additionalFields);
-    return ['test'
-        // <ControlSelects rows={rows} additionalFields={additionalFields} />,
-        // <ControlAddRow setRows={setRows} relatedId={relatedId} key={'Add'} />
+const SalesforceSelects = ({ records, setRecordGroup, relatedId, additionalFields }) => {
+ 
+    return [
+        <ControlSelects key={'Select'} records={records} additionalFields={additionalFields} />,
+        <ControlAddRow key={'Add'} setRecordGroup={setRecordGroup} relatedId={relatedId} />
     ]
 
 }
 
-const ControlSelects = ({additionalFields}) => {
+const ControlSelects = ({ records, additionalFields }) => {
 
-    return rows.map()
+    console.log('reccordGroup3.1', records, additionalFields); 
 
-    return <Select options={Object.keys(additionalFields)} />
+    return records.map(row => {
+        console.log('row', row)
+        return <Select key={row.Id} value={row.Field__c} options={Object.keys(additionalFields)} />
+    });
 
 }
 
-const ControlAddRow = ({ setRows, relatedId }) => {
+const ControlAddRow = ({ setRecordGroup, relatedId }) => {
 
     const add = () => {
-
-        setRows(rows => {
-            return rows.concat([{ Operator__c: '', Type__c: '', Value__c: '', Title__c: '', Field__c: null, Field_Type__c: '', Clarity_Form_Question__c: relatedId }])
+ 
+        setRecordGroup(records => {   
+            return records.concat([{ Id: 10, Logic__c: 'AND', Type__c: '', Title__c: '', Field__c: '', Record_Group__c: relatedId, Order__c: records.length, Page__c: 0 }]);
         })
 
     }

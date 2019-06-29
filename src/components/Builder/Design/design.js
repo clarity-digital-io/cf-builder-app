@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import View from '../../Elements/View';
 import Box from '../../Elements/Box';
 
-import { QuestionState } from './Question';
+import { QuestionState } from './Question/state';
 import { DesignState } from './Styling';
 import { AssignmentState } from './Assignment';
 import { SettingstState } from './Settings'; 
@@ -34,7 +34,7 @@ const Design = () => {
     }
 
     return [
-        <View className="col-xs-5 col-sm-4 col-md-4 col-lg-4" scroll>
+        <View key={'QuestionState'} className="col-xs-5 col-sm-4 col-md-4 col-lg-4" scroll>
             <Box padding='0'>
                 
                 { getNavState(navState) }
@@ -42,7 +42,7 @@ const Design = () => {
             </Box> 
         </View>,
 
-        <View className="col-xs-6 col-sm-7 col-md-7 col-lg-7">
+        <View key={'QuestionDisplay'} className="col-xs-6 col-sm-7 col-md-7 col-lg-7">
             <Box padding='0'>
                 <Display />
             </Box>                
