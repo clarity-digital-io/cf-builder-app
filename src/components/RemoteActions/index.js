@@ -112,7 +112,7 @@ const mockCall = (func, params, callback) => {
             callback(['Account', 'Case', 'Contact', 'Opportunity', 'AccountRole']);
             break; 
         case 'getSObjectFields': 
-            callback({ Required: {'OwnerId': 'Reference', 'Name': 'Text'}, NotRequired: {'OpportunityId': 'REFERENCE', 'Quantity': 'Number'}});
+            callback({ Required: {'OwnerId': 'Reference', 'Name': 'Text'}, NotRequired: {'OpportunityId': 'REFERENCE', 'UnitPrice': 'Currency', 'Product2Id': 'REFERENCE', 'Quantity': 'Number'}});
             break; 
         case 'getUsers':
             callback([{Id: 1, Name: 'Test User1', UserName: 'User1'}, {Id: 2, Name: 'Test User2', UserName: 'User2'}]);
@@ -130,7 +130,11 @@ const mockCall = (func, params, callback) => {
             callback([{ Background_Color__c: '#FFF', Color: '#333', Button_Color__c: '#333' }]);
             break; 
         case 'saveRecordGroupFields':
-            callback([]);
+            callback([
+                { Id: 8, Logic__c: 'AND', Type__c: 'REFERENCE', Title__c: 'Add an account:', Field__c: 'OpportunityId', Record_Group__c: 7, Order__c: 0, Page__c: 0 },
+                { Id: 9, Logic__c: 'AND', Type__c: 'Number', Title__c: 'Add the quantity:', Field__c: 'Quantity', Record_Group__c: 7, Order__c: 1, Page__c: 0 },
+                { Id: 10, Logic__c: 'AND', Type__c: 'REFERENCE', Title__c: '', Field__c: 'Product2Id', Record_Group__c: 7, Order__c: 2, Page__c: 0 }
+            ]);
             break; 
         default:
             break;

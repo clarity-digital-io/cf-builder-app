@@ -14,7 +14,7 @@ import { SalesforceFields } from './SF';
 import { AutomateQuestion } from './Automate';
 import { LogicQuestion } from './Logic';
 
-import { DesignContext } from '../../../Context';
+import { DesignContext, EditContext } from '../../../Context';
 
 export const QuestionState = () => {
 
@@ -53,6 +53,8 @@ export const QuestionState = () => {
 }
 
 const Save = ({ children }) => {
+
+    const { activeRecordGroup, setActiveRecordGroup } = useContext(EditContext); 
 
     const { 
         criteria,
@@ -110,11 +112,10 @@ const Save = ({ children }) => {
         }
 
         if(questionUpdate && questionState == 'SF') {
-            console.log('recordGroup', recordGroup)
             call(
                 "ClarityFormBuilder.saveRecordGroupFields", 
-                [JSON.stringify(recordGroup)], 
-                (result, e) => resultFlowHandler(result, e, setQuestionUpdate, setRecordGroup)
+                [JSON.stringify(activeRecordGroup)], 
+                (result, e) => resultRecordGroupFieldsHandler(result, e, setQuestionUpdate, setRecordGroup, setActiveRecordGroup, activeQuestion)
             )
         }
 
@@ -211,6 +212,19 @@ const resultCriteriaHandler = (result, e, setQuestionUpdate, setQuestions, setCr
     });
 
     setCriteria(criteria);
+    setQuestionUpdate(false); 
+
+}
+
+const resultRecordGroupFieldsHandler = (result, e, setQuestionUpdate, setRecordGroup, setActiveRecordGroup, activeQuestion) => {
+
+    setActiveRecordGroup(result);
+
+    setRecordGroup(group => {
+        group.set(activeQuestion.Id, result); 
+        return group; 
+    });
+
     setQuestionUpdate(false); 
 
 }

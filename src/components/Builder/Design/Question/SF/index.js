@@ -47,14 +47,12 @@ export const SalesforceFields = () => {
 
                         <h1>Salesforce Fields</h1>
 
-
-                                <SalesforceSelects 
-                                    records={activeRecordGroup} 
-                                    setRecordGroup={setActiveRecordGroup} 
-                                    relatedId={activeQuestion.Id} 
-                                    additionalFields={additionalFields}
-                                /> 
-               
+                        <SalesforceSelects 
+                            records={activeRecordGroup} 
+                            setActiveRecordGroup={setActiveRecordGroup} 
+                            relatedId={activeQuestion.Id} 
+                            additionalFields={additionalFields}
+                        /> 
 
                     </ViewStyle>
 
@@ -64,32 +62,62 @@ export const SalesforceFields = () => {
     )
 }
 
-const SalesforceSelects = ({ records, setRecordGroup, relatedId, additionalFields }) => {
+const SalesforceSelects = ({ records, setActiveRecordGroup, relatedId, additionalFields }) => {
  
     return [
-        <ControlSelects key={'Select'} records={records} additionalFields={additionalFields} />,
-        <ControlAddRow key={'Add'} setRecordGroup={setRecordGroup} relatedId={relatedId} />
+        <ControlSelects setActiveRecordGroup={setActiveRecordGroup} key={'Select'} records={records} additionalFields={additionalFields} />,
+        <ControlAddRow key={'Add'} setActiveRecordGroup={setActiveRecordGroup} relatedId={relatedId} />
     ]
 
 }
 
-const ControlSelects = ({ records, additionalFields }) => {
+const ControlSelects = ({ setActiveRecordGroup, records, additionalFields }) => {
 
-    console.log('reccordGroup3.1', records, additionalFields); 
-
-    return records.map(row => {
-        console.log('row', row)
-        return <Select key={row.Id} value={row.Field__c} options={Object.keys(additionalFields)} />
+    return records.map((row, i) => {
+        return <ControlSelect setActiveRecordGroup={setActiveRecordGroup} key={row.Order__c} index={i} row={row} additionalFields={additionalFields} />
     });
 
 }
 
-const ControlAddRow = ({ setRecordGroup, relatedId }) => {
+const ControlSelect = ({ setActiveRecordGroup, index, row, additionalFields }) => {
+
+    const setSelection = (e, order) => {
+
+        let value = e.target.value; 
+
+        setActiveRecordGroup(records => {
+
+            return records.map((record, i) => {
+
+                if(i == index) {
+                    return { ...record, Field__c: value, Type__c: additionalFields[value] }
+                }
+
+                return record; 
+
+            })
+        })
+
+    }
+
+    return (
+        <View className="row middle-xs">
+            <View className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <Box padding='.5em'> 
+                    <Select key={row.Order__c} value={row.Field__c} options={Object.keys(additionalFields)} onChange={(e) => setSelection(e, row.Order__c)}/>
+                </Box>
+            </View>
+        </View>
+    )
+    
+}
+
+const ControlAddRow = ({ setActiveRecordGroup, relatedId }) => {
 
     const add = () => {
  
-        setRecordGroup(records => {   
-            return records.concat([{ Id: 10, Logic__c: 'AND', Type__c: '', Title__c: '', Field__c: '', Record_Group__c: relatedId, Order__c: records.length, Page__c: 0 }]);
+        setActiveRecordGroup(records => {   
+            return records.concat([{ Logic__c: 'AND', Type__c: '', Title__c: '', Field__c: '', Record_Group__c: relatedId, Order__c: records.length, Page__c: 0 }]);
         })
 
     }
