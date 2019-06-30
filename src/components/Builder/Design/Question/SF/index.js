@@ -102,9 +102,34 @@ const ControlSelect = ({ setActiveRecordGroup, index, row, additionalFields }) =
 
     return (
         <View className="row middle-xs">
-            <View className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <View className="col-xs-1">
+                <Box padding='.5em'>
+                    <span id="center">{ index + 1 }</span>
+                </Box>                
+            </View>
+            <View className="col-xs-3">
                 <Box padding='.5em'> 
                     <Select key={row.Order__c} value={row.Field__c} options={Object.keys(additionalFields)} onChange={(e) => setSelection(e, row.Order__c)}/>
+                </Box>
+            </View>
+            <View className="col-xs-2">
+                <Box padding='.5em'> 
+                    Edit
+                </Box>
+            </View>
+            <View className="col-xs-2">
+                <Box padding='.5em'> 
+                    Automate
+                </Box>
+            </View>
+            <View className="col-xs-2">
+                <Box padding='.5em'> 
+                    Logic
+                </Box>
+            </View>
+            <View className="col-xs-2">
+                <Box padding='.5em'> 
+                    Delete
                 </Box>
             </View>
         </View>

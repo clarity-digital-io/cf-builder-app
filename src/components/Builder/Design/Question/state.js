@@ -27,19 +27,19 @@ export const QuestionState = () => {
                 return <NewQuestion />
                 break;
             case 'EDIT': 
-                return <Save><EditQuestion type={activeQuestion.Type__c} /></Save>
+                return <EditProvider><Save><EditQuestion type={activeQuestion.Type__c} /></Save></EditProvider>
                 break;
             case 'SF': 
                 return <EditProvider><Save><SalesforceFields /></Save></EditProvider>
                 break; 
             case 'AUTOMATE': 
-                return <Save><AutomateQuestion type={activeQuestion.Type__c} /></Save>
+                return <EditProvider><Save><AutomateQuestion type={activeQuestion.Type__c} /></Save></EditProvider>
                 break;
             case 'LOGIC': 
-                return <Save><LogicQuestion type={activeQuestion.Type__c} /></Save>
+                return <EditProvider><Save><LogicQuestion type={activeQuestion.Type__c} /></Save></EditProvider>
                 break;
             case 'CALCULATOR': 
-                return <Save><div>calculator</div></Save>
+                return <EditProvider><Save><div>calculator</div></Save></EditProvider>
                 break; 
             default:
                 return null;
