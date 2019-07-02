@@ -4,20 +4,22 @@ import { Droppable, Draggable } from 'react-beautiful-dnd';
 import Main from '../../../Elements/Theme';
 import View from '../../../Elements/View';
 
-import { types } from '../types';
+import { sortedTypes } from '../types';
 
 import DragAction from '../../../Elements/Icons/drag';
 
 export const NewQuestion = () => {
-
+    console.log('sortedTypes', sortedTypes)
     return (
         <Droppable isDropDisabled={true} droppableId="new">
             {(provided, snapshot) => (
                 <View
+                    silver
+                    space
                     full
                     key={'DroppableView'}
                     ref={provided.innerRef}>
-                    {types.map((type, index) => {
+                    {sortedTypes.map((type, index) => {
                         return (
                             <Draggable
                                 key={type.id}
@@ -53,10 +55,12 @@ export const NewQuestion = () => {
 const SelectableNew = styled.div`
     user-select: 'none';
     font-size: .85em;
-    font-weight: 900;
-    border-bottom: 1px solid ${Main.color.light};
-    padding: 1.25em 0 1.25em 0em; 
+    padding: 1em 0 1em 0; 
     cursor: pointer;
+    margin: .75em;
+    font-weight: 900;
+    background: ${Main.color.white};
+    border-radius: 4px; 
 
     span {
         display: inline-block;

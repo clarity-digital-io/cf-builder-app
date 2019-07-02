@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import Main from '../Theme';
 
 const View = styled.div`
     margin-right: 0em; 
@@ -7,7 +8,15 @@ const View = styled.div`
     padding: 0; 
 
     ${props => props.full && css`
-      height:100%;
+      height: 100vh;
+    `}
+
+    ${props => props.space && css`
+      padding: .75em;
+    `}
+
+    ${props => props.silver && css`
+      background: ${Main.color.silver}
     `}
 
 `;

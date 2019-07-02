@@ -130,8 +130,8 @@ const ArticleStyling = styled.article`
 
 
 const FormDesign = styled.div`
-    height: 94vh; 
-    background: ${Main.color.silver}; 
+    height: 100vh; 
+    background: ${Main.color.light}; 
     padding: 2em; 
     overflow: scroll;
 `;

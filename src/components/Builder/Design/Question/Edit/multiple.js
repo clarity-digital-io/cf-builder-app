@@ -4,11 +4,13 @@ import Box from '../../../../Elements/Box';
 import CloseIcon from '../../../../Elements/Icons/close';
 
 import ViewStyle from '../../../../Elements/View/style';
-import { DesignContext } from '../../../../Context';
+import { DesignContext, EditContext } from '../../../../Context';
 
 export const Multiple = () => {
 
-    const { activeQuestion, activeQuestionOptions, setActiveQuestionOptions } = useContext(DesignContext);
+    const { activeQuestionOptions, setActiveQuestionOptions } = useContext(EditContext);
+    
+    const { activeQuestion } = useContext(DesignContext);
 
     const [newValue, setNewValue] = useState('');
 

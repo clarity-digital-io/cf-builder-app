@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import styled, { css } from 'styled-components';
-import { DesignContext } from '../../../../Context';
+import { DesignContext, EditContext } from '../../../../Context';
 
 import View from '../../../../Elements/View';
 import ViewStyle from '../../../../Elements/View/style';
@@ -42,7 +42,9 @@ const getQuestionType = (type) => {
 
 export const AutomateQuestion = () => {
 
-    const { loading, activeQuestion, activeFlowDesign, setActiveFlowDesign } = useContext(DesignContext); 
+    const { loading, activeFlowDesign, setActiveFlowDesign } = useContext(EditContext); 
+
+    const { activeQuestion } = useContext(DesignContext); 
 
     const updateActivate = (e) => {
         

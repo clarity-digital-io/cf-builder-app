@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { DesignContext } from '../../../../Context';
+import { DesignContext, EditContext } from '../../../../Context';
 
 import View from '../../../../Elements/View';
 import ViewStyle from '../../../../Elements/View/style';
@@ -56,7 +56,9 @@ const getQuestionType = (type) => {
 
 export const EditQuestion = () => {
 
-    const { activeQuestion, setActiveQuestion, loading } = useContext(DesignContext); 
+    const { loading } = useContext(EditContext); 
+
+    const { activeQuestion, setActiveQuestion } = useContext(DesignContext); 
 
     const updateRequiredStatus = (e) => {
 

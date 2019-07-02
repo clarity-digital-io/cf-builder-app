@@ -6,6 +6,8 @@ import ViewStyle from '../../../../Elements/View/style';
 
 import Box from '../../../../Elements/Box';
 import { SmallSpinner } from '../../../../Elements/Spinner';
+import CloseIcon from '../../../../Elements/Icons/close';
+
 import { Select } from '../../../../Elements/Select';
 import { Button } from '../../../../Elements/Button';
 
@@ -13,7 +15,7 @@ export const SalesforceFields = () => {
 
     const { activeRecordGroup, setActiveRecordGroup } = useContext(EditContext); 
 
-    const { loading, recordGroup, additionalFields, activeQuestion, setRecordGroup, setSObjectEdit } = useContext(DesignContext); 
+    const { recordGroup, activeQuestion, setSObjectEdit } = useContext(DesignContext); 
 
     useEffect(() => {
         
@@ -51,7 +53,6 @@ export const SalesforceFields = () => {
                             records={activeRecordGroup} 
                             setActiveRecordGroup={setActiveRecordGroup} 
                             relatedId={activeQuestion.Id} 
-                            additionalFields={additionalFields}
                         /> 
 
                     </ViewStyle>
@@ -62,24 +63,35 @@ export const SalesforceFields = () => {
     )
 }
 
-const SalesforceSelects = ({ records, setActiveRecordGroup, relatedId, additionalFields }) => {
+const SalesforceSelects = ({ records, setActiveRecordGroup, relatedId }) => {
  
     return [
-        <ControlSelects setActiveRecordGroup={setActiveRecordGroup} key={'Select'} records={records} additionalFields={additionalFields} />,
+        <ControlSelects key={'Select'} records={records} />,
         <ControlAddRow key={'Add'} setActiveRecordGroup={setActiveRecordGroup} relatedId={relatedId} />
     ]
 
 }
 
-const ControlSelects = ({ setActiveRecordGroup, records, additionalFields }) => {
+const ControlSelects = ({ records }) => {
 
     return records.map((row, i) => {
-        return <ControlSelect setActiveRecordGroup={setActiveRecordGroup} key={row.Order__c} index={i} row={row} additionalFields={additionalFields} />
+        return <ControlSelect key={row.Order__c} index={i} row={row} />
     });
 
 }
 
-const ControlSelect = ({ setActiveRecordGroup, index, row, additionalFields }) => {
+const ControlSelect = ({ index, row }) => {
+
+    const { activeRecordGroup, setActiveRecordGroup, additionalFields } = useContext(EditContext); 
+
+    const { setQuestionState, setActiveQuestion } = useContext(DesignContext); 
+
+    const edit = (state) => {
+
+        setQuestionState(state);
+        setActiveQuestion(row);
+
+    }
 
     const setSelection = (e, order) => {
 
@@ -89,7 +101,7 @@ const ControlSelect = ({ setActiveRecordGroup, index, row, additionalFields }) =
 
             return records.map((record, i) => {
 
-                if(i == index) {
+                if(i == order) {
                     return { ...record, Field__c: value, Type__c: additionalFields[value] }
                 }
 
@@ -101,35 +113,39 @@ const ControlSelect = ({ setActiveRecordGroup, index, row, additionalFields }) =
     }
 
     return (
-        <View className="row middle-xs">
+        <View className="row center-xs middle-xs">
             <View className="col-xs-1">
                 <Box padding='.5em'>
                     <span id="center">{ index + 1 }</span>
                 </Box>                
             </View>
-            <View className="col-xs-3">
+            <View className="col-xs-4">
                 <Box padding='.5em'> 
                     <Select key={row.Order__c} value={row.Field__c} options={Object.keys(additionalFields)} onChange={(e) => setSelection(e, row.Order__c)}/>
                 </Box>
             </View>
             <View className="col-xs-2">
                 <Box padding='.5em'> 
-                    Edit
+                    <Button add onClick={() => edit('EDIT')}>Edit</Button>
                 </Box>
             </View>
             <View className="col-xs-2">
                 <Box padding='.5em'> 
-                    Automate
+                    <Button add onClick={() => edit('AUTOMATE')}>Automate</Button>
                 </Box>
             </View>
             <View className="col-xs-2">
                 <Box padding='.5em'> 
-                    Logic
+                    <Button add onClick={() => edit('LOGIC')}>Logic</Button>
                 </Box>
             </View>
-            <View className="col-xs-2">
+            <View className="col-xs-1">
                 <Box padding='.5em'> 
-                    Delete
+                    <div onClick={() => removeRow(order)}>
+                        <svg className="slds-button__icon" aria-hidden="true">
+                            <CloseIcon />
+                        </svg>
+                    </div>
                 </Box>
             </View>
         </View>

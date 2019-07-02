@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { DesignContext } from '../../../../Context';
+import { DesignContext, EditContext } from '../../../../Context';
 
 import View from '../../../../Elements/View';
 import ViewStyle from '../../../../Elements/View/style';
@@ -11,7 +11,9 @@ import {ControlGroup } from '../../../../Elements/ControlField';
 
 export const LogicQuestion = () => {
 
-    const { loading, criteria, setCriteria, activeQuestion, questions, setActiveQuestion } = useContext(DesignContext); 
+    const { loading, criteria, setCriteria } = useContext(EditContext); 
+
+    const { activeQuestion, questions, setActiveQuestion } = useContext(DesignContext); 
 
     const [questionOptions, setQuestionOptions] = useState(
         questions.filter(question => question.Title__c != activeQuestion.Title__c)

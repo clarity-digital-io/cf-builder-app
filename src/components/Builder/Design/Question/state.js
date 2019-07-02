@@ -54,22 +54,24 @@ export const QuestionState = () => {
 
 const Save = ({ children }) => {
 
-    const { activeRecordGroup, setActiveRecordGroup } = useContext(EditContext); 
-
     const { 
-        criteria,
-        setCriteria,
-        questionState,
-        activeFlowDesign, 
-        setActiveFlowDesign,
+        activeRecordGroup, 
+        setActiveRecordGroup,
         activeQuestionOptions, 
         setActiveQuestionOptions, 
+        activeFlowDesign, 
+        setActiveFlowDesign, 
+        criteria, 
+        setCriteria
+    } = useContext(EditContext); 
+
+    const { 
         activeQuestion, 
+        questionState,
         setQuestionState, 
         questionUpdate, 
         setQuestionUpdate, 
         setQuestions, 
-        recordGroup, 
         setRecordGroup
     } = useContext(DesignContext);
 
@@ -128,7 +130,9 @@ const Save = ({ children }) => {
                 <ViewStyle top border>
 
                     {
-                        questionState != 'SF' ? <Button neutral onClick={() => setQuestionState('NEW')}>Add New Field</Button> : <Button neutral onClick={() => setQuestionState('EDIT')}>Back</Button>
+                        questionState != 'SF' ? 
+                            <Button neutral onClick={() => setQuestionState('NEW')}>Add New Field</Button> : 
+                            <Button neutral onClick={() => setQuestionState('EDIT')}>Back</Button>
                     }
 
                     <Button cta onClick={() => setQuestionUpdate(true)}>

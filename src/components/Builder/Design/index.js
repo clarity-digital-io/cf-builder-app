@@ -61,12 +61,21 @@ const DesignProvider = ({ children }) => {
 
     const { form, sObjects } = useContext(BuilderContext);
 
+    /*
+     * Move over to edit Context
+    */
     const [loading, setLoading] = useState(false); 
 
+    /*
+     * Move over to edit Context
+    */
     const [activeQuestionOptions, setActiveQuestionOptions] = useState([]); 
 
     const [recordGroup, setRecordGroup] = useState(new Map()); 
 
+    /*
+     * Move over to edit Context
+    */
     const [activeQuestionConnectedFields, setActiveQuestionConnectedFields] = useState([]); 
 
     const [questions, setQuestions] = useState([]); 
@@ -77,12 +86,24 @@ const DesignProvider = ({ children }) => {
 
     }, [])
 
+    /*
+     * Move over to edit Context
+    */
     const [activeFlowDesign, setActiveFlowDesign] = useState({}); 
 
+    /*
+     * Move over to edit Context
+    */
     const [criteria, setCriteria] = useState([]); 
 
+    /*
+     * Move over to edit Context
+    */
     const [activeQuestion, setActiveQuestion] = useState({}); 
 
+    /*
+     * Move over to edit Context
+    */
     const [edit, setEdit] = useState(null); 
 
     useEffect(() => {
@@ -118,10 +139,19 @@ const DesignProvider = ({ children }) => {
 
     }, [questionToDelete]);
 
+    /*
+     * Move over to edit Context
+    */
     const [additionalFields, setAdditionalFields] = useState([]);
 
+    /*
+     * Move over to edit Context
+    */
     const [requiredFields, setRequiredFields] = useState([]);
 
+    /*
+     * Move over to edit Context
+    */
     const [sObjectEdit, setSObjectEdit] = useState(null);
 
     useEffect(() => {
@@ -138,7 +168,6 @@ const DesignProvider = ({ children }) => {
                 setLoading(true); 
                 console.log('activeQuestion.Type__c', activeQuestion, loading); 
                 call("ClarityFormBuilder.getSObjectFields", [activeQuestion.Salesforce_Object__c], (result, e) => getSObjectFieldResultHandler(result, e, setRequiredFields, setAdditionalFields, setSObjectEdit, setLoading));
-
             }
 
         }

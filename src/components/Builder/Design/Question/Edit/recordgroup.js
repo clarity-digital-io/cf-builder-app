@@ -4,12 +4,14 @@ import View from '../../../../Elements/View';
 import {Button} from '../../../../Elements/Button';
 import { call } from '../../../../RemoteActions'; 
 
-import { DesignContext } from '../../../../Context';
+import { DesignContext, EditContext } from '../../../../Context';
 import { Select } from '../../../../Elements/Select';
 
 export const RecordGroup = () => {
 
-    const { sObjects, activeQuestion, setActiveQuestion, setQuestions, setQuestionState, setQuestionUpdate } = useContext(DesignContext);
+    const { sObjects } = useContext(EditContext);
+    
+    const { activeQuestion, setActiveQuestion, setQuestions, setQuestionState, setQuestionUpdate } = useContext(DesignContext);
 
     const updateLookupQuestion = (e) => {
         

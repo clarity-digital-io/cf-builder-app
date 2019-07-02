@@ -90,3 +90,15 @@ export const types = [
         type: 'Attachments'
     }
 ];
+
+export const sortedTypes = types.sort((a, b) => {
+
+    if(a.name < b.name) {
+        return -1; 
+    } 
+    
+    if(a.name > b.name) {
+        return 1;
+    }
+
+});

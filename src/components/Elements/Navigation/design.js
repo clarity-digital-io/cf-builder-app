@@ -5,26 +5,36 @@ import { BuilderContext } from '../../Context';
 
 const DesignNavigation = () => {
 
-    const { navState, setNavState } = useContext(BuilderContext);
+    const { navState, setNavState, form } = useContext(BuilderContext);
+
+    const preview = () => {
+        LCC.sendMessage({name: "Preview", value: form.Id });
+    }
 
     return (
         <Nav>
 
             <ul>
+                <li id="logo">
+                    Clarity Forms
+                </li>
+                <li id="preview" onClick={() => preview()}>
+                    Preview
+                </li>
                 <li className={ navState == 'QUESTIONS' ? 'active' : '' } onClick={() => setNavState('QUESTIONS')}>
-                    <div><span>Questions</span></div>
+                    <span>Questions</span>
                 </li>
                 <li className={ navState == 'DESIGN' ? 'active' : '' } onClick={() => setNavState('DESIGN')}>
-                    <div><span>Design</span></div>
+                    <span>Design</span>
                 </li>
                 <li className={ navState == 'ASSIGNMENTS' ? 'active' : '' } onClick={() => setNavState('ASSIGNMENTS')}>
-                    <div><span>Assignments</span></div>
+                    <span>Assignments</span>
                 </li>
                 <li className={ navState == 'SETTINGS' ? 'active' : '' } onClick={() => setNavState('SETTINGS')}>
-                    <div><span>Settings</span></div>
+                    <span>Settings</span>
                 </li>
                 <li className={ navState == 'HELP' ? 'active' : '' } onClick={() => setNavState('HELP')}>
-                    <div><span>Help</span></div>
+                    <span>Help</span>
                 </li>
             </ul>
 
@@ -35,32 +45,43 @@ const DesignNavigation = () => {
 
 const Nav = styled.nav`
     border-right: 1px solid ${Main.color.light};
-    background: ${Main.color.white};
-    height: 94vh; 
+    background: ${Main.color.body};
+    height: 100vh; 
 
     .active {
         font-weight: 900;
+        border-left: 3px solid ${Main.color.light}
     }
 
     ul {
         list-style: none;
-        height: 94vh;
+        height: 100vh;
         display: flex;
         flex-direction: column;
     }
 
-    div {
+    li {
+        color: ${Main.color.light};
         cursor: pointer;
         text-decoration: none !important;
-        display: block;
-        color: ${Main.color.body};
+        display: inline-block;
         padding: 1em;
-        font-size: .95em;
+        font-size: 1em;
         text-align: left;
     }
 
-    div:hover {
+    li:hover {
         font-weight: 900;
+    }
+
+    li#preview {
+        display: inline-block;
+        color: ${Main.color.light};
+    }
+
+    li#logo {
+        display: inline-block;
+        font-size: 1em;
     }
 
 `;

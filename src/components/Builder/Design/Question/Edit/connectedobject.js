@@ -4,13 +4,13 @@ import View from '../../../../Elements/View';
 import Box from '../../../../Elements/Box';
 import {Button} from '../../../../Elements/Button';
 import {Checkbox} from '../../../../Elements/Checkbox';
-import { DesignContext, BuilderContext } from '../../../../Context';
+import { EditContext, BuilderContext } from '../../../../Context';
 
 export const ConnectedObject = () => {
 
     const { form, setNavState } = useContext(BuilderContext);
 
-    const { activeQuestion, activeQuestionConnectedFields, setActiveQuestionConnectedFields, setSObjectEdit, requiredFields, additionalFields } = useContext(DesignContext); 
+    const { activeQuestionConnectedFields, setActiveQuestionConnectedFields, setSObjectEdit, requiredFields, additionalFields } = useContext(EditContext);
 
     useEffect(() => {
 

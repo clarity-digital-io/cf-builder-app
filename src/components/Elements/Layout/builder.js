@@ -1,12 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import Main from '../Theme'; 
-import BuilderNavigation from '../Navigation/builder';
 
 const BuilderLayout = ({children}) => {
 
     return [
-        <BuilderNavigation key={'BuilderNav'} />,
         <App key={'BuilderApp'}>
             {children}
         </App>
@@ -15,7 +13,7 @@ const BuilderLayout = ({children}) => {
 }
 
 const App = styled.div`
-    min-height: 92vh;
+    min-height: 100vh;
     background: ${Main.color.light};
 
 `;

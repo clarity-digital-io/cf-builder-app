@@ -28,7 +28,7 @@ export const Question = ({ question }) => {
         <QuestionStyle key={'Question'} active={ question.Id != null && (question.Id == activeQuestion.Id) }>
             <View className="row middle-xs">
 
-                <View className="col-xs-12 col-sm-6 col-md-6 col-lg-7">
+                <View className="col-xs-8">
                     <Box padding='0'>
                         { question.Required__c ? <span id="required">*</span> : '' }
                         { question.Type__c }: { question.Title__c }
@@ -47,7 +47,7 @@ export const Question = ({ question }) => {
                     </Box> 
                 </View>
 
-                <View className="col-xs-12 col-sm-6 col-md-6 col-lg-5">
+                <View className="col-xs-4">
                     <Box padding='0'>
                         <Options>
                             <li onClick={() => edit('EDIT')}>Edit</li>
@@ -55,12 +55,15 @@ export const Question = ({ question }) => {
                             <li onClick={() => edit('LOGIC')}>Logic</li>
 
                             {
-                                question.Type__c == 'Number' ? <li onClick={() => edit('CALCULATOR')}>Calculator</li> : null 
+                                question.Type__c == 'Number' ? 
+                                    <li onClick={() => edit('CALCULATOR')}>Calculator</li> : 
+                                    null 
                             }
 
-
                             {
-                                (question.Type__c == 'RecordGroup' && question.Salesforce_Object__c != null) ? <li onClick={() => edit('SF')} id="add">Add Fields</li> : null
+                                (question.Type__c == 'RecordGroup' && question.Salesforce_Object__c != null) ? 
+                                    <li onClick={() => edit('SF')} id="add">Add Fields</li> : 
+                                    null
                             }
 
                             <li onClick={() => setQuestionToDelete(question.Id)} id="delete">Delete</li>
@@ -82,15 +85,16 @@ const Options = styled.ul`
     justify-content: space-evenly;
 
     li {
-        border: 1px solid ${Main.color.silver}
-        color: ${Main.color.body}
-        border-radius: 4px; 
+        border: 1px solid ${Main.color.light}
+        border-radius: 2px; 
         padding: .5em;
-        background: ${Main.color.white};
+        background: ${Main.color.light};
+        color: ${Main.color.body}
         text-align: center;
         flex: 0 1 auto;
         display: block;
         cursor: pointer;
+        font-weight: 900;
     }
 
     li#delete {
@@ -99,6 +103,7 @@ const Options = styled.ul`
 
     li:hover {
         background: ${Main.color.light}
+        color: ${Main.color.green}
     }
 
 `;
