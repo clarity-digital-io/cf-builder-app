@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import ViewStyle from '../../../../Elements/View/style';
 import View from '../../../../Elements/View';
 import Box from '../../../../Elements/Box';
@@ -27,16 +27,16 @@ export const ConnectedObject = () => {
         console.log(e.target.value, e.target.checked); 
     }
 
-    const [checkedItems, setCheckedItems] =  useState(calculateCheckedItems(additionalFields, activeQuestionConnectedFields));
+    // const [checkedItems, setCheckedItems] =  useState(calculateCheckedItems(additionalFields, activeQuestionConnectedFields));
 
-    const calculateCheckedItems = () => {
+    // const calculateCheckedItems = () => {
         
-    }
+    // }
 
     return [
         <ViewStyle key={'description'}>
 
-            <h1>Connected Object: { form.Connected_Object__c ?  form.Connected_Object__c : <Button small add onClick={() => setNavState({ NavState: 'SETTINGS'})}>Create a Connected Section</Button> }</h1>
+            <h1>Connected Object: { form.Connected_Object__c ?  form.Connected_Object__c : <Button small add onClick={() => setNavState('SETTINGS')}>Create a Connected Section</Button> }</h1>
 
             <p>
                 Any fields updated in this { form.Connected_Object__c ? form.Connected_Object__c : 'Connected Object' } section will reflect in the { form.Connected_Object__c ? form.Connected_Object__c : 'Connected Object' } Record.

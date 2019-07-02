@@ -61,22 +61,9 @@ const DesignProvider = ({ children }) => {
 
     const { form, sObjects } = useContext(BuilderContext);
 
-    /*
-     * Move over to edit Context
-    */
-    const [loading, setLoading] = useState(false); 
-
-    /*
-     * Move over to edit Context
-    */
-    const [activeQuestionOptions, setActiveQuestionOptions] = useState([]); 
+    const [activeQuestion, setActiveQuestion] = useState({}); 
 
     const [recordGroup, setRecordGroup] = useState(new Map()); 
-
-    /*
-     * Move over to edit Context
-    */
-    const [activeQuestionConnectedFields, setActiveQuestionConnectedFields] = useState([]); 
 
     const [questions, setQuestions] = useState([]); 
 
@@ -85,39 +72,6 @@ const DesignProvider = ({ children }) => {
         call("ClarityFormBuilder.getQuestions", [form.Id], (result, e) => fetchHandler(result, e, setQuestions, setRecordGroup))
 
     }, [])
-
-    /*
-     * Move over to edit Context
-    */
-    const [activeFlowDesign, setActiveFlowDesign] = useState({}); 
-
-    /*
-     * Move over to edit Context
-    */
-    const [criteria, setCriteria] = useState([]); 
-
-    /*
-     * Move over to edit Context
-    */
-    const [activeQuestion, setActiveQuestion] = useState({}); 
-
-    /*
-     * Move over to edit Context
-    */
-    const [edit, setEdit] = useState(null); 
-
-    useEffect(() => {
-
-        if(edit) {
-            
-            setAdditionalFields([])
-            setRequiredFields([])
-            setLoading(true);
-            call("ClarityFormBuilder.getQuestionEditDetails", [activeQuestion.Id], (result, e) => optionFetchHandler(result, e, setLoading, setActiveQuestionOptions, setActiveFlowDesign, setCriteria))
-        
-        }
-
-    }, [edit]);
 
     const [questionState, setQuestionState] = useState('NEW'); 
 
@@ -139,64 +93,13 @@ const DesignProvider = ({ children }) => {
 
     }, [questionToDelete]);
 
-    /*
-     * Move over to edit Context
-    */
-    const [additionalFields, setAdditionalFields] = useState([]);
-
-    /*
-     * Move over to edit Context
-    */
-    const [requiredFields, setRequiredFields] = useState([]);
-
-    /*
-     * Move over to edit Context
-    */
-    const [sObjectEdit, setSObjectEdit] = useState(null);
-
-    useEffect(() => {
-
-        if(sObjectEdit) {
-
-            if(activeQuestion.Type__c == 'ConnectedObject') {
-                setLoading(true);
-                call("ClarityFormBuilder.getSObjectFields", [form.Connected_Object__c], (result, e) => getSObjectFieldResultHandler(result, e, setRequiredFields, setAdditionalFields, setSObjectEdit, setLoading));
-
-            }
-            
-            if(activeQuestion.Type__c == 'RecordGroup') {
-                setLoading(true); 
-                console.log('activeQuestion.Type__c', activeQuestion, loading); 
-                call("ClarityFormBuilder.getSObjectFields", [activeQuestion.Salesforce_Object__c], (result, e) => getSObjectFieldResultHandler(result, e, setRequiredFields, setAdditionalFields, setSObjectEdit, setLoading));
-            }
-
-        }
-
-    }, [sObjectEdit])
-
     return (
         <DesignContext.Provider 
             value={{ 
                 recordGroup, 
-                setRecordGroup,
-                activeQuestionConnectedFields, 
-                setActiveQuestionConnectedFields,
-                additionalFields,
-                setAdditionalFields,
-                setRequiredFields,
-                requiredFields,
-                setSObjectEdit,
-                criteria, 
-                setCriteria,
-                sObjects,
-                loading,
-                activeFlowDesign, 
-                setActiveFlowDesign, 
+                setRecordGroup, 
                 questionToDelete, 
                 setQuestionToDelete, 
-                setEdit, 
-                activeQuestionOptions, 
-                setActiveQuestionOptions, 
                 questionUpdate, 
                 setQuestionUpdate, 
                 questionState, 
@@ -210,13 +113,6 @@ const DesignProvider = ({ children }) => {
             { children }
         </DesignContext.Provider>
     )
-}
-
-const getSObjectFieldResultHandler = (result, e, setRequiredFields, setAdditionalFields, setSObjectEdit, setLoading) => {
-    setSObjectEdit('');
-    setAdditionalFields(result.NotRequired);
-    setRequiredFields(result.Required);
-    setLoading(false);
 }
 
 const fetchHandler = (result, e, setQuestions, setRecordGroup) => {
@@ -237,13 +133,6 @@ const fetchHandler = (result, e, setQuestions, setRecordGroup) => {
 
     setRecordGroup(recordGroups); 
 
-}
-
-const optionFetchHandler = (result, e, setLoading, setActiveQuestionOptions, setActiveFlowDesign, setCriteria) => {
-    setActiveQuestionOptions(result.Options);
-    setCriteria(result.Criteria);
-    setActiveFlowDesign(result.FlowDesign[0]);
-    setLoading(false);
 }
 
 const deleteResultHandler = (result, e, setQuestions) => {

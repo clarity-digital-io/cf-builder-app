@@ -98,9 +98,6 @@ const Card = ({ update, children }) => {
 
                     <div className="slds-media__body">
                         <h2 className="slds-card__header-title">
-                        <a href="javascript:void(0);" className="slds-card__header-link slds-truncate" title="Accounts">
-                            <span>Accounts</span>
-                        </a>
                         </h2>
                     </div>
                     <div className="slds-no-flex">
@@ -125,9 +122,8 @@ const Card = ({ update, children }) => {
 const ArticleStyling = styled.article`
     background: ${props => props.theme.background} !important;
     color: ${props => props.theme.questionColor} !important;
-    background-image: ${props => `url(${props.theme.backgroundImage})`} !important; 
+    background-image: url('/sfc/servlet.shepherd/document/download/${props.theme.backgroundImage}') !important; 
 `;
-
 
 const FormDesign = styled.div`
     height: 100vh; 

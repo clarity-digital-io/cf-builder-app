@@ -10,10 +10,11 @@ export const Button = styled.button`
     padding: .75em; 
     border-radius: 4px; 
     font-weight: 900;
-
+    color: ${Main.color.white};
+    
     ${props => props.neutral && css`
         border: 1px solid ${Main.color.body}
-        background: none
+        background: ${Main.color.body}
     `}
 
     ${props => props.add && css`
@@ -30,7 +31,7 @@ export const Button = styled.button`
     ${props => props.cta && css`
         margin-left: .5em;
         border: 1px solid ${Main.color.green}
-        color: ${Main.color.green}
+        background: ${Main.color.green}
     `}
 
 `;

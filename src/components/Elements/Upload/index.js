@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
-import UploadAction from '../Icons/upload';
+import UploadIcon from '../Icons/upload';
+
 
 export const Upload = ({ onChange }) => {
 
@@ -15,7 +16,7 @@ export const Upload = ({ onChange }) => {
                 <label className="slds-file-selector__body" htmlFor="file-upload-input-01" id="file-selector-secondary-label">
                     <span className="slds-file-selector__button slds-button slds-button_neutral">
                     <svg className="slds-button__icon slds-button__icon_left" aria-hidden="true">
-                    <use xlinkHref="/assets/icons/utility-sprite/svg/symbols.svg#upload"></use>
+                        <UploadIcon />
                     </svg>Upload Files</span>
                 </label>
                 </div>
