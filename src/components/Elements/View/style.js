@@ -34,7 +34,7 @@ const ViewStyle = styled.div`
     `}
 
     ${props => props.border && css`
-        border-bottom: 1px solid ${Main.color.light}
+        border-bottom: 2px solid ${Main.color.greyBorder}
     `}
 
     ${props => props.space && css`

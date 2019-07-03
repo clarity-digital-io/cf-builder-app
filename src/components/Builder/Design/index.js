@@ -96,6 +96,7 @@ const DesignProvider = ({ children }) => {
     return (
         <DesignContext.Provider 
             value={{ 
+                sObjects,
                 recordGroup, 
                 setRecordGroup, 
                 questionToDelete, 

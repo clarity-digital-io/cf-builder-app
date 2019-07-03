@@ -84,7 +84,7 @@ export const DesignState = () => {
     
     return [
         
-        <View className="row end-xs">
+        <View silver className="row end-xs">
             <View className="col-xs-12">
                 <ViewStyle top border>
                     <Button cta onClick={() => setUpdate(true)}>
@@ -93,7 +93,7 @@ export const DesignState = () => {
                 </ViewStyle>
             </View>
         </View>,
-        <View className="row">
+        <View silver body className="row">
             <View className="col-xs-12">
                 <View className="Box">
                 
@@ -103,7 +103,7 @@ export const DesignState = () => {
 
                                 <ViewStyle space border>
 
-                                    <h2>Design</h2>
+                                    <h1>Design</h1>
                                     <p>Customize your form's colors and font to fit your brand.</p>
                                 </ViewStyle>
 

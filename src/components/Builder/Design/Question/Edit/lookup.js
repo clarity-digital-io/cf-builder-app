@@ -3,7 +3,7 @@ import ViewStyle from '../../../../Elements/View/style';
 import {Select} from '../../../../Elements/Select';
 import {ControlGroup} from '../../../../Elements/ControlField';
 
-import { DesignContext } from '../../../../Context';
+import { DesignContext, EditContext } from '../../../../Context';
 
 export const Lookup = () => {
 

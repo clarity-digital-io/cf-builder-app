@@ -77,6 +77,12 @@ const Save = ({ children }) => {
 
     useEffect(() => {
 
+        console.log('questionState', questionState); 
+
+    }, [])
+
+    useEffect(() => {
+
         if(questionUpdate && activeQuestionOptions.length == 0 && questionState == 'EDIT') {
             call(
                 "ClarityFormBuilder.saveQuestion", 
@@ -125,7 +131,7 @@ const Save = ({ children }) => {
 
     return [
         
-        <View key={'Save'} className="row end-xs">
+        <View silver key={'Save'} className="row end-xs">
             <View className="col-xs-12">
                 <ViewStyle top border>
 
@@ -145,7 +151,7 @@ const Save = ({ children }) => {
                 </ViewStyle>
             </View>
         </View>,
-        <View key={'QuestionEdit'} className="row">
+        <View silver body key={'QuestionEdit'} className="row">
             <View className="col-xs-12">
                 <View className="Box">{ children }</View>
             </View>

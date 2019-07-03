@@ -16,8 +16,9 @@ export const Display = () => {
 
     const { update, questions } = useDrag(); 
 
-    return (
-        <FormDesign>
+    return [
+        <div key={'Header'}>{questionUpdate || update ? ' update ' : null }</div>,
+        <FormDesign key={'Display'}>
 
             <Card update={questionUpdate || update}>
 
@@ -47,7 +48,7 @@ export const Display = () => {
             </Card>
 
         </FormDesign>
-    );
+    ];
 
 }
 
@@ -122,12 +123,12 @@ const Card = ({ update, children }) => {
 const ArticleStyling = styled.article`
     background: ${props => props.theme.background} !important;
     color: ${props => props.theme.questionColor} !important;
-    background-image: url('/sfc/servlet.shepherd/document/download/${props.theme.backgroundImage}') !important; 
+    background-image: ${props => `url(/sfc/servlet.shepherd/document/download/${props.theme.backgroundImage})`} !important; 
+
 `;
 
 const FormDesign = styled.div`
     height: 100vh; 
-    background: ${Main.color.light}; 
     padding: 2em; 
     overflow: scroll;
 `;

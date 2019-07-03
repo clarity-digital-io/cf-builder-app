@@ -134,7 +134,7 @@ const createHandler = (result, e, setForm, setStyle, setAssignment) => {
     });
 
     setStyle(style => {
-        return { ...style, Id: result.Clarity_Form_Style__c, Background_Color__c: result.Clarity_Form_Style__r.Background_Color__c, Color__c: result.Clarity_Form_Style__r.Color__c }
+        return { ...style, Id: result.Clarity_Form_Style__c, Background_Image__c: result.Clarity_Form_Style__r.Background_Image__c, Background_Color__c: result.Clarity_Form_Style__r.Background_Color__c, Color__c: result.Clarity_Form_Style__r.Color__c }
     })
 
     if(result.Clarity_Form_Assignment__c == null) return;

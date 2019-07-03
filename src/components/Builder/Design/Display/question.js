@@ -5,13 +5,13 @@ import View from '../../../Elements/View'
 import Box from '../../../Elements/Box'
 import Main from '../../../Elements/Theme'
 
-import { DesignContext, BuilderContext } from '../../../Context';
+import { DesignContext, BuilderContext, EditContext } from '../../../Context';
 
 export const Question = ({ question }) => {
 
     const { navState, setNavState } = useContext(BuilderContext); 
 
-    const { setQuestionState, setActiveQuestion, activeQuestion, setEdit, setQuestionToDelete } = useContext(DesignContext);
+    const { setQuestionState, setActiveQuestion, activeQuestion, setQuestionToDelete } = useContext(DesignContext);
 
     const edit = (state) => {
 
@@ -21,7 +21,6 @@ export const Question = ({ question }) => {
 
         setActiveQuestion(question);
         setQuestionState(state);
-        setEdit(question.Id);
     }
 
     return (

@@ -9,7 +9,7 @@ import { DesignContext, EditContext } from '../../../../Context';
 export const Multiple = () => {
 
     const { activeQuestionOptions, setActiveQuestionOptions } = useContext(EditContext);
-    
+    console.log('activeQuestionOptions', activeQuestionOptions); 
     const { activeQuestion } = useContext(DesignContext);
 
     const [newValue, setNewValue] = useState('');

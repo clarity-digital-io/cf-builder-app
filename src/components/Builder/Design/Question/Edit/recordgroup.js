@@ -8,10 +8,8 @@ import { DesignContext, EditContext } from '../../../../Context';
 import { Select } from '../../../../Elements/Select';
 
 export const RecordGroup = () => {
-
-    const { sObjects } = useContext(EditContext);
     
-    const { activeQuestion, setActiveQuestion, setQuestions, setQuestionState, setQuestionUpdate } = useContext(DesignContext);
+    const { sObjects, activeQuestion, setActiveQuestion, setQuestions, setQuestionState, setQuestionUpdate } = useContext(DesignContext);
 
     const updateLookupQuestion = (e) => {
         

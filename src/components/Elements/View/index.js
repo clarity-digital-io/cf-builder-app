@@ -11,12 +11,17 @@ const View = styled.div`
       height: 100vh;
     `}
 
+    ${props => props.body && css`
+      height: 94vh;
+    `}
+
     ${props => props.space && css`
       padding: .75em;
     `}
 
     ${props => props.silver && css`
-      background: ${Main.color.silver}
+      background: ${Main.color.lighter};
+      box-shadow: 3px 0 6px 0 ${Main.color.silver}
     `}
 
 `;

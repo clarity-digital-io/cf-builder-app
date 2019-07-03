@@ -44,7 +44,7 @@ export const SettingstState = () => {
 
     return [
 
-        <View className="row end-xs" key={'Header'}>
+        <View silver className="row end-xs" key={'Header'}>
             <View className="col-xs-12">
                 <ViewStyle top border>
                     <Button cta onClick={() => save(true)}>
@@ -53,7 +53,7 @@ export const SettingstState = () => {
                 </ViewStyle>
             </View>
         </View>,
-        <View className="row" key={'Body'}>
+        <View silver body className="row" key={'Body'}>
             <View className="col-xs-12">
                 <Box padding='0'>
 

@@ -13,9 +13,9 @@ import { Button } from '../../../../Elements/Button';
 
 export const SalesforceFields = () => {
 
-    const { activeRecordGroup, setActiveRecordGroup } = useContext(EditContext); 
+    const { activeRecordGroup, setActiveRecordGroup, setSObjectEdit } = useContext(EditContext); 
 
-    const { recordGroup, activeQuestion, setSObjectEdit } = useContext(DesignContext); 
+    const { recordGroup, activeQuestion } = useContext(DesignContext); 
 
     useEffect(() => {
         
