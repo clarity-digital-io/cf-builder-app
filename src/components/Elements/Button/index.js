@@ -13,6 +13,7 @@ export const Button = styled.button`
     color: ${Main.color.white};
     
     ${props => props.neutral && css`
+        margin-left: .5em;
         border: 1px solid ${Main.color.body}
         background: ${Main.color.body}
     `}
@@ -33,5 +34,12 @@ export const Button = styled.button`
         border: 1px solid ${Main.color.green}
         background: ${Main.color.green}
     `}
+
+    ${props => props.disabled && css`
+        background: ${Main.color.silver}
+        border: 1px solid ${Main.color.silver};
+        color: ${Main.color.body}
+    `}
+
 
 `;

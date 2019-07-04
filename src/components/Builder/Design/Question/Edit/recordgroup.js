@@ -20,7 +20,7 @@ export const RecordGroup = () => {
         })
 
     }
-
+    console.log('activeQuestion', activeQuestion);
     const saveAndAddFields = () => {
 
         call(
@@ -45,7 +45,12 @@ export const RecordGroup = () => {
         </ViewStyle>,
         <ViewStyle key={'add'}>
 
-            <Button disabled={activeQuestion.Salesforce_Object__c == '' ? true : false} neutral onClick={() => saveAndAddFields()}>Save &amp; Add Salesforce Fields</Button>
+            <Button 
+                disabled={(activeQuestion.Salesforce_Object__c == '' || activeQuestion.Salesforce_Object__c == null) ? true : false} 
+                cta 
+                onClick={() => saveAndAddFields()}>
+                Save &amp; Add Salesforce Fields
+            </Button>
 
         </ViewStyle>
     ]

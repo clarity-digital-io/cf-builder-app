@@ -71,15 +71,11 @@ const Save = ({ children }) => {
         setQuestionState, 
         questionUpdate, 
         setQuestionUpdate, 
+        questions,
+        setActiveQuestion,
         setQuestions, 
         setRecordGroup
     } = useContext(DesignContext);
-
-    useEffect(() => {
-
-        console.log('questionState', questionState); 
-
-    }, [])
 
     useEffect(() => {
 
@@ -129,11 +125,22 @@ const Save = ({ children }) => {
 
     }, [questionUpdate])
 
+    const edit = (questionId) => {
+        setActiveQuestion(questions.find(question => question.Id == questionId));
+        setQuestionState('EDIT');
+    }
+
     return [
         
         <View silver key={'Save'} className="row end-xs">
             <View className="col-xs-12">
                 <ViewStyle top border>
+
+                    {
+                        activeQuestion.Record_Group__c != null ? 
+                            <Button neutral onClick={() => edit(activeQuestion.Record_Group__c)}>Back</Button> : 
+                            null
+                    }
 
                     {
                         questionState != 'SF' ? 

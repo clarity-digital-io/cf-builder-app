@@ -86,8 +86,8 @@ const DesignProvider = ({ children }) => {
         if(questionToDelete) {
 
             let updatedOnDelete = sortDelete(questions.filter(question => question.Id != questionToDelete));
-            
-            call("ClarityFormBuilder.deleteQuestion", [JSON.stringify(updatedOnDelete), questionToDelete], (result, e) => deleteResultHandler(result, e, setQuestions));
+            setUpdate(true)
+            call("ClarityFormBuilder.deleteQuestion", [JSON.stringify(updatedOnDelete), questionToDelete], (result, e) => deleteResultHandler(result, e, setQuestions, setUpdate));
         
         }
 
@@ -136,8 +136,9 @@ const fetchHandler = (result, e, setQuestions, setRecordGroup) => {
 
 }
 
-const deleteResultHandler = (result, e, setQuestions) => {
-    setQuestions(sort(result));
+const deleteResultHandler = (result, e, setQuestions, setUpdate) => {
+    setQuestions(sorted(result));
+    setUpdate(false)
 }
 
 const sorted = (questions) => {
@@ -157,12 +158,12 @@ const sorted = (questions) => {
 
 const sortDelete = (result) => {
 
-    let sorted = result.map((r, i) => {
+    let s = result.map((r, i) => {
         r.Order__c = i;
         return r; 
     });
-
-    sorted = sorted.sort((a, b) => {
+    console.log('s', s);
+    s = s.sort((a, b) => {
         if(a.Order__c < b.Order__c) {
             return -1; 
         }
@@ -171,6 +172,6 @@ const sortDelete = (result) => {
         }
     });
 
-    return sorted; 
+    return s; 
 
 }

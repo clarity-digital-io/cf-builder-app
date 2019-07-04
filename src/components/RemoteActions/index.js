@@ -109,7 +109,7 @@ const mockCall = (func, params, callback) => {
             });
             break;
         case 'getSObjectsAvailable': 
-            callback(['Account', 'Case', 'Contact', 'Opportunity', 'AccountRole']);
+            callback(['Account', 'Case', 'Contact', 'Opportunity', 'AccountRole', 'OpportunityLineItem']);
             break; 
         case 'getSObjectFields': 
             callback({ Required: {'OwnerId': 'Reference', 'Name': 'Text'}, NotRequired: {'OpportunityId': 'REFERENCE', 'UnitPrice': 'Currency', 'Product2Id': 'REFERENCE', 'Quantity': 'Number'}});

@@ -91,7 +91,6 @@ export const EditProvider = ({ children }) => {
 }
 
 const optionFetchHandler = (result, e, setLoading, setActiveQuestionOptions, setActiveFlowDesign, setCriteria) => {
-    console.log('optionFetchHandler', result); 
     setActiveQuestionOptions(result.Options);
     setCriteria(result.Criteria);
     setActiveFlowDesign(result.FlowDesign[0]);

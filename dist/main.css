@@ -1,0 +1,30 @@
+@font-face {
+    font-family: 'Salesforce Sans';
+    src: url('assets/fonts/SalesforceSans-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'Salesforce Sans';
+    font-weight: 100;
+    src: url('assets/fonts/SalesforceSans-Thin.ttf');   
+}
+
+@font-face {
+    font-family: 'Salesforce Sans';
+    font-weight: 900;
+    src: url('assets/fonts/SalesforceSans-Bold.ttf');   
+}
+
+html {
+    background: none !important; 
+    font-family: 'Salesforce Sans', Arial, sans-serif;
+}
+
+body {
+    margin: 0; 
+}
+
+ul {
+    padding: 0; 
+    margin: 0; 
+}
