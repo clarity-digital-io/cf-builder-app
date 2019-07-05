@@ -6,7 +6,7 @@ import { EditContext, DesignContext } from '../../../Context';
 
 export const EditProvider = ({ children }) => {
 
-    const { activeQuestion } = useContext(DesignContext);
+    const { navQuestion, activeQuestion } = useContext(DesignContext);
 
     const [activeRecordGroup, setActiveRecordGroup] = useState([]); 
 
@@ -24,16 +24,16 @@ export const EditProvider = ({ children }) => {
 
     useEffect(() => {
 
-        if(activeQuestion) {
+        if(navQuestion) {
             
             setAdditionalFields([])
             setRequiredFields([])
             setLoading(true);
-            call("ClarityFormBuilder.getQuestionEditDetails", [activeQuestion.Id], (result, e) => optionFetchHandler(result, e, setLoading, setActiveQuestionOptions, setActiveFlowDesign, setCriteria))
+            call("ClarityFormBuilder.getQuestionEditDetails", [navQuestion], (result, e) => optionFetchHandler(result, e, setLoading, setActiveQuestionOptions, setActiveFlowDesign, setCriteria))
         
         }
 
-    }, [activeQuestion]);
+    }, [navQuestion]);
 
     const [additionalFields, setAdditionalFields] = useState([]);
 
@@ -47,7 +47,7 @@ export const EditProvider = ({ children }) => {
 
             if(activeQuestion.Type__c == 'ConnectedObject') {
                 setLoading(true);
-                call("ClarityFormBuilder.getSObjectFields", [form.Connected_Object__c], (result, e) => getSObjectFieldResultHandler(result, e, setRequiredFields, setAdditionalFields, setSObjectEdit, setLoading));
+                call("ClarityFormBuilder.getSObjectFields", [sObjectEdit], (result, e) => getSObjectFieldResultHandler(result, e, setRequiredFields, setAdditionalFields, setSObjectEdit, setLoading));
 
             }
             

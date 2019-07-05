@@ -29,12 +29,14 @@ const ViewStyle = styled.div`
         font-weight: 500;
     }
 
-    ${props => props.top && css `
-        padding: .5em;
+    ${props => props.middle && css `
+        margin: 0 auto;
+        margin-right: .5em; 
+        padding: 0; 
     `}
 
     ${props => props.border && css`
-        border-bottom: 2px solid ${Main.color.greyBorder}
+        border-bottom: 1px solid ${Main.color.greyBorder}
     `}
 
     ${props => props.space && css`

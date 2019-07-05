@@ -12,7 +12,7 @@ const View = styled.div`
     `}
 
     ${props => props.body && css`
-      height: 94vh;
+      height: 93vh;
     `}
 
     ${props => props.space && css`
@@ -20,8 +20,24 @@ const View = styled.div`
     `}
 
     ${props => props.silver && css`
+      border-left: 1px solid ${Main.color.greyBorder}
+      border-right: 1px solid ${Main.color.greyBorder}
       background: ${Main.color.lighter};
-      box-shadow: 3px 0 6px 0 ${Main.color.silver}
+    `}
+
+    ${props => props.footer && css`
+      border-left: 1px solid ${Main.color.greyBorder}
+      border-right: 1px solid ${Main.color.greyBorder}
+      border-top:1px solid ${Main.color.greyBorder};
+      background: ${Main.color.bright}
+      height: 7vh;
+    `}
+
+    ${props => props.header && css`
+      box-shadow: 0 0 3px 0 ${Main.color.silver}
+      border-bottom: 1px solid ${Main.color.greyBorder}
+      background: ${Main.color.lighter};
+      font-weight: 900; 
     `}
 
 `;

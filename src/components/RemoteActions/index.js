@@ -44,7 +44,7 @@ const mockCall = (func, params, callback) => {
             }); 
             break;
         case 'updateForm':
-            callback({ Id: 1, Name: 'Clarity Form', End_Date__c: null, Connected_Object__c: 'Case', Limit__c: 1000, Clarity_Form_Style__c: 1, Clarity_Form_Assignment__c: 1 })
+            callback({ Id: 1, Name: 'Clarity Form Title', End_Date__c: null, Limit__c: 1000 })
             break;
         case 'getQuestions':
             callback([

@@ -6,6 +6,7 @@ import View from '../../../Elements/View';
 import Main from '../../../Elements/Theme';
 
 import { Question } from './question'; 
+import { Header } from './header'; 
 
 import { useDrag } from './useDrag';
 import { DesignContext, BuilderContext } from '../../../Context';
@@ -17,10 +18,10 @@ export const Display = () => {
     const { update, questions } = useDrag(); 
 
     return [
-        <div key={'Header'}>{questionUpdate || update ? ' update ' : null }</div>,
+        <Header key={'Header'} update={questionUpdate || update} />,
         <FormDesign key={'Display'}>
 
-            <Card update={questionUpdate || update}>
+            <Card>
 
                 <Droppable droppableId="question">
                     {(provided, snapshot) => (
@@ -94,18 +95,6 @@ const Card = ({ update, children }) => {
     return (    
         <ThemeProvider theme={theme}>    
             <ArticleStyling className="slds-card">
-                <div className="slds-card__header slds-grid">
-                    <header className="slds-media slds-media_center slds-has-flexi-truncate">
-
-                    <div className="slds-media__body">
-                        <h2 className="slds-card__header-title">
-                        </h2>
-                    </div>
-                    <div className="slds-no-flex">
-                        { update ? 'Saving...' : 'Saved' }
-                    </div>
-                    </header>
-                </div>
                 <div className="slds-card__body slds-card__body_inner">
 
                     { children }
@@ -128,7 +117,7 @@ const ArticleStyling = styled.article`
 `;
 
 const FormDesign = styled.div`
-    height: 100vh; 
+    height: 93vh; 
     padding: 2em; 
     overflow: scroll;
 `;

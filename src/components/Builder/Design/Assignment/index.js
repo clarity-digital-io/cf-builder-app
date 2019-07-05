@@ -17,7 +17,7 @@ export const AssignmentState = () => {
 
     const { questions } = useContext(DesignContext);
 
-    const { form, setForm, loading, assignmentRules, setAssignmentRules } = useContext(BuilderContext);
+    const { loading, assignmentRules, setAssignmentRules } = useContext(BuilderContext);
 
     const updateAssignmentRules = () => {
 
@@ -25,15 +25,6 @@ export const AssignmentState = () => {
 
     return [
 
-        <View silver className="row end-xs" key={'Header'}>
-            <View className="col-xs-12">
-                <ViewStyle top border>
-                    <Button cta onClick={() => updateAssignmentRules(true)}>
-                    Save Changes
-                    </Button>
-                </ViewStyle>
-            </View>
-        </View>,
         <View silver body className="row" key={'Body'}>
             <View className="col-xs-12">
                 <Box padding='0'>
@@ -76,6 +67,16 @@ export const AssignmentState = () => {
                     }
 
                 </Box>
+            </View>
+        </View>, 
+
+        <View footer className="row middle-xs end-xs" key={'Header'}>
+            <View className="col-xs-12">
+                <ViewStyle middle>
+                    <Button cta onClick={() => updateAssignmentRules(true)}>
+                    Save Changes
+                    </Button>
+                </ViewStyle>
             </View>
         </View>
 

@@ -9,7 +9,7 @@ import { sortedTypes } from '../types';
 import DragAction from '../../../Elements/Icons/drag';
 
 export const NewQuestion = () => {
-
+    
     return (
         <Droppable isDropDisabled={true} droppableId="new">
             {(provided, snapshot) => (
@@ -55,9 +55,9 @@ export const NewQuestion = () => {
 const SelectableNew = styled.div`
     user-select: 'none';
     font-size: .85em;
-    padding: 1em 0 1em 0; 
+    padding: .75em 0 .75em 0; 
     cursor: pointer;
-    margin: .75em;
+    margin: .5em;
     font-weight: 900;
     background: ${Main.color.white};
     border-radius: 4px; 
@@ -73,4 +73,9 @@ const SelectableNew = styled.div`
         box-shadow: 1px 1px 5px ${Main.color.grey};
         background: ${Main.color.white};
     `}
+
+    :active {
+        box-shadow: none;
+    }
+
 `;

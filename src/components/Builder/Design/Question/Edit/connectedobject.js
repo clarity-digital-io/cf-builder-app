@@ -27,12 +27,6 @@ export const ConnectedObject = () => {
         console.log(e.target.value, e.target.checked); 
     }
 
-    // const [checkedItems, setCheckedItems] =  useState(calculateCheckedItems(additionalFields, activeQuestionConnectedFields));
-
-    // const calculateCheckedItems = () => {
-        
-    // }
-
     return [
         <ViewStyle key={'description'}>
 
@@ -42,32 +36,18 @@ export const ConnectedObject = () => {
                 Any fields updated in this { form.Connected_Object__c ? form.Connected_Object__c : 'Connected Object' } section will reflect in the { form.Connected_Object__c ? form.Connected_Object__c : 'Connected Object' } Record.
             </p>
 
+            <p>
+                Would you like to provide to an existing record? 
+            </p>
+
         </ViewStyle>,
-        <ViewStyle key={'fields'}> 
+        <ViewStyle key={'fields'}>
 
-            <View className="row">
+            <h1>Additional Fields</h1>
 
-                <View className="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                    <Box>
+            {/* <Select options={sObjects} value={form.Connected_Object__c} onChange={update} /> */}
 
-                        <h1>Required Fields</h1>
-
-                        {/* <Checkbox options={Object.keys(requiredFields)} checked={}  /> */}
-
-                    </Box>
-                </View>
-
-                <View className="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                    <Box>
-
-                        <h1>Additional Fields</h1>
-
-                        {/* <Checkbox  onChange={update} /> */}
-
-                    </Box>
-                </View>
-            </View>
-        </ViewStyle>
+        </ViewStyle>,
     ]
 
 }

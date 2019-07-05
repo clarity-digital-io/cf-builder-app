@@ -5,22 +5,12 @@ import { BuilderContext } from '../../Context';
 
 const DesignNavigation = () => {
 
-    const { navState, setNavState, form } = useContext(BuilderContext);
-
-    const preview = () => {
-        LCC.sendMessage({name: "Preview", value: form.Id });
-    }
+    const { navState, setNavState } = useContext(BuilderContext);
 
     return (
         <Nav>
 
             <ul>
-                <li id="logo">
-                    Clarity Forms
-                </li>
-                <li id="preview" onClick={() => preview()}>
-                    Preview
-                </li>
                 <li className={ navState == 'QUESTIONS' ? 'active' : '' } onClick={() => setNavState('QUESTIONS')}>
                     <span>Questions</span>
                 </li>
@@ -44,13 +34,12 @@ const DesignNavigation = () => {
 }
 
 const Nav = styled.nav`
-    border-right: 1px solid ${Main.color.light};
-    background: ${Main.color.body};
+    background: ${Main.color.white};
     height: 100vh; 
 
     .active {
         font-weight: 900;
-        border-left: 3px solid ${Main.color.light}
+        border-left: 3px solid ${Main.color.body}
     }
 
     ul {
@@ -61,7 +50,7 @@ const Nav = styled.nav`
     }
 
     li {
-        color: ${Main.color.light};
+        color: ${Main.color.body};
         cursor: pointer;
         text-decoration: none !important;
         display: inline-block;
@@ -72,16 +61,6 @@ const Nav = styled.nav`
 
     li:hover {
         font-weight: 900;
-    }
-
-    li#preview {
-        display: inline-block;
-        color: ${Main.color.light};
-    }
-
-    li#logo {
-        display: inline-block;
-        font-size: 1em;
     }
 
 `;

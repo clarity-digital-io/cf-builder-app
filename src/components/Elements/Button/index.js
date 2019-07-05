@@ -7,7 +7,7 @@ export const Button = styled.button`
     cursor: pointer;
     outline: none;
     border: none;
-    padding: .75em; 
+    padding: .5em; 
     border-radius: 4px; 
     font-weight: 900;
     color: ${Main.color.white};
@@ -27,6 +27,18 @@ export const Button = styled.button`
 
     ${props => props.small && css`
         font-size: .75em; 
+    `}
+
+    ${props => props.update && css`
+        text-transform: uppercase;
+        padding: .5em;
+        background: ${Main.color.bright}
+    `}
+
+    ${props => props.preview && css`
+        padding: .5em;
+        background:none;
+        color: ${Main.color.bright};
     `}
 
     ${props => props.cta && css`

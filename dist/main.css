@@ -18,6 +18,11 @@
 html {
     background: none !important; 
     font-family: 'Salesforce Sans', Arial, sans-serif;
+    color: #333 !important; 
+}
+
+.slds-form-element__label {
+    color: #333 !important; 
 }
 
 body {

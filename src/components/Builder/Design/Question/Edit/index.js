@@ -56,10 +56,10 @@ const getQuestionType = (type) => {
 
 export const EditQuestion = () => {
 
-    const { activeQuestion, setActiveQuestion } = useContext(DesignContext); 
-
     const { loading } = useContext(EditContext);
 
+    const { activeQuestion, setActiveQuestion } = useContext(DesignContext); 
+    console.log('loading', loading);
     const updateRequiredStatus = (e) => {
 
         let checked = e.target.checked;

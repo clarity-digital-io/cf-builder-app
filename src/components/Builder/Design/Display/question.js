@@ -11,7 +11,7 @@ export const Question = ({ question }) => {
 
     const { navState, setNavState } = useContext(BuilderContext); 
 
-    const { setQuestionState, setActiveQuestion, activeQuestion, setQuestionToDelete } = useContext(DesignContext);
+    const { setQuestionState, setNavQuestion, activeQuestion, setActiveQuestion, setQuestionToDelete } = useContext(DesignContext);
 
     const edit = (state) => {
 
@@ -20,6 +20,7 @@ export const Question = ({ question }) => {
         }
 
         setActiveQuestion(question);
+        setNavQuestion(question.Id);
         setQuestionState(state);
     }
 
@@ -27,7 +28,7 @@ export const Question = ({ question }) => {
         <QuestionStyle key={'Question'} active={ question.Id != null && (question.Id == activeQuestion.Id) }>
             <View className="row middle-xs">
 
-                <View className="col-xs-8">
+                <View className="col-xs-7">
                     <Box padding='0'>
                         { question.Required__c ? <span id="required">*</span> : '' }
                         { question.Type__c }: { question.Title__c }
@@ -46,7 +47,7 @@ export const Question = ({ question }) => {
                     </Box> 
                 </View>
 
-                <View className="col-xs-4">
+                <View className="col-xs-5">
                     <Box padding='0'>
                         <Options>
                             <li onClick={() => edit('EDIT')}>Edit</li>

@@ -20,7 +20,7 @@ export const RecordGroup = () => {
         })
 
     }
-    console.log('activeQuestion', activeQuestion);
+
     const saveAndAddFields = () => {
 
         call(

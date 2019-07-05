@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { TwitterPicker } from 'react-color';
 
 import { call } from '../../../RemoteActions'; 
 import View from '../../../Elements/View';
@@ -84,15 +83,6 @@ export const DesignState = () => {
     
     return [
         
-        <View silver className="row end-xs">
-            <View className="col-xs-12">
-                <ViewStyle top border>
-                    <Button cta onClick={() => setUpdate(true)}>
-                    { update ? 'Saving...' : 'Save Changes' }
-                    </Button>
-                </ViewStyle>
-            </View>
-        </View>,
         <View silver body className="row">
             <View className="col-xs-12">
                 <View className="Box">
@@ -138,13 +128,21 @@ export const DesignState = () => {
                 
                 </View>
             </View>
+        </View>, 
+        <View footer className="row middle-xs end-xs">
+            <View className="col-xs-12">
+                <ViewStyle middle>
+                    <Button cta onClick={() => setUpdate(true)}>
+                    { update ? 'Saving...' : 'Save Changes' }
+                    </Button>
+                </ViewStyle>
+            </View>
         </View>
 
     ]
 }
 
 const resultHandler = (result, e, setStyle, setUpdate) => {
-    console.log(result); 
     setUpdate(false);
     setStyle(result); 
 }

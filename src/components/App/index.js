@@ -65,20 +65,9 @@ const BuilderProvider = ({ children }) => {
         
     }, [])
 
-    const [formUpdate, setFormUpdate] = useState(false); 
-
-    useEffect(() => {
-
-        if(formUpdate && navState == 'SETTINGS') {
-            call("ClarityFormBuilder.updateForm", [JSON.stringify(form)], (result, e) => updateFormHandler(result, e, setFormUpdate, setForm));
-        }
-
-    }, [formUpdate])
-
     return (
         <BuilderContext.Provider value={{ 
-            formUpdate, 
-            setFormUpdate,
+            loading,
             assign, 
             setAssignment,
             assignmentRules, 
@@ -94,13 +83,6 @@ const BuilderProvider = ({ children }) => {
             { children }
         </BuilderContext.Provider>
     )
-}
-
-const updateFormHandler = (result, e, setFormUpdate, setForm) => {
-
-    setFormUpdate(false); 
-    setForm(form);
-
 }
 
 const assignmentCreateHandler = (result, e, setAssignment, setAssignmentRules, setLoading) => {

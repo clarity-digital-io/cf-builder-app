@@ -61,6 +61,8 @@ const DesignProvider = ({ children }) => {
 
     const { form, sObjects } = useContext(BuilderContext);
 
+    const [navQuestion, setNavQuestion] = useState(null); 
+
     const [activeQuestion, setActiveQuestion] = useState({}); 
 
     const [recordGroup, setRecordGroup] = useState(new Map()); 
@@ -96,6 +98,8 @@ const DesignProvider = ({ children }) => {
     return (
         <DesignContext.Provider 
             value={{ 
+                navQuestion, 
+                setNavQuestion,
                 sObjects,
                 recordGroup, 
                 setRecordGroup, 
