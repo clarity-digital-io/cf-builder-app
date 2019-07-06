@@ -1,6 +1,7 @@
 import React from 'react';
 
 export const Select = ({ options, value, onChange}) => {
+    console.log(options, value)
     return (
         <div className="slds-form-element">
             <div className="slds-form-element__control">

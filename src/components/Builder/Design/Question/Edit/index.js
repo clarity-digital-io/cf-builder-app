@@ -39,6 +39,7 @@ const getQuestionType = (type) => {
             return <div>Number</div>
             break;
         case 'Lookup':
+        case 'REFERENCE':
             return <Lookup />
             break;
         case 'RecordGroup':
@@ -48,7 +49,7 @@ const getQuestionType = (type) => {
             return <ConnectedObject />
             break;
         default:
-            return <div>{ type }</div>
+            return <div>DefaultType: { type }</div>
             break;
     }
 
@@ -59,7 +60,7 @@ export const EditQuestion = () => {
     const { loading } = useContext(EditContext);
 
     const { activeQuestion, setActiveQuestion } = useContext(DesignContext); 
-    console.log('loading', loading);
+
     const updateRequiredStatus = (e) => {
 
         let checked = e.target.checked;
@@ -127,7 +128,7 @@ export const EditQuestion = () => {
                         
                     </ViewStyle>
 
-                    <ViewStyle space border scroll>
+                    <ViewStyle space scroll>
                     
                         {
                             loading ? <SmallSpinner /> : getQuestionType(activeQuestion.Type__c) 

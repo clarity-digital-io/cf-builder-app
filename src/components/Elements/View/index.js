@@ -29,7 +29,7 @@ const View = styled.div`
       border-left: 1px solid ${Main.color.greyBorder}
       border-right: 1px solid ${Main.color.greyBorder}
       border-top:1px solid ${Main.color.greyBorder};
-      background: ${Main.color.bright}
+      background: ${Main.color.white}
       height: 7vh;
     `}
 

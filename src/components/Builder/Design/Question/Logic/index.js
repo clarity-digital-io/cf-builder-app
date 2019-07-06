@@ -44,17 +44,17 @@ export const LogicQuestion = () => {
                 
                     {
 
-                    loading ? 
-                        <ViewStyle space top border>
-                            <SmallSpinner />
-                        </ViewStyle> :
-                        <ViewStyle space top border>
+                        loading ? 
+                            <ViewStyle space top border>
+                                <SmallSpinner />
+                            </ViewStyle> :
+                            <ViewStyle space top border>
 
-                        <h2>Step 1: <span>Select the criteria for this rule</span></h2>
+                                <h2>Step 1: <span>Select the criteria for this rule</span></h2>
 
-                        <ControlGroup relatedId={activeQuestion.Id} value={activeQuestion.Logic__c} rows={criteria} setRows={setCriteria} setCondition={updateCondition} questions={questionOptions} />
+                                <ControlGroup relatedId={activeQuestion.Id} value={activeQuestion.Logic__c} rows={criteria} setRows={setCriteria} setCondition={updateCondition} questions={questionOptions} />
 
-                        </ViewStyle>
+                            </ViewStyle>
 
                     }
 

@@ -118,7 +118,7 @@ const Save = ({ children }) => {
         if(questionUpdate && questionState == 'SF') {
             call(
                 "ClarityFormBuilder.saveRecordGroupFields", 
-                [JSON.stringify(activeRecordGroup)], 
+                [JSON.stringify(activeRecordGroup), activeQuestion.Id], 
                 (result, e) => resultRecordGroupFieldsHandler(result, e, setQuestionUpdate, setRecordGroup, setActiveRecordGroup, activeQuestion)
             )
         }
@@ -127,7 +127,7 @@ const Save = ({ children }) => {
 
     const edit = (questionId) => {
         setActiveQuestion(questions.find(question => question.Id == questionId));
-        setQuestionState('EDIT');
+        setQuestionState('SF');
     }
 
     return [
@@ -160,6 +160,7 @@ const Save = ({ children }) => {
                         }
 
                     </Button>
+                    
                 </ViewStyle>
             </View>
         </View>

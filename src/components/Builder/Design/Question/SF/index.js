@@ -24,8 +24,6 @@ export const SalesforceFields = () => {
 
     }, []);
 
-
-
     return (
         <View className="row middle-xs">
             <View className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -53,6 +51,7 @@ export const SalesforceFields = () => {
                             records={activeRecordGroup} 
                             setActiveRecordGroup={setActiveRecordGroup} 
                             relatedId={activeQuestion.Id} 
+                            formId={activeQuestion.Clarity_Form__c}
                         /> 
 
                     </ViewStyle>
@@ -63,11 +62,11 @@ export const SalesforceFields = () => {
     )
 }
 
-const SalesforceSelects = ({ records, setActiveRecordGroup, relatedId }) => {
+const SalesforceSelects = ({ records, setActiveRecordGroup, relatedId, formId }) => {
  
     return [
         <ControlSelects key={'Select'} records={records} />,
-        <ControlAddRow key={'Add'} setActiveRecordGroup={setActiveRecordGroup} relatedId={relatedId} />
+        <ControlAddRow key={'Add'} setActiveRecordGroup={setActiveRecordGroup} relatedId={relatedId} formId={formId} />
     ]
 
 }
@@ -82,7 +81,7 @@ const ControlSelects = ({ records }) => {
 
 const ControlSelect = ({ index, row }) => {
 
-    const { activeRecordGroup, setActiveRecordGroup, additionalFields } = useContext(EditContext); 
+    const { setActiveRecordGroup, additionalFields } = useContext(EditContext); 
 
     const { setQuestionState, setActiveQuestion } = useContext(DesignContext); 
 
@@ -102,7 +101,7 @@ const ControlSelect = ({ index, row }) => {
             return records.map((record, i) => {
 
                 if(i == order) {
-                    return { ...record, Field__c: value, Type__c: additionalFields[value] }
+                    return { ...record, Salesforce_Field__c: value, Type__c: additionalFields[value] }
                 }
 
                 return record; 
@@ -119,26 +118,49 @@ const ControlSelect = ({ index, row }) => {
                     <span id="center">{ index + 1 }</span>
                 </Box>                
             </View>
+
             <View className="col-xs-4">
                 <Box padding='.5em'> 
-                    <Select key={row.Order__c} value={row.Field__c} options={Object.keys(additionalFields)} onChange={(e) => setSelection(e, row.Order__c)}/>
+                    <Select key={row.Order__c} value={row.Salesforce_Field__c} options={Object.keys(additionalFields)} onChange={(e) => setSelection(e, row.Order__c)}/>
                 </Box>
             </View>
             <View className="col-xs-2">
                 <Box padding='.5em'> 
-                    <Button add onClick={() => edit('EDIT')}>Edit</Button>
+
+                    {
+                        row.Id != null ? 
+                        <Button add onClick={() => edit('EDIT')}>Edit</Button>
+                        :
+                        null
+                    }
+
                 </Box>
             </View>
             <View className="col-xs-2">
                 <Box padding='.5em'> 
-                    <Button add onClick={() => edit('AUTOMATE')}>Automate</Button>
+
+                    {
+                        row.Id != null ? 
+                        <Button add onClick={() => edit('AUTOMATE')}>Automate</Button>
+                        :
+                        null
+                    }
+
                 </Box>
             </View>
             <View className="col-xs-2">
                 <Box padding='.5em'> 
-                    <Button add onClick={() => edit('LOGIC')}>Logic</Button>
+
+                    {
+                        row.Id != null ? 
+                        <Button add onClick={() => edit('LOGIC')}>Logic</Button>
+                        :
+                        null
+                    }
+
                 </Box>
             </View>
+             
             <View className="col-xs-1">
                 <Box padding='.5em'> 
                     <div onClick={() => removeRow(order)}>
@@ -153,12 +175,12 @@ const ControlSelect = ({ index, row }) => {
     
 }
 
-const ControlAddRow = ({ setActiveRecordGroup, relatedId }) => {
+const ControlAddRow = ({ setActiveRecordGroup, relatedId, formId }) => {
 
     const add = () => {
  
         setActiveRecordGroup(records => {   
-            return records.concat([{ Logic__c: 'AND', Type__c: '', Title__c: '', Field__c: '', Record_Group__c: relatedId, Order__c: records.length, Page__c: 0 }]);
+            return records.concat([{ Clarity_Form__c: formId, Logic__c: 'AND', Type__c: '', Title__c: '', Salesforce_Field__c: '', Record_Group__c: relatedId, Order__c: records.length, Page__c: 0 }]);
         })
 
     }

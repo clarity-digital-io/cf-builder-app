@@ -14,8 +14,8 @@ export const Button = styled.button`
     
     ${props => props.neutral && css`
         margin-left: .5em;
-        border: 1px solid ${Main.color.body}
-        background: ${Main.color.body}
+        border: 1px solid ${Main.color.bright}
+        background: ${Main.color.bright}
     `}
 
     ${props => props.add && css`

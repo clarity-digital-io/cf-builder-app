@@ -7,11 +7,11 @@ import {Button} from '../Button';
 import { call } from '../../RemoteActions';
 import ViewStyle from '../View/style';
 
-export const ControlGroup = ({ relatedId, value, rows, setRows, setCondition, questions }) => {
-
+export const ControlGroup = ({ relatedId, value, rows, setRows, setCondition, questions, filter }) => {
+    console.log('filter0', filter); 
     return [
         <ControlHeader key={'Header'} />, 
-        <ControlRows setRows={setRows} rows={rows} key={'Rows'} questions={questions} />,
+        <ControlRows setRows={setRows} rows={rows} key={'Rows'} questions={questions} filter={filter} />,
         <ControlAddRow setRows={setRows} relatedId={relatedId} key={'Add'} />,
         <ControlCondition value={value} setCondition={setCondition} key={'Condition'} />
     ]
@@ -49,17 +49,17 @@ const ControlCondition = ({value, setCondition}) => {
     )
 }
 
-const ControlRows = ({ rows, setRows, questions }) => {
+const ControlRows = ({ rows, setRows, questions, filter }) => {
 
     return rows.map((row, i) => {
 
-        return <ControlRow key={row.Id} order={i} row={row} setRows={setRows} questions={questions} />
+        return <ControlRow key={row.Id} order={i} row={row} setRows={setRows} questions={questions} filter={filter} />
 
     })
 
 }
 
-const ControlRow = ({ order, row, setRows, questions }) => {
+const ControlRow = ({ order, row, setRows, questions, filter }) => {
 
     const [operators, setOperators] = useState(getCorrectOperators(row.Field_Type__c));
 
@@ -169,7 +169,7 @@ const ControlRow = ({ order, row, setRows, questions }) => {
         })
 
     }
-
+    console.log('filter', filter); 
     return (
         <View className="row middle-xs">
             <View className="col-xs-1">
@@ -178,8 +178,12 @@ const ControlRow = ({ order, row, setRows, questions }) => {
                 </Box>
             </View>
             <View className="col-xs-3">
-                <Box padding='.5em'>
-                    <ControlFieldQuestion order={order} record={row.Field__c} values={questions} setSelection={setQuestionSelection} />
+                <Box padding='.5em'> 
+                    {
+                        filter ? 
+                        <ControlFieldSF order={order} record={row.Field__c} values={questions} setSelection={setQuestionSelection} /> :
+                        <ControlFieldQuestion order={order} record={row.Field__c} values={questions} setSelection={setQuestionSelection} />
+                    }
                 </Box>
             </View>
             <View className="col-xs-2">
@@ -233,6 +237,27 @@ const ControlAddRow = ({ setRows, relatedId }) => {
         </View>
     )
     
+}
+
+const ControlFieldSF = ({ order, record, values, setSelection }) => {
+
+    return (
+        <div class="slds-form-element">
+            <div class="slds-form-element__control">
+                <div class="slds-select_container">
+                <select class="slds-select" id="select-02" value={record} onChange={(e) => setSelection(e, order)} >
+                    <option value="">Please select</option>
+                    {
+                        values.map(value => {
+                            return <option value={value}>{value}</option>
+                        })
+                    }
+                </select>
+                </div>
+            </div>
+        </div>
+    )
+
 }
 
 const ControlFieldQuestion = ({ order, record, values, setSelection }) => {

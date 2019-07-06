@@ -67,8 +67,8 @@ const mockCall = (func, params, callback) => {
                 },
                 { Id: 6, Logic__c: 'AND', Type__c: 'Lookup', Title__c: 'Add a Related Case:', Lookup__c: 'Case', Order__c: 6, Max_Length__c: 10, Min_Range__c: 0, Max_Range__c: 100, Step__c: 10, Page__c: 0 },
                 { Id: 7, Logic__c: 'AND', Type__c: 'RecordGroup', Title__c: 'Create Opportunity Line Items', Salesforce_Object__c: 'OpportunityLineItem', Order__c: 7, Page__c: 2 }, 
-                { Id: 8, Logic__c: 'AND', Type__c: 'REFERENCE', Title__c: 'Add an account:', Field__c: 'OpportunityId', Record_Group__c: 7, Order__c: 0, Page__c: 0 },
-                { Id: 9, Logic__c: 'AND', Type__c: 'Number', Title__c: 'Add the quantity:', Field__c: 'Quantity', Record_Group__c: 7, Order__c: 1, Page__c: 0 }
+                { Id: 8, Logic__c: 'AND', Type__c: 'REFERENCE', Title__c: 'Add an account:', Salesforce_Field__c: 'OpportunityId', Record_Group__c: 7, Order__c: 0, Page__c: 0 },
+                { Id: 9, Logic__c: 'AND', Type__c: 'Number', Title__c: 'Add the quantity:', Salesforce_Field__c: 'Quantity', Record_Group__c: 7, Order__c: 1, Page__c: 0 }
             ]); 
             break;
         case 'save': 
@@ -131,9 +131,9 @@ const mockCall = (func, params, callback) => {
             break; 
         case 'saveRecordGroupFields':
             callback([
-                { Id: 8, Logic__c: 'AND', Type__c: 'REFERENCE', Title__c: 'Add an account:', Field__c: 'OpportunityId', Record_Group__c: 7, Order__c: 0, Page__c: 0 },
-                { Id: 9, Logic__c: 'AND', Type__c: 'Number', Title__c: 'Add the quantity:', Field__c: 'Quantity', Record_Group__c: 7, Order__c: 1, Page__c: 0 },
-                { Id: 10, Logic__c: 'AND', Type__c: 'REFERENCE', Title__c: '', Field__c: 'Product2Id', Record_Group__c: 7, Order__c: 2, Page__c: 0 }
+                { Id: 8, Logic__c: 'AND', Type__c: 'REFERENCE', Title__c: 'Add an account:', Salesforce_Field__c: 'OpportunityId', Record_Group__c: 7, Order__c: 0, Page__c: 0 },
+                { Id: 9, Logic__c: 'AND', Type__c: 'Number', Title__c: 'Add the quantity:', Salesforce_Field__c: 'Quantity', Record_Group__c: 7, Order__c: 1, Page__c: 0 },
+                { Id: 10, Logic__c: 'AND', Type__c: 'REFERENCE', Title__c: '', Salesforce_Field__c: 'Product2Id', Record_Group__c: 7, Order__c: 2, Page__c: 0 }
             ]);
             break; 
         default:

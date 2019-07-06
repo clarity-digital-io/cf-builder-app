@@ -7,6 +7,8 @@ import { DesignContext, EditContext } from '../../../../Context';
 
 export const Lookup = () => {
 
+    const { additionalFields } = useContext(EditContext);
+
     const { sObjects, activeQuestion, setActiveQuestion, questions } = useContext(DesignContext);
 
     const [rows, setRows] = useState([])
@@ -21,6 +23,10 @@ export const Lookup = () => {
 
     }
 
+    const updatFilter = (e) => {
+
+    }
+
     return (
         <ViewStyle>
 
@@ -28,15 +34,19 @@ export const Lookup = () => {
 
             <ViewStyle>
 
-                <Select options={sObjects} value={activeQuestion.Lookup__c} onChange={updateLookupQuestion} />
+                {
+                    activeQuestion.Type__c == 'REFERENCE' ? 
+                    <Select options={[activeQuestion.Salesforce_Field__c]} value={activeQuestion.Salesforce_Field__c} onChange={updateLookupQuestion} /> :
+                    <Select options={sObjects} value={activeQuestion.Lookup__c} onChange={updateLookupQuestion} />
+                }
 
             </ViewStyle>
 
-            <ViewStyle>
+            <ViewStyle space top>
 
                 <h1>Filter</h1>
 
-                <ControlGroup rows={rows} setRows={setRows} questions={questions} />
+                <ControlGroup relatedId={activeQuestion.Id} value={activeQuestion.Filter__c} rows={rows} setRows={setRows} setCondition={updatFilter} questions={Object.keys(additionalFields)} filter={true} /> :
 
             </ViewStyle>
 
