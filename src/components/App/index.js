@@ -23,7 +23,7 @@ const BuilderProvider = ({ children }) => {
 
     const [assign, setAssignment] = useState({ Id: null, Name: '', Assign__c : null, Default_Assign__c: null });
 
-    const [style, setStyle] = useState({ Id: null, Color__c: '#333333', Background_Color__c : '#ffff', Columns: '' });
+    const [style, setStyle] = useState({ Id: null, Color__c: '#333333', Background_Color__c : '#ffff', Columns: '', Multi_Page__c: false });
 
     const [form, setForm] = useState({Id: null, Name: '', Clarity_Form_Style__c: null, Clarity_Form_Assignment__c: 1, Connected_Object__c: '' });
 
@@ -116,7 +116,7 @@ const createHandler = (result, e, setForm, setStyle, setAssignment) => {
     });
 
     setStyle(style => {
-        return { ...style, Id: result.Clarity_Form_Style__c, Background_Image__c: result.Clarity_Form_Style__r.Background_Image__c, Background_Color__c: result.Clarity_Form_Style__r.Background_Color__c, Color__c: result.Clarity_Form_Style__r.Color__c }
+        return { ...style, Id: result.Clarity_Form_Style__c, Multi_Page__c: result.Clarity_Form_Style__r.Multi_Page__c , Background_Image__c: result.Clarity_Form_Style__r.Background_Image__c, Background_Color__c: result.Clarity_Form_Style__r.Background_Color__c, Color__c: result.Clarity_Form_Style__r.Color__c }
     })
 
     if(result.Clarity_Form_Assignment__c == null) return;

@@ -74,12 +74,12 @@ const SalesforceSelects = ({ records, setActiveRecordGroup, relatedId, formId })
 const ControlSelects = ({ records }) => {
 
     return records.map((row, i) => {
-        return <ControlSelect key={row.Order__c} index={i} row={row} />
+        return <ControlSelect key={row.Order__c} order={i} row={row} />
     });
 
 }
 
-const ControlSelect = ({ index, row }) => {
+const ControlSelect = ({ order, row }) => {
 
     const { setActiveRecordGroup, additionalFields } = useContext(EditContext); 
 
@@ -111,11 +111,27 @@ const ControlSelect = ({ index, row }) => {
 
     }
 
+    const removeRow = (order) => {
+        console.log('order', order);
+        setActiveRecordGroup(activeRecordGroup => {
+
+            let newRows = activeRecordGroup.filter((rec, i) => {
+                if(i != order) {
+                    return rec; 
+                }
+            });
+            console.log('newRows', newRows);
+            return newRows; 
+
+        })
+
+    }
+
     return (
         <View className="row center-xs middle-xs">
             <View className="col-xs-1">
                 <Box padding='.5em'>
-                    <span id="center">{ index + 1 }</span>
+                    <span id="center">{ order + 1 }</span>
                 </Box>                
             </View>
 
@@ -153,8 +169,7 @@ const ControlSelect = ({ index, row }) => {
 
                     {
                         row.Id != null ? 
-                        <Button add onClick={() => edit('LOGIC')}>Logic</Button>
-                        :
+                        <Button add onClick={() => edit('LOGIC')}>Logic</Button> :
                         null
                     }
 

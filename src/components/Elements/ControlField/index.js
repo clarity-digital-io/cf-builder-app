@@ -8,7 +8,7 @@ import { call } from '../../RemoteActions';
 import ViewStyle from '../View/style';
 
 export const ControlGroup = ({ relatedId, value, rows, setRows, setCondition, questions, filter }) => {
-    console.log('filter0', filter); 
+
     return [
         <ControlHeader key={'Header'} />, 
         <ControlRows setRows={setRows} rows={rows} key={'Rows'} questions={questions} filter={filter} />,
@@ -21,30 +21,30 @@ const ControlCondition = ({value, setCondition}) => {
 
     return (
         <ViewStyle space>
-        <View className="row middle-xs">
-            <View className="col-xs-12">
+            <View className="row middle-xs">
+                <View className="col-xs-12">
 
-            <fieldset className="slds-form-element">
-                <div className="slds-form-element__control">
-                    <span className="slds-radio">
-                    <input onChange={(e) => setCondition(e)} type="radio" className="radio" id="AND" checked={value == 'AND'} name="options" disabled="" />
-                    <label className="slds-radio__label" htmlFor="AND">
-                        <span className="slds-radio_faux"></span>
-                        <span className="slds-form-element__label">All of the Conditions are met (AND)</span>
-                    </label>
-                    </span>
-                    <span className="slds-radio">
-                    <input onChange={(e) => setCondition(e)} type="radio" className="radio" id="OR" checked={value == 'OR'} name="options" disabled="" />
-                    <label className="slds-radio__label" htmlFor="OR">
-                        <span className="slds-radio_faux"></span>
-                        <span className="slds-form-element__label">Any of the Conditions are met (OR)</span>
-                    </label>
-                    </span>
-                </div>
-            </fieldset>
+                <fieldset className="slds-form-element">
+                    <div className="slds-form-element__control">
+                        <span className="slds-radio">
+                        <input onChange={(e) => setCondition(e)} type="radio" className="radio" id="AND" checked={value == 'AND'} name="options" disabled="" />
+                        <label className="slds-radio__label" htmlFor="AND">
+                            <span className="slds-radio_faux"></span>
+                            <span className="slds-form-element__label">All of the Conditions are met (AND)</span>
+                        </label>
+                        </span>
+                        <span className="slds-radio">
+                        <input onChange={(e) => setCondition(e)} type="radio" className="radio" id="OR" checked={value == 'OR'} name="options" disabled="" />
+                        <label className="slds-radio__label" htmlFor="OR">
+                            <span className="slds-radio_faux"></span>
+                            <span className="slds-form-element__label">Any of the Conditions are met (OR)</span>
+                        </label>
+                        </span>
+                    </div>
+                </fieldset>
 
+                </View>
             </View>
-        </View>
         </ViewStyle>
     )
 }
@@ -169,7 +169,7 @@ const ControlRow = ({ order, row, setRows, questions, filter }) => {
         })
 
     }
-    console.log('filter', filter); 
+
     return (
         <View className="row middle-xs">
             <View className="col-xs-1">

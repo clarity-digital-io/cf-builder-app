@@ -31,6 +31,16 @@ export const DesignState = () => {
         }
         
     }, [update]);
+    console.log('style', style.Multi_Page__c); 
+    const updateMultiPage = (e) => {
+
+        let checked = e.target.checked;
+
+        setStyle(style => {
+            return { ...style, Multi_Page__c: checked };
+        });
+
+    }
 
     const handleButtonColorChange = (color, e, field) => {
 
@@ -95,6 +105,20 @@ export const DesignState = () => {
 
                                     <h1>Design</h1>
                                     <p>Customize your form's colors and font to fit your brand.</p>
+                                </ViewStyle>
+
+                                <ViewStyle space border>
+
+                                    <div className="slds-form-element">
+                                        <label className="slds-checkbox_toggle slds-grid">
+                                            <span className="slds-form-element__label slds-m-bottom_none">Multi Page Form</span>
+                                            <input checked={style.Multi_Page__c} onClick={(e) => updateMultiPage(e)} type="checkbox" name="checkbox-toggle-14" value="checkbox-toggle-14" aria-describedby="checkbox-toggle-14" />
+                                            <span id="checkbox-toggle-14" className="slds-checkbox_faux_container" aria-live="assertive">
+                                            <span className="slds-checkbox_faux"></span>
+                                            </span>
+                                        </label>
+                                    </div>
+
                                 </ViewStyle>
 
                                 <ViewStyle space border>

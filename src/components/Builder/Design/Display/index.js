@@ -62,7 +62,15 @@ const GenerateQuestion = ({ item, provided, snapshot }) => {
             {...provided.draggableProps}
             {...provided.dragHandleProps}>
             
-            <Question question={item} />
+            {
+                item.Type__c != 'PageBreak' ? 
+                <Question question={item} /> :
+                <View className="row middle-xs">
+                    <View className="col-xs-8">
+                        <span id="break">Page Break</span>
+                    </View>
+                </View>
+            }
 
         </SelectableCard>
     )
@@ -75,6 +83,12 @@ const SelectableCard = styled.div`
         box-shadow: 1px 1px 5px ${Main.color.grey};
     `}
 
+    #break {
+        text-transform: capitalize;
+        padding: 1em; 
+        display: block; 
+        font-weight: 900;  
+    }
 `;
 
 const DropView = styled(View)`

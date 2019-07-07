@@ -22,72 +22,78 @@ export const types = [
         active: false, 
         name: 'Dropdown',
         type: 'Dropdown'
-    }, 
+    },  
     {
-        id: 4,
-        active: false, 
-        name: 'Ranking',
-        type: 'Ranking'
-    }, 
-    {
-        id: 5, 
+        id: 4, 
         active: false, 
         name: 'Net Promoter Score',
         type: 'NetPromoterScore'
     }, 
     {
-        id: 6, 
+        id: 5, 
         active: false, 
         name: 'Slider',
         type: 'Slider'
     }, 
     {
-        id: 7,
+        id: 6,
         active: false, 
         name: 'Date',
         type: 'Date'
     }, 
     {
-        id: 8, 
+        id: 7, 
         active: false, 
         name: 'Email',
         type: 'Email'
     },
     {   
-        id: 9, 
+        id: 8, 
         active: false, 
         name: 'Number',
         type: 'Number'
     },
     {   
-        id: 10, 
+        id: 9, 
         active: false, 
         name: 'Lookup',
         type: 'Lookup'
     },
     {   
-        id: 11, 
+        id: 10, 
         active: false, 
         name: 'Record Group',
         type: 'RecordGroup'
     },
     {   
-        id: 12, 
+        id: 11, 
         active: false, 
         name: 'Image',
         type: 'Image'
     },
     {   
-        id: 13, 
+        id: 12, 
         active: false, 
         name: 'Checkbox',
         type: 'Checkbox'
     }, 
     {   
-        id: 14, 
+        id: 13, 
         active: false, 
         name: 'Attachments',
         type: 'Attachments'
+    }, 
+    {   
+        id: 14, 
+        active: false, 
+        name: 'Text',
+        type: 'Text'
+    },
+    {   
+        id: 15, 
+        active: false, 
+        name: 'Page Break',
+        type: 'PageBreak'
     }
 ];
 
