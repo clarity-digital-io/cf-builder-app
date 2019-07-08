@@ -7,61 +7,61 @@ export const types = [
     },
     {   
         id: 1, 
-        active: false, 
+        active: true, 
         name: 'Multiple Choice',
         type: 'MultipleChoice'
     },
     {
         id: 2, 
-        active: false, 
+        active: true, 
         name: 'Comment',
         type: 'Comment'
     }, 
     {
         id: 3,
-        active: false, 
+        active: true, 
         name: 'Dropdown',
         type: 'Dropdown'
     },  
     {
         id: 4, 
-        active: false, 
+        active: true, 
         name: 'Net Promoter Score',
         type: 'NetPromoterScore'
     }, 
     {
         id: 5, 
-        active: false, 
+        active: true, 
         name: 'Slider',
         type: 'Slider'
     }, 
     {
         id: 6,
-        active: false, 
+        active: true, 
         name: 'Date',
         type: 'Date'
     }, 
     {
         id: 7, 
-        active: false, 
+        active: true, 
         name: 'Email',
         type: 'Email'
     },
     {   
         id: 8, 
-        active: false, 
+        active: true, 
         name: 'Number',
         type: 'Number'
     },
     {   
         id: 9, 
-        active: false, 
+        active: true, 
         name: 'Lookup',
         type: 'Lookup'
     },
     {   
         id: 10, 
-        active: false, 
+        active: true, 
         name: 'Record Group',
         type: 'RecordGroup'
     },
@@ -73,7 +73,7 @@ export const types = [
     },
     {   
         id: 12, 
-        active: false, 
+        active: true, 
         name: 'Checkbox',
         type: 'Checkbox'
     }, 
@@ -85,13 +85,13 @@ export const types = [
     }, 
     {   
         id: 14, 
-        active: false, 
+        active: true, 
         name: 'Text',
         type: 'Text'
     },
     {   
         id: 15, 
-        active: false, 
+        active: true, 
         name: 'Page Break',
         type: 'PageBreak'
     }
@@ -107,4 +107,4 @@ export const sortedTypes = types.sort((a, b) => {
         return 1;
     }
 
-});
+}).filter(type => type.active);

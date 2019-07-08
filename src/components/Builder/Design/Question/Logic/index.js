@@ -16,7 +16,7 @@ export const LogicQuestion = () => {
     const { activeQuestion, questions, setActiveQuestion } = useContext(DesignContext); 
 
     const [questionOptions, setQuestionOptions] = useState(
-        questions.filter(question => question.Title__c != activeQuestion.Title__c)
+        questions.filter(question => (question.Title__c != activeQuestion.Title__c) && (question.Type__c != 'Text' && question.Type__c != 'PageBreak'))
     )
 
     const updateCondition = (e) => {

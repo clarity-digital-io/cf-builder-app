@@ -109,7 +109,7 @@ const mockCall = (func, params, callback) => {
             });
             break;
         case 'getSObjectsAvailable': 
-            callback(['Account', 'Case', 'Contact', 'Opportunity', 'AccountRole', 'OpportunityLineItem']);
+            callback(['Account', 'Case', 'Contact', 'Opportunity', 'AccountRole', 'OpportunityLineItem', 'Service_Request__c']);
             break; 
         case 'getSObjectFields': 
             callback({ Required: {'OwnerId': 'Reference', 'Name': 'Text'}, NotRequired: {'OpportunityId': 'REFERENCE', 'UnitPrice': 'Currency', 'Product2Id': 'REFERENCE', 'Quantity': 'Number'}});
@@ -136,6 +136,25 @@ const mockCall = (func, params, callback) => {
                 { Id: 10, Logic__c: 'AND', Type__c: 'REFERENCE', Title__c: '', Salesforce_Field__c: 'Product2Id', Record_Group__c: 7, Order__c: 2, Page__c: 0 }
             ]);
             break; 
+        case 'getConnections':
+            callback([
+                { Id: 12, Clarity_Form__c: 1, Salesforce_Object__c: 'Case', Type__c: 'Create', Active__c: true },
+                { Id: 13, Clarity_Form__c: 1, Salesforce_Object__c: 'Service_Request__c', Type__c: 'Create', Active__c: true }
+            ]);
+            break; 
+        case 'getConnectionFieldMapping': 
+            callback([
+                { Id: 14, Clarity_Form_Connection__c: 12, Salesforce_Field__c: 'Subject', Clarity_Form_Question__c: 1 },
+                { Id: 15, Clarity_Form_Connection__c: 12, Salesforce_Field__c: 'AccountId', Clarity_Form_Question__c: 3 }
+            ]);
+            break;
+        case 'saveConnections': 
+            callback([
+                { Id: 12, Clarity_Form__c: 1, Salesforce_Object__c: 'Case', Type__c: 'Create', Active__c: true },
+                { Id: 13, Clarity_Form__c: 1, Salesforce_Object__c: 'Service_Request__c', Type__c: 'Create', Active__c: true },
+                { Id: 14, Clarity_Form__c: 1, Salesforce_Object__c: 'Account', Type__c: 'Create', Active__c: true }
+            ]);
+            break;
         default:
             break;
     }

@@ -97,11 +97,15 @@ const resultHandler = (result, e, setUpdate, setQuestions) => {
 }
 
 const reorder = (list, startIndex, endIndex) => {
+
     const result = Array.from(list);
+
     const [removed] = result.splice(startIndex, 1);
+
     result.splice(endIndex, 0, removed);
 
     return sort(result);
+    
 };
 
 const sort = (result) => {
@@ -134,7 +138,16 @@ const move = (source, destination, droppableSource, droppableDestination, formId
 
     destination.splice(droppableDestination.index, 0, orderedQuestion);
 
-    return sort(destination);
+    if(orderedQuestion.Type__c == 'PageBreak') {
+
+        return pageBreaksApplied(sort(destination)); 
+
+    } else {
+
+        return sort(destination);
+
+    }
+
 };
 
 const clean = (question, index, formId) => {
@@ -147,7 +160,34 @@ const clean = (question, index, formId) => {
         Max_Length__c   : 10, 
         Min_Range__c    : 0, 
         Max_Range__c    : 100, 
-        Step__c         : 10
+        Step__c         : 10, 
+        Page__c         : 0
     }
 }
 
+const pageBreaksApplied = (questions) => {
+
+    let pageBreakLocations = questions.filter(question => question.Type__c == 'PageBreak').map(page => page.Order__c);
+
+    return questions.map(question => {
+
+        if(question.Type__c != 'PageBreak') {
+
+            question.Page__c = pageBreakLocations.reduce((a, c, i) => {
+
+                if(question.Order__c < c) {
+                    return i;
+                } else if(c != 0) {
+                    return i + 1;
+                } else {
+                    return a; 
+                }
+    
+            }, 0);
+
+        }
+
+        return question;
+
+    });
+}

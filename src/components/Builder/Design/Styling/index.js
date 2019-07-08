@@ -31,7 +31,7 @@ export const DesignState = () => {
         }
         
     }, [update]);
-    console.log('style', style.Multi_Page__c); 
+
     const updateMultiPage = (e) => {
 
         let checked = e.target.checked;

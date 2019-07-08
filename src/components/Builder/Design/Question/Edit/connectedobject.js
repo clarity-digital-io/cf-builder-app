@@ -24,7 +24,7 @@ export const ConnectedObject = () => {
         
         let target = e.target.value; 
         let value = e.target.checked; 
-        console.log(e.target.value, e.target.checked); 
+
     }
 
     return [

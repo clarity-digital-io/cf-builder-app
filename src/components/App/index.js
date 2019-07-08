@@ -21,6 +21,12 @@ const BuilderProvider = ({ children }) => {
 
     const [loading, setLoading] = useState(false); 
 
+    const [activeConnection, setActiveConnection] = useState([]);
+
+    const [activeFieldMapping, setActiveFieldMapping] = useState([]);
+
+    const [connections, setConnections] = useState([]);
+
     const [assign, setAssignment] = useState({ Id: null, Name: '', Assign__c : null, Default_Assign__c: null });
 
     const [style, setStyle] = useState({ Id: null, Color__c: '#333333', Background_Color__c : '#ffff', Columns: '', Multi_Page__c: false });
@@ -55,6 +61,30 @@ const BuilderProvider = ({ children }) => {
 
         }
 
+        if(navState == 'CONNECT') {
+
+            setLoading(true);
+
+            call(
+                "ClarityFormBuilder.getConnections", 
+                [form.Id], 
+                (result, e) => connectionsResultHandler(result, e, setConnections, setLoading)
+            );
+
+        }
+
+        if(navState == 'MAPPING') {
+
+            setLoading(true);
+
+            call(
+                "ClarityFormBuilder.getConnectionFieldMapping", 
+                [activeConnection.Id], 
+                (result, e) => mappingResultHandler(result, e, setActiveFieldMapping, setLoading)
+            );
+
+        }
+
     }, [navState])
 
     const [sObjects, setSObjects] = useState([]);
@@ -68,6 +98,12 @@ const BuilderProvider = ({ children }) => {
     return (
         <BuilderContext.Provider value={{ 
             loading,
+            activeConnection, 
+            setActiveConnection, 
+            activeFieldMapping, 
+            setActiveFieldMapping,
+            connections, 
+            setConnections,
             assign, 
             setAssignment,
             assignmentRules, 
@@ -101,7 +137,7 @@ const assignmentRulesHandler = (result, e, setAssignmentRules, setLoading) => {
 }
 
 const createHandler = (result, e, setForm, setStyle, setAssignment) => {
-    console.log('result', result); 
+
     setForm(form => {
         return { 
             ...form, Id: 
@@ -135,6 +171,16 @@ const createHandler = (result, e, setForm, setStyle, setAssignment) => {
 
 const getSObjectsHandler = (result, e, setSObjects) => {
     setSObjects(result.sort()); 
+}
+
+const connectionsResultHandler = (result, e, setConnections, setLoading) => {
+    setConnections(result); 
+    setLoading(false); 
+}
+
+const mappingResultHandler = (result, e, setActiveFieldMapping, setLoading) => {
+    setActiveFieldMapping(result); 
+    setLoading(false); 
 }
 
 const Layout = styled.div`

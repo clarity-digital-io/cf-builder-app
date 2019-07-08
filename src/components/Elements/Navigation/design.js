@@ -14,6 +14,9 @@ const DesignNavigation = () => {
                 <li className={ navState == 'QUESTIONS' ? 'active' : '' } onClick={() => setNavState('QUESTIONS')}>
                     <span>Questions</span>
                 </li>
+                <li className={ (navState == 'CONNECT' || navState == 'MAPPING') ? 'active' : '' } onClick={() => setNavState('CONNECT')}>
+                    <span>Connect</span>
+                </li>
                 <li className={ navState == 'DESIGN' ? 'active' : '' } onClick={() => setNavState('DESIGN')}>
                     <span>Design</span>
                 </li>

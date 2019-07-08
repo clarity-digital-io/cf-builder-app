@@ -53,7 +53,6 @@ export const EditProvider = ({ children }) => {
             
             if(activeQuestion.Type__c == 'RecordGroup') {
                 setLoading(true); 
-                console.log('activeQuestion.Type__c', activeQuestion, loading); 
                 call("ClarityFormBuilder.getSObjectFields", [activeQuestion.Salesforce_Object__c], (result, e) => getSObjectFieldResultHandler(result, e, setRequiredFields, setAdditionalFields, setSObjectEdit, setLoading));
             }
 

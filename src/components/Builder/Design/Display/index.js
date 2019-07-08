@@ -62,15 +62,7 @@ const GenerateQuestion = ({ item, provided, snapshot }) => {
             {...provided.draggableProps}
             {...provided.dragHandleProps}>
             
-            {
-                item.Type__c != 'PageBreak' ? 
-                <Question question={item} /> :
-                <View className="row middle-xs">
-                    <View className="col-xs-8">
-                        <span id="break">Page Break</span>
-                    </View>
-                </View>
-            }
+            <Question question={item} />
 
         </SelectableCard>
     )

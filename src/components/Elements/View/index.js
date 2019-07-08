@@ -4,7 +4,6 @@ import Main from '../Theme';
 const View = styled.div`
     margin-right: 0em; 
     margin-left: 0em; 
-
     padding: 0; 
 
     ${props => props.full && css`
@@ -18,6 +17,10 @@ const View = styled.div`
     ${props => props.space && css`
       padding: .75em;
     `}
+
+    ${props => props.border && css`
+      border-bottom: 1px solid ${Main.color.greyBorder}
+  `}
 
     ${props => props.silver && css`
       border-left: 1px solid ${Main.color.greyBorder}
@@ -39,6 +42,18 @@ const View = styled.div`
       background: ${Main.color.lighter};
       font-weight: 900; 
     `}
+
+    #connect {
+      font-weight: 900; 
+      color: ${Main.color.body};
+      padding: .5em;
+      border-radius: 4px; 
+    }
+
+    #salesforce {
+      font-weight: 900; 
+      color: ${Main.color.bright};
+    }
 
 `;
 

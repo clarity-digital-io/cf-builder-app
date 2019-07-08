@@ -7,10 +7,8 @@ import Box from '../../../Elements/Box';
 import {Button} from '../../../Elements/Button';
 
 import { BuilderContext } from '../../../Context';
-import { Select } from '../../../Elements/Select';
 
-
-export const SettingstState = () => {
+export const SettingsState = () => {
 
     const { form, setForm } = useContext(BuilderContext);
 
@@ -150,9 +148,11 @@ export const SettingstState = () => {
 }
 
 const resultHandler = (result, e, setForm, setUpdate) => {
-    console.log('result', result); 
+    
     setUpdate(false);
+    
     setForm(form => {
         return { ...form, Name: result.Name, Limit__c: result.Limit__c, End_Date__c: result.End_Date__c }
     }); 
+
 }

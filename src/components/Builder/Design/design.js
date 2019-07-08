@@ -5,8 +5,10 @@ import Box from '../../Elements/Box';
 
 import { QuestionState } from './Question/state';
 import { DesignState } from './Styling';
+import { ConnectState } from './Connect';
+import { MappingState } from './Connect/mapping';
 import { AssignmentState } from './Assignment';
-import { SettingstState } from './Settings'; 
+import { SettingsState } from './Settings'; 
 import { Display } from './Display';
 import { BuilderContext } from '../../Context';
 
@@ -20,6 +22,12 @@ const Design = () => {
             case 'QUESTIONS':
                 return <QuestionState />
                 break;
+            case 'CONNECT':
+                return <ConnectState />
+                break;
+            case 'MAPPING':
+                return <MappingState />
+                break;
             case 'DESIGN':
                 return <DesignState />
                 break;
@@ -27,7 +35,7 @@ const Design = () => {
                 return <AssignmentState />
                 break;
             case 'SETTINGS':
-                return <SettingstState />
+                return <SettingsState />
                 break;
         }
 

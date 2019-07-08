@@ -166,7 +166,7 @@ const sortDelete = (result) => {
         r.Order__c = i;
         return r; 
     });
-    console.log('s', s);
+
     s = s.sort((a, b) => {
         if(a.Order__c < b.Order__c) {
             return -1; 

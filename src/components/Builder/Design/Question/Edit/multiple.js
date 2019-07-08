@@ -1,6 +1,8 @@
 import React, { useState, useContext } from 'react';
 import View from '../../../../Elements/View';
 import Box from '../../../../Elements/Box';
+import { Button } from '../../../../Elements/Button';
+
 import CloseIcon from '../../../../Elements/Icons/close';
 
 import ViewStyle from '../../../../Elements/View/style';
@@ -20,13 +22,15 @@ export const Multiple = () => {
 
             let value = e.target.value;
             
-            setActiveQuestionOptions(options => {
-                return [{ Label__c: value, Clarity_Form_Question__c: activeQuestion.Id }].concat(activeQuestionOptions);
-            })
-
-            setNewValue('');
+            add(value)
 
         }
+
+    }
+
+    const handleAdd = (e) => {
+            
+        add(newValue)
 
     }
 
@@ -59,15 +63,40 @@ export const Multiple = () => {
 
     }
 
+    const add = (value) => {
+
+        setActiveQuestionOptions(options => {
+            return [{ Label__c: value, Clarity_Form_Question__c: activeQuestion.Id }].concat(activeQuestionOptions);
+        })
+
+        setNewValue('');
+
+    }
+
     return (
         <ViewStyle>
             <h1>Options</h1>
 
             <ViewStyle>
 
-                <div className="slds-form-element__control">
-                    <input onChange={(e) => setNewValue(e.target.value)} onKeyDown={(e) => handleKeyDown(e)} value={newValue} type="text" id="New" placeholder="Add Option" className="slds-input" />
-                </div>
+                <View className="row middle-xs center-xs">
+                    <View className="col-xs-11">
+                        <Box padding={'.5em'}>
+
+                            <div className="slds-form-element__control">
+                                <input onChange={(e) => setNewValue(e.target.value)} onKeyDown={(e) => handleKeyDown(e)} value={newValue} type="text" id="New" className="slds-input" />
+                            </div>
+
+                        </Box>
+                    </View>
+                    <View className="col-xs-1">
+                        <Box padding={'.5em'}>
+
+                            <Button add onClick={() => handleAdd()}>Add</Button>
+
+                        </Box>
+                    </View>
+                </View>
 
             </ViewStyle>
 
@@ -77,9 +106,9 @@ export const Multiple = () => {
                     activeQuestionOptions.map((option, order) => {
 
                         return (
-                            <View className="row center-xs">
+                            <View className="row middle-xs center-xs">
                                 <View className="col-xs-11">
-                                    <Box>
+                                    <Box padding={'.5em'}>
                                         <div className="slds-form-element__control">
                                             <input onChange={(e) => updateOption(e, order)} onKeyDown={(e) => handleKeyDown(e)} value={option.Label__c} type="text" id={option.Id} placeholder="Option" className="slds-input" />
                                         </div>

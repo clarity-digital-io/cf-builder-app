@@ -30,7 +30,13 @@ export const Question = ({ question }) => {
 
                 <View className="col-xs-7">
                     <Box padding='0'>
-                        { question.Required__c ? <span id="required">*</span> : '' }
+
+                        { 
+                            question.Required__c ? 
+                                <span id="required">*</span> : 
+                                null 
+                        }
+                        
                         { question.Type__c }: { question.Title__c }
 
                         {
@@ -44,14 +50,26 @@ export const Question = ({ question }) => {
                             <div>Repeatable Group</div> :
                             null
                         }
+
                     </Box> 
                 </View>
 
                 <View className="col-xs-5">
                     <Box padding='0'>
                         <Options>
-                            <li onClick={() => edit('EDIT')}>Edit</li>
-                            <li onClick={() => edit('AUTOMATE')}>Automate</li>
+
+                            {
+                                question.Type__c != 'PageBreak' ? 
+                                    <li onClick={() => edit('EDIT')}>Edit</li> :
+                                    null 
+                            }
+
+                            {
+                                (question.Type__c != 'Text' || question.Type__c != 'PageBreak') ? 
+                                    <li onClick={() => edit('AUTOMATE')}>Automate</li> :
+                                    null 
+                            }
+
                             <li onClick={() => edit('LOGIC')}>Logic</li>
 
                             {

@@ -112,7 +112,7 @@ const ControlSelect = ({ order, row }) => {
     }
 
     const removeRow = (order) => {
-        console.log('order', order);
+
         setActiveRecordGroup(activeRecordGroup => {
 
             let newRows = activeRecordGroup.filter((rec, i) => {
@@ -120,7 +120,7 @@ const ControlSelect = ({ order, row }) => {
                     return rec; 
                 }
             });
-            console.log('newRows', newRows);
+
             return newRows; 
 
         })

@@ -209,6 +209,7 @@ const ControlRow = ({ order, row, setRows, questions, filter }) => {
                             <CloseIcon />
                         </svg>
                     </div>
+                    
                 </Box>
             </View>
         </View>
