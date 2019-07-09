@@ -88,12 +88,12 @@ export const types = [
         active: true, 
         name: 'Text',
         type: 'Text'
-    },
+    }, 
     {   
         id: 15, 
         active: true, 
-        name: 'Page Break',
-        type: 'PageBreak'
+        name: 'Picture Choice',
+        type: 'PictureChoice'
     }
 ];
 

@@ -20,9 +20,10 @@ export const Button = styled.button`
 
     ${props => props.add && css`
         padding: 0.5em;
-        font-weight: 500; 
+        font-weight: 900; 
         color: ${Main.color.body};
-        background: ${Main.color.silver};
+        background: ${Main.color.white};
+        border: 1px solid ${Main.color.light}
     `}
 
     ${props => props.small && css`

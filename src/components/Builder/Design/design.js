@@ -4,7 +4,7 @@ import View from '../../Elements/View';
 import Box from '../../Elements/Box';
 
 import { QuestionState } from './Question/state';
-import { DesignState } from './Styling';
+import { DesignState } from './Styling/';
 import { ConnectState } from './Connect';
 import { MappingState } from './Connect/mapping';
 import { AssignmentState } from './Assignment';

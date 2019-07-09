@@ -29,6 +29,8 @@ const BuilderProvider = ({ children }) => {
 
     const [assign, setAssignment] = useState({ Id: null, Name: '', Assign__c : null, Default_Assign__c: null });
 
+    const [styles, setStyles] = useState([]); 
+
     const [style, setStyle] = useState({ Id: null, Color__c: '#333333', Background_Color__c : '#ffff', Columns: '', Multi_Page__c: false });
 
     const [form, setForm] = useState({Id: null, Name: '', Clarity_Form_Style__c: null, Clarity_Form_Assignment__c: 1, Connected_Object__c: '' });
@@ -48,6 +50,17 @@ const BuilderProvider = ({ children }) => {
     const [navState, setNavState] = useState('QUESTIONS'); 
 
     useEffect(() => {
+
+        if(navState == 'DESIGN') {
+
+            setLoading(true);
+
+            call(
+                "ClarityFormBuilder.getDesigns", 
+                [], 
+                (result, e) => designsResultHandler(result, e, setStyles, setLoading)
+            )
+        }
 
         if(navState == 'ASSIGNMENTS') {
 
@@ -98,6 +111,7 @@ const BuilderProvider = ({ children }) => {
     return (
         <BuilderContext.Provider value={{ 
             loading,
+            styles,
             activeConnection, 
             setActiveConnection, 
             activeFieldMapping, 
@@ -119,6 +133,13 @@ const BuilderProvider = ({ children }) => {
             { children }
         </BuilderContext.Provider>
     )
+}
+
+const designsResultHandler = (result, e, setStyles, setLoading) => {
+
+    setLoading(false);
+    setStyles(result); 
+
 }
 
 const assignmentCreateHandler = (result, e, setAssignment, setAssignmentRules, setLoading) => {

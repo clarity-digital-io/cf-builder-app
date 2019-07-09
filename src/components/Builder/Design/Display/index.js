@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import styled, { css, ThemeProvider } from 'styled-components';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 
@@ -10,8 +10,11 @@ import { Header } from './header';
 
 import { useDrag } from './useDrag';
 import { DesignContext, BuilderContext } from '../../../Context';
+import { Footer } from './footer';
 
 export const Display = () => {
+
+    const [additionalPages, setAdditionalPages] = useState([]);
 
     const { questionUpdate } = useContext(DesignContext);
 
@@ -48,7 +51,29 @@ export const Display = () => {
                 
             </Card>
 
-        </FormDesign>
+            {
+                additionalPages.map((page, i) => {
+                    
+                    <Card>
+
+                        <Droppable droppableId={`page${i}`}>
+                            {(provided, snapshot) => (
+                                <DropView 
+                                    isDraggingOver={snapshot.isDraggingOver}
+                                    ref={provided.innerRef}>
+            
+                                    {provided.placeholder}
+            
+                                </DropView>
+                            )}
+                        </Droppable>
+        
+                    </Card>
+                })
+            }
+
+        </FormDesign>, 
+        <Footer />
     ];
 
 }
@@ -83,11 +108,6 @@ const SelectableCard = styled.div`
     }
 `;
 
-const DropView = styled(View)`
-    padding: 2em !important; 
-    border: 1px dashed ${Main.color.silver};    
-`;
-
 const Card = ({ update, children }) => {
 
     const { style } = useContext(BuilderContext);
@@ -106,24 +126,30 @@ const Card = ({ update, children }) => {
                     { children }
 
                 </div>
-                <footer className="slds-card__footer">
-                    <button className="slds-button slds-button_neutral">Cancel</button>
-                    <button className="slds-button slds-button_brand">Send</button>
-                </footer>
             </ArticleStyling>
         </ThemeProvider>
     )
 } 
 
-const ArticleStyling = styled.article`
+const ArticleStyling2 = styled.article`
     background: ${props => props.theme.background} !important;
     color: ${props => props.theme.questionColor} !important;
     background-image: ${props => `url(/sfc/servlet.shepherd/document/download/${props.theme.backgroundImage})`} !important; 
+`;
 
+const ArticleStyling = styled.article`
+    background: ${props => props.theme.background} !important;
+    color: ${props => props.theme.questionColor} !important;
+    background-image: ${props => `url(${props.theme.backgroundImage})`} !important; 
 `;
 
 const FormDesign = styled.div`
-    height: 93vh; 
-    padding: 2em; 
+    height: 88vh;
+    padding: 1em; 
     overflow: scroll;
+`;
+
+const DropView = styled(View)`
+    padding: 2em !important; 
+    border: 1px dashed ${Main.color.silver};    
 `;

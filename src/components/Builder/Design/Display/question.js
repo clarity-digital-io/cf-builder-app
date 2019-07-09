@@ -64,11 +64,7 @@ export const Question = ({ question }) => {
                                     null 
                             }
 
-                            {
-                                (question.Type__c != 'Text' || question.Type__c != 'PageBreak') ? 
-                                    <li onClick={() => edit('AUTOMATE')}>Automate</li> :
-                                    null 
-                            }
+                            <li onClick={() => edit('AUTOMATE')}>Automate</li> 
 
                             <li onClick={() => edit('LOGIC')}>Logic</li>
 

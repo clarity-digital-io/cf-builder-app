@@ -1,150 +1,52 @@
 import React, { useContext, useEffect, useState } from 'react';
+import styled, { css, ThemeProvider } from 'styled-components';
 
-import { call } from '../../../RemoteActions'; 
+import { BuilderContext } from '../../../Context';
+
 import View from '../../../Elements/View';
 import ViewStyle from '../../../Elements/View/style';
 import Box from '../../../Elements/Box';
 
-import {Button} from '../../../Elements/Button';
-import {Upload} from '../../../Elements/Upload';
-
-import {Color} from './color'; 
-
-import { BuilderContext } from '../../../Context';
-
 export const DesignState = () => {
 
-    const { style, setStyle } = useContext(BuilderContext);
+    const { styles, setStyle } = useContext(BuilderContext);
 
-    const [update, setUpdate] = useState(false);
-
-    const [file, setFile] = useState('');
-
-    useEffect(() => {
-
-        if(update) {
-            call(
-                "ClarityFormBuilder.updateDesign", 
-                [JSON.stringify(style), file], 
-                (result, e) => resultHandler(result, e, setStyle, setUpdate)
-            );
-        }
-        
-    }, [update]);
-
-    const updateMultiPage = (e) => {
-
-        let checked = e.target.checked;
-
-        setStyle(style => {
-            return { ...style, Multi_Page__c: checked };
-        });
-
-    }
-
-    const handleButtonColorChange = (color, e, field) => {
-
-        let hex = color.hex;
-
-        setStyle(style => {
-            return { ...style, Button_Color__c: hex };
-        });
-
-    }
-
-    const handleBackgroundColorChange = (color, e, field) => {
-
-        let hex = color.hex;
-
-        setStyle(style => {
-            return { ...style, Background_Color__c: hex };
-        });
-
-    }
-
-    const handleQuestionColorChange = (color, e, field) => {
-
-        let hex = color.hex;
-
-        setStyle(style => {
-            return { ...style, Color__c: hex };
-        });
-
-    }
-
-    const uploadChange = (e, d) => {
-
-        let reader = new FileReader(); 
-
-        let files = Array.from(e.target.files);
-
-        reader.readAsDataURL(files[0]);
-
-        reader.onloadend = function () {
-            setStyle(style => {
-                return { ...style, Background_Image__c: reader.result };
-            });
-            
-            let base64result = reader.result.split(',')[1];
-
-            setFile(base64result); 
-        };
-    }
-    
     return [
-        
-        <View silver body className="row">
+        <View silver full className="row">
             <View className="col-xs-12">
                 <View className="Box">
                 
+                    <View border className="row middle-xs">
+                        <View className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <Box>
+
+                                <ViewStyle space>
+
+                                    <h1>Design</h1>
+                                    <p>Select from a public theme, or create a theme with your branding.</p>
+                                </ViewStyle>
+
+
+                            </Box>  
+                        </View>
+                    </View>
+
                     <View className="row middle-xs">
                         <View className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <Box>
 
-                                <ViewStyle space border>
+                                <ViewStyle space>
+                                <View className="row middle-xs">
 
-                                    <h1>Design</h1>
-                                    <p>Customize your form's colors and font to fit your brand.</p>
+                                {
+                                    styles.map(style => {
+                                        return <View className="col-xs-4">
+                                            <Style style={style} setStyle={setStyle} />
+                                        </View>
+                                    })
+                                }    
+                                </View>
                                 </ViewStyle>
-
-                                <ViewStyle space border>
-
-                                    <div className="slds-form-element">
-                                        <label className="slds-checkbox_toggle slds-grid">
-                                            <span className="slds-form-element__label slds-m-bottom_none">Multi Page Form</span>
-                                            <input checked={style.Multi_Page__c} onClick={(e) => updateMultiPage(e)} type="checkbox" name="checkbox-toggle-14" value="checkbox-toggle-14" aria-describedby="checkbox-toggle-14" />
-                                            <span id="checkbox-toggle-14" className="slds-checkbox_faux_container" aria-live="assertive">
-                                            <span className="slds-checkbox_faux"></span>
-                                            </span>
-                                        </label>
-                                    </div>
-
-                                </ViewStyle>
-
-                                <ViewStyle space border>
-
-                                    <Upload onChange={uploadChange} />
-
-                                </ViewStyle>
-
-                                <ViewStyle space border>
-
-                                    <Color color={style.Color__c} title={'Question'} handleColorChange={handleQuestionColorChange} />
-
-                                </ViewStyle>
-
-                                <ViewStyle space border>
-
-                                    <Color color={style.Background_Color__c} title={'Background'} handleColorChange={handleBackgroundColorChange} />
-
-                                </ViewStyle>
-
-                                <ViewStyle space border>
-
-                                    <Color color={style.Button_Color__c} title={'Button'} handleColorChange={handleButtonColorChange} />
-
-                                </ViewStyle>
-
 
                             </Box>  
                         </View>
@@ -152,21 +54,49 @@ export const DesignState = () => {
                 
                 </View>
             </View>
-        </View>, 
-        <View footer className="row middle-xs end-xs">
-            <View className="col-xs-12">
-                <ViewStyle middle>
-                    <Button cta onClick={() => setUpdate(true)}>
-                    { update ? 'Saving...' : 'Save Changes' }
-                    </Button>
-                </ViewStyle>
-            </View>
         </View>
-
     ]
+
 }
 
-const resultHandler = (result, e, setStyle, setUpdate) => {
-    setUpdate(false);
-    setStyle(result); 
+const Style = ({ style, setStyle }) => {
+
+    const theme = {
+        background: style.Background_Color__c,
+        questionColor: style.Color__c, 
+        buttonColor: style.Button_Color__c, 
+        backgroundImage: style.Background_Image__c
+    }
+
+    return <ThemeProvider theme={theme}>
+        <BackgroundView onClick={() => setStyle(style)}>
+            <QuestionView>
+                Question
+            </QuestionView>
+            <ButtonColorView />
+        </BackgroundView>
+    </ThemeProvider>
 }
+
+const QuestionView = styled.div`
+    padding: 1em
+    color: ${props => props.theme.questionColor} !important;
+`
+
+const ButtonColorView = styled.div`
+    padding: .5em;
+    width: 40%; 
+    margin: 1em; 
+    border-radius: 4px; 
+    background: ${props => props.theme.buttonColor} !important;
+`
+
+const BackgroundView = styled.div`
+    padding: .5em 2em 5em .5em; 
+    margin: 1em; 
+    border-radius: 4px; 
+    background: ${props => props.theme.background} !important;
+    background-image: url(${props => props.theme.backgroundImage}) !important;
+    box-shadow: 3px 0 6px #ccc;
+    cursor: pointer; 
+`;

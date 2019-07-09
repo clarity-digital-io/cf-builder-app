@@ -36,11 +36,15 @@ const View = styled.div`
       height: 7vh;
     `}
 
+    ${props => props.display && css`
+      background: ${Main.color.body};
+    `}
+
     ${props => props.header && css`
       box-shadow: 0 0 3px 0 ${Main.color.silver}
-      border-bottom: 1px solid ${Main.color.greyBorder}
       background: ${Main.color.lighter};
       font-weight: 900; 
+      height: 5vh; 
     `}
 
     #connect {

@@ -22,7 +22,7 @@ export const ConnectState = () => {
         if(update) {
             call(
                 "ClarityFormBuilder.saveConnections", 
-                [JSON.stringify(connections)], 
+                [JSON.stringify(connections), form.Id], 
                 (result, e) => connectionsResultHandler(result, e, setConnections, setUpdate)
             );
         }

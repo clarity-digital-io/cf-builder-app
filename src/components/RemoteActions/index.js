@@ -39,7 +39,7 @@ const mockCall = (func, params, callback) => {
                 Connected_Object__c: 'Account',
                 Clarity_Form_Style__c: 1, 
                 Clarity_Form_Assignment__c: 1,
-                Clarity_Form_Style__r: { Background_Color__c: '#333333', Color__c: '#FFFFFF', Button_Color__c: '', Multi_Page__c: true }, 
+                Clarity_Form_Style__r: { Background_Image__c: 'https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2565&q=80', Background_Color__c: '#333333', Color__c: '#FFFFFF', Button_Color__c: '', Multi_Page__c: true }, 
                 Clarity_Form_Assignment__r: { Id: 1, Name: 'Clarity Form Assignment', Assign__c: 1, Default_Assign__c: 2 } 
             }); 
             break;
@@ -155,15 +155,15 @@ const mockCall = (func, params, callback) => {
                 { Id: 14, Clarity_Form__c: 1, Salesforce_Object__c: 'Account', Type__c: 'Create', Active__c: true }
             ]);
             break;
+        case 'getDesigns': 
+            callback([
+                { Background_Color__c: '#333333', Color__c: '#FFFFFF', Button_Color__c: '#FFFFFF', Background_Image__c: '', Multi_Page__c: true },
+                { Background_Color__c: '#FFFFFF', Color__c: '#333333', Button_Color__c: '#FFFFFF', Background_Image__c: '', Multi_Page__c: true },
+                { Background_Color__c: '#F1F1F1', Color__c: '#FFFFFF', Button_Color__c: '#FFFFFF', Background_Image__c: 'https://images.unsplash.com/photo-1525577288853-c6f0a020a162?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80', Multi_Page__c: true },
+                { Background_Color__c: '#F1F1F1', Color__c: '#FFFFFF', Button_Color__c: '#FFFFFF', Background_Image__c: 'https://images.unsplash.com/photo-1517267075966-848c4c4cd883?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=882&q=80', Multi_Page__c: true },
+                { Background_Color__c: '#F1F1F1', Color__c: '#FFFFFF', Button_Color__c: '#FFFFFF', Background_Image__c: 'https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2565&q=80', Multi_Page__c: true }
+            ])
         default:
             break;
     }
-}
-
-const handler = () => {
-
-}
-
-const error = () => {
-
 }
