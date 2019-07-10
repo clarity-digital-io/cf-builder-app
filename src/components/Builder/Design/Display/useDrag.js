@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from 'react';
 import { call } from '../../../RemoteActions';
 
-import { types } from '../types';
+import { sortedTypes } from '../types';
 
 import { BuilderContext, DragDropUpdateContext, DesignContext } from '../../../Context';
 
@@ -40,7 +40,7 @@ export const useDrag = () => {
             setQuestions(questions => {
 
                 const items = move(
-                    types,
+                    sortedTypes,
                     questions,
                     source,
                     destination, 
@@ -138,15 +138,7 @@ const move = (source, destination, droppableSource, droppableDestination, formId
 
     destination.splice(droppableDestination.index, 0, orderedQuestion);
 
-    if(orderedQuestion.Type__c == 'PageBreak') {
-
-        return pageBreaksApplied(sort(destination)); 
-
-    } else {
-
-        return sort(destination);
-
-    }
+    return sort(destination);
 
 };
 
@@ -163,31 +155,4 @@ const clean = (question, index, formId) => {
         Step__c         : 10, 
         Page__c         : 0
     }
-}
-
-const pageBreaksApplied = (questions) => {
-
-    let pageBreakLocations = questions.filter(question => question.Type__c == 'PageBreak').map(page => page.Order__c);
-
-    return questions.map(question => {
-
-        if(question.Type__c != 'PageBreak') {
-
-            question.Page__c = pageBreakLocations.reduce((a, c, i) => {
-
-                if(question.Order__c < c) {
-                    return i;
-                } else if(c != 0) {
-                    return i + 1;
-                } else {
-                    return a; 
-                }
-    
-            }, 0);
-
-        }
-
-        return question;
-
-    });
 }

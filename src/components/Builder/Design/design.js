@@ -5,6 +5,7 @@ import Box from '../../Elements/Box';
 
 import { QuestionState } from './Question/state';
 import { DesignState } from './Styling/';
+import { DesignEditState } from './Styling/design';
 import { ConnectState } from './Connect';
 import { MappingState } from './Connect/mapping';
 import { AssignmentState } from './Assignment';
@@ -30,6 +31,9 @@ const Design = () => {
                 break;
             case 'DESIGN':
                 return <DesignState />
+                break;
+            case 'DESIGNEDIT':
+                return <DesignEditState />
                 break;
             case 'ASSIGNMENTS':
                 return <AssignmentState />

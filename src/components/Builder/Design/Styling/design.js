@@ -12,9 +12,9 @@ import {Color} from './color';
 
 import { BuilderContext } from '../../../Context';
 
-export const DesignState = () => {
+export const DesignEditState = () => {
 
-    const { style, setStyle } = useContext(BuilderContext);
+    const { style, setStyle, setNavState } = useContext(BuilderContext);
 
     const [update, setUpdate] = useState(false);
 
@@ -156,6 +156,9 @@ export const DesignState = () => {
         <View footer className="row middle-xs end-xs">
             <View className="col-xs-12">
                 <ViewStyle middle>
+                    <Button neutral onClick={() => setNavState('DESIGN')}>
+                        Back
+                    </Button>
                     <Button cta onClick={() => setUpdate(true)}>
                     { update ? 'Saving...' : 'Save Changes' }
                     </Button>

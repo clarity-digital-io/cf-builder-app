@@ -37,6 +37,8 @@ const View = styled.div`
     `}
 
     ${props => props.display && css`
+      border: none; 
+      border-top:1px solid ${Main.color.greyBorder};
       background: ${Main.color.body};
     `}
 

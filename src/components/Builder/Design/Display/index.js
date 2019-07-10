@@ -79,7 +79,7 @@ export const Display = () => {
 }
 
 const GenerateQuestion = ({ item, provided, snapshot }) => {
-
+    
     return (
         <SelectableCard 
             isDragging={snapshot.isDragging}
@@ -120,36 +120,29 @@ const Card = ({ update, children }) => {
 
     return (    
         <ThemeProvider theme={theme}>    
-            <ArticleStyling className="slds-card">
-                <div className="slds-card__body slds-card__body_inner">
+            <CardStyling>
 
                     { children }
 
-                </div>
-            </ArticleStyling>
+            </CardStyling>
         </ThemeProvider>
     )
 } 
 
-const ArticleStyling2 = styled.article`
-    background: ${props => props.theme.background} !important;
-    color: ${props => props.theme.questionColor} !important;
-    background-image: ${props => `url(/sfc/servlet.shepherd/document/download/${props.theme.backgroundImage})`} !important; 
-`;
-
-const ArticleStyling = styled.article`
+const CardStyling = styled.div`
     background: ${props => props.theme.background} !important;
     color: ${props => props.theme.questionColor} !important;
     background-image: ${props => `url(${props.theme.backgroundImage})`} !important; 
+    height: 100%; 
 `;
+
+//    background-image: ${props => `url(/sfc/servlet.shepherd/document/download/${props.theme.backgroundImage})`} !important; 
 
 const FormDesign = styled.div`
     height: 88vh;
-    padding: 1em; 
     overflow: scroll;
 `;
 
 const DropView = styled(View)`
-    padding: 2em !important; 
-    border: 1px dashed ${Main.color.silver};    
+    padding: 2em !important;  
 `;
