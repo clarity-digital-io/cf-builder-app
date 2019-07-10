@@ -228,7 +228,7 @@ const ControlAddRow = ({ setRows, relatedId }) => {
         <View className="row center-xs middle-xs">
             <View className="col-xs-1">
 
-                <Button add onClick={() => add()}>Add</Button>
+                <Button add onClick={() => add()}>&#43;</Button>
 
             </View>
             <View className="col-xs-11">

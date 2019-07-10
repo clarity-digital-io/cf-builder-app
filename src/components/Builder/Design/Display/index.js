@@ -139,7 +139,7 @@ const CardStyling = styled.div`
 //    background-image: ${props => `url(/sfc/servlet.shepherd/document/download/${props.theme.backgroundImage})`} !important; 
 
 const FormDesign = styled.div`
-    height: 88vh;
+    height: 87vh;
     overflow: scroll;
 `;
 

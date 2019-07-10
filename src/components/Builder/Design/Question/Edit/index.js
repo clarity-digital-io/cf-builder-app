@@ -12,10 +12,11 @@ import { Slider } from './slider';
 import { Lookup } from './lookup'; 
 import { RecordGroup } from './recordgroup'; 
 import { ConnectedObject } from './connectedobject'; 
+import { PictureChoice } from './picturechoice'; 
 import { SmallSpinner } from '../../../../Elements/Spinner';
 
 const getQuestionType = (type) => {
-
+    console.log('getQuestionType', type)
     switch (type) {
         case 'MultipleChoice':
         case 'Dropdown':
@@ -47,6 +48,9 @@ const getQuestionType = (type) => {
             break;
         case 'ConnectedObject':
             return <ConnectedObject />
+            break;
+        case 'PictureChoice':
+            return <PictureChoice />
             break;
         default:
             return <div>DefaultType: { type }</div>

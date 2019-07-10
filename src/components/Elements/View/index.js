@@ -46,7 +46,7 @@ const View = styled.div`
       box-shadow: 0 0 3px 0 ${Main.color.silver}
       background: ${Main.color.lighter};
       font-weight: 900; 
-      height: 5vh; 
+      height: 6vh; 
     `}
 
     #connect {

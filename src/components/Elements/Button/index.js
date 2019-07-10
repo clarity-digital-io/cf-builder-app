@@ -11,6 +11,11 @@ export const Button = styled.button`
     border-radius: 4px; 
     font-weight: 900;
     color: ${Main.color.white};
+
+    ${props => props.emoticon && css`
+        font-size: 1.75em; 
+        background: none;
+    `}
     
     ${props => props.neutral && css`
         margin-left: .5em;

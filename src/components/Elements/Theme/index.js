@@ -1,6 +1,6 @@
 const Main = { 
     color: {
-        alert : '#EBA431',
+        alert : '#e82828',
         warning : '#f8ff51',
         white: '#fff',
         lighter: '#fafafa',

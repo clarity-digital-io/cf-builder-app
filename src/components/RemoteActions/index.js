@@ -39,7 +39,7 @@ const mockCall = (func, params, callback) => {
                 Connected_Object__c: 'Account',
                 Clarity_Form_Style__c: 15, 
                 Clarity_Form_Assignment__c: 1,
-                Clarity_Form_Style__r: { Id: 15, Background_Image__c: 'https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2565&q=80', Background_Color__c: '#333333', Color__c: '#FFFFFF', Button_Color__c: '', Multi_Page__c: true }, 
+                Clarity_Form_Style__r: { Id: 15, Name:'Greens', Background_Image__c: 'https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2565&q=80', Background_Color__c: '#333333', Color__c: '#FFFFFF', Button_Color__c: '', Multi_Page__c: true }, 
                 Clarity_Form_Assignment__r: { Id: 1, Name: 'Clarity Form Assignment', Assign__c: 1, Default_Assign__c: 2 } 
             }); 
             break;
@@ -89,12 +89,12 @@ const mockCall = (func, params, callback) => {
         case 'getQuestionEditDetails':
             callback({
                 'Criteria': [{Id: 31, Clarity_Form_Question__c: 1, Field__c: 1, Field_Type__c: 'Comment', Operator__c: 'Is Not Null', Type__c: 'Boolean', Value__c: 'True' }],
-                'Options' : [{ Id: 31, Label__c: 'Option 1', Active_Flow__c: true, Clarity_Form_Question__c: 2},{ Id: 32, Label__c: 'Option 2', Active_Flow__c: false, Clarity_Form_Question__c: 2}],
+                'Options' : [{ Id: 31, Label__c: 'Option 1', Active_Flow__c: true, Clarity_Form_Question__c: 2, Choice_Image__c: 'https://images.unsplash.com/photo-1562743338-51caec0b0e65?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1955&q=80'},{ Id: 32, Label__c: 'Option 2', Active_Flow__c: false, Clarity_Form_Question__c: 2, Choice_Image__c: 'https://images.unsplash.com/photo-1562743338-51caec0b0e65?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1955&q=80'}],
                 'FlowDesign': [{ Id: 31, Clarity_Form_Question__c: 123, Form_Submission__c: true, Active__c: false }]
             });
             break;
         case 'getQuestionOptions':
-            callback([{ Id: 31, Label__c: 'Option 1', Active_Flow__c: true, Clarity_Form_Question__c: 1},{ Id: 32, Label__c: 'Option 2', Active_Flow__c: false, Clarity_Form_Question__c: 1}]);
+            callback([{ Id: 31, Label__c: 'Option 1', Active_Flow__c: true, Clarity_Form_Question__c: 1, Choice_Image__c: 'https://images.unsplash.com/photo-1562743338-51caec0b0e65?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1955&q=80'},{ Id: 32, Label__c: 'Option 2', Active_Flow__c: false, Clarity_Form_Question__c: 1, Choice_Image__c: 'https://images.unsplash.com/photo-1562743338-51caec0b0e65?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1955&q=80'}]);
             break; 
         case 'saveFlowDesign':
             callback({
@@ -157,11 +157,11 @@ const mockCall = (func, params, callback) => {
             break;
         case 'getDesigns': 
             callback([
-                { Id: 15, Background_Color__c: '#333333', Color__c: '#FFFFFF', Button_Color__c: '#FFFFFF', Background_Image__c: '', Multi_Page__c: true },
-                { Id: 16, Background_Color__c: '#FFFFFF', Color__c: '#333333', Button_Color__c: '#FFFFFF', Background_Image__c: '', Multi_Page__c: true },
-                { Id: 17, Background_Color__c: '#F1F1F1', Color__c: '#FFFFFF', Button_Color__c: '#FFFFFF', Background_Image__c: 'https://images.unsplash.com/photo-1525577288853-c6f0a020a162?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80', Multi_Page__c: true },
-                { Id: 18, Background_Color__c: '#F1F1F1', Color__c: '#FFFFFF', Button_Color__c: '#FFFFFF', Background_Image__c: 'https://images.unsplash.com/photo-1517267075966-848c4c4cd883?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=882&q=80', Multi_Page__c: true },
-                { Id: 19, Background_Color__c: '#F1F1F1', Color__c: '#FFFFFF', Button_Color__c: '#FFFFFF', Background_Image__c: 'https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2565&q=80', Multi_Page__c: true }
+                { Name: 'Dark', Id: 15, Background_Color__c: '#333333', Color__c: '#FFFFFF', Button_Color__c: '#FFFFFF', Background_Image__c: '', Multi_Page__c: true },
+                { Name: 'Light', Id: 16, Background_Color__c: '#FFFFFF', Color__c: '#333333', Button_Color__c: '#FFFFFF', Background_Image__c: '', Multi_Page__c: true },
+                { Name: 'Forest', Id: 17, Background_Color__c: '#F1F1F1', Color__c: '#FFFFFF', Button_Color__c: '#FFFFFF', Background_Image__c: 'https://images.unsplash.com/photo-1525577288853-c6f0a020a162?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80', Multi_Page__c: true },
+                { Name: 'Palm Trees', Id: 18, Background_Color__c: '#F1F1F1', Color__c: '#FFFFFF', Button_Color__c: '#FFFFFF', Background_Image__c: 'https://images.unsplash.com/photo-1517267075966-848c4c4cd883?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=882&q=80', Multi_Page__c: true },
+                { Name: 'Spring', Id: 19, Background_Color__c: '#F1F1F1', Color__c: '#FFFFFF', Button_Color__c: '#FFFFFF', Background_Image__c: 'https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2565&q=80', Multi_Page__c: true }
             ])
         default:
             break;

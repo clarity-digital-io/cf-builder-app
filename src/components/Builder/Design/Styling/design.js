@@ -32,6 +32,15 @@ export const DesignEditState = () => {
         
     }, [update]);
 
+    const updateName = (e) => {
+
+        let value = e.target.value; 
+
+        setStyle(style => {
+            return { ...style, Name: value }
+        })
+    }
+
     const updateMultiPage = (e) => {
 
         let checked = e.target.checked;
@@ -105,6 +114,30 @@ export const DesignEditState = () => {
 
                                     <h1>Design</h1>
                                     <p>Customize your form's colors and font to fit your brand.</p>
+
+                                </ViewStyle>
+
+                                <ViewStyle space border>
+
+                                    <ViewStyle>
+
+                                        <View className="row" >
+                                        <View className="col-xs-12">
+                                            <Box padding='1em 0 0 0'>
+                                                
+                                                <div className="slds-form-element">
+                                                    <label className="slds-form-element__label" for="text-input-id-1">Style Name</label>
+                                                    <div className="slds-form-element__control">
+                                                        <input type="text" value={ style.Name } onChange={(e) => updateName(e)} id="text-input-id-1" placeholder="Style Name" className="slds-input" />
+                                                    </div>
+                                                </div>
+
+                                            </Box>
+                                        </View>
+                                        </View>
+
+                                    </ViewStyle>
+
                                 </ViewStyle>
 
                                 <ViewStyle space border>
@@ -123,7 +156,7 @@ export const DesignEditState = () => {
 
                                 <ViewStyle space border>
 
-                                    <Upload onChange={uploadChange} />
+                                    <Upload style={style} onChange={uploadChange} />
 
                                 </ViewStyle>
 

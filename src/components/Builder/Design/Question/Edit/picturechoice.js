@@ -8,7 +8,7 @@ import CloseIcon from '../../../../Elements/Icons/close';
 import ViewStyle from '../../../../Elements/View/style';
 import { DesignContext, EditContext } from '../../../../Context';
 
-export const Multiple = () => {
+export const PictureChoice = () => {
 
     const { activeQuestionOptions, setActiveQuestionOptions } = useContext(EditContext);
 
@@ -75,12 +75,19 @@ export const Multiple = () => {
 
     return (
         <ViewStyle>
-            <h1>Options</h1>
+            <h1>Picture Choice Options</h1>
 
             <ViewStyle>
 
                 <View className="row middle-xs center-xs">
-                    <View className="col-xs-11">
+                    <View className="col-xs-2">
+                        <Box padding={'.5em'}>
+                            
+                            <Button emoticon>📷</Button>
+
+                        </Box>
+                    </View>
+                    <View className="col-xs-9">
                         <Box padding={'.5em'}>
 
                             <div className="slds-form-element__control">
@@ -104,10 +111,20 @@ export const Multiple = () => {
 
                 {
                     activeQuestionOptions.map((option, order) => {
-
+                        console.log('option', option); 
                         return (
                             <View className="row middle-xs center-xs">
-                                <View className="col-xs-11">
+                                <View className="col-xs-2">
+                                    <Box padding={'.5em'}>
+
+                                        {
+                                            option.Choice_Image__c == null ? 
+                                            <Button emoticon>📷</Button> :
+                                            <Button emoticon><img src={option.Choice_Image__c} /></Button>
+                                        }
+                                    </Box>
+                                </View>
+                                <View className="col-xs-9">
                                     <Box padding={'.5em'}>
                                         <div className="slds-form-element__control">
                                             <input onChange={(e) => updateOption(e, order)} onKeyDown={(e) => handleKeyDown(e)} value={option.Label__c} type="text" id={option.Id} placeholder="Option" className="slds-input" />

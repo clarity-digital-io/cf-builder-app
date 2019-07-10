@@ -1,28 +1,26 @@
 import React, { useState } from 'react';
+import styled, { css, ThemeProvider } from 'styled-components';
 
 import UploadIcon from '../Icons/upload';
+import { Button } from '../Button';
 
+export const Upload = ({ style, onChange }) => {
 
-export const Upload = ({ onChange }) => {
+    const theme = { 
+        backgroundImage: style.Background_Image__c 
+    }
 
-    return (
-        <div className="slds-form-element">
-            <label className="slds-form-element__label" id="file-selector-primary-label">Background Image</label>
-
-            <div className="slds-form-element__control">
-                <div className="slds-file-selector slds-file-selector_files">
-                <div className="slds-file-selector__dropzone">
-                <input onChange={(e) => onChange(e)} type="file" className="slds-file-selector__input slds-assistive-text" accept="image/png,image/jpeg" id="file-upload-input-01" aria-labelledby="file-selector-primary-label file-selector-secondary-label" />
-                <label className="slds-file-selector__body" htmlFor="file-upload-input-01" id="file-selector-secondary-label">
-                    <span className="slds-file-selector__button slds-button slds-button_neutral">
-                    <svg className="slds-button__icon slds-button__icon_left" aria-hidden="true">
-                        <UploadIcon />
-                    </svg>Upload Files</span>
-                </label>
-                </div>
-            </div>
-            </div>
-        </div>
-    )
+    return style.Background_Image__c != '' ?
+        <ThemeProvider theme={theme}>
+            <BackgroundView onClick={(e) => onChange(e)} />
+        </ThemeProvider> :
+        <Button add>&#43;</Button>
 
 }
+
+const BackgroundView = styled.div`
+    padding: .5em 2em 2em .5em;  
+    background-image: url(${props => props.theme.backgroundImage}) !important;
+    cursor: pointer;
+    border-radius: 4px;  
+`;
