@@ -120,8 +120,9 @@ export const PictureChoice = () => {
                                         {
                                             option.Choice_Image__c == null ? 
                                             <Button emoticon>📷</Button> :
-                                            <Button emoticon><img src={option.Choice_Image__c} /></Button>
+                                            <Button picture><img src={option.Choice_Image__c} /></Button>
                                         }
+
                                     </Box>
                                 </View>
                                 <View className="col-xs-9">

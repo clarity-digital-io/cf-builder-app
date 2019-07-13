@@ -24,10 +24,8 @@ const Design = () => {
                 return <QuestionState />
                 break;
             case 'CONNECT':
-                return <ConnectState />
-                break;
             case 'MAPPING':
-                return <MappingState />
+                return <ConnectState />
                 break;
             case 'DESIGN':
                 return <DesignState />
@@ -56,7 +54,13 @@ const Design = () => {
 
         <View key={'QuestionDisplay'} className="col-xs-6 col-sm-7 col-md-7 col-lg-7">
             <Box padding='0'>
-                <Display />
+
+                { 
+                    navState == 'MAPPING' ? 
+                    <MappingState /> :
+                    <Display />
+                }
+                
             </Box>                
         </View>
     ]

@@ -12,10 +12,10 @@ export const MappingState = () => {
 
     const { questions } = useContext(DesignContext);
 
-    const { navState, setNavState, activeFieldMapping, setActiveFieldMapping } = useContext(BuilderContext);
+    const { navState, setNavState, activeFieldMapping, activeConnection } = useContext(BuilderContext);
 
     const [questionOptions, setQuestionOptions] = useState(
-        questions.filter(question => (question.Type__c != 'Text' && question.Type__c != 'PageBreak'))
+        questions.filter(question => (question.Type__c != 'Text'))
     )
     
     const setQuestionSelection = () => {
@@ -24,13 +24,13 @@ export const MappingState = () => {
 
     return [
 
-        <View silver body className="row" key={'Body'}>
+        <View white body className="row" key={'Body'}>
             <View className="col-xs-12">
                 <Box padding='0'>
 
                     <ViewStyle space border>
                     
-                        <h1>Connection Fields: Account</h1>
+                        <h1>Connection Fields: { activeConnection.Salesforce_Object__c }</h1>
 
                         <p>Map question values from a Clarity Form Response to a selected Salesforce Object.</p>
 
@@ -41,7 +41,7 @@ export const MappingState = () => {
                             <View className="col-xs-5">
                                 <Box padding='.5em'>
                                     
-                                    <h2>Clarity Form Question</h2>
+                                    <h2>Salesforce Field</h2>
 
                                 </Box>
                             </View>
@@ -53,7 +53,7 @@ export const MappingState = () => {
                             <View className="col-xs-5">
                                 <Box padding='.5em'>
                                     
-                                    <h2>Salesforce Field</h2>
+                                    <h2>Clarity Form Question</h2>
 
                                 </Box>
                             </View>
@@ -67,19 +67,19 @@ export const MappingState = () => {
                                         <View className="col-xs-5">
                                             <Box padding='.5em'>
                                                 
-                                                <FieldSelect order={order} options={questionOptions} value={field.Clarity_Form_Question__c} onChange={setQuestionSelection} />
+                                                <FieldSelect order={order} options={[]} value={field.Salesforce_Field__c} onChange={() => console.log()} />
 
                                             </Box>
                                         </View>
                                         <View className="col-xs-2">
                                             <Box padding='.5em'>
-                                                &#x2192;
+                                                &#x2190;
                                             </Box>
                                         </View>
                                         <View className="col-xs-5">
                                             <Box padding='.5em'>
                                                 
-                                                <FieldSelect order={order} options={[]} value={field.Salesforce_Field__c} onChange={() => console.log()} />
+                                                <FieldSelect order={order} options={questionOptions} value={field.Clarity_Form_Question__c} onChange={setQuestionSelection} />
 
                                             </Box>
                                         </View>
@@ -89,6 +89,18 @@ export const MappingState = () => {
                             })
                         }
 
+                    </ViewStyle>
+
+                    <ViewStyle>
+                        <View className="row middle-xs">
+                            <View className="col-xs-5">
+                                <Box padding='.5em'>
+
+                                    <h2>Store { activeConnection.Salesforce_Object__c } Record Id</h2>
+
+                                </Box>
+                            </View>
+                        </View>
                     </ViewStyle>
 
                 </Box>

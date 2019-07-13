@@ -7,17 +7,23 @@ export const Button = styled.button`
     cursor: pointer;
     outline: none;
     border: none;
-    padding: .5em; 
     border-radius: 4px; 
     font-weight: 900;
     color: ${Main.color.white};
 
     ${props => props.emoticon && css`
-        font-size: 1.75em; 
-        background: none;
+        font-size: 2em; 
+        background: ${Main.color.white};
+        border: 1px solid ${Main.color.light}
     `}
-    
+
+    ${props => props.picture && css`
+        border: 1px solid ${Main.color.light}
+        background: ${Main.color.warning};
+    `}
+
     ${props => props.neutral && css`
+        padding: 0.5em;
         margin-left: .5em;
         border: 1px solid ${Main.color.bright}
         background: ${Main.color.bright}
@@ -48,6 +54,7 @@ export const Button = styled.button`
     `}
 
     ${props => props.cta && css`
+        padding: 0.5em;
         margin-left: .5em;
         border: 1px solid ${Main.color.green}
         background: ${Main.color.green}

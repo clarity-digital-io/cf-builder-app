@@ -28,6 +28,13 @@ const View = styled.div`
       background: ${Main.color.lighter};
     `}
 
+    ${props => props.white && css`
+      border-left: 1px solid ${Main.color.greyBorder}
+      border-right: 1px solid ${Main.color.greyBorder}
+      background: ${Main.color.white};
+      padding: 3em;
+    `}
+
     ${props => props.footer && css`
       border-left: 1px solid ${Main.color.greyBorder}
       border-right: 1px solid ${Main.color.greyBorder}

@@ -76,16 +76,15 @@ export const ConnectState = () => {
                     
                         <h1>Form Connections</h1>
 
-                        <p>Create new or update existing Salesforce records from Clarity Form Responses.</p>
-
+                        <p>Create new or update existing Salesforce records from Clarity Form Responses. Order determines which record is created first, giving you the ability to store and use a created Record Id.</p>
                     </ViewStyle>
 
                     <ViewStyle>
                         <View border space className="row middle-xs">
 
-                            <View className="col-xs-1">
+                            <View className="col-xs-2">
                                 <Box padding='.5em'>
-                                    
+                                    <h2>Order</h2>
                                 </Box>
                             </View>
                             <View className="col-xs-2">
@@ -93,7 +92,7 @@ export const ConnectState = () => {
                                     
                                 </Box>
                             </View>
-                            <View className="col-xs-6">
+                            <View className="col-xs-5">
                                 <Box padding='.5em'>
                                     <h2>Salesforce Object</h2>
                                 </Box>
@@ -120,7 +119,7 @@ export const ConnectState = () => {
                                 return (
                                     <View space border className="row middle-xs">
 
-                                        <View className="col-xs-1">
+                                        <View className="col-xs-2">
                                             <Box padding='.5em'>
                                                 { order + 1}
                                             </Box>
@@ -136,7 +135,7 @@ export const ConnectState = () => {
                                                 }
                                             </Box>
                                         </View>
-                                        <View className="col-xs-6">
+                                        <View className="col-xs-5">
                                             <Box padding='.5em'>
 
                                                 <Select order={order} options={sObjects} value={connection.Salesforce_Object__c} onChange={setObjectSelection} />
