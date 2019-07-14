@@ -14,12 +14,12 @@ import { Button } from '../../../../Elements/Button';
 export const SalesforceFields = () => {
 
     const { activeRecordGroup, setActiveRecordGroup, setSObjectEdit } = useContext(EditContext); 
-
+    console.log('activeRecordGroup', activeRecordGroup); 
     const { recordGroup, activeQuestion } = useContext(DesignContext); 
 
     useEffect(() => {
         
-        setActiveRecordGroup(recordGroup.get(activeQuestion.Id));
+        setActiveRecordGroup(recordGroup.get(activeQuestion.Id) || []);
         setSObjectEdit(activeQuestion.Type__c);
 
     }, []);
@@ -72,7 +72,7 @@ const SalesforceSelects = ({ records, setActiveRecordGroup, relatedId, formId })
 }
 
 const ControlSelects = ({ records }) => {
-
+    console.log('records', records); 
     return records.map((row, i) => {
         return <ControlSelect key={row.Order__c} order={i} row={row} />
     });
@@ -147,7 +147,7 @@ const ControlSelect = ({ order, row }) => {
                         row.Id != null ? 
                         <Button add onClick={() => edit('EDIT')}>Edit</Button>
                         :
-                        null
+                        <Button disabled>Edit</Button>
                     }
 
                 </Box>
@@ -159,7 +159,7 @@ const ControlSelect = ({ order, row }) => {
                         row.Id != null ? 
                         <Button add onClick={() => edit('AUTOMATE')}>Automate</Button>
                         :
-                        null
+                        <Button disabled>Automate</Button>
                     }
 
                 </Box>
@@ -170,7 +170,7 @@ const ControlSelect = ({ order, row }) => {
                     {
                         row.Id != null ? 
                         <Button add onClick={() => edit('LOGIC')}>Logic</Button> :
-                        null
+                        <Button disabled>Logic</Button>
                     }
 
                 </Box>

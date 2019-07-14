@@ -57,8 +57,8 @@ const Design = () => {
 
                 { 
                     navState == 'MAPPING' ? 
-                    <MappingState /> :
-                    <Display />
+                    <MappingState key={'MappingState'} /> :
+                    <Display key={'DisplayState'} />
                 }
                 
             </Box>                

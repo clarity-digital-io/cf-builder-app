@@ -38,7 +38,7 @@ export const Display = () => {
                                         key={`question${item.Id}${index}`}
                                         draggableId={`question${item.Id}${index}`}
                                         index={index}>
-                                        {(provided, snapshot) => <GenerateQuestion item={item} provided={provided} snapshot={snapshot} />}
+                                        {(provided, snapshot) => <GenerateQuestion key={item.Id} item={item} provided={provided} snapshot={snapshot} />}
                                     </Draggable>
                                 )
                             )}
@@ -73,7 +73,7 @@ export const Display = () => {
             }
 
         </FormDesign>, 
-        <Footer />
+        <Footer key={'Footer'} />
     ];
 
 }
@@ -133,6 +133,8 @@ const CardStyling = styled.div`
     background: ${props => props.theme.background} !important;
     color: ${props => props.theme.questionColor} !important;
     background-image: ${props => `url(${props.theme.backgroundImage})`} !important; 
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
     height: 100%; 
 `;
 
@@ -145,4 +147,5 @@ const FormDesign = styled.div`
 
 const DropView = styled(View)`
     padding: 2em !important;  
+    min-height: 55vh; 
 `;

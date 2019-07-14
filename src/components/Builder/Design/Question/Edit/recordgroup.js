@@ -60,8 +60,9 @@ export const RecordGroup = () => {
 const resultHandler = (result, e, setQuestionUpdate, setQuestions, activeQuestion, setQuestionState) => {
 
     setQuestions(questions => {
-
+        
         return questions.map(question => {
+            console.log(question.Id, result); 
             if(question.Id == result) {
                 return activeQuestion; 
             }

@@ -2,6 +2,25 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 import Main from '../Theme'; 
 
+export const ButtonInput = styled.input`
+    box-sizing: border-box;
+    outline: none;
+    border: none;
+    border-radius: 4px; 
+    font-weight: 900;
+    color: ${Main.color.white};
+
+    ${props => props.add && css`
+        padding: 0.5em;
+        font-weight: 900; 
+        color: ${Main.color.body};
+        background: ${Main.color.white};
+        border: 1px solid ${Main.color.light}
+        width: 100%;
+    `}
+
+`;
+
 export const Button = styled.button`
     box-sizing: border-box;
     cursor: pointer;

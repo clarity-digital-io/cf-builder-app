@@ -23,7 +23,25 @@ const BuilderProvider = ({ children }) => {
 
     const [activeConnection, setActiveConnection] = useState([]);
 
+    useEffect(() => {
+
+        if(navState == 'MAPPING') {
+
+            setLoading(true);
+            console.log('activeConnection', activeConnection); 
+            call(
+                "ClarityFormBuilder.getConnectionFieldMapping", 
+                [activeConnection.Id, activeConnection.Salesforce_Object__c], 
+                (result, e) => mappingResultHandler(result, e, setActiveFieldMapping, setActiveFields, setLoading)
+            );
+
+        }
+        
+    }, [activeConnection])
+
     const [activeFieldMapping, setActiveFieldMapping] = useState([]);
+
+    const [activeFields, setActiveFields] = useState([]);
 
     const [connections, setConnections] = useState([]);
 
@@ -86,18 +104,6 @@ const BuilderProvider = ({ children }) => {
 
         }
 
-        if(navState == 'MAPPING') {
-
-            setLoading(true);
-
-            call(
-                "ClarityFormBuilder.getConnectionFieldMapping", 
-                [activeConnection.Id], 
-                (result, e) => mappingResultHandler(result, e, setActiveFieldMapping, setLoading)
-            );
-
-        }
-
     }, [navState])
 
     const [sObjects, setSObjects] = useState([]);
@@ -111,6 +117,7 @@ const BuilderProvider = ({ children }) => {
     return (
         <BuilderContext.Provider value={{ 
             loading,
+            activeFields,
             styles,
             activeConnection, 
             setActiveConnection, 
@@ -199,8 +206,9 @@ const connectionsResultHandler = (result, e, setConnections, setLoading) => {
     setLoading(false); 
 }
 
-const mappingResultHandler = (result, e, setActiveFieldMapping, setLoading) => {
-    setActiveFieldMapping(result); 
+const mappingResultHandler = (result, e, setActiveFieldMapping, setActiveFields, setLoading) => {
+    setActiveFieldMapping(result.Mapping); 
+    setActiveFields(result.Fields); 
     setLoading(false); 
 }
 

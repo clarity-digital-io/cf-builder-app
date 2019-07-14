@@ -88,7 +88,9 @@ const DesignProvider = ({ children }) => {
         if(questionToDelete) {
 
             let updatedOnDelete = sortDelete(questions.filter(question => question.Id != questionToDelete));
-            setUpdate(true)
+
+            setUpdate(true);
+            
             call("ClarityFormBuilder.deleteQuestion", [JSON.stringify(updatedOnDelete), questionToDelete], (result, e) => deleteResultHandler(result, e, setQuestions, setUpdate));
         
         }

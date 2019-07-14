@@ -16,7 +16,7 @@ import { PictureChoice } from './picturechoice';
 import { SmallSpinner } from '../../../../Elements/Spinner';
 
 const getQuestionType = (type) => {
-    console.log('getQuestionType', type)
+
     switch (type) {
         case 'MultipleChoice':
         case 'Dropdown':

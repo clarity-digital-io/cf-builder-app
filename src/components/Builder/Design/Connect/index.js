@@ -117,7 +117,7 @@ export const ConnectState = () => {
                             connections.map((connection, order) => {
 
                                 return (
-                                    <View space border className="row middle-xs">
+                                    <View key={connection.Id} space border className="row middle-xs">
 
                                         <View className="col-xs-2">
                                             <Box padding='.5em'>

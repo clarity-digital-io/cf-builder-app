@@ -1,20 +1,19 @@
 import React, { useState } from 'react';
 import styled, { css, ThemeProvider } from 'styled-components';
 
-import UploadIcon from '../Icons/upload';
-import { Button } from '../Button';
+import { ButtonInput } from '../Button';
 
-export const Upload = ({ style, onChange }) => {
+export const Upload = ({ label, style, onChange }) => {
 
     const theme = { 
         backgroundImage: style.Background_Image__c 
     }
 
-    return style.Background_Image__c != '' ?
+    return (style.Background_Image__c == '' || style.Background_Image__c == null) ?
+        <ButtonInput add type="file" accept="image/png" id="file-upload" label={`${label} &#43;`} /> :
         <ThemeProvider theme={theme}>
             <BackgroundView onClick={(e) => onChange(e)} />
-        </ThemeProvider> :
-        <Button add>&#43;</Button>
+        </ThemeProvider> 
 
 }
 

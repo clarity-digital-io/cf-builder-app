@@ -24,7 +24,7 @@ export const DesignState = () => {
     }
 
     return [
-        <View silver body className="row">
+        <View key={'Details'} silver body className="row">
             <View className="col-xs-12">
                 <View className="Box">
                 
@@ -52,10 +52,10 @@ export const DesignState = () => {
                                     <View className="row middle-xs">
 
                                         {
-                                            styles.map(newStyle => {
+                                            styles.map((newStyle, index) => {
 
                                                 return (
-                                                    <View className="col-xs-4">
+                                                    <View key={style.Id + index} className="col-xs-4">
                                                         <Style setEditStyle={setEditStyle} active={style.Id == newStyle.Id ? true : false} style={newStyle} setStyle={setStyle} />
                                                     </View>
                                                 )
@@ -73,7 +73,7 @@ export const DesignState = () => {
                 </View>
             </View>
         </View>, 
-        <View footer className="row middle-xs end-xs" key={'Header'}>
+        <View key={'Footer'} footer className="row middle-xs end-xs" key={'Header'}>
             <View className="col-xs-12">
                 <ViewStyle middle>
                     <Button neutral onClick={() => setAddStyle()}>

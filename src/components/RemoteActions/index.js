@@ -138,16 +138,19 @@ const mockCall = (func, params, callback) => {
             break; 
         case 'getConnections':
             callback([
-                { Id: 12, Clarity_Form__c: 1, Salesforce_Object__c: 'Case', Type__c: 'Create', Active__c: true },
-                { Id: 13, Clarity_Form__c: 1, Salesforce_Object__c: 'Service_Request__c', Type__c: 'Create', Active__c: true }
+                { Id: 12, Clarity_Form__c: 1, Salesforce_Object__c: 'Case', Type__c: 'Create', Active__c: true, Order__c: 0, Result_Holder: '{Connection_Case}' },
+                { Id: 13, Clarity_Form__c: 1, Salesforce_Object__c: 'Service_Request__c', Type__c: 'Create', Active__c: true, Order__c: 1, Result_Holder: '{Connection_Service_Request__c}' }
             ]);
             break; 
         case 'getConnectionFieldMapping': 
-            callback([
-                { Id: 14, Clarity_Form_Connection__c: 12, Salesforce_Field__c: 'Subject', Clarity_Form_Question__c: 1 },
-                { Id: 15, Clarity_Form_Connection__c: 12, Salesforce_Field__c: 'AccountId', Clarity_Form_Question__c: 3 }
-            ]);
+            callback({
+                'Mapping': [{ Id: 15, Clarity_Form_Connection__c: 12, Salesforce_Field__c: 'AccountId', Clarity_Form_Question__c: 3 },  { Id: 16, Clarity_Form_Connection__c: 12, Salesforce_Field__c: 'Subject', Custom_Value__c: 'This is from Clarity Form' }],
+                'Fields' : ['AccountId', 'Subject', 'OwnerId']            
+            });
             break;
+        case 'saveActiveFieldConnections':
+            callback([{ Id: 14, Clarity_Form_Connection__c: 12, Salesforce_Field__c: 'Subject', Clarity_Form_Question__c: 1 }, { Id: 15, Clarity_Form_Connection__c: 12, Salesforce_Field__c: 'AccountId', Clarity_Form_Question__c: 3 }, { Id: 16, Clarity_Form_Connection__c: 12, Salesforce_Field__c: 'OwnerId', Clarity_Form_Question__c: 4 }]);
+            break; 
         case 'saveConnections': 
             callback([
                 { Id: 12, Clarity_Form__c: 1, Salesforce_Object__c: 'Case', Type__c: 'Create', Active__c: true },
@@ -163,6 +166,7 @@ const mockCall = (func, params, callback) => {
                 { Name: 'Palm Trees', Id: 18, Background_Color__c: '#F1F1F1', Color__c: '#FFFFFF', Button_Color__c: '#FFFFFF', Background_Image__c: 'https://images.unsplash.com/photo-1517267075966-848c4c4cd883?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=882&q=80', Multi_Page__c: true },
                 { Name: 'Spring', Id: 19, Background_Color__c: '#F1F1F1', Color__c: '#FFFFFF', Button_Color__c: '#FFFFFF', Background_Image__c: 'https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2565&q=80', Multi_Page__c: true }
             ])
+            break; 
         default:
             break;
     }

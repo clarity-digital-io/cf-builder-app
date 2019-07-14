@@ -264,14 +264,14 @@ const ControlFieldSF = ({ order, record, values, setSelection }) => {
 const ControlFieldQuestion = ({ order, record, values, setSelection }) => {
 
     return (
-        <div class="slds-form-element">
-            <div class="slds-form-element__control">
-                <div class="slds-select_container">
-                <select class="slds-select" id="select-01" value={record} onChange={(e) => setSelection(e, order)} >
+        <div key={record} className="slds-form-element">
+            <div className="slds-form-element__control">
+                <div className="slds-select_container">
+                <select className="slds-select" id="select-01" value={record} onChange={(e) => setSelection(e, order)} >
                     <option value="">Please select</option>
                     {
                         values.map(value => {
-                            return <option value={value.Id}>{value.Title__c}</option>
+                            return <option key={value.Id} value={value.Id}>{value.Title__c}</option>
                         })
                     }
                 </select>
@@ -284,14 +284,14 @@ const ControlFieldQuestion = ({ order, record, values, setSelection }) => {
 const ControlField = ({ order, record, values, setSelection }) => {
 
     return (
-        <div class="slds-form-element">
-            <div class="slds-form-element__control">
-                <div class="slds-select_container">
-                <select class="slds-select" id="select-01" value={record} onChange={(e) => setSelection(e, order)} >
-                    <option value="">Please select</option>
+        <div className="slds-form-element">
+            <div className="slds-form-element__control">
+                <div className="slds-select_container">
+                <select className="slds-select" id="select-01" value={record} onChange={(e) => setSelection(e, order)} >
+                    <option className="">Please select</option>
                     {
                         values.map(value => {
-                            return <option value={value}>{value}</option>
+                            return <option key={value} value={value}>{value}</option>
                         })
                     }
                 </select>

@@ -45,19 +45,19 @@ export const AssignmentState = () => {
                         </ViewStyle> :
                         [   
 
-                            <ViewStyle space top border scrollAssign>
+                            <ViewStyle key={'Rules'} space top border scrollAssign>
 
-                            <h2>Step 1: <span>Select the criteria for this rule</span></h2>
+                                <h2>Step 1: <span>Select the criteria for this rule</span></h2>
 
-                            <ControlGroup rows={assignmentRules} setRows={setAssignmentRules} questions={questions} />
+                                <ControlGroup rows={assignmentRules} setRows={setAssignmentRules} questions={questions} />
 
                             </ViewStyle>,
 
-                            <ViewStyle space top border>
+                            <ViewStyle key={'Assignment'} space top border>
 
-                            <h2>Step 2: <span>Select the user or queue to assign the Form Response to when criteria is met.</span></h2>
+                                <h2>Step 2: <span>Select the user or queue to assign the Form Response to when criteria is met.</span></h2>
 
-                            <Lookup />
+                                <Lookup />
 
                             </ViewStyle>
 

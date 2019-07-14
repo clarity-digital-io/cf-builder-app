@@ -32,23 +32,17 @@ export const Lookup = () => {
 
             <h1>Lookup</h1>
 
-            <ViewStyle>
-
                 {
                     activeQuestion.Type__c == 'REFERENCE' ? 
                     <Select options={[activeQuestion.Salesforce_Field__c]} value={activeQuestion.Salesforce_Field__c} onChange={updateLookupQuestion} /> :
                     <Select options={sObjects} value={activeQuestion.Lookup__c} onChange={updateLookupQuestion} />
                 }
 
-            </ViewStyle>
 
-            <ViewStyle space top>
+            <h1>Filter on Lookup</h1>
 
-                <h1>Filter</h1>
+            <ControlGroup relatedId={activeQuestion.Id} value={activeQuestion.Filter__c} rows={rows} setRows={setRows} setCondition={updatFilter} questions={Object.keys(additionalFields)} filter={true} /> 
 
-                <ControlGroup relatedId={activeQuestion.Id} value={activeQuestion.Filter__c} rows={rows} setRows={setRows} setCondition={updatFilter} questions={Object.keys(additionalFields)} filter={true} /> 
-
-            </ViewStyle>
 
         </ViewStyle>
     )

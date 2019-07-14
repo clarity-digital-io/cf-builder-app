@@ -82,7 +82,7 @@ export const DesignEditState = () => {
     }
 
     const uploadChange = (e, d) => {
-
+        console.log('test', e);
         let reader = new FileReader(); 
 
         let files = Array.from(e.target.files);
@@ -156,7 +156,7 @@ export const DesignEditState = () => {
 
                                 <ViewStyle space border>
 
-                                    <Upload style={style} onChange={uploadChange} />
+                                    <Upload label={'Background Image'} style={style} onChange={uploadChange} />
 
                                 </ViewStyle>
 

@@ -43,7 +43,7 @@ const View = styled.div`
       height: 7vh;
     `}
 
-    ${props => props.display && css`
+    ${props => props.displayFooter && css`
       border: none; 
       border-top:1px solid ${Main.color.greyBorder};
       background: ${Main.color.body};
