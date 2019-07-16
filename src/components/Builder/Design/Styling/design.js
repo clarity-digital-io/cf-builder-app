@@ -82,7 +82,7 @@ export const DesignEditState = () => {
     }
 
     const uploadChange = (e, d) => {
-        console.log('test', e);
+
         let reader = new FileReader(); 
 
         let files = Array.from(e.target.files);

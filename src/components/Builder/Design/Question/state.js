@@ -87,12 +87,23 @@ const Save = ({ children }) => {
             );
         }
 
-        if(questionUpdate && activeQuestionOptions.length && questionState == 'EDIT') {
+        if(activeQuestion.Type__c != 'PictureChoice' && questionUpdate && activeQuestionOptions.length && questionState == 'EDIT') {
+
             call(
                 "ClarityFormBuilder.saveQuestionWithOptions", 
                 [JSON.stringify(activeQuestion), JSON.stringify(activeQuestionOptions)], 
                 (result, e) => resultOptionHandler(result, e, setQuestionUpdate, setQuestions, activeQuestion, setActiveQuestionOptions)
             );
+        }
+
+        if(activeQuestion.Type__c == 'PictureChoice' && questionUpdate && activeQuestionOptions.length && questionState == 'EDIT') {
+            
+            call(
+                "ClarityFormBuilder.saveQuestionWithPictureOptions", 
+                [JSON.stringify(activeQuestion), JSON.stringify(activeQuestionOptions)], 
+                (result, e) => resultOptionHandler(result, e, setQuestionUpdate, setQuestions, activeQuestion, setActiveQuestionOptions)
+            );
+
         }
 
         if(questionUpdate && questionState == 'AUTOMATE') {

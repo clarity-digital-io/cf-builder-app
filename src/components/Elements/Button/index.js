@@ -21,6 +21,21 @@ export const ButtonInput = styled.input`
 
 `;
 
+export const Input = styled.input`
+    display: none; 
+`;
+
+export const Image = styled.img`
+    max-height: 22px;
+    border: 1px solid ${Main.color.bright};
+    cursor: pointer;
+`;
+
+export const Emoticon = styled.div`
+    font-size: 2.5em; 
+    cursor: pointer;
+`;
+
 export const Button = styled.button`
     box-sizing: border-box;
     cursor: pointer;
@@ -29,17 +44,6 @@ export const Button = styled.button`
     border-radius: 4px; 
     font-weight: 900;
     color: ${Main.color.white};
-
-    ${props => props.emoticon && css`
-        font-size: 2em; 
-        background: ${Main.color.white};
-        border: 1px solid ${Main.color.light}
-    `}
-
-    ${props => props.picture && css`
-        border: 1px solid ${Main.color.light}
-        background: ${Main.color.warning};
-    `}
 
     ${props => props.neutral && css`
         padding: 0.5em;

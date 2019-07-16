@@ -29,7 +29,8 @@ export const EditProvider = ({ children }) => {
             setAdditionalFields([])
             setRequiredFields([])
             setLoading(true);
-            call("ClarityFormBuilder.getQuestionEditDetails", [navQuestion], (result, e) => optionFetchHandler(result, e, setLoading, setActiveQuestionOptions, setActiveFlowDesign, setCriteria))
+
+            call("ClarityFormBuilder.getQuestionEditDetails", [navQuestion], (result, e) => optionFetchHandler(result, e, setLoading, setActiveQuestionOptions, setActiveFlowDesign, setCriteria));
         
         }
 
