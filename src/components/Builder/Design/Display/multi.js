@@ -16,7 +16,7 @@ export const Multi = ({ style }) => {
             return (
                 <Card key={key} style={style}>
 
-                    <View className="row middle-xs end-xs" space>
+                    <View className="row middle-xs end-xs" white space>
                         <View className="col-xs-3">
                             <Button small add space>Page { key + 1}</Button>
                             <Button small delete space onClick={(e) => window.confirm("Are you sure you want to delete this page?") && deletePage(key)}>Delete Page { key + 1}</Button>

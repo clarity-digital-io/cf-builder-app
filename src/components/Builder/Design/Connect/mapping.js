@@ -75,7 +75,7 @@ export const MappingState = () => {
 
     return [
 
-        <View white body className="row" key={'Body'}>
+        <View extraspace body className="row" key={'Body'}>
             <View className="col-xs-12">
                 <Box padding='0'>
 

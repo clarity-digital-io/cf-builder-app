@@ -79,5 +79,6 @@ export const SelectableCard = styled.div`
 
 export const DropView = styled(View)`
     padding: 2em !important;  
-    min-height: 55vh; 
+    padding-bottom: 4em;
+    min-height: 35vh; 
 `;
