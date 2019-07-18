@@ -67,17 +67,68 @@ const DesignProvider = ({ children }) => {
 
     const [recordGroup, setRecordGroup] = useState(new Map()); 
 
+    const [pageQuestions, setPageQuestions] = useState(new Map());
+
+    const [addPageUpdate, setAddPageUpdate] = useState(false); 
+    
+    useEffect(() => {
+
+        if(addPageUpdate) {
+
+            setPageQuestions(pageQuestions => {
+
+                let pages = pageQuestions.size;
+                
+                pageQuestions.set(pages, []);
+        
+                return pageQuestions;
+            });
+
+            setAddPageUpdate(false);
+
+        }
+
+    }, [addPageUpdate]);
+
     const [questions, setQuestions] = useState([]); 
 
     useEffect(() => {
 
-        call("ClarityFormBuilder.getQuestions", [form.Id], (result, e) => fetchHandler(result, e, setQuestions, setRecordGroup))
+        call("ClarityFormBuilder.getQuestions", [form.Id], (result, e) => fetchHandler(result, e, setQuestions, setRecordGroup, setPageQuestions))
 
     }, [])
 
     const [questionState, setQuestionState] = useState('NEW'); 
 
+    const [updateSingle, setUpdateSingle] = useState(false); 
+
+    const [updateMulti, setUpdateMulti] = useState(false); 
+
     const [update, setUpdate] = useState(false); 
+
+    useEffect(() => {
+
+        if(update && updateSingle) {
+
+            console.log('updateSingle');
+            console.log('questions', questions);
+            call("ClarityFormBuilder.save", [JSON.stringify(questions)], (result, e) => resultHandler(result, e, setUpdate, setUpdateSingle, setQuestions, setPageQuestions));
+        
+        }
+
+        if(update && updateMulti) {
+
+            console.log('updateMulti');
+            console.log('pageQuestions', pageQuestions);
+            let multiQuestions = Array.from(pageQuestions.values()).reduce((accum, values, key) => {
+                return accum.concat(values); 
+            }, []);
+            call("ClarityFormBuilder.save", [JSON.stringify(multiQuestions)], (result, e) => resultHandler(result, e, setUpdate, setUpdateMulti, setQuestions, setPageQuestions));
+        
+        }
+
+    }, [update]);
+
 
     const [questionUpdate, setQuestionUpdate] = useState(false); 
 
@@ -100,6 +151,10 @@ const DesignProvider = ({ children }) => {
     return (
         <DesignContext.Provider 
             value={{ 
+                setUpdateSingle,
+                setUpdateMulti,
+                addPageUpdate, 
+                setAddPageUpdate,
                 navQuestion, 
                 setNavQuestion,
                 sObjects,
@@ -116,13 +171,55 @@ const DesignProvider = ({ children }) => {
                 update, 
                 setUpdate, 
                 questions, 
-                setQuestions }}>
+                setQuestions,
+                pageQuestions,
+                setPageQuestions }}>
             { children }
         </DesignContext.Provider>
     )
 }
 
-const fetchHandler = (result, e, setQuestions, setRecordGroup) => {
+
+const resultHandler = (result, e, setUpdate, setAdditionalUpdate, setQuestions, setPageQuestions) => {
+
+    setQuestions(questions => {
+
+        let updated = questions.map(question => {
+
+            if(!question.Id) {
+                question.Id = result[0]; 
+            } 
+            return question;
+
+        });
+
+        return updated; 
+
+    });
+
+    setPageQuestions(pageQuestions => {
+
+        return Array.from(pageQuestions.values()).reduce((accum, values, key) => {
+
+            return accum.set(key, (values.map((value, i) => {
+
+                if(!value.Id) {
+                    value.Id = result[0]; 
+                } 
+                return value;
+
+            })));
+
+        }, new Map());
+
+    });
+
+    setUpdate(false);
+    setAdditionalUpdate(false);
+
+}
+
+const fetchHandler = (result, e, setQuestions, setRecordGroup, setPageQuestions) => {
 
     let questions = sorted(result); 
 
@@ -139,6 +236,8 @@ const fetchHandler = (result, e, setQuestions, setRecordGroup) => {
     setQuestions(cleanQuestions);
 
     setRecordGroup(recordGroups); 
+
+    setPageQuestions(pageBreaks(cleanQuestions));
 
 }
 
@@ -180,4 +279,21 @@ const sortDelete = (result) => {
 
     return s; 
 
+}
+
+const pageBreaks = (questions) => {
+
+    return questions.reduce((accum, question) => {
+
+        if(accum.has(question.Page__c)) {
+            let pageQuestions = accum.get(question.Page__c); 
+            let updatedPageQuestions = pageQuestions.concat([question]);
+            accum.set(question.Page__c, updatedPageQuestions)
+        } else {
+            accum.set(question.Page__c, [question]);
+        }
+
+        return accum;
+
+    }, new Map())
 }

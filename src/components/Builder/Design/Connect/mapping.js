@@ -59,7 +59,7 @@ export const MappingState = () => {
     const setQuestionSelection = (e, order, custom) => {
 
         let value = e.target.value; 
-        console.log(value, order, custom)
+
         setActiveFieldMapping((mappings) => {
 
             return mappings.map((mapping, i) => {

@@ -4,11 +4,13 @@ import LCC from 'lightning-container';
 import styled, { css } from 'styled-components';
 import View from '../../../Elements/View';
 import { Button } from '../../../Elements/Button';
-import { BuilderContext } from '../../../Context';
+import { BuilderContext, DesignContext } from '../../../Context';
 
-export const Header = ({ update }) => {
+export const Header = () => {
 
-    const { form } = useContext(BuilderContext); 
+    const { form, style } = useContext(BuilderContext); 
+
+    const { setAddPageUpdate, update } = useContext(DesignContext); 
 
     const preview = () => {
         LCC.sendMessage({name: "Preview", value: form.Id });
@@ -29,6 +31,14 @@ export const Header = ({ update }) => {
 
                 <View className="row end-xs">
 
+                    {
+                        style.Multi_Page__c ? 
+                        <View className="col-xs-2">
+                            <Button small add onClick={() => setAddPageUpdate(true)}>Add Page</Button>
+                        </View> :
+                        null
+                    }
+                    
                     <View className="col-xs-2">
 
                         <Button small preview onClick={() => preview()}>Preview</Button>

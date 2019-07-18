@@ -60,6 +60,18 @@ export const Button = styled.button`
         border: 1px solid ${Main.color.light}
     `}
 
+    ${props => props.delete && css`
+        padding: 0.5em;
+        font-weight: 900; 
+        color: ${Main.color.alert};
+        background: ${Main.color.white};
+        border: 1px solid ${Main.color.light}
+    `}
+
+    ${props => props.space && css`
+        margin: 0 .5em 0 .5em;
+    `}
+
     ${props => props.small && css`
         font-size: .75em; 
     `}

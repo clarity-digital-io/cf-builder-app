@@ -29,6 +29,22 @@ export const ConnectState = () => {
         
     }, [update]);
 
+    const activate = (e, order) => {
+
+        let checked = e.target.checked;
+
+        setConnections((rows) => {
+
+            return rows.map((row, i) => {
+                if(i == order) {
+                    return { ...row, Active__c: checked }
+                }
+                return row;
+            })
+        }); 
+
+    }
+
     const setObjectSelection = (e, order) => {
 
         let value = e.target.value; 
@@ -147,7 +163,7 @@ export const ConnectState = () => {
 
                                             <div className="slds-form-element">
                                                 <label className="slds-checkbox_toggle slds-grid">
-                                                    <input checked={connection.Active__c} type="checkbox" name="checkbox-toggle-14" value="checkbox-toggle-14" aria-describedby="checkbox-toggle-14" />
+                                                    <input checked={connection.Active__c} onChange={(e) => activate(e, order)} type="checkbox" name="checkbox-toggle-14" value="checkbox-toggle-14" aria-describedby="checkbox-toggle-14" />
                                                     <span id="checkbox-toggle-14" className="slds-checkbox_faux_container" aria-live="assertive">
                                                     <span className="slds-checkbox_faux"></span>
                                                     </span>

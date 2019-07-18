@@ -26,9 +26,9 @@ const BuilderProvider = ({ children }) => {
     useEffect(() => {
 
         if(navState == 'MAPPING') {
-
+ 
             setLoading(true);
-            console.log('activeConnection', activeConnection); 
+
             call(
                 "ClarityFormBuilder.getConnectionFieldMapping", 
                 [activeConnection.Id, activeConnection.Salesforce_Object__c], 
@@ -180,7 +180,14 @@ const createHandler = (result, e, setForm, setStyle, setAssignment) => {
     });
 
     setStyle(style => {
-        return { ...style, Id: result.Clarity_Form_Style__c, Multi_Page__c: result.Clarity_Form_Style__r.Multi_Page__c , Background_Image__c: result.Clarity_Form_Style__r.Background_Image__c, Background_Color__c: result.Clarity_Form_Style__r.Background_Color__c, Color__c: result.Clarity_Form_Style__r.Color__c }
+        return { 
+            ...style, 
+            Id: result.Clarity_Form_Style__c, 
+            Multi_Page__c: result.Clarity_Form_Style__r.Multi_Page__c ,
+            Background_Image__c: result.Clarity_Form_Style__r.Background_Image__c, 
+            Background_Color__c: result.Clarity_Form_Style__r.Background_Color__c, 
+            Color__c: result.Clarity_Form_Style__r.Color__c 
+        }
     })
 
     if(result.Clarity_Form_Assignment__c == null) return;

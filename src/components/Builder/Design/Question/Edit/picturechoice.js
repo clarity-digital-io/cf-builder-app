@@ -113,7 +113,6 @@ export const PictureChoice = () => {
 
                 {
                     activeQuestionOptions.map((option, order) => {
-                        console.log('option', option); 
                         return (
                             <View className="row middle-xs center-xs">
                                 <View className="col-xs-2">

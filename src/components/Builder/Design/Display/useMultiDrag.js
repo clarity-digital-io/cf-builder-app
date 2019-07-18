@@ -5,15 +5,25 @@ import { sortedTypes } from '../types';
 
 import { BuilderContext, DragDropUpdateContext, DesignContext } from '../../../Context';
 
-export const useDrag = () => {
+export const useMultiDrag = () => {
 
     const { addEvent, removeEvent } = useContext(DragDropUpdateContext); 
 
     const { form } = useContext(BuilderContext); 
 
-    const { setUpdateSingle, setUpdate, questions, setQuestions } = useContext(DesignContext); 
+    const { setUpdateMulti, setUpdate, pageQuestions, setPageQuestions, addPageUpdate } = useContext(DesignContext); 
 
-    const onDragEnd = (setQuestions, result) => {
+    useEffect(() => {
+
+        pageQuestions.forEach((values, key) => {
+
+            addEvent('' + key, (result) => onDragEndMulti(setPageQuestions, result));
+
+        });
+
+    }, [addPageUpdate]);
+
+    const onDragEndMulti = (setPageQuestions, result) => {
 
         const { source, destination } = result;
 
@@ -23,51 +33,60 @@ export const useDrag = () => {
 
         if (source.droppableId === destination.droppableId) {
         
-            setQuestions(questions => {
+            console.log("SAME PAGE")
 
-                const items = reorder(
-                    questions,
-                    source.index,
-                    destination.index
-                );
+        } else if (source.droppableId != 'new') {
 
-                return items; 
-
-            });
+            console.log("BETWEEN PAGES")
 
         } else {
 
-            setQuestions(questions => {
+            let destinationDropId = parseInt(destination.droppableId); 
 
-                const items = move(
-                    sortedTypes,
-                    questions,
-                    source,
-                    destination, 
-                    form.Id
-                );
+            setPageQuestions(pQ => {
+                
+                if(pQ.has(destinationDropId)) {
 
-                return items; 
+                    let values = pQ.get(destinationDropId);
+
+                    const items = move(
+                        sortedTypes,
+                        values,
+                        source,
+                        destination, 
+                        form.Id,
+                        destinationDropId
+                    );  
+
+                    pQ.set(destinationDropId, items); 
+
+                }
+
+                return pQ;
 
             });
+            console.log('NEW QUESTION')
 
         }
 
-        setUpdateSingle(true);
+        setUpdateMulti(true);
         setUpdate(true);
 
-    };
+    }
 
     useEffect(() => {
 
-        addEvent('question', (result) => onDragEnd(setQuestions, result));
+        pageQuestions.forEach((values, key) => {
+            addEvent('' + key, (result) => onDragEndMulti(setPageQuestions, result));
+        });
 
-        return () => removeEvent('question');
+        return () => pageQuestions.forEach((values, key) => {
+            removeEvent('' + key);
+        });
 
-    }, [questions]);
+    }, [pageQuestions])
 
-    return { questions };
-    
+    return { pageQuestions };
 }
 
 const reorder = (list, startIndex, endIndex) => {

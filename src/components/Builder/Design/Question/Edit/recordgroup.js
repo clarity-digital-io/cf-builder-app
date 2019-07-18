@@ -62,7 +62,7 @@ const resultHandler = (result, e, setQuestionUpdate, setQuestions, activeQuestio
     setQuestions(questions => {
         
         return questions.map(question => {
-            console.log(question.Id, result); 
+
             if(question.Id == result) {
                 return activeQuestion; 
             }

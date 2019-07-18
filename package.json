@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack --mode development",
-    "start": "webpack-dev-server --config ./webpack.config.js --mode development",
+    "start": "webpack-dev-server --config ./webpack.config.js --mode development --port 8082",
     "build": "webpack --config ./webpack.config.prod.js --mode production && cp dist/bundle.js ../clarity-scratch-org/force-app/main/default/staticresources/ClarityFormsBuilder && cd .. && cd clarity-scratch-org && sfdx force:source:push && cd .. && cd clarity-forms-force"
   },
   "author": "",

@@ -14,7 +14,7 @@ import { Button } from '../../../../Elements/Button';
 export const SalesforceFields = () => {
 
     const { activeRecordGroup, setActiveRecordGroup, setSObjectEdit } = useContext(EditContext); 
-    console.log('activeRecordGroup', activeRecordGroup); 
+
     const { recordGroup, activeQuestion } = useContext(DesignContext); 
 
     useEffect(() => {
@@ -72,7 +72,7 @@ const SalesforceSelects = ({ records, setActiveRecordGroup, relatedId, formId })
 }
 
 const ControlSelects = ({ records }) => {
-    console.log('records', records); 
+
     return records.map((row, i) => {
         return <ControlSelect key={row.Order__c} order={i} row={row} />
     });

@@ -102,7 +102,7 @@ export const DesignEditState = () => {
     
     return [
         
-        <View silver body className="row">
+        <View key={'body'} silver body className="row">
             <View className="col-xs-12">
                 <View className="Box">
                 
@@ -126,7 +126,7 @@ export const DesignEditState = () => {
                                             <Box padding='1em 0 0 0'>
                                                 
                                                 <div className="slds-form-element">
-                                                    <label className="slds-form-element__label" for="text-input-id-1">Style Name</label>
+                                                    <label className="slds-form-element__label" htmlFor="text-input-id-1">Style Name</label>
                                                     <div className="slds-form-element__control">
                                                         <input type="text" value={ style.Name } onChange={(e) => updateName(e)} id="text-input-id-1" placeholder="Style Name" className="slds-input" />
                                                     </div>
@@ -145,7 +145,7 @@ export const DesignEditState = () => {
                                     <div className="slds-form-element">
                                         <label className="slds-checkbox_toggle slds-grid">
                                             <span className="slds-form-element__label slds-m-bottom_none">Multi Page Form</span>
-                                            <input checked={style.Multi_Page__c} onClick={(e) => updateMultiPage(e)} type="checkbox" name="checkbox-toggle-14" value="checkbox-toggle-14" aria-describedby="checkbox-toggle-14" />
+                                            <input checked={style.Multi_Page__c} onChange={(e) => updateMultiPage(e)} type="checkbox" name="checkbox-toggle-14" value="checkbox-toggle-14" aria-describedby="checkbox-toggle-14" />
                                             <span id="checkbox-toggle-14" className="slds-checkbox_faux_container" aria-live="assertive">
                                             <span className="slds-checkbox_faux"></span>
                                             </span>
@@ -186,7 +186,7 @@ export const DesignEditState = () => {
                 </View>
             </View>
         </View>, 
-        <View footer className="row middle-xs end-xs">
+        <View key={'footer'} footer className="row middle-xs end-xs">
             <View className="col-xs-12">
                 <ViewStyle middle>
                     <Button neutral onClick={() => setNavState('DESIGN')}>
