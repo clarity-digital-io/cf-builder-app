@@ -63,7 +63,7 @@ export const useMultiDrag = () => {
 
             setPageQuestions(pQ => {
 
-                console.log("BETWEEN PAGES", pQ, pQ.get(sourceDropId), pQ.has(destinationDropId));
+                console.log("BETWEEN PAGES", result);
 
                 if(pQ.has(sourceDropId) && pQ.has(destinationDropId)) {
 
@@ -75,11 +75,12 @@ export const useMultiDrag = () => {
 
                     let sourceNewQuestions = sourceValues.filter((val, i) => sourceIndex != i);
 
-                    let destinationNewQuestions = detinationValues.concat([questionMoved]);
-
+                    // let destinationNewQuestions = detinationValues.concat([questionMoved]);
                     pQ.set(sourceDropId, sourceNewQuestions);
 
-                    pQ.set(destinationDropId, destinationNewQuestions);
+                    detinationValues.splice(destination.index, 0, questionMoved);
+
+                    pQ.set(destinationDropId, detinationValues);
 
                 }
                 
