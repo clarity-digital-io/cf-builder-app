@@ -1,5 +1,4 @@
 import React, { useEffect, useContext } from 'react';
-import { call } from '../../../RemoteActions';
 
 import { sortedTypes } from '../types';
 
@@ -11,7 +10,7 @@ export const useMultiDrag = () => {
 
     const { form } = useContext(BuilderContext); 
 
-    const { setUpdateMulti, setUpdate, pageQuestions, setPageQuestions, addPageUpdate } = useContext(DesignContext); 
+    const { setDeletePage, setUpdateMulti, setUpdate, pageQuestions, setPageQuestions, addPageUpdate } = useContext(DesignContext); 
 
     useEffect(() => {
 
@@ -63,8 +62,6 @@ export const useMultiDrag = () => {
 
             setPageQuestions(pQ => {
 
-                console.log("BETWEEN PAGES", result);
-
                 if(pQ.has(sourceDropId) && pQ.has(destinationDropId)) {
 
                     let sourceValues = pQ.get(sourceDropId);
@@ -75,7 +72,6 @@ export const useMultiDrag = () => {
 
                     let sourceNewQuestions = sourceValues.filter((val, i) => sourceIndex != i);
 
-                    // let destinationNewQuestions = detinationValues.concat([questionMoved]);
                     pQ.set(sourceDropId, sourceNewQuestions);
 
                     detinationValues.splice(destination.index, 0, questionMoved);
@@ -132,7 +128,7 @@ export const useMultiDrag = () => {
 
     }, [pageQuestions])
 
-    return { pageQuestions };
+    return { pageQuestions, setDeletePage };
 }
 
 const reorder = (list, startIndex, endIndex) => {

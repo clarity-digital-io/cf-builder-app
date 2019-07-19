@@ -148,9 +148,22 @@ const DesignProvider = ({ children }) => {
 
     }, [questionToDelete]);
 
+    const [deletePage, setDeletePage] = useState(null); 
+
+    useEffect(() => {
+
+        if(pageQuestions.has(deletePage)) {
+            setUpdate(true);
+
+            call("ClarityFormBuilder.deletePage", [JSON.stringify(deletePage)], (result, e) => deletePageResultHandler(result, e, setQuestions, setPageQuestions, setRecordGroup, setUpdate));
+        }
+
+    }, [deletePage])
+
     return (
         <DesignContext.Provider 
             value={{ 
+                setDeletePage,
                 setUpdateSingle,
                 setUpdateMulti,
                 addPageUpdate, 
@@ -179,6 +192,29 @@ const DesignProvider = ({ children }) => {
     )
 }
 
+const deletePageResultHandler = (result, e, setQuestions, setPageQuestions, setRecordGroup, setUpdate) => {
+
+    let questions = sorted(result); 
+
+    let cleanQuestions = questions.filter(question => question.Record_Group__c == null);
+
+    let recordGroupQuestions = questions.filter(question => question.Type__c == 'RecordGroup');
+
+    let recordGroups = recordGroupQuestions.reduce((accum, question) => {
+
+        return accum.set(question.Id, questions.filter(q => q.Record_Group__c == question.Id))
+
+    }, new Map());
+
+    setQuestions(cleanQuestions);
+
+    setRecordGroup(recordGroups); 
+
+    setPageQuestions(pageBreaks(cleanQuestions));
+
+    setUpdate(false);
+
+}
 
 const resultHandler = (result, e, setUpdate, setAdditionalUpdate, setQuestions, setPageQuestions) => {
 

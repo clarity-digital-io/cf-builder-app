@@ -9,7 +9,7 @@ import { useMultiDrag } from './useMultiDrag';
 
 export const Multi = ({ style }) => {
 
-    const { pageQuestions } = useMultiDrag(); 
+    const { pageQuestions, setDeletePage } = useMultiDrag(); 
 
     return (
         Array.from(pageQuestions.values()).map((values, key) => {                    
@@ -19,7 +19,7 @@ export const Multi = ({ style }) => {
                     <View className="row middle-xs end-xs" white space>
                         <View className="col-xs-3">
                             <Button small add space>Page { key + 1}</Button>
-                            <Button small delete space onClick={(e) => window.confirm("Are you sure you want to delete this page?") && deletePage(key)}>Delete Page { key + 1}</Button>
+                            <Button small delete space onClick={(e) => window.confirm("Are you sure you want to delete this page with all its questions?") && setDeletePage(key)}>Delete Page { key + 1}</Button>
                         </View> 
                     </View>
 

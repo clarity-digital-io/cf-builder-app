@@ -96,6 +96,22 @@ const mockCall = (func, params, callback) => {
         case 'getQuestionOptions':
             callback([{ Id: 31, Label__c: 'Option 1', Active_Flow__c: true, Clarity_Form_Question__c: 1, Choice_Image__c: 'https://images.unsplash.com/photo-1562743338-51caec0b0e65?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1955&q=80'},{ Id: 32, Label__c: 'Option 2', Active_Flow__c: false, Clarity_Form_Question__c: 1, Choice_Image__c: 'https://images.unsplash.com/photo-1562743338-51caec0b0e65?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1955&q=80'}]);
             break; 
+        case 'deletePage': 
+            callback([
+                { Id: 1, Logic__c: 'AND', Type__c: 'Comment', Title__c: 'Comment', Order__c: 1, Max_Length__c: 10, Min_Range__c: 0, Max_Range__c: 100, Step__c: 10, Page__c: 0 }, 
+                { Id: 5, Logic__c: 'OR', Type__c: 'Date', Title__c: 'Date', Order__c: 5, Max_Length__c: 10, Min_Range__c: 0, Max_Range__c: 100, Step__c: 10, Page__c: 0, 
+                    Clarity_Form_Question_Criteria__r: [
+                        { Id: 1, Clarity_Form_Question__c: 5, Field__c: 1, Field_Type__c: 'Comment', Operator__c: 'Is Not Null', Type__c: 'Boolean', Value__c: 'True'  },
+                        { Id: 2, Clarity_Form_Question__c: 5, Field__c: 2, Field_Type__c: 'Comment', Operator__c: 'Is Not Null', Type__c: 'Boolean', Value__c: 'True'  },
+                        { Id: 3, Clarity_Form_Question__c: 5, Field__c: 3, Field_Type__c: 'Comment', Operator__c: 'Is Not Null', Type__c: 'Boolean', Value__c: 'True'  }
+                    ]
+                },
+                { Id: 6, Logic__c: 'AND', Type__c: 'Lookup', Title__c: 'Add a Related Case:', Lookup__c: 'Case', Order__c: 6, Max_Length__c: 10, Min_Range__c: 0, Max_Range__c: 100, Step__c: 10, Page__c: 0 },
+                { Id: 7, Logic__c: 'AND', Type__c: 'RecordGroup', Title__c: 'Create Opportunity Line Items', Salesforce_Object__c: 'OpportunityLineItem', Order__c: 7, Page__c: 2 }, 
+                { Id: 8, Logic__c: 'AND', Type__c: 'REFERENCE', Title__c: 'Add an account:', Salesforce_Field__c: 'OpportunityId', Record_Group__c: 7, Order__c: 0, Page__c: 0 },
+                { Id: 9, Logic__c: 'AND', Type__c: 'Number', Title__c: 'Add the quantity:', Salesforce_Field__c: 'Quantity', Record_Group__c: 7, Order__c: 1, Page__c: 0 }
+            ]); 
+            break; 
         case 'saveFlowDesign':
             callback({
                 'Options' : [{ Id: 31, Label__c: 'Option 1', Active_Flow__c: true, Clarity_Form_Question__c: 2},{ Id: 32, Label__c: 'Option 2', Active_Flow__c: true, Clarity_Form_Question__c: 2}],
