@@ -155,7 +155,7 @@ const DesignProvider = ({ children }) => {
         if(pageQuestions.has(deletePage)) {
             setUpdate(true);
 
-            call("ClarityFormBuilder.deletePage", [JSON.stringify(deletePage)], (result, e) => deletePageResultHandler(result, e, setQuestions, setPageQuestions, setRecordGroup, setUpdate));
+            call("ClarityFormBuilder.deletePage", [JSON.stringify(form.Id), JSON.stringify(deletePage)], (result, e) => deletePageResultHandler(result, e, setQuestions, setPageQuestions, setRecordGroup, setUpdate));
         }
 
     }, [deletePage])
