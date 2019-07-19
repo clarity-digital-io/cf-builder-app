@@ -74,6 +74,7 @@ const Save = ({ children }) => {
         questions,
         setActiveQuestion,
         setQuestions, 
+        setPageQuestions,
         setRecordGroup
     } = useContext(DesignContext);
 
@@ -92,7 +93,7 @@ const Save = ({ children }) => {
             call(
                 "ClarityFormBuilder.saveQuestionWithOptions", 
                 [JSON.stringify(activeQuestion), JSON.stringify(activeQuestionOptions)], 
-                (result, e) => resultOptionHandler(result, e, setQuestionUpdate, setQuestions, activeQuestion, setActiveQuestionOptions)
+                (result, e) => resultOptionHandler(result, e, setQuestionUpdate, setQuestions, setPageQuestions, activeQuestion, setActiveQuestionOptions)
             );
         }
 
@@ -194,11 +195,31 @@ const resultHandler = (result, e, setQuestionUpdate, setQuestions, activeQuestio
 
     });
 
+
+    setPageQuestions(pQ => {
+
+        return Array.from(pQ.values()).reduce((accum, values, key) => {
+
+            
+            return accum.set(key, values.map((value, i) => {
+
+                if(value.Id == result) {
+                    return activeQuestion;
+                } 
+                return value;
+
+            }));
+
+        }, new Map());
+
+    });
+
+
     setQuestionUpdate(false);
 
 }
 
-const resultOptionHandler = (result, e, setQuestionUpdate, setQuestions, activeQuestion, setActiveQuestionOptions) => {
+const resultOptionHandler = (result, e, setQuestionUpdate, setQuestions, setPageQuestions, activeQuestion, setActiveQuestionOptions) => {
     
     let options = result.Options;
     let resultQuestion = result.Question[0];
@@ -213,6 +234,23 @@ const resultOptionHandler = (result, e, setQuestionUpdate, setQuestions, activeQ
             return question; 
 
         })
+
+    });
+
+    setPageQuestions(pQ => {
+
+        return Array.from(pQ.values()).reduce((accum, values, key) => {
+
+            return accum.set(key, values.map((value, i) => {
+
+                if(value.Id == resultQuestion.Id) {
+                    return activeQuestion;
+                } 
+                return value;
+
+            }));
+
+        }, new Map());
 
     });
 

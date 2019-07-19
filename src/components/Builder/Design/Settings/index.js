@@ -150,9 +150,13 @@ export const SettingsState = () => {
 const resultHandler = (result, e, setForm, setUpdate) => {
     
     setUpdate(false);
-    
+
+    let convertedDate = new Date(result.End_Date__c);
+
+    let stringDate = convertedDate.getFullYear() + '-' + convertedDate.getMonth() + '-' + convertedDate.getDate();
+
     setForm(form => {
-        return { ...form, Name: result.Name, Limit__c: result.Limit__c, End_Date__c: result.End_Date__c }
+        return { ...form, Name: result.Name, Limit__c: result.Limit__c, End_Date__c: stringDate }
     }); 
 
 }

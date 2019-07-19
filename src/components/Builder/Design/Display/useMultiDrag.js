@@ -70,6 +70,8 @@ export const useMultiDrag = () => {
 
                     let questionMoved = sourceValues.find((val, i) => sourceIndex == i);
 
+                    questionMoved.Page__c = destinationDropId;
+
                     let sourceNewQuestions = sourceValues.filter((val, i) => sourceIndex != i);
 
                     pQ.set(sourceDropId, sourceNewQuestions);

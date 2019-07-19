@@ -166,13 +166,17 @@ const assignmentRulesHandler = (result, e, setAssignmentRules, setLoading) => {
 
 const createHandler = (result, e, setForm, setStyle, setAssignment) => {
 
+    let convertedDate = new Date(result.End_Date__c);
+
+    let stringDate = convertedDate.getFullYear() + '-' + convertedDate.getMonth() + '-' + convertedDate.getDate();
+
     setForm(form => {
         return { 
             ...form, Id: 
             result.Id, 
             Name: result.Name, 
             Limit__c: result.Limit__c, 
-            End_Date__c: result.End_Date__c, 
+            End_Date__c: stringDate, 
             Connected_Object__c: result.Connected_Object__c, 
             Clarity_Form_Assignment__c: result.Clarity_Form_Assignment__c, 
             Clarity_Form_Style__c: result.Clarity_Form_Style__c 

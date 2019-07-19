@@ -110,16 +110,12 @@ const DesignProvider = ({ children }) => {
 
         if(update && updateSingle) {
 
-            console.log('updateSingle');
-            console.log('questions', questions);
             call("ClarityFormBuilder.save", [JSON.stringify(questions)], (result, e) => resultHandler(result, e, setUpdate, setUpdateSingle, setQuestions, setPageQuestions));
         
         }
 
         if(update && updateMulti) {
 
-            console.log('updateMulti');
-            console.log('pageQuestions', pageQuestions);
             let multiQuestions = Array.from(pageQuestions.values()).reduce((accum, values, key) => {
                 return accum.concat(values); 
             }, []);
@@ -132,6 +128,37 @@ const DesignProvider = ({ children }) => {
 
     const [questionUpdate, setQuestionUpdate] = useState(false); 
 
+    const [deletePage, setDeletePage] = useState(null); 
+
+    useEffect(() => {
+
+        if(pageQuestions.has(deletePage)) {
+            
+            setUpdate(true);
+
+            let pageQuestionsCopy = new Map(pageQuestions)
+
+            pageQuestionsCopy.delete(deletePage);
+
+            let questionsWithPageUpdate = Array.from(pageQuestionsCopy.values()).reduce((accum, values, key) => {
+
+                return accum.concat(values.map((val) => {
+                    return { ...val, Page__c: key }
+                }));
+
+            }, []);
+
+            call(
+                "ClarityFormBuilder.pageDelete", 
+                [JSON.stringify(questionsWithPageUpdate), JSON.stringify([deletePage, form.Id])], 
+                (result, e) => deleteResultHandler(result, e, setQuestions, setPageQuestions, setRecordGroup, setUpdate)
+            );
+
+            console.log('deletePage', form.Id, deletePage, questionsWithPageUpdate)
+        }
+
+    }, [deletePage]);
+
     const [questionToDelete, setQuestionToDelete] = useState(null);
 
     useEffect(() => {
@@ -142,23 +169,11 @@ const DesignProvider = ({ children }) => {
 
             setUpdate(true);
             
-            call("ClarityFormBuilder.deleteQuestion", [JSON.stringify(updatedOnDelete), questionToDelete], (result, e) => deleteResultHandler(result, e, setQuestions, setUpdate));
+            call("ClarityFormBuilder.deleteQuestion", [JSON.stringify(updatedOnDelete), questionToDelete], (result, e) => deleteResultHandler(result, e, setQuestions, setPageQuestions, setRecordGroup, setUpdate));
         
         }
 
     }, [questionToDelete]);
-
-    const [deletePage, setDeletePage] = useState(null); 
-
-    useEffect(() => {
-
-        if(pageQuestions.has(deletePage)) {
-            setUpdate(true);
-
-            call("ClarityFormBuilder.deletePage", [JSON.stringify(form.Id), JSON.stringify(deletePage)], (result, e) => deletePageResultHandler(result, e, setQuestions, setPageQuestions, setRecordGroup, setUpdate));
-        }
-
-    }, [deletePage])
 
     return (
         <DesignContext.Provider 
@@ -190,30 +205,6 @@ const DesignProvider = ({ children }) => {
             { children }
         </DesignContext.Provider>
     )
-}
-
-const deletePageResultHandler = (result, e, setQuestions, setPageQuestions, setRecordGroup, setUpdate) => {
-
-    let questions = sorted(result); 
-
-    let cleanQuestions = questions.filter(question => question.Record_Group__c == null);
-
-    let recordGroupQuestions = questions.filter(question => question.Type__c == 'RecordGroup');
-
-    let recordGroups = recordGroupQuestions.reduce((accum, question) => {
-
-        return accum.set(question.Id, questions.filter(q => q.Record_Group__c == question.Id))
-
-    }, new Map());
-
-    setQuestions(cleanQuestions);
-
-    setRecordGroup(recordGroups); 
-
-    setPageQuestions(pageBreaks(cleanQuestions));
-
-    setUpdate(false);
-
 }
 
 const resultHandler = (result, e, setUpdate, setAdditionalUpdate, setQuestions, setPageQuestions) => {
@@ -277,9 +268,28 @@ const fetchHandler = (result, e, setQuestions, setRecordGroup, setPageQuestions)
 
 }
 
-const deleteResultHandler = (result, e, setQuestions, setUpdate) => {
-    setQuestions(sorted(result));
-    setUpdate(false)
+const deleteResultHandler = (result, e, setQuestions, setPageQuestions, setRecordGroup, setUpdate) => {
+
+    let questions = sorted(result); 
+
+    let cleanQuestions = questions.filter(question => question.Record_Group__c == null);
+
+    let recordGroupQuestions = questions.filter(question => question.Type__c == 'RecordGroup');
+
+    let recordGroups = recordGroupQuestions.reduce((accum, question) => {
+
+        return accum.set(question.Id, questions.filter(q => q.Record_Group__c == question.Id))
+
+    }, new Map());
+
+    setQuestions(cleanQuestions);
+
+    setRecordGroup(recordGroups); 
+
+    setPageQuestions(pageBreaks(cleanQuestions));
+
+    setUpdate(false);
+
 }
 
 const sorted = (questions) => {
