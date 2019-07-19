@@ -31,17 +31,63 @@ export const useMultiDrag = () => {
             return;
         }
 
+        let destinationDropId = parseInt(destination.droppableId); 
+
         if (source.droppableId === destination.droppableId) {
         
-            console.log("SAME PAGE")
+            setPageQuestions(pQ => {
+
+                if(pQ.has(destinationDropId)) {
+
+                    let values = pQ.get(destinationDropId);
+
+                    const items = reorder(
+                        values,
+                        source.index,
+                        destination.index
+                    );
+
+                    pQ.set(destinationDropId, items); 
+ 
+                }
+
+                return pQ;
+
+            });
+
 
         } else if (source.droppableId != 'new') {
 
-            console.log("BETWEEN PAGES")
+            let sourceDropId = parseInt(source.droppableId);
+            let sourceIndex = source.index;
+
+            setPageQuestions(pQ => {
+
+                console.log("BETWEEN PAGES", pQ, pQ.get(sourceDropId), pQ.has(destinationDropId));
+
+                if(pQ.has(sourceDropId) && pQ.has(destinationDropId)) {
+
+                    let sourceValues = pQ.get(sourceDropId);
+
+                    let detinationValues = pQ.get(destinationDropId);
+
+                    let questionMoved = sourceValues.find((val, i) => sourceIndex == i);
+
+                    let sourceNewQuestions = sourceValues.filter((val, i) => sourceIndex != i);
+
+                    let destinationNewQuestions = detinationValues.concat([questionMoved]);
+
+                    pQ.set(sourceDropId, sourceNewQuestions);
+
+                    pQ.set(destinationDropId, destinationNewQuestions);
+
+                }
+                
+                return pQ; 
+
+            })
 
         } else {
-
-            let destinationDropId = parseInt(destination.droppableId); 
 
             setPageQuestions(pQ => {
                 
@@ -65,7 +111,6 @@ export const useMultiDrag = () => {
                 return pQ;
 
             });
-            console.log('NEW QUESTION')
 
         }
 
@@ -138,7 +183,7 @@ const move = (source, destination, droppableSource, droppableDestination, formId
 const clean = (question, index, formId, page) => {
     return {
         Title__c        : question.name, 
-        Order__c        : index, 
+        Order__c        : parseInt(page + '' + index), 
         Type__c         : question.type,
         Clarity_Form__c : formId,
         Required__c     : false, 

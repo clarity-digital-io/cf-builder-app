@@ -29,8 +29,9 @@ const View = styled.div`
     `}
 
     ${props => props.white && css`
-      background: ${Main.color.lighter};
+      background: ${Main.color.white};
       border-top: 1px solid ${Main.color.greyBorder}
+      border-bottom: 1px solid ${Main.color.greyBorder}
     `}
 
     ${props => props.extraspace && css`
