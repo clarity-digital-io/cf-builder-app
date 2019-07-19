@@ -8,9 +8,17 @@ import QueueIcon from '../../../Elements/Icons/queue';
 import CloseIcon from '../../../Elements/Icons/close';
 import SearchIcon from '../../../Elements/Icons/search';
 
-export const Lookup = () => {
+export const Lookup = ({ setSelected }) => {
 
     const [selectedUser, setSelectedUser] = useState(null);
+
+    useEffect(() => {
+
+        setSelected(selected => {
+            return { ...selected, Assign__c: selectedUser.Id, Defaul_Assign__c: selectedUser.Id }
+        }); 
+
+    }, [selectedUser])
 
     const [users, setUsers] = useState([]);
 

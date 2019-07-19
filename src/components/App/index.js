@@ -167,8 +167,11 @@ const assignmentRulesHandler = (result, e, setAssignmentRules, setLoading) => {
 const createHandler = (result, e, setForm, setStyle, setAssignment) => {
 
     let convertedDate = new Date(result.End_Date__c);
-
-    let stringDate = convertedDate.getFullYear() + '-' + convertedDate.getMonth() + '-' + convertedDate.getDate();
+    let year = convertedDate.getFullYear();
+    let dateMonth = convertedDate.getMonth()
+    let month = dateMonth < 10 ? '0' + (dateMonth + 1) : dateMonth;
+    let day = convertedDate.getDate() + 1; 
+    let stringDate = year + '-' + month + '-' + day;
 
     setForm(form => {
         return { 

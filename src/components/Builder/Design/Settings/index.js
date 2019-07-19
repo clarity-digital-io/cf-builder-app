@@ -138,7 +138,7 @@ export const SettingsState = () => {
             <View className="col-xs-12">
                 <ViewStyle middle>
                     <Button cta onClick={() => setUpdate(true)}>
-                        Save Changes
+                        { update ? 'Saving...' : 'Save Changes' }
                     </Button>
                 </ViewStyle>
             </View>
@@ -152,9 +152,12 @@ const resultHandler = (result, e, setForm, setUpdate) => {
     setUpdate(false);
 
     let convertedDate = new Date(result.End_Date__c);
-
-    let stringDate = convertedDate.getFullYear() + '-' + convertedDate.getMonth() + '-' + convertedDate.getDate();
-
+    let year = convertedDate.getFullYear();
+    let dateMonth = convertedDate.getMonth()
+    let month = dateMonth < 10 ? '0' + (dateMonth + 1) : dateMonth;
+    let day = convertedDate.getDate() + 1; 
+    let stringDate = year + '-' + month + '-' + day;
+    
     setForm(form => {
         return { ...form, Name: result.Name, Limit__c: result.Limit__c, End_Date__c: stringDate }
     }); 

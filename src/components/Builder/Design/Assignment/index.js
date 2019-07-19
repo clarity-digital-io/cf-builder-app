@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 
 import View from '../../../Elements/View';
 import ViewStyle from '../../../Elements/View/style';
@@ -17,11 +17,25 @@ export const AssignmentState = () => {
 
     const { questions } = useContext(DesignContext);
 
-    const { loading, assignmentRules, setAssignmentRules } = useContext(BuilderContext);
+    const { loading, assignmentRules, setAssignmentRules, assignment, setAssignment } = useContext(BuilderContext);
 
-    const updateAssignmentRules = () => {
+    const [update, setUpdate] = useState(false);
 
-    }
+    useEffect(() => {
+
+        if(update) {
+
+            setUpdate(false); 
+
+            call(
+                "ClarityFormBuilder.saveAssignmentRules", 
+                [JSON.stringify(assignment), JSON.stringify(assignmentRules)], 
+                (result, e) => resultHandler(result, e, setAssignmentRules, setUpdate)
+            );
+
+        }
+        
+    }, [update]);
 
     return [
 
@@ -57,7 +71,7 @@ export const AssignmentState = () => {
 
                                 <h2>Step 2: <span>Select the user or queue to assign the Form Response to when criteria is met.</span></h2>
 
-                                <Lookup />
+                                <Lookup setSelected={setAssignment} />
 
                             </ViewStyle>
 
@@ -73,12 +87,20 @@ export const AssignmentState = () => {
         <View footer className="row middle-xs end-xs" key={'Header'}>
             <View className="col-xs-12">
                 <ViewStyle middle>
-                    <Button cta onClick={() => updateAssignmentRules(true)}>
-                    Save Changes
+                    <Button cta onClick={() => setUpdate(true)}>
+                        { update ? 'Saving...' : 'Save Changes' }
                     </Button>
                 </ViewStyle>
             </View>
         </View>
 
     ]
+}
+
+const resultHandler = (result, e, setAssignmentRules, setUpdate) => {
+    
+    setUpdate(false);
+
+    setAssignmentRules(result); 
+
 }
