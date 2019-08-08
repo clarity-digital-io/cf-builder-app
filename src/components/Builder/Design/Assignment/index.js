@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 
+import { call } from '../../../RemoteActions'; 
 import View from '../../../Elements/View';
 import ViewStyle from '../../../Elements/View/style';
 import Box from '../../../Elements/Box';
@@ -17,7 +18,17 @@ export const AssignmentState = () => {
 
     const { questions } = useContext(DesignContext);
 
-    const { loading, assignmentRules, setAssignmentRules, assignment, setAssignment } = useContext(BuilderContext);
+    const { loading, assignmentRules, setAssignmentRules, assign, setAssignment } = useContext(BuilderContext);
+
+    const updateCondition = (e) => {
+
+        let checked = e.target.checked;
+        let id = e.target.id; 
+
+        setAssignment(a => {
+            return { ...a, Logic__c: checked ? id : a.Logic__c }
+        })
+    }
 
     const [update, setUpdate] = useState(false);
 
@@ -25,11 +36,10 @@ export const AssignmentState = () => {
 
         if(update) {
 
-            setUpdate(false); 
-
+            console.log(assign, assignmentRules);
             call(
                 "ClarityFormBuilder.saveAssignmentRules", 
-                [JSON.stringify(assignment), JSON.stringify(assignmentRules)], 
+                [JSON.stringify(assign), JSON.stringify(assignmentRules)], 
                 (result, e) => resultHandler(result, e, setAssignmentRules, setUpdate)
             );
 
@@ -63,7 +73,7 @@ export const AssignmentState = () => {
 
                                 <h2>Step 1: <span>Select the criteria for this rule</span></h2>
 
-                                <ControlGroup rows={assignmentRules} setRows={setAssignmentRules} questions={questions} />
+                                <ControlGroup type={'assign'} relatedId={assign.Id} value={assign.Logic__c} rows={assignmentRules} setRows={setAssignmentRules} setCondition={updateCondition} questions={questions} />
 
                             </ViewStyle>,
 

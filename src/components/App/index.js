@@ -51,14 +51,14 @@ const BuilderProvider = ({ children }) => {
 
     const [style, setStyle] = useState({ Id: null, Color__c: '#333333', Background_Color__c : '#ffff', Columns: '', Multi_Page__c: false });
 
-    const [form, setForm] = useState({Id: null, Name: '', Clarity_Form_Style__c: null, Clarity_Form_Assignment__c: 1, Connected_Object__c: '' });
+    const [form, setForm] = useState({Id: null, Name: '', Clarity_Form_Style__c: null, Clarity_Form_Assignment__c: 1, Connected_Object__c: '', Status__c: '' });
 
     useEffect(() => {
 
         let url = new URLSearchParams(window.location.search);
 
         let recordId = url.get('recordId') != null ? url.get('recordId') : '';
-
+        console.log('recordId', recordId);
         call("ClarityFormBuilder.startup", [recordId], (result, e) => createHandler(result, e, setForm, setStyle, setAssignment));
         
     }, []);
@@ -175,14 +175,15 @@ const createHandler = (result, e, setForm, setStyle, setAssignment) => {
 
     setForm(form => {
         return { 
-            ...form, Id: 
-            result.Id, 
+            ...form, 
+            Id: result.Id, 
             Name: result.Name, 
             Limit__c: result.Limit__c, 
             End_Date__c: stringDate, 
             Connected_Object__c: result.Connected_Object__c, 
             Clarity_Form_Assignment__c: result.Clarity_Form_Assignment__c, 
-            Clarity_Form_Style__c: result.Clarity_Form_Style__c 
+            Clarity_Form_Style__c: result.Clarity_Form_Style__c, 
+            Status__c: result.Status__c
         }
     });
 
@@ -196,9 +197,9 @@ const createHandler = (result, e, setForm, setStyle, setAssignment) => {
             Color__c: result.Clarity_Form_Style__r.Color__c 
         }
     })
-
+    console.log('result.Clarity_Form_Assignment__c', result.Clarity_Form_Assignment__c);
     if(result.Clarity_Form_Assignment__c == null) return;
-
+    console.log('result', result)
     setAssignment(assignment => {
         return { 
             ...assignment, 

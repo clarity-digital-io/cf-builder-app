@@ -7,12 +7,12 @@ import {Button} from '../Button';
 import { call } from '../../RemoteActions';
 import ViewStyle from '../View/style';
 
-export const ControlGroup = ({ relatedId, value, rows, setRows, setCondition, questions, filter }) => {
+export const ControlGroup = ({ type, relatedId, value, rows, setRows, setCondition, questions, filter }) => {
 
     return [
         <ControlHeader key={'Header'} />, 
         <ControlRows setRows={setRows} rows={rows} key={'Rows'} questions={questions} filter={filter} />,
-        <ControlAddRow setRows={setRows} relatedId={relatedId} key={'Add'} />,
+        <ControlAddRow type={type} setRows={setRows} relatedId={relatedId} key={'Add'} />,
         <ControlCondition value={value} setCondition={setCondition} key={'Condition'} />
     ]
 }
@@ -216,12 +216,20 @@ const ControlRow = ({ order, row, setRows, questions, filter }) => {
     )
 }
 
-const ControlAddRow = ({ setRows, relatedId }) => {
+const ControlAddRow = ({ type, setRows, relatedId }) => {
 
     const add = () => {
+
         setRows(rows => {
-            return rows.concat([{ Operator__c: '', Type__c: '', Value__c: '', Title__c: '', Field__c: null, Field_Type__c: '', Clarity_Form_Question__c: relatedId }])
-        })
+            switch (type) {
+                case 'assign':
+                    return rows.concat([{ Operator__c: '', Type__c: '', Value__c: '', Title__c: '', Field__c: null, Field_Type__c: '', Clarity_Form_Assignment__c: relatedId }])
+                    break;  
+                default:
+                    return rows.concat([{ Operator__c: '', Type__c: '', Value__c: '', Title__c: '', Field__c: null, Field_Type__c: '', Clarity_Form_Question__c: relatedId }])
+                    break;
+            }
+        });
     }
 
     return (
@@ -322,11 +330,12 @@ const ControlValueField = ({ options, order, record, setSelection }) => {
         case 'String':
             return <ControlFieldInput type={'text'} order={order} record={record.Value__c} setSelection={setSelection} />
             break; 
+        case 'Number of New Records':
         case 'Number':
             return <ControlFieldInput type={'number'} order={order} record={record.Value__c} setSelection={setSelection} />
             break;
         case 'Reference':
-            return 'Reference'
+            return <ControlFieldInput type={'text'} order={order} record={record.Value__c} setSelection={setSelection} />
             break;
         case 'Picklist':
             return <ControlField order={order} record={record.Value__c} values={options} setSelection={setSelection} />
@@ -386,23 +395,24 @@ const ControlHeader = () => {
 const getCorrectOperators = (fieldType) => {
 
     switch (fieldType) {
+        case 'PictureChoice':
         case 'MultipleChoice':
         case 'Dropdown':
         case 'Ranking':
         case 'Checkbox':
         case 'Email':
-        case 'Lookup':
             return ['Equals', 'Not Equal', 'Is Not Null']; 
             break;
         case 'Comment':
-        case 'RecordGroup':
         case 'Attachments':
+        case 'Lookup':
             return ['Is Not Null']; 
             break;
         case 'NetPromoterScore':
         case 'Slider':
         case 'Number':
         case 'Date':
+        case 'RecordGroup':
             return ['Equals', 'Not Equal', 'Is Not Null', 'Is Greater than or equal to', 'Is Less than or equal to']; 
             break;
         default:
@@ -448,8 +458,13 @@ const getTypeForGLEqual = (fieldType) => {
         case 'Slider':
         case 'Number':
             return ['Reference', 'Number'];
+            break;
         case 'Date':
             return ['Reference', 'Date', 'Picklist'];
+            break;
+        case 'RecordGroup':
+            return ['Number of New Records'];
+            break;
     }
 }
 
@@ -463,13 +478,18 @@ const getTypeForEquals = (fieldType) => {
             return ['Reference', 'Picklist'];
             break;  
         case 'Email':
-        case 'Lookup':
             return ['Reference', 'String']; 
+            break;
         case 'NetPromoterScore':
         case 'Slider':
         case 'Number':
             return ['Reference', 'Number']; 
+            break;
+        case 'RecordGroup':
+            return ['Number of New Records'];
+            break;
         case 'Date':
             return ['Reference', 'Date', 'Picklist'];
+            break;
     }
 }

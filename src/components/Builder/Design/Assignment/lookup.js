@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { call } from '../../../RemoteActions'; 
 
@@ -13,9 +13,9 @@ export const Lookup = ({ setSelected }) => {
     const [selectedUser, setSelectedUser] = useState(null);
 
     useEffect(() => {
-
+        
         setSelected(selected => {
-            return { ...selected, Assign__c: selectedUser.Id, Defaul_Assign__c: selectedUser.Id }
+            return { ...selected, Assign__c: selectedUser ? selectedUser.Id : null, Default_Assign__c: selectedUser ? selectedUser.Id : null }
         }); 
 
     }, [selectedUser])

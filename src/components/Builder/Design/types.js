@@ -79,15 +79,15 @@ export const types = [
     }, 
     {   
         id: 13, 
-        active: false, 
+        active: true, 
         name: 'Attachments',
         type: 'Attachments'
     }, 
     {   
         id: 14, 
         active: true, 
-        name: 'Text',
-        type: 'Text'
+        name: 'Free Text',
+        type: 'FreeText'
     }, 
     {   
         id: 15, 

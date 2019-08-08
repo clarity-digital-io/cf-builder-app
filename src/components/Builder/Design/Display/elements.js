@@ -37,11 +37,11 @@ const CardStyling = styled.div`
     background: ${props => props.theme.background} !important;
     color: ${props => props.theme.questionColor} !important;
     background-image: ${props => `url(${props.theme.backgroundImage})`} !important; 
-    background-repeat: no-repeat !important;
+    background-repeat: repeat-y !important;
     background-size: cover !important;
 
     ${props => props.fullHeight && css`
-        height: 100%; 
+        min-height: 100%; 
     `}
 `;
 
@@ -63,18 +63,11 @@ export const GenerateQuestion = ({ item, provided, snapshot }) => {
 }
 
 export const SelectableCard = styled.div`
-    border: 1px dashed ${Main.color.silver};
+    border: 1px dashed ${Main.color.light}
 
     ${props => props.isDragging == true && css`
         box-shadow: 1px 1px 5px ${Main.color.grey};
     `}
-
-    #break {
-        text-transform: capitalize;
-        padding: 1em; 
-        display: block; 
-        font-weight: 900;  
-    }
 `;
 
 export const DropView = styled(View)`

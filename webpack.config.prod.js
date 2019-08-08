@@ -7,12 +7,29 @@ module.exports = {
           {
             test: /\.(js|jsx)$/,
             exclude: /node_modules/,
-            use: ['babel-loader']
+            use: { 
+              loader: 'babel-loader', 
+              options: {
+                plugins: [["import", { "libraryName": "antd", "style": true }]]
+              }
+            }
+          },
+          {
+            test: /\.less$/,
+            use: [
+              {loader: "style-loader"},
+              {loader: "css-loader"},
+              {loader: "less-loader",
+                options: {
+                  javascriptEnabled: true
+                }
+              }
+            ]
           }
         ]
       },
     resolve: {
-        extensions: ['*', '.js', '.jsx']
+        extensions: ['*', '.js', '.jsx', '.less']
     },
     output: {
       path: __dirname + '/dist',

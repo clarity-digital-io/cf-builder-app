@@ -16,6 +16,10 @@ export const Header = () => {
         LCC.sendMessage({name: "Preview", value: form.Id });
     }
 
+    const publish = () => {
+        LCC.sendMessage({name: "Preview", value: form.Id });
+    }
+
     return (
         <View className="row middle-xs" header space>
 
@@ -24,6 +28,8 @@ export const Header = () => {
                 <Title>{ form.Name }</Title>
 
                 <Button small update>{ update ? 'Saving... ' : 'Saved' }</Button>
+
+                <Button small status>{ form.Status__c } </Button>
 
             </View>
 
@@ -39,9 +45,15 @@ export const Header = () => {
                         null
                     }
                     
-                    <View className="col-xs-2">
+                    <View className="col-xs-4">
 
                         <Button small preview onClick={() => preview()}>Preview</Button>
+
+                        {
+                            form.Status__c == 'Draft' ? 
+                            <Button small publish onClick={() => publish()}>Publish Form</Button> :
+                            <Button small publish onClick={() => publish()}>Set to Draft</Button>
+                        }
 
                     </View>
 

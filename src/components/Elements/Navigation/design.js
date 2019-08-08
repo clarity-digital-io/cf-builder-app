@@ -7,6 +7,12 @@ const DesignNavigation = () => {
 
     const { navState, setNavState } = useContext(BuilderContext);
 
+    const getDistributionStates = (nav) => {
+
+        return nav == 'DISTRIBUTE' || nav == 'EMAIL' || nav == 'SALESFORCECOMMUNITY' || nav == 'LIGHTNING' || nav == 'MOBILE' || nav == 'SALESFORCECHAT' || nav == 'SALESFORCEPARDOT';
+    
+    }
+
     return (
         <Nav>
 
@@ -26,8 +32,8 @@ const DesignNavigation = () => {
                 <li className={ navState == 'SETTINGS' ? 'active' : '' } onClick={() => setNavState('SETTINGS')}>
                     <span>Settings</span>
                 </li>
-                <li className={ navState == 'HELP' ? 'active' : '' } onClick={() => setNavState('HELP')}>
-                    <span>Help</span>
+                <li className={ getDistributionStates(navState) ? 'active' : '' } onClick={() => setNavState('DISTRIBUTE')}>
+                    <span>Distribute</span>
                 </li>
             </ul>
 
@@ -47,7 +53,7 @@ const Nav = styled.nav`
 
     ul {
         list-style: none;
-        height: 100vh;
+        height: 96.5vh;
         display: flex;
         flex-direction: column;
     }
@@ -61,7 +67,7 @@ const Nav = styled.nav`
         font-size: 1em;
         text-align: left;
     }
-
+    
     li:hover {
         font-weight: 900;
     }

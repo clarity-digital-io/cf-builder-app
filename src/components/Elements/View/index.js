@@ -38,14 +38,6 @@ const View = styled.div`
       padding: 3em;
     `}
 
-    ${props => props.footer && css`
-      border-left: 1px solid ${Main.color.greyBorder}
-      border-right: 1px solid ${Main.color.greyBorder}
-      border-top:1px solid ${Main.color.greyBorder};
-      background: ${Main.color.white}
-      height: 7vh;
-    `}
-
     ${props => props.displayFooter && css`
       border: none; 
       border-top:1px solid ${Main.color.greyBorder};
@@ -57,6 +49,14 @@ const View = styled.div`
       background: ${Main.color.lighter};
       font-weight: 900; 
       height: 6vh; 
+    `}
+
+    ${props => props.footer && css`
+      border-left: 1px solid ${Main.color.greyBorder}
+      border-right: 1px solid ${Main.color.greyBorder}
+      border-top:1px solid ${Main.color.greyBorder};
+      background: ${Main.color.white}
+      height: 7vh;
     `}
 
     #connect {

@@ -1,11 +1,15 @@
 import React, { useContext, useState } from 'react';
 import styled, { css } from 'styled-components';
+import { Icon, Form } from 'antd';
 
 import View from '../../../Elements/View'
 import Box from '../../../Elements/Box'
 import Main from '../../../Elements/Theme'
+import { getType } from './types'; 
 
 import { DesignContext, BuilderContext, EditContext } from '../../../Context';
+
+const FormItem = Form.Item;
 
 export const Question = ({ question }) => {
 
@@ -25,107 +29,70 @@ export const Question = ({ question }) => {
     }
 
     return (
-        <QuestionStyle key={'Question'} active={ question.Id != null && (question.Id == activeQuestion.Id) }>
-            <View className="row middle-xs">
+        <QuestionStyle key={'Question'}>
 
-                <View className="col-xs-7">
-                    <Box padding='0'>
+            <Options active={ question.Id != null && (question.Id == activeQuestion.Id) }>
 
-                        { 
-                            question.Required__c ? 
-                                <span id="required">*</span> : 
-                                null 
-                        }
-                        
-                        { question.Type__c }: { question.Title__c }
+                <li><Icon style={{ fontSize: '1.25em', color: Main.color.body }} type="edit" onClick={() => edit('EDIT')} /></li>
 
-                        {
-                            question.Type__c == 'ConnectedObject' ? 
-                            <div>Connected Object Field</div> :
-                            null
-                        }
+                <li><Icon style={{ fontSize: '1.25em', color: Main.color.body }} type="api" onClick={() => edit('AUTOMATE')} /></li>
 
-                        {
-                            question.Type__c == 'RecordGroup' ? 
-                            <div>Repeatable Group</div> :
-                            null
-                        }
+                <li><Icon style={{ fontSize: '1.25em', color: Main.color.body }} type="interaction" onClick={() => edit('LOGIC')} /></li>
 
-                    </Box> 
-                </View>
+                {
+                    question.Type__c == 'Number' ? 
+                    <li><Icon style={{ fontSize: '1.25em', color: Main.color.body }} type="calculator" onClick={() => edit('CALCULATOR')} /></li> : 
+                        null 
+                }
 
-                <View className="col-xs-5">
-                    <Box padding='0'>
-                        <Options>
+                {
+                    (question.Type__c == 'RecordGroup' && question.Salesforce_Object__c != null) ? 
+                    <li><Icon style={{ fontSize: '1.25em', color: Main.color.body }} type="folder-add" onClick={() => edit('SF')} /></li> : 
+                        null
+                }
 
-                            {
-                                question.Type__c != 'PageBreak' ? 
-                                    <li onClick={() => edit('EDIT')}>Edit</li> :
-                                    null 
-                            }
+                <li><Icon style={{ fontSize: '1.25em', color: Main.color.alert }} type="delete" onClick={() => setQuestionToDelete((question.Id))} /></li>
 
-                            <li onClick={() => edit('AUTOMATE')}>Automate</li> 
+            </Options>
 
-                            <li onClick={() => edit('LOGIC')}>Logic</li>
+            <FieldBox>
 
-                            {
-                                question.Type__c == 'Number' ? 
-                                    <li onClick={() => edit('CALCULATOR')}>Calculator</li> : 
-                                    null 
-                            }
+                <FormItem key={question.Id} label={question.Title__c}>
+                    {getType(question)}
+                </FormItem>
 
-                            {
-                                (question.Type__c == 'RecordGroup' && question.Salesforce_Object__c != null) ? 
-                                    <li onClick={() => edit('SF')} id="add">Add Fields</li> : 
-                                    null
-                            }
-
-                            <li onClick={() => setQuestionToDelete(question.Id)} id="delete">Delete</li>
-                        </Options>
-                    </Box> 
-                </View>
-
-            </View>
+            </FieldBox>
 
         </QuestionStyle>
     )
 }
 
-const Options = styled.ul`
+const Options = styled.div`
 
-    font-size: .85em; 
-    display: flex;
-    align-items: stretch;
-    justify-content: space-evenly;
+    border-right: 1px dashed ${Main.color.light}
+    display: inline-block; 
+    padding: .5em;
+    background: ${Main.color.light}45; 
 
     li {
-        border: 1px solid ${Main.color.light}
-        border-radius: 2px; 
-        padding: .5em;
-        background: ${Main.color.light};
-        color: ${Main.color.body}
-        text-align: center;
-        flex: 0 1 auto;
-        display: block;
+        list-style-type: none;
         cursor: pointer;
-        font-weight: 900;
+        padding: .5em;
     }
 
-    li#delete {
-        color: ${Main.color.alert};
-    }
-
-    li:hover {
-        background: ${Main.color.light}
-        color: ${Main.color.green}
-    }
+    i {
+        font-weight: ${props => props.active ? `900` : ""} !important;
+    } 
 
 `;
 
-const QuestionStyle = styled.div`
+const FieldBox = styled.div`
+    padding: 1em; 
+    display: inline-block;
+    width: 100%;
+`;
 
-    padding: 1em;
-    border-left: ${props => props.active ? `2px solid ${Main.color.body}` : ""};
+const QuestionStyle = styled.div`
 
     span#required {
         color: ${Main.color.alert};
@@ -134,5 +101,9 @@ const QuestionStyle = styled.div`
     ${props => props.repeatable && css`
         border: 1px solid ${Main.color.body}
     `}
+
+    width: 100%;
+    display: flex;
+    flex-direction: row;
 
 `;

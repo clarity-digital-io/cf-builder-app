@@ -77,15 +77,30 @@ export const Button = styled.button`
     `}
 
     ${props => props.update && css`
-        text-transform: uppercase;
         padding: .5em;
         background: ${Main.color.bright}
+    `}
+
+    ${props => props.status && css`
+        padding: .5em;
+        background: ${Main.color.silver}
+        color: ${Main.color.bright};
+        margin-left: 1em; 
     `}
 
     ${props => props.preview && css`
         padding: .5em;
         background:none;
-        color: ${Main.color.bright};
+        cursor: pointer;
+        background: ${Main.color.green};
+    `}
+
+    ${props => props.publish && css`
+        padding: .5em;
+        background:none;
+        margin-left: 1em; 
+        cursor: pointer;
+        background: ${Main.color.green};
     `}
 
     ${props => props.cta && css`

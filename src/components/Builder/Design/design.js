@@ -10,6 +10,7 @@ import { ConnectState } from './Connect';
 import { MappingState } from './Connect/mapping';
 import { AssignmentState } from './Assignment';
 import { SettingsState } from './Settings'; 
+import { DistributeState } from './Distribute'; 
 import { Display } from './Display';
 import { BuilderContext } from '../../Context';
 
@@ -39,8 +40,46 @@ const Design = () => {
             case 'SETTINGS':
                 return <SettingsState />
                 break;
+            case 'DISTRIBUTE':
+            case 'SALESFORCECHAT':
+            case 'SALESFORCECOMMUNITY':
+            case 'LIGHTNING':
+            case 'SALESFORCEPARDOT':
+            case 'MOBILE':
+            case 'EMAIL':
+                return <DistributeState />
+                break;
         }
 
+    }
+
+    const getDisplayNavState = (nav) => {
+
+        switch (nav) {
+            case 'SALESFORCECHAT':
+                return 'salesforcechat';
+                break;
+            case 'SALESFORCECOMMUNITY':
+                return 'salesforcecommunity';
+                break;
+            case 'LIGHTNING':
+                return 'lightning';
+                break;
+            case 'SALESFORCEPARDOT':
+                return 'pardot';
+            case 'MOBILE':
+                    return 'mobile';
+                    break;
+            case 'EMAIL':
+                    return 'email';
+                    break;
+            case 'MAPPING':
+                return <MappingState key={'MappingState'} />
+                break;
+            default:
+                return <Display key={'DisplayState'} />
+                break;
+        }
     }
 
     return [
@@ -55,11 +94,7 @@ const Design = () => {
         <View key={'QuestionDisplay'} className="col-xs-6 col-sm-7 col-md-7 col-lg-7">
             <Box padding='0'>
 
-                { 
-                    navState == 'MAPPING' ? 
-                    <MappingState key={'MappingState'} /> :
-                    <Display key={'DisplayState'} />
-                }
+                { getDisplayNavState(navState) }
                 
             </Box>                
         </View>

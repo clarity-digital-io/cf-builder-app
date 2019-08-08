@@ -5,6 +5,7 @@ import View from '../../../../Elements/View';
 import ViewStyle from '../../../../Elements/View/style';
 
 import Box from '../../../../Elements/Box';
+import { Attachments } from './Attachments'; 
 import { Multiple } from './multiple'; 
 import { Comment } from './comment'; 
 import { Email } from './email'; 
@@ -18,6 +19,9 @@ import { SmallSpinner } from '../../../../Elements/Spinner';
 const getQuestionType = (type) => {
 
     switch (type) {
+        case 'Attachments':
+            return <Attachments />
+            break;
         case 'MultipleChoice':
         case 'Dropdown':
         case 'Ranking':

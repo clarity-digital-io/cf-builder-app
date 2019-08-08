@@ -60,7 +60,7 @@ const ViewStyle = styled.div`
 
 
     ${props => props.scrollAssign && css`
-        overflow: scroll;
+        overflow-y: scroll;
         max-height: 56vh;
     `}
 

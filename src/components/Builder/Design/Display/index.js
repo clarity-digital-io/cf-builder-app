@@ -7,7 +7,6 @@ import { useDrag } from './useDrag';
 import { useMultiDrag } from './useMultiDrag';
 
 import { DesignContext, BuilderContext } from '../../../Context';
-import { Footer } from './footer';
 import { Single } from './single';
 import { Multi } from './multi';
 
@@ -31,13 +30,12 @@ export const Display = () => {
                 <Multi style={style}  />
             }
 
-        </FormDesign>, 
-        <Footer key={'Footer'} />
+        </FormDesign>
     ];
 
 }
 
 const FormDesign = styled.div`
-    height: 87vh;
+    height: 94vh;
     overflow-y: auto;
 `;
