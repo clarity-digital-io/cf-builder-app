@@ -43,12 +43,12 @@ const DesignNavigation = () => {
 }
 
 const Nav = styled.nav`
-    background: ${Main.color.white};
+    background: ${Main.color.body};
     height: 100vh; 
 
     .active {
         font-weight: 900;
-        border-left: 3px solid ${Main.color.body}
+        border-left: 3px solid ${Main.color.bright}
     }
 
     ul {
@@ -59,7 +59,7 @@ const Nav = styled.nav`
     }
 
     li {
-        color: ${Main.color.body};
+        color: ${Main.color.white};
         cursor: pointer;
         text-decoration: none !important;
         display: inline-block;

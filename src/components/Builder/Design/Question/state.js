@@ -73,6 +73,7 @@ const Save = ({ children }) => {
         setQuestionUpdate, 
         questions,
         setActiveQuestion,
+        setQuestionOptions,
         setQuestions, 
         setPageQuestions,
         setRecordGroup
@@ -84,7 +85,7 @@ const Save = ({ children }) => {
             call(
                 "ClarityFormBuilder.saveQuestion", 
                 [JSON.stringify(activeQuestion)], 
-                (result, e) => resultHandler(result, e, setQuestionUpdate, setQuestions, activeQuestion)
+                (result, e) => resultHandler(result, e, setQuestionUpdate, setQuestions, setPageQuestions, activeQuestion)
             );
         }
 
@@ -93,7 +94,7 @@ const Save = ({ children }) => {
             call(
                 "ClarityFormBuilder.saveQuestionWithOptions", 
                 [JSON.stringify(activeQuestion), JSON.stringify(activeQuestionOptions)], 
-                (result, e) => resultOptionHandler(result, e, setQuestionUpdate, setQuestions, setPageQuestions, activeQuestion, setActiveQuestionOptions)
+                (result, e) => resultOptionHandler(result, e, setQuestionUpdate, setQuestions, setPageQuestions, activeQuestion, setActiveQuestionOptions, setQuestionOptions)
             );
         }
 
@@ -102,7 +103,7 @@ const Save = ({ children }) => {
             call(
                 "ClarityFormBuilder.saveQuestionWithPictureOptions", 
                 [JSON.stringify(activeQuestion), JSON.stringify(activeQuestionOptions)], 
-                (result, e) => resultOptionHandler(result, e, setQuestionUpdate, setQuestions, activeQuestion, setActiveQuestionOptions)
+                (result, e) => resultOptionHandler(result, e, setQuestionUpdate, setQuestions, setPageQuestions, activeQuestion, setActiveQuestionOptions)
             );
 
         }
@@ -180,7 +181,7 @@ const Save = ({ children }) => {
     ]
 }
 
-const resultHandler = (result, e, setQuestionUpdate, setQuestions, activeQuestion) => {
+const resultHandler = (result, e, setQuestionUpdate, setQuestions, setPageQuestions, activeQuestion) => {
 
     setQuestions(questions => {
 
@@ -219,7 +220,7 @@ const resultHandler = (result, e, setQuestionUpdate, setQuestions, activeQuestio
 
 }
 
-const resultOptionHandler = (result, e, setQuestionUpdate, setQuestions, setPageQuestions, activeQuestion, setActiveQuestionOptions) => {
+const resultOptionHandler = (result, e, setQuestionUpdate, setQuestions, setPageQuestions, activeQuestion, setActiveQuestionOptions, setQuestionOptions) => {
     
     let options = result.Options;
     let resultQuestion = result.Question[0];
@@ -236,6 +237,14 @@ const resultOptionHandler = (result, e, setQuestionUpdate, setQuestions, setPage
         })
 
     });
+
+    setQuestionOptions(questionOptions => {
+
+        questionOptions.set(resultQuestion.Id, options); 
+
+        return questionOptions; 
+
+    })
 
     setPageQuestions(pQ => {
 

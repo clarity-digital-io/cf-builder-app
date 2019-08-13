@@ -40,7 +40,8 @@ const mockCall = (func, params, callback) => {
                 Clarity_Form_Style__c: 15, 
                 Status__c: 'Published', 
                 Clarity_Form_Assignment__c: 1,
-                Clarity_Form_Style__r: { Id: 15, Name:'Greens', Background_Image__c: 'https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2565&q=80', Background_Color__c: '#333333', Color__c: '#FFFFFF', Button_Color__c: '', Multi_Page__c: false }, 
+                Clarity_Form_Style__r: { Id: 15, Name:'Greens', Background_Image__c: '', Background_Color__c: '#FFF', Color__c: '#333', Button_Color__c: '', Multi_Page__c: false }, 
+                //Clarity_Form_Style__r: { Id: 15, Name:'Greens', Background_Image__c: 'https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2565&q=80', Background_Color__c: '#333333', Color__c: '#FFFFFF', Button_Color__c: '', Multi_Page__c: false }, 
                 Clarity_Form_Assignment__r: { Id: 1, Name: 'Clarity Form Assignment', Assign__c: 1, Default_Assign__c: 2 } 
             }); 
             break;

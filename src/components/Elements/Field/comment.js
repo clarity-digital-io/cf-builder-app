@@ -6,7 +6,7 @@ const { TextArea } = Input;
 export const Comment = ({ question }) => {
 
     return <TextArea
-        aria-describedby={question.Id.toString()}
+        aria-describedby={question.Id}
         id={question.Name}
         addonAfter={question.Title__c}
         required={question.Required__c}

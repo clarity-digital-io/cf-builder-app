@@ -13,7 +13,7 @@ import { Slider } from './slider';
 import { Lookup } from './lookup'; 
 import { RecordGroup } from './recordgroup'; 
 import { ConnectedObject } from './connectedobject'; 
-import { PictureChoice } from './picturechoice'; 
+import { PictureChoice } from './picturechoices'; 
 import { SmallSpinner } from '../../../../Elements/Spinner';
 
 const getQuestionType = (type) => {

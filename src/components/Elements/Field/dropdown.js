@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Select } from 'antd';
+import { DesignContext } from '../../Context';
 
 const Option = Select.Option;
 
 export const Dropdown = ({ question }) => {
+
+    const { questionOptions } = useContext(DesignContext); 
 
     return (
 
@@ -12,16 +15,17 @@ export const Dropdown = ({ question }) => {
             style={{ width: '100%' }}
             placeholder={question.Placeholder__c}
             optionFilterProp="children"
-            onChange={(e) => onSelect(e)}
             filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
         >
                 
             <Option value=''>Select an option</Option>
 
             {
-                question.Clarity_Form_Question_Options__r.map(option => {
-                    return <Option value={option.value}>{option.label}</Option>
-                })
+                questionOptions.get(question.Id) != null ? 
+                    questionOptions.get(question.Id).map(option => {
+                        return <Option value={option.Id}>{option.Label__c}</Option>
+                    }): 
+                    null
             }
 
         </Select>

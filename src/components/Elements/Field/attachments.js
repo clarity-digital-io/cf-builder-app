@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Upload, Icon } from 'antd';
 
 export const Attachments = ({ question }) => {
+
+    const [files, setFiles] = useState([]);
 
     const uploadChange = ({ fileList }) => {
 

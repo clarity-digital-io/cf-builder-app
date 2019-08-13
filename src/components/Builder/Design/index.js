@@ -65,6 +65,8 @@ const DesignProvider = ({ children }) => {
 
     const [activeQuestion, setActiveQuestion] = useState({}); 
 
+    const [questionOptions, setQuestionOptions] = useState(new Map()); 
+
     const [recordGroup, setRecordGroup] = useState(new Map()); 
 
     const [pageQuestions, setPageQuestions] = useState(new Map());
@@ -94,7 +96,7 @@ const DesignProvider = ({ children }) => {
 
     useEffect(() => {
 
-        call("ClarityFormBuilder.getQuestions", [form.Id], (result, e) => fetchHandler(result, e, setQuestions, setRecordGroup, setPageQuestions))
+        call("ClarityFormBuilder.getQuestions", [form.Id], (result, e) => fetchHandler(result, e, setQuestions, setRecordGroup, setPageQuestions, setQuestionOptions))
 
     }, [])
 
@@ -178,6 +180,8 @@ const DesignProvider = ({ children }) => {
     return (
         <DesignContext.Provider 
             value={{ 
+                questionOptions, 
+                setQuestionOptions,
                 setDeletePage,
                 setUpdateSingle,
                 setUpdateMulti,
@@ -246,9 +250,31 @@ const resultHandler = (result, e, setUpdate, setAdditionalUpdate, setQuestions, 
 
 }
 
-const fetchHandler = (result, e, setQuestions, setRecordGroup, setPageQuestions) => {
+const fetchHandler = (result, e, setQuestions, setRecordGroup, setPageQuestions, setQuestionOptions) => {
 
-    let questions = sorted(result); 
+    let questionWithOptions = result.filter(q => q.Clarity_Form_Question_Options__r != null);
+
+    setQuestionOptions(questionOptions => {
+
+        return questionWithOptions.reduce((accum, cur, i) => {
+
+            return accum.set(cur.Id, cur.Clarity_Form_Question_Options__r);
+
+        }, new Map())
+
+    })
+
+    let cleanResult = result.map(q => {
+
+        if(q.hasOwnProperty('Clarity_Form_Question_Options__r')) {
+            delete q.Clarity_Form_Question_Options__r;
+        }
+
+        return q; 
+
+    });
+
+    let questions = sorted(cleanResult); 
 
     let cleanQuestions = questions.filter(question => question.Record_Group__c == null);
 

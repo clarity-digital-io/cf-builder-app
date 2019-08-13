@@ -54,7 +54,7 @@ export const NewQuestion = () => {
 
 const SelectableNew = styled.div`
     user-select: 'none';
-    font-size: .85em;
+    font-size: .95em;
     padding: .75em 0 .75em 0; 
     cursor: pointer;
     margin: .5em;

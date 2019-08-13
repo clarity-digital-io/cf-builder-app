@@ -32,27 +32,27 @@ export const Question = ({ question }) => {
         <QuestionStyle key={'Question'}>
 
             <Options active={ question.Id != null && (question.Id == activeQuestion.Id) }>
+            <div>
+                <li><Icon style={{ fontSize: '1.1em', color: Main.color.body }} type="edit" onClick={() => edit('EDIT')} /></li>
 
-                <li><Icon style={{ fontSize: '1.25em', color: Main.color.body }} type="edit" onClick={() => edit('EDIT')} /></li>
+                <li><Icon style={{ fontSize: '1.1em', color: Main.color.body }} type="api" onClick={() => edit('AUTOMATE')} /></li>
 
-                <li><Icon style={{ fontSize: '1.25em', color: Main.color.body }} type="api" onClick={() => edit('AUTOMATE')} /></li>
-
-                <li><Icon style={{ fontSize: '1.25em', color: Main.color.body }} type="interaction" onClick={() => edit('LOGIC')} /></li>
+                <li><Icon style={{ fontSize: '1.1em', color: Main.color.body }} type="interaction" onClick={() => edit('LOGIC')} /></li>
 
                 {
                     question.Type__c == 'Number' ? 
-                    <li><Icon style={{ fontSize: '1.25em', color: Main.color.body }} type="calculator" onClick={() => edit('CALCULATOR')} /></li> : 
+                    <li><Icon style={{ fontSize: '1.1em', color: Main.color.body }} type="calculator" onClick={() => edit('CALCULATOR')} /></li> : 
                         null 
                 }
 
                 {
                     (question.Type__c == 'RecordGroup' && question.Salesforce_Object__c != null) ? 
-                    <li><Icon style={{ fontSize: '1.25em', color: Main.color.body }} type="folder-add" onClick={() => edit('SF')} /></li> : 
+                    <li><Icon style={{ fontSize: '1.1em', color: Main.color.body }} type="folder-add" onClick={() => edit('SF')} /></li> : 
                         null
                 }
 
-                <li><Icon style={{ fontSize: '1.25em', color: Main.color.alert }} type="delete" onClick={() => setQuestionToDelete((question.Id))} /></li>
-
+                <li><Icon style={{ fontSize: '1.1em', color: Main.color.alert }} type="delete" onClick={() => setQuestionToDelete((question.Id))} /></li>
+            </div>
             </Options>
 
             <FieldBox>
@@ -72,16 +72,17 @@ const Options = styled.div`
     border-right: 1px dashed ${Main.color.light}
     display: inline-block; 
     padding: .5em;
-    background: ${Main.color.light}45; 
+    background: ${Main.color.light}45;
+    background: ${props => props.active ? `${Main.color.body}15` : `${Main.color.light}45`} !important;
 
     li {
         list-style-type: none;
         cursor: pointer;
-        padding: .5em;
+        padding: .25em;
     }
 
     i {
-        font-weight: ${props => props.active ? `900` : ""} !important;
+        cursor: pointer; 
     } 
 
 `;
