@@ -12,10 +12,8 @@ export const Card = ({ fullHeight, style, children }) => {
         background: style.Background_Color__c,
         questionColor: style.Color__c, 
         backgroundImage: style.Background_Image__c,
-        backgroundImageCD: style.Background_Image__c != null ? (style.Background_Image__c.length > 18 ? false : true ) : false
+        backgroundImageCD: (style.Background_Image__c != null && style.Background_Image__c != '') ? (style.Background_Image__c.length > 18 ? false : true ) : false
     }
-
-    console.log('theme', theme); 
 
     return (    
         <ThemeProvider theme={theme}>    
@@ -37,6 +35,7 @@ export const Card = ({ fullHeight, style, children }) => {
 } 
 
 const CardStyling = styled.div`
+
     background: ${props => props.theme.background} !important;
     color: ${props => props.theme.questionColor} !important;
     background-image: ${props => props.theme.backgroundImageCD ? `url(/sfc/servlet.shepherd/document/download/${props.theme.backgroundImage})` : `url(${props.theme.backgroundImage})` } !important;
@@ -45,6 +44,7 @@ const CardStyling = styled.div`
     ${props => props.fullHeight && css`
         min-height: 100%; 
     `}
+
 `;
 
 export const GenerateQuestion = ({ item, provided, snapshot }) => {

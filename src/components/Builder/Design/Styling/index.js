@@ -95,7 +95,8 @@ const Style = ({ setEditStyle, active, style, setStyle }) => {
         background: style.Background_Color__c,
         questionColor: style.Color__c, 
         buttonColor: style.Button_Color__c, 
-        backgroundImage: style.Background_Image__c 
+        backgroundImage: style.Background_Image__c,
+        backgroundImageCD: (style.Background_Image__c != null && style.Background_Image__c != '') ? (style.Background_Image__c.length > 18 ? false : true ) : false 
     }
 
     return <ThemeProvider theme={theme}>
@@ -147,6 +148,7 @@ const BackgroundView = styled.div`
     border-top-left-radius: 2px; 
     border-top-right-radius: 2px; 
     background: ${props => props.theme.background} !important;
-    background-image: url(${props => props.theme.backgroundImage}) !important;
+    background-image: ${props => props.theme.backgroundImageCD ? `url(/sfc/servlet.shepherd/document/download/${props.theme.backgroundImage})` : `url(${props.theme.backgroundImage})` } !important;
+    background-size: cover !important;
     cursor: pointer; 
 `;

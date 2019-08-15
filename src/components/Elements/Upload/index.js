@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
+import styled from 'styled-components';
+
 import { Upload as AntUpload, Icon, Modal } from 'antd';
 
 export const Upload = ({ files, setFiles, onChange }) => {
-
-    console.log('files', files); 
 
     const [preview, setPreview] = useState({ image: null, visible: false });
 
@@ -40,7 +40,7 @@ export const Upload = ({ files, setFiles, onChange }) => {
     }
 
     return [
-        <AntUpload
+        <UploadStyle
             action="memory"
             customRequest={(o) => handleUpload(o)}
             listType="picture-card"
@@ -49,7 +49,7 @@ export const Upload = ({ files, setFiles, onChange }) => {
             onChange={(e) => uploadChange(e)}
         >
             {files.length >= 1 ? null : <UploadButton />} 
-        </AntUpload>,
+        </UploadStyle>,
         <Modal visible={preview.visible} footer={null} onCancel={() => handleCancel()}>
             <img alt="example" style={{ width: '100%' }} src={preview.image} />
         </Modal>
@@ -63,3 +63,13 @@ const UploadButton = () => {
         </div>
     )
 }
+
+const UploadStyle = styled(AntUpload)`
+    
+    display: block !important;
+
+    .ant-upload, .ant-upload-list-item {
+        height: 100% !important; 
+    }
+
+`

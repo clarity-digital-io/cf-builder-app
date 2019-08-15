@@ -12,24 +12,38 @@ import {Color} from './color';
 
 import { BuilderContext } from '../../../Context';
 
+const configUrl = (style) => {
+
+    let forceImage = (style.Background_Image__c != null && style.Background_Image__c != '') ? (style.Background_Image__c.length > 18 ? false : true ) : false;
+
+    return forceImage ? [{ uid: style.Id, thumbUrl:  `/sfc/servlet.shepherd/document/download/${style.Background_Image__c}` }] : [];
+
+}
+
 export const DesignEditState = () => {
 
     const { style, setStyle, setNavState } = useContext(BuilderContext);
 
     const [update, setUpdate] = useState(false);
 
-    const [files, setFiles] = useState([]);
+    const [files, setFiles] = useState(() => configUrl(style));
 
     useEffect(() => {
 
         if(update) {
-            console.log('update style', style); 
+
             let file = style.Background_Image__c ? style.Background_Image__c : '';
 
-            let base64result = file != '' ? file.split(',')[1] : '';
+            let base64result = ''; 
 
-            style.Background_Image__c = ''; 
-            
+            if(file.length > 18) {
+
+                base64result = file != '' ? file.split(',')[1] : '';
+
+                style.Background_Image__c = ''; 
+
+            }
+            console.log(style, base64result);
             call(
                 "ClarityFormBuilder.updateDesign", 
                 [JSON.stringify(style), base64result], 
@@ -44,7 +58,7 @@ export const DesignEditState = () => {
         let value = e.target.value; 
 
         setStyle(style => {
-            return { ...style, Name: value }
+            return { ...style, Label__c: value }
         })
     }
 
@@ -124,7 +138,7 @@ export const DesignEditState = () => {
                                                 <div className="slds-form-element">
                                                     <label className="slds-form-element__label" htmlFor="text-input-id-1">Style Name</label>
                                                     <div className="slds-form-element__control">
-                                                        <input type="text" value={ style.Name } onChange={(e) => updateName(e)} id="text-input-id-1" placeholder="Style Name" className="slds-input" />
+                                                        <input type="text" value={ style.Label__c } onChange={(e) => updateName(e)} id="text-input-id-1" placeholder="Style Name" className="slds-input" />
                                                     </div>
                                                 </div>
 
