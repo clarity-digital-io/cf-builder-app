@@ -3,10 +3,12 @@ import { Upload as AntUpload, Icon, Modal } from 'antd';
 
 export const Upload = ({ files, setFiles, onChange }) => {
 
+    console.log('files', files); 
+
     const [preview, setPreview] = useState({ image: null, visible: false });
 
     const uploadChange = ({ fileList }) => {
-        console.log('fileList', fileList); 
+        
         setFiles(fileList)
 
     }

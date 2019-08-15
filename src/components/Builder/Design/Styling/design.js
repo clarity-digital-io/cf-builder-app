@@ -23,14 +23,16 @@ export const DesignEditState = () => {
     useEffect(() => {
 
         if(update) {
-
+            console.log('update style', style); 
             let file = style.Background_Image__c ? style.Background_Image__c : '';
+
+            let base64result = file != '' ? file.split(',')[1] : '';
 
             style.Background_Image__c = ''; 
             
             call(
                 "ClarityFormBuilder.updateDesign", 
-                [JSON.stringify(style), file], 
+                [JSON.stringify(style), base64result], 
                 (result, e) => resultHandler(result, e, setStyle, setUpdate)
             );
         }
@@ -197,6 +199,7 @@ export const DesignEditState = () => {
 }
 
 const resultHandler = (result, e, setStyle, setUpdate) => {
+    console.log('result', result); 
     setUpdate(false);
     setStyle(result); 
 }
