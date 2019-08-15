@@ -36,16 +36,14 @@ export const Card = ({ fullHeight, style, children }) => {
 const CardStyling = styled.div`
     background: ${props => props.theme.background} !important;
     color: ${props => props.theme.questionColor} !important;
+    background-image: ${props => `url(/sfc/servlet.shepherd/document/download/${props.theme.backgroundImage})`} !important; 
     background-image: ${props => `url(${props.theme.backgroundImage})`} !important; 
-    background-repeat: repeat-y !important;
     background-size: cover !important;
 
     ${props => props.fullHeight && css`
         min-height: 100%; 
     `}
 `;
-
-//    background-image: ${props => `url(/sfc/servlet.shepherd/document/download/${props.theme.backgroundImage})`} !important; 
 
 export const GenerateQuestion = ({ item, provided, snapshot }) => {
     

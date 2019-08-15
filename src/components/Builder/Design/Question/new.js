@@ -7,6 +7,7 @@ import View from '../../../Elements/View';
 import { sortedTypes } from '../types';
 
 import DragAction from '../../../Elements/Icons/drag';
+import { Icon } from 'antd';
 
 export const NewQuestion = () => {
     
@@ -32,10 +33,7 @@ export const NewQuestion = () => {
                                         {...provided.draggableProps}
                                         {...provided.dragHandleProps}
                                         isDragging={snapshot.isDragging}>
-                                        <span className="slds-icon_container slds-icon-utility-drag_and_drop" title="Drag and drop this question on the form">
-                                            <DragAction />
-                                            <span className="slds-assistive-text">Drag and drop this question on the form</span>
-                                        </span>
+                                        <Icon type="drag" />
                                         <span>
                                             {type.name}
                                         </span>
@@ -54,14 +52,14 @@ export const NewQuestion = () => {
 
 const SelectableNew = styled.div`
     user-select: 'none';
-    font-size: .95em;
-    padding: .75em 0 .75em 0; 
+    font-size: 1em;
+    padding: 1em 0 1em 0; 
     cursor: pointer;
     margin: .5em;
-    font-weight: 900;
+    font-weight: 500;
     background: ${Main.color.white};
-    border-radius: 4px; 
-    box-shadow: 2px 0 2px ${Main.color.shadow}
+    box-shadow: 2px 0 2px ${Main.color.silver}
+    color: ${Main.color.dark}
 
     span {
         display: inline-block;
@@ -76,6 +74,11 @@ const SelectableNew = styled.div`
 
     :active {
         box-shadow: none;
+    }
+
+    i {
+        color: ${Main.color.dark}
+        padding: 0 1em 0 1em; 
     }
 
 `;

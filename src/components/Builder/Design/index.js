@@ -156,7 +156,6 @@ const DesignProvider = ({ children }) => {
                 (result, e) => deleteResultHandler(result, e, setQuestions, setPageQuestions, setRecordGroup, setUpdate)
             );
 
-            console.log('deletePage', form.Id, deletePage, questionsWithPageUpdate)
         }
 
     }, [deletePage]);

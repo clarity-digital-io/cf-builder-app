@@ -6,6 +6,7 @@ import CloseIcon from '../Icons/close';
 import {Button} from '../Button';
 import { call } from '../../RemoteActions';
 import ViewStyle from '../View/style';
+import { Select } from '../Select'; 
 
 export const ControlGroup = ({ type, relatedId, value, rows, setRows, setCondition, questions, filter }) => {
 
@@ -271,42 +272,13 @@ const ControlFieldSF = ({ order, record, values, setSelection }) => {
 
 const ControlFieldQuestion = ({ order, record, values, setSelection }) => {
 
-    return (
-        <div key={record} className="slds-form-element">
-            <div className="slds-form-element__control">
-                <div className="slds-select_container">
-                <select className="slds-select" id="select-01" value={record} onChange={(e) => setSelection(e, order)} >
-                    <option value="">Please select</option>
-                    {
-                        values.map(value => {
-                            return <option key={value.Id} value={value.Id}>{value.Title__c}</option>
-                        })
-                    }
-                </select>
-                </div>
-            </div>
-        </div>
-    )
+    return <Select key={record} value={record} options={values} onChange={(e) => setSelection(e, order)} valueField={'Id'} labelField={'Title__c'} />
+
 }
 
 const ControlField = ({ order, record, values, setSelection }) => {
 
-    return (
-        <div className="slds-form-element">
-            <div className="slds-form-element__control">
-                <div className="slds-select_container">
-                <select className="slds-select" id="select-01" value={record} onChange={(e) => setSelection(e, order)} >
-                    <option className="">Please select</option>
-                    {
-                        values.map(value => {
-                            return <option key={value} value={value}>{value}</option>
-                        })
-                    }
-                </select>
-                </div>
-            </div>
-        </div>
-    )
+    return <Select key={record} value={record} options={values} onChange={(e) => setSelection(e, order)} />
 }
 
 const ControlFieldInput = ({ type, order, record, setSelection }) => {

@@ -1,25 +1,63 @@
 import React, { useState } from 'react';
-import styled, { css, ThemeProvider } from 'styled-components';
+import { Upload as AntUpload, Icon, Modal } from 'antd';
 
-import { ButtonInput } from '../Button';
+export const Upload = ({ files, setFiles, onChange }) => {
 
-export const Upload = ({ label, style, onChange }) => {
+    const [preview, setPreview] = useState({ image: null, visible: false });
 
-    const theme = { 
-        backgroundImage: style.Background_Image__c 
+    const uploadChange = ({ fileList }) => {
+        console.log('fileList', fileList); 
+        setFiles(fileList)
+
     }
 
-    return (style.Background_Image__c == '' || style.Background_Image__c == null) ?
-        <ButtonInput add type="file" accept="image/png" id="file-upload" label={`${label} &#43;`} /> :
-        <ThemeProvider theme={theme}>
-            <BackgroundView onClick={(e) => onChange(e)} />
-        </ThemeProvider> 
+    const handleUpload = ({ file, onSuccess }) => {
 
+        let reader = new window.FileReader();
+
+        reader.readAsDataURL(file);
+
+        reader.onload = (...args) => {
+    
+            let fileContents = reader.result;
+
+            onSuccess('done', file);
+
+            onChange(fileContents)
+
+        };
+    }
+    const handlePreview = (file) => {
+        setPreview({ image: file.thumbUrl, visible: true })
+    }
+
+    const handleCancel = (file) => {
+        setPreview(preview => {
+            return { ...preview, visible: false }
+        })
+    }
+
+    return [
+        <AntUpload
+            action="memory"
+            customRequest={(o) => handleUpload(o)}
+            listType="picture-card"
+            onPreview={(f) => handlePreview(f)}
+            fileList={files}
+            onChange={(e) => uploadChange(e)}
+        >
+            {files.length >= 1 ? null : <UploadButton />} 
+        </AntUpload>,
+        <Modal visible={preview.visible} footer={null} onCancel={() => handleCancel()}>
+            <img alt="example" style={{ width: '100%' }} src={preview.image} />
+        </Modal>
+    ]
 }
 
-const BackgroundView = styled.div`
-    padding: .5em 2em 2em .5em;  
-    background-image: url(${props => props.theme.backgroundImage}) !important;
-    cursor: pointer;
-    border-radius: 4px;  
-`;
+const UploadButton = () => {
+    return (
+        <div>
+            <Icon type="plus" />
+        </div>
+    )
+}

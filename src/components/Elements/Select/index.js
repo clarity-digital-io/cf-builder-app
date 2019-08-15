@@ -1,24 +1,31 @@
 import React from 'react';
 
-export const Select = ({ options, value, onChange, order }) => {
+import { Select as AntSelect } from 'antd';
+
+const { Option } = AntSelect;
+
+export const Select = ({ key, placeholder, options, value, onChange, order, valueField, labelField }) => {
 
     return (
-        <div className="slds-form-element">
-            <div className="slds-form-element__control">
-                <div className="slds-select_container">
-                    <select className="slds-select" id="select-01" value={value} onChange={(e) => onChange(e, order)}>
-                        <option value="">Select</option>
-                        {
-                            options.map((option) => {
-                                return (
-                                    <option key={option} value={option}>{option}</option>
-                                )
-                            })
-                        }
-                    </select>
-                </div>
-            </div>
-        </div>
+        <AntSelect key={key} style={{ width: '100%' }} defaultValue={value} onChange={(e) => onChange(e, order)}>
+            
+            <Option value="">{ placeholder || 'Select' }</Option>
+
+            {
+                options.map((option) => {
+                    
+                    let key = valueField != null ? option[valueField] : option;
+                    let value = valueField != null ? option[valueField] : option;
+                    let label = labelField != null ? option[labelField] : option;
+
+                    return (
+                        <Option key={key} value={value}>{label}</Option>
+                    )
+                })
+            }
+            
+        </AntSelect>
     )
-    
+
 }
+

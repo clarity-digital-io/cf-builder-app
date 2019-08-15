@@ -58,7 +58,7 @@ const BuilderProvider = ({ children }) => {
         let url = new URLSearchParams(window.location.search);
 
         let recordId = url.get('recordId') != null ? url.get('recordId') : '';
-        console.log('recordId', recordId);
+
         call("ClarityFormBuilder.startup", [recordId], (result, e) => createHandler(result, e, setForm, setStyle, setAssignment));
         
     }, []);
@@ -197,9 +197,9 @@ const createHandler = (result, e, setForm, setStyle, setAssignment) => {
             Color__c: result.Clarity_Form_Style__r.Color__c 
         }
     })
-    console.log('result.Clarity_Form_Assignment__c', result.Clarity_Form_Assignment__c);
+
     if(result.Clarity_Form_Assignment__c == null) return;
-    console.log('result', result)
+
     setAssignment(assignment => {
         return { 
             ...assignment, 

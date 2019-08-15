@@ -11,7 +11,8 @@ const Main = {
         grey: '#696969', 
         body : '#00305C', 
         bright : '#0070d2',
-        green: '#59d2a2'
+        green: '#59d2a2',
+        dark: '#333'
     }
 };
 

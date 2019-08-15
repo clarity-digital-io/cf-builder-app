@@ -13,7 +13,7 @@ import { Slider } from './slider';
 import { Lookup } from './lookup'; 
 import { RecordGroup } from './recordgroup'; 
 import { ConnectedObject } from './connectedobject'; 
-import { PictureChoice } from './picturechoices'; 
+import { PictureChoices } from './picturechoices'; 
 import { SmallSpinner } from '../../../../Elements/Spinner';
 
 const getQuestionType = (type) => {
@@ -54,7 +54,7 @@ const getQuestionType = (type) => {
             return <ConnectedObject />
             break;
         case 'PictureChoice':
-            return <PictureChoice />
+            return <PictureChoices />
             break;
         default:
             return <div>DefaultType: { type }</div>

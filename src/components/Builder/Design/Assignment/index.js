@@ -36,7 +36,6 @@ export const AssignmentState = () => {
 
         if(update) {
 
-            console.log(assign, assignmentRules);
             call(
                 "ClarityFormBuilder.saveAssignmentRules", 
                 [JSON.stringify(assign), JSON.stringify(assignmentRules)], 

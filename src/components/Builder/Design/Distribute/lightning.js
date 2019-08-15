@@ -18,24 +18,3 @@ export const LightningState = () => {
 
     )
 }
-
-
-// <li className={ navState == 'LIGHTNING' ? 'active' : '' } onClick={() => setNavState('LIGHTNING')}>
-// <span>Lightning</span>
-// </li>
-// <li className={ navState == 'SALESFORCECOMMUNITY' ? 'active' : '' } onClick={() => setNavState('SALESFORCECOMMUNITY')}>
-// <span>Salesforce Community</span>
-// </li>
-// <li className={ navState == 'SALESFORCECHAT' ? 'active' : '' } onClick={() => setNavState('SALESFORCECHAT')}>
-// <span>Salesforce Chat</span>
-// </li>
-// <li className={ navState == 'SALESFORCEPARDOT' ? 'active' : '' } onClick={() => setNavState('SALESFORCEPARDOT')}>
-// <span>Salesforce Pardot</span>
-// </li>
-// <li className={ navState == 'EMAIL' ? 'active' : '' } onClick={() => setNavState('EMAIL')}>
-// <span>Email</span>
-// </li>
-// <li className={ navState == 'MOBILE' ? 'active' : '' } onClick={() => setNavState('MOBILE')}>
-// <span>iOS and Android</span>
-// </li>
-// </ul>

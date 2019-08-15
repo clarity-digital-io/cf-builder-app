@@ -18,11 +18,16 @@ export const DesignEditState = () => {
 
     const [update, setUpdate] = useState(false);
 
-    const [file, setFile] = useState('');
+    const [files, setFiles] = useState([]);
 
     useEffect(() => {
 
         if(update) {
+
+            let file = style.Background_Image__c ? style.Background_Image__c : '';
+
+            style.Background_Image__c = ''; 
+            
             call(
                 "ClarityFormBuilder.updateDesign", 
                 [JSON.stringify(style), file], 
@@ -81,25 +86,14 @@ export const DesignEditState = () => {
 
     }
 
-    const uploadChange = (e, d) => {
+    const uploadChange = (fileContents) => {
 
-        let reader = new FileReader(); 
+        setStyle(style => {
+            return { ...style, Background_Image__c: fileContents };
+        });
 
-        let files = Array.from(e.target.files);
-
-        reader.readAsDataURL(files[0]);
-
-        reader.onloadend = function () {
-            setStyle(style => {
-                return { ...style, Background_Image__c: reader.result };
-            });
-            
-            let base64result = reader.result.split(',')[1];
-
-            setFile(base64result); 
-        };
     }
-    
+
     return [
         
         <View key={'body'} silver body className="row">
@@ -156,7 +150,7 @@ export const DesignEditState = () => {
 
                                 <ViewStyle space border>
 
-                                    <Upload label={'Background Image'} style={style} onChange={uploadChange} />
+                                    <Upload files={files} setFiles={setFiles} style={style} onChange={uploadChange} />
 
                                 </ViewStyle>
 

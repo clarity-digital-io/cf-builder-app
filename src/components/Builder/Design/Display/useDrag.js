@@ -1,5 +1,4 @@
-import React, { useEffect, useContext } from 'react';
-import { call } from '../../../RemoteActions';
+import { useEffect, useContext } from 'react';
 
 import { sortedTypes } from '../types';
 

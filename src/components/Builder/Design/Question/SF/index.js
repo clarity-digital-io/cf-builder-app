@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { DesignContext, EditContext } from '../../../../Context';
 
 import View from '../../../../Elements/View';
 import ViewStyle from '../../../../Elements/View/style';
 
 import Box from '../../../../Elements/Box';
-import { SmallSpinner } from '../../../../Elements/Spinner';
+
 import CloseIcon from '../../../../Elements/Icons/close';
 
 import { Select } from '../../../../Elements/Select';

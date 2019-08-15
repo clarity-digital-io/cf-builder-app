@@ -1,17 +1,18 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import View from '../../../../Elements/View';
 import Box from '../../../../Elements/Box';
 import ViewStyle from '../../../../Elements/View/style';
 import { DesignContext } from '../../../../Context';
+import { InputNumber } from '../../../../Elements/Input';
 
 export const Slider = () => {
 
     const { activeQuestion, setActiveQuestion } = useContext(DesignContext);
 
-    const updateMin = (e) => {
+    const updateMin = (v) => {
 
-        let value = parseInt(e.target.value); 
-
+        let value = parseInt(v); 
+        console.log(value); 
         if(activeQuestion.Max_Range__c > value) {
             setActiveQuestion(question => {
                 return { ...question, Min_Range__c: value }
@@ -20,9 +21,9 @@ export const Slider = () => {
 
     }
 
-    const updateMax = (e) => {
+    const updateMax = (v) => {
 
-        let value = parseInt(e.target.value); 
+        let value = parseInt(v); 
 
         if(activeQuestion.Min_Range__c < value) {
             setActiveQuestion(question => {
@@ -32,9 +33,9 @@ export const Slider = () => {
 
     }
 
-    const updateStep = (e) => {
+    const updateStep = (v) => {
 
-        let value = parseInt(e.target.value); 
+        let value = parseInt(v); 
 
         if(activeQuestion.Max_Range__c > value) {
             setActiveQuestion(question => {
@@ -51,40 +52,32 @@ export const Slider = () => {
             <ViewStyle>
 
             <View className="row">
-                <View className="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                <View className="col-xs-12 col-sm-3 col-md-3 col-lg-3">
                     <Box padding='0'>
 
-                    <div class="slds-form-element">
-                    <label class="slds-form-element__label" for="text-input-id-1">Min Range</label>
-                        <div class="slds-form-element__control">
-                            <input id="text-input-id-1" onChange={(e) => updateMin(e)} min="0" max={activeQuestion.Max_Range__c - 1} type="number" class="slds-input" value={activeQuestion.Min_Range__c} />
-                        </div>
-                    </div>
+                        <h2>Min.</h2>
+
+
+                        <InputNumber min={0} max={activeQuestion.Max_Range__c - 1} onChange={(e) => updateMin(e)} value={ activeQuestion.Min_Range__c } />
 
                     </Box>
                 </View>
-                <View className="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                <View className="col-xs-12 col-sm-3 col-md-3 col-lg-3">
                     <Box padding='0'>
 
-                    <div class="slds-form-element">
-                    <label class="slds-form-element__label" for="text-input-id-2">Max Range</label>
-                        <div class="slds-form-element__control">
-                            <input id="text-input-id-2" onChange={(e) => updateMax(e)} min={activeQuestion.Min_Range__c} max="1000" type="number" class="slds-input" value={activeQuestion.Max_Range__c} />
-                        </div>
-                    </div>
+                        <h2>Max</h2>
+
+                        <InputNumber min={activeQuestion.Min_Range__c} onChange={(e) => updateMax(e)} value={ activeQuestion.Max_Range__c } />
 
                     </Box>
                 </View>
 
-                <View className="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                <View className="col-xs-12 col-sm-3 col-md-3 col-lg-3">
                     <Box padding='0'>
 
-                    <div class="slds-form-element">
-                    <label class="slds-form-element__label" for="text-input-id-3">Step</label>
-                        <div class="slds-form-element__control">
-                            <input id="text-input-id-3" onChange={(e) => updateStep(e)} type="number" class="slds-input" value={activeQuestion.Step__c} />
-                        </div>
-                    </div>
+                        <h2>Step</h2>
+
+                        <InputNumber onChange={(e) => updateStep(e)} value={ activeQuestion.Step__c } />
 
                     </Box>
                 </View>

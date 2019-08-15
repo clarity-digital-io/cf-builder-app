@@ -14,7 +14,7 @@ export const NetPromoterScore = ({ question }) => {
                 nps.map((rate) => {
                     return (
                             <RadioButton
-                                name={question.Id}
+                                name={rate}
                                 id={rate}
                                 value={rate}
                                 checked={true}
