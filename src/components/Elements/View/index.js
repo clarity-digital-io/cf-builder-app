@@ -14,6 +14,10 @@ const View = styled.div`
       height: 93vh;
     `}
 
+    ${props => props.fullBody && css`
+      height: 93vh;
+    `}
+
     ${props => props.space && css`
       padding: .75em;
     `}

@@ -31,25 +31,25 @@ export const Question = ({ question }) => {
 
             <Options active={ question.Id != null && (question.Id == activeQuestion.Id) }>
             <div>
-                <li><Icon style={{ fontSize: '1.25em', color: Main.color.body }} type="edit" onClick={() => edit('EDIT')} /></li>
+                <li onClick={() => edit('EDIT')}><Icon style={{ fontSize: '1.25em', color: Main.color.body }} type="edit" /></li>
 
-                <li><Icon style={{ fontSize: '1.25em', color: Main.color.body }} type="api" onClick={() => edit('AUTOMATE')} /></li>
+                <li onClick={() => edit('AUTOMATE')}><Icon style={{ fontSize: '1.25em', color: Main.color.body }} type="api" /></li>
 
-                <li><Icon style={{ fontSize: '1.25em', color: Main.color.body }} type="interaction" onClick={() => edit('LOGIC')} /></li>
+                <li onClick={() => edit('LOGIC')} ><Icon style={{ fontSize: '1.25em', color: Main.color.body }} type="interaction" /></li>
 
                 {
                     question.Type__c == 'Number' ? 
-                    <li><Icon style={{ fontSize: '1.25em', color: Main.color.body }} type="calculator" onClick={() => edit('CALCULATOR')} /></li> : 
+                    <li onClick={() => edit('CALCULATOR')}><Icon style={{ fontSize: '1.25em', color: Main.color.body }} type="calculator" /></li> : 
                         null 
                 }
 
                 {
                     (question.Type__c == 'RecordGroup' && question.Salesforce_Object__c != null) ? 
-                    <li><Icon style={{ fontSize: '1.25em', color: Main.color.body }} type="folder-add" onClick={() => edit('SF')} /></li> : 
+                    <li onClick={() => edit('SF')}><Icon style={{ fontSize: '1.25em', color: Main.color.body }} type="folder-add" /></li> : 
                         null
                 }
 
-                <li><Icon style={{ fontSize: '1.25em', color: Main.color.alert }} type="delete" onClick={() => setQuestionToDelete((question.Id))} /></li>
+                <li onClick={() => setQuestionToDelete((question.Id))}><Icon style={{ fontSize: '1.25em', color: Main.color.alert }} type="delete" /></li>
             </div>
             </Options>
 
