@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import { Upload as AntUpload, Icon, Modal } from 'antd';
+import { Upload as AntUpload, Icon, Modal, message } from 'antd';
 
 export const Upload = ({ files, setFiles, onChange }) => {
 
@@ -10,6 +10,28 @@ export const Upload = ({ files, setFiles, onChange }) => {
     const uploadChange = ({ fileList }) => {
         
         setFiles(fileList)
+
+    }
+
+    const beforeUpload = (file) => {
+
+        const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+
+        if (!isJpgOrPng) {
+            
+            message.error('You can only upload JPG/PNG file!');
+        
+        }
+
+        const isLt2M = file.size / 1024 / 1024 < 2;
+
+        if (!isLt2M) {
+
+            message.error('Image must smaller than 2MB!');
+
+        }
+        console.log('isJpgOrPng && isLt2M', isJpgOrPng && isLt2M);
+        return isJpgOrPng && isLt2M;
 
     }
 
@@ -44,6 +66,7 @@ export const Upload = ({ files, setFiles, onChange }) => {
             action="memory"
             customRequest={(o) => handleUpload(o)}
             listType="picture-card"
+            beforeUpload={(f) => beforeUpload(f)}
             onPreview={(f) => handlePreview(f)}
             fileList={files}
             onChange={(e) => uploadChange(e)}
