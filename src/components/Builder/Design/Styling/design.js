@@ -58,7 +58,7 @@ export const DesignEditState = () => {
         let value = e.target.value; 
 
         setStyle(style => {
-            return { ...style, Label__c: value }
+            return { ...style, Name: value }
         })
     }
 
@@ -138,7 +138,7 @@ export const DesignEditState = () => {
                                                 <div className="slds-form-element">
                                                     <label className="slds-form-element__label" htmlFor="text-input-id-1">Style Name</label>
                                                     <div className="slds-form-element__control">
-                                                        <input type="text" value={ style.Label__c } onChange={(e) => updateName(e)} id="text-input-id-1" placeholder="Style Name" className="slds-input" />
+                                                        <input type="text" value={ style.Name } onChange={(e) => updateName(e)} id="text-input-id-1" placeholder="Style Name" className="slds-input" />
                                                     </div>
                                                 </div>
 

@@ -28,7 +28,7 @@ export const Lookup = () => {
     }
 
     return [
-        <ViewStyle>
+        <ViewStyle key="header">
 
             <h1>Lookup</h1>
 
@@ -40,7 +40,7 @@ export const Lookup = () => {
         
         </ViewStyle>,
 
-        <ViewStyle>
+        <ViewStyle key="Filter">
 
 
             <h1>Filter on Lookup</h1>
