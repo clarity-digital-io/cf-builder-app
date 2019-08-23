@@ -27,7 +27,7 @@ export const Lookup = () => {
 
     }
 
-    return (
+    return [
         <ViewStyle>
 
             <h1>Lookup</h1>
@@ -37,6 +37,10 @@ export const Lookup = () => {
                     <Select options={[activeQuestion.Salesforce_Field__c]} value={activeQuestion.Salesforce_Field__c} onChange={updateLookupQuestion} /> :
                     <Select options={sObjects} value={activeQuestion.Lookup__c} onChange={updateLookupQuestion} />
                 }
+        
+        </ViewStyle>,
+
+        <ViewStyle>
 
 
             <h1>Filter on Lookup</h1>
@@ -45,6 +49,6 @@ export const Lookup = () => {
 
 
         </ViewStyle>
-    )
+    ]
 
 }
