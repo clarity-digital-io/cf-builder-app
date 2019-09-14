@@ -7,7 +7,7 @@ const { Option } = AntSelect;
 export const Select = ({ key, placeholder, options, value, onChange, order, valueField, labelField }) => {
 
     return (
-        <AntSelect key={key} style={{ width: '100%' }} defaultValue={value} onChange={(e) => onChange(e, order)}>
+        <AntSelect showSearch key={key} style={{ width: '100%' }} defaultValue={value} onChange={(e) => onChange(e, order)}>
             
             <Option value="">{ placeholder || 'Select' }</Option>
 
