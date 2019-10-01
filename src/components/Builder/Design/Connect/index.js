@@ -20,6 +20,7 @@ export const ConnectState = () => {
     useEffect(() => {
 
         if(update) {
+            console.log(connections); 
             call(
                 "ClarityFormBuilder.saveConnections", 
                 [JSON.stringify(connections), form.Id], 
@@ -45,9 +46,7 @@ export const ConnectState = () => {
 
     }
 
-    const setObjectSelection = (e, order) => {
-
-        let value = e.target.value; 
+    const setObjectSelection = (value, order) => {
 
         setConnections((rows) => {
 
@@ -72,7 +71,7 @@ export const ConnectState = () => {
 
         setConnections(connections => {
 
-            return connections.concat([{ Active__f: false, Clarity_Form__c: form.Id, Salesforce_Object__c: '' }])
+            return connections.concat([{ Clarity_Form__c: form.Id, Salesforce_Object__c: '' }])
 
         })
 
