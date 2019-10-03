@@ -19,6 +19,8 @@ const App = ({ children }) => {
 
 const BuilderProvider = ({ children }) => {
 
+    const [dirtyState, setDirtyState] = useState({ edited: false, navigated: false }); 
+
     const [loading, setLoading] = useState(false); 
 
     const [activeConnection, setActiveConnection] = useState([]);
@@ -116,6 +118,8 @@ const BuilderProvider = ({ children }) => {
 
     return (
         <BuilderContext.Provider value={{ 
+            dirtyState,
+            setDirtyState,
             loading,
             activeFields,
             styles,

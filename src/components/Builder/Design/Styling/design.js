@@ -22,7 +22,7 @@ const configUrl = (style) => {
 
 export const DesignEditState = () => {
 
-    const { style, setStyle, setNavState } = useContext(BuilderContext);
+    const { style, setStyle, setNavState, setDirtyState } = useContext(BuilderContext);
 
     const [update, setUpdate] = useState(false);
 
@@ -47,7 +47,7 @@ export const DesignEditState = () => {
             call(
                 "ClarityFormBuilder.updateDesign", 
                 [JSON.stringify(style), base64result], 
-                (result, e) => resultHandler(result, e, setStyle, setUpdate)
+                (result, e) => resultHandler(result, e, setStyle, setUpdate, setDirtyState)
             );
         }
         
@@ -60,6 +60,11 @@ export const DesignEditState = () => {
         setStyle(style => {
             return { ...style, Name: value }
         })
+
+        setDirtyState(dirty => {
+            return { ...dirty, edited: true }
+        }); 
+
     }
 
     const updateMultiPage = (e) => {
@@ -70,6 +75,10 @@ export const DesignEditState = () => {
             return { ...style, Multi_Page__c: checked };
         });
 
+        setDirtyState(dirty => {
+            return { ...dirty, edited: true }
+        }); 
+
     }
 
     const handleButtonColorChange = (color, e, field) => {
@@ -79,7 +88,10 @@ export const DesignEditState = () => {
         setStyle(style => {
             return { ...style, Button_Color__c: hex };
         });
-
+        console.log('handleButtonColorChange')
+        setDirtyState(dirty => {
+            return { ...dirty, edited: true }
+        }); 
     }
 
     const handleBackgroundColorChange = (color, e, field) => {
@@ -90,6 +102,9 @@ export const DesignEditState = () => {
             return { ...style, Background_Color__c: hex };
         });
 
+        setDirtyState(dirty => {
+            return { ...dirty, edited: true }
+        }); 
     }
 
     const handleQuestionColorChange = (color, e, field) => {
@@ -99,7 +114,10 @@ export const DesignEditState = () => {
         setStyle(style => {
             return { ...style, Color__c: hex };
         });
-
+        
+        setDirtyState(dirty => {
+            return { ...dirty, edited: true }
+        }); 
     }
 
     const uploadChange = (fileContents) => {
@@ -108,6 +126,9 @@ export const DesignEditState = () => {
             return { ...style, Background_Image__c: fileContents };
         });
 
+        setDirtyState(dirty => {
+            return { ...dirty, edited: true }
+        }); 
     }
 
     return [
@@ -212,8 +233,9 @@ export const DesignEditState = () => {
     ]
 }
 
-const resultHandler = (result, e, setStyle, setUpdate) => {
+const resultHandler = (result, e, setStyle, setUpdate, setDirtyState) => {
     console.log('result', result); 
+    setDirtyState(false);
     setUpdate(false);
     setStyle(result); 
 }

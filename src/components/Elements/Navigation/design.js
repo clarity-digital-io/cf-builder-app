@@ -2,10 +2,11 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 import Main from '../Theme'; 
 import { BuilderContext } from '../../Context';
+import { Modal, Button } from 'antd';
 
 const DesignNavigation = () => {
 
-    const { navState, setNavState } = useContext(BuilderContext);
+    const { navState, setNavState, dirtyState, setDirtyState } = useContext(BuilderContext);
 
     const getDistributionStates = (nav) => {
 
@@ -13,33 +14,105 @@ const DesignNavigation = () => {
     
     }
 
-    return (
+    const navigate = (loc) => {
+
+        if(dirtyState.edited) {
+
+            setDirtyState(dirty => {
+                return { ...dirty, navigated: true  }
+            });
+
+            return;
+        }
+
+        setNavState(loc);
+
+    }
+
+    const handleSave = () => {
+        console.log('ok');
+    }
+
+    const handleCancel = () => {
+        
+        setDirtyState(dirty => {
+            return { ...dirty, navigated: false }
+        });
+
+    }
+
+    return [
         <Nav>
 
             <ul>
-                <li className={ navState == 'QUESTIONS' ? 'active' : '' } onClick={() => setNavState('QUESTIONS')}>
+                <li className={ navState == 'QUESTIONS' ? 'active' : '' } onClick={() => navigate('QUESTIONS')}>
                     <span>Questions</span>
                 </li>
-                <li className={ (navState == 'CONNECT' || navState == 'MAPPING') ? 'active' : '' } onClick={() => setNavState('CONNECT')}>
+                <li className={ (navState == 'CONNECT' || navState == 'MAPPING') ? 'active' : '' } onClick={() => navigate('CONNECT')}>
                     <span>Connect</span>
                 </li>
-                <li className={ navState == 'DESIGN' ? 'active' : '' } onClick={() => setNavState('DESIGN')}>
+                <li className={ navState == 'DESIGN' ? 'active' : '' } onClick={() => navigate('DESIGN')}>
                     <span>Design</span>
                 </li>
-                <li className={ navState == 'ASSIGNMENTS' ? 'active' : '' } onClick={() => setNavState('ASSIGNMENTS')}>
+                <li className={ navState == 'ASSIGNMENTS' ? 'active' : '' } onClick={() => navigate('ASSIGNMENTS')}>
                     <span>Assignments</span>
                 </li>
-                <li className={ navState == 'SETTINGS' ? 'active' : '' } onClick={() => setNavState('SETTINGS')}>
+                <li className={ navState == 'SETTINGS' ? 'active' : '' } onClick={() => navigate('SETTINGS')}>
                     <span>Settings</span>
                 </li>
-                <li className={ getDistributionStates(navState) ? 'active' : '' } onClick={() => setNavState('DISTRIBUTE')}>
+                <li className={ getDistributionStates(navState) ? 'active' : '' } onClick={() => navigate('DISTRIBUTE')}>
                     <span>Distribute</span>
                 </li>
             </ul>
 
-        </Nav>
-    );
+        </Nav>,
+        <Modal
+            visible={dirtyState.navigated}
+            onOk={() => handleOk()}
+            onCancel={() => handleCancel()}
+            footer={[
+                <Button key="back" onClick={() => handleCancel()}>
+                  Cancel
+                </Button>,
+                <Button key="submit" type="primary" onClick={() => handleOk()}>
+                  Save
+                </Button>,
+            ]}
+        >
+            <BuildDirtyStateMessage navState={navState} />
+        </Modal>
+    ];
 
+}
+
+const BuildDirtyStateMessage = ({ navState }) => {
+
+    const buildMessage = (nav) => {
+
+        switch (nav) {
+            case 'DESIGNEDIT':
+                return designEditMessage(); 
+                break;
+        
+            default:
+                break;
+        }
+    }
+
+    return buildMessage(navState);
+
+}
+
+const designEditMessage = () => {
+
+    return <div>
+        <h1>
+            Do you want to save the changes to the theme you just made?
+        </h1>
+        <p>
+            Click Cancel to continue editing your design
+        </p>
+    </div>
 }
 
 const Nav = styled.nav`
