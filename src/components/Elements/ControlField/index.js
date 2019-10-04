@@ -252,10 +252,10 @@ const ControlAddRow = ({ type, setRows, relatedId }) => {
 const ControlFieldSF = ({ order, record, values, setSelection }) => {
 
     return (
-        <div class="slds-form-element">
-            <div class="slds-form-element__control">
-                <div class="slds-select_container">
-                <select class="slds-select" id="select-02" value={record} onChange={(e) => setSelection(e, order)} >
+        <div className="slds-form-element">
+            <div className="slds-form-element__control">
+                <div className="slds-select_container">
+                <select className="slds-select" id="select-02" value={record} onChange={(e) => setSelection(e, order)} >
                     <option value="">Please select</option>
                     {
                         values.map(value => {

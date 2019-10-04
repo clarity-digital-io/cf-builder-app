@@ -19,7 +19,7 @@ const App = ({ children }) => {
 
 const BuilderProvider = ({ children }) => {
 
-    const [dirtyState, setDirtyState] = useState({ edited: false, navigated: false }); 
+    const [dirtyState, setDirtyState] = useState({ edited: false, navigated: false, save: null }); 
 
     const [loading, setLoading] = useState(false); 
 

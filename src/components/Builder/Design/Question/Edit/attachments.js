@@ -29,7 +29,7 @@ export const Attachments = () => {
                 </label>
                 <div className="slds-form-element__control">
                     <div className="slds-slider">
-                    <input type="range" id="slider-id-01" class="slds-slider__range" min="0" max="10" value={activeQuestion.Max_Length__c} onChange={(e) => handleMaxLengthUpdate(e.target.value) } />
+                    <input type="range" id="slider-id-01" className="slds-slider__range" min="0" max="10" value={activeQuestion.Max_Length__c} onChange={(e) => handleMaxLengthUpdate(e.target.value) } />
                     <span className="slds-slider__value" aria-hidden="true">{activeQuestion.Max_Length__c}</span>
                     </div>
                 </div>

@@ -32,26 +32,33 @@ export const DesignEditState = () => {
 
         if(update) {
 
-            let file = style.Background_Image__c ? style.Background_Image__c : '';
+            save(); 
 
-            let base64result = ''; 
-
-            if(file.length > 18) {
-
-                base64result = file != '' ? file.split(',')[1] : '';
-
-                style.Background_Image__c = ''; 
-
-            }
-            console.log(style, base64result);
-            call(
-                "ClarityFormBuilder.updateDesign", 
-                [JSON.stringify(style), base64result], 
-                (result, e) => resultHandler(result, e, setStyle, setUpdate, setDirtyState)
-            );
         }
         
     }, [update]);
+
+    const save = () => {
+
+        let file = style.Background_Image__c ? style.Background_Image__c : '';
+
+        let base64result = ''; 
+
+        if(file.length > 18) {
+
+            base64result = file != '' ? file.split(',')[1] : '';
+
+            style.Background_Image__c = ''; 
+
+        }
+
+        call(
+            "ClarityFormBuilder.updateDesign", 
+            [JSON.stringify(style), base64result], 
+            (result, e) => resultHandler(result, e, setStyle, setUpdate, setDirtyState)
+        );
+
+    }
 
     const updateName = (e) => {
 
@@ -62,7 +69,7 @@ export const DesignEditState = () => {
         })
 
         setDirtyState(dirty => {
-            return { ...dirty, edited: true }
+            return { ...dirty, edited: true, save: save }
         }); 
 
     }
@@ -76,7 +83,7 @@ export const DesignEditState = () => {
         });
 
         setDirtyState(dirty => {
-            return { ...dirty, edited: true }
+            return { ...dirty, edited: true, save: save }
         }); 
 
     }
@@ -88,9 +95,9 @@ export const DesignEditState = () => {
         setStyle(style => {
             return { ...style, Button_Color__c: hex };
         });
-        console.log('handleButtonColorChange')
+
         setDirtyState(dirty => {
-            return { ...dirty, edited: true }
+            return { ...dirty, edited: true, save: save }
         }); 
     }
 
@@ -103,7 +110,7 @@ export const DesignEditState = () => {
         });
 
         setDirtyState(dirty => {
-            return { ...dirty, edited: true }
+            return { ...dirty, edited: true, save: save }
         }); 
     }
 
@@ -116,7 +123,7 @@ export const DesignEditState = () => {
         });
         
         setDirtyState(dirty => {
-            return { ...dirty, edited: true }
+            return { ...dirty, edited: true, save: save }
         }); 
     }
 
@@ -127,7 +134,7 @@ export const DesignEditState = () => {
         });
 
         setDirtyState(dirty => {
-            return { ...dirty, edited: true }
+            return { ...dirty, edited: true, save: save }
         }); 
     }
 

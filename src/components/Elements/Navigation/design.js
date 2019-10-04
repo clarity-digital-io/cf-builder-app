@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import Main from '../Theme'; 
 import { BuilderContext } from '../../Context';
@@ -7,6 +7,8 @@ import { Modal, Button } from 'antd';
 const DesignNavigation = () => {
 
     const { navState, setNavState, dirtyState, setDirtyState } = useContext(BuilderContext);
+
+    const [locSelected, setLocSelected] = useState(null); 
 
     const getDistributionStates = (nav) => {
 
@@ -22,6 +24,8 @@ const DesignNavigation = () => {
                 return { ...dirty, navigated: true  }
             });
 
+            setLocSelected(loc);
+
             return;
         }
 
@@ -30,7 +34,15 @@ const DesignNavigation = () => {
     }
 
     const handleSave = () => {
-        console.log('ok');
+
+        dirtyState.save();
+        
+        setDirtyState(dirty => {
+            return { navigated: false, edited: false, save: null }
+        });
+
+        setNavState(locSelected);
+
     }
 
     const handleCancel = () => {
@@ -74,7 +86,7 @@ const DesignNavigation = () => {
                 <Button key="back" onClick={() => handleCancel()}>
                   Cancel
                 </Button>,
-                <Button key="submit" type="primary" onClick={() => handleOk()}>
+                <Button key="submit" type="primary" onClick={() => handleSave()}>
                   Save
                 </Button>,
             ]}
@@ -93,8 +105,8 @@ const BuildDirtyStateMessage = ({ navState }) => {
             case 'DESIGNEDIT':
                 return designEditMessage(); 
                 break;
-        
             default:
+                return '';
                 break;
         }
     }
