@@ -136,15 +136,35 @@ export const EditQuestion = () => {
                         
                     </ViewStyle>
 
-                    <ViewStyle space scroll>
-                    
-                        {
-                            loading ? <SmallSpinner /> : getQuestionType(activeQuestion.Type__c) 
-                        }
+                    {
+                        hasExtraEditSettings(activeQuestion.Type__c) ?
+                            <ViewStyle space scroll>
+                            
+                                {
+                                    loading ? <SmallSpinner /> : getQuestionType(activeQuestion.Type__c) 
+                                }
 
-                    </ViewStyle>
+                            </ViewStyle> :
+                            null
+                    }
+
+
                 </Box>  
             </View>
         </View>
     )
+}
+
+const hasExtraEditSettings = (type) => {
+
+    switch (type) {
+        case 'NetPromoterScore':
+        case 'Email':
+            return false
+            break;
+        default:
+            return true; 
+            break;
+    }
+
 }

@@ -57,7 +57,7 @@ export const Question = ({ question }) => {
 
                 {
                     hasFormLabel(question.Type__c) ? 
-                        <FormItem key={question.Id} label={question.Title__c}>
+                        <FormItem key={question.Id} label={question.Title__c} required={question.Required__c}>
                             {getType(question)}
                         </FormItem> :
                         <div>{getType(question)}</div>
