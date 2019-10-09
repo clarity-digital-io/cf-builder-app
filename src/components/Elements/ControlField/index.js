@@ -86,10 +86,7 @@ const ControlRow = ({ order, row, setRows, questions, filter }) => {
 
     }, [valueField])
 
-    const setQuestionSelection = (e, order) => {
-
-        let value = e.target.value; 
-
+    const setQuestionSelection = (value, order) => {
         let question = questions.find(question => question.Id == value); 
 
         setOperators(getCorrectOperators(question.Type__c));
@@ -105,10 +102,7 @@ const ControlRow = ({ order, row, setRows, questions, filter }) => {
 
     }
 
-    const setOperatorSelection = (e, order) => {
-
-        let value = e.target.value; 
-
+    const setOperatorSelection = (value, order) => {
         setRows((rows) => {
             return rows.map((row, i) => {
                 if(i == order) {
@@ -119,13 +113,9 @@ const ControlRow = ({ order, row, setRows, questions, filter }) => {
         }); 
 
         setTypes(getCorrectTypes({ ...row, Operator__c: value }));
-
     }
 
-    const setTypeSelection = (e, order) => {
-
-        let value = e.target.value; 
-
+    const setTypeSelection = (value, order) => {
         setRows((rows) => {
             return rows.map((row, i) => {
                 if(i == order) {
@@ -136,13 +126,9 @@ const ControlRow = ({ order, row, setRows, questions, filter }) => {
         }); 
 
         setValueField(value); 
-
     }
 
-    const setValueSelection = (e, order) => {
-
-        let value = e.target.value; 
-
+    const setValueSelection = (value, order) => {
         setRows((rows) => {
             return rows.map((row, i) => {
                 if(i == order) {
@@ -151,7 +137,6 @@ const ControlRow = ({ order, row, setRows, questions, filter }) => {
                 return row;
             })
         }); 
-
     }
 
     const removeRow = (order) => {
@@ -183,7 +168,7 @@ const ControlRow = ({ order, row, setRows, questions, filter }) => {
                     {
                         filter ? 
                         <ControlFieldSF order={order} record={row.Field__c} values={questions} setSelection={setQuestionSelection} /> :
-                        <ControlFieldQuestion order={order} record={row.Field__c} values={questions} setSelection={setQuestionSelection} />
+                        <ControlFieldQuestion order={order} record={row} values={questions} setSelection={setQuestionSelection} />
                     }
                 </Box>
             </View>
@@ -272,7 +257,7 @@ const ControlFieldSF = ({ order, record, values, setSelection }) => {
 
 const ControlFieldQuestion = ({ order, record, values, setSelection }) => {
 
-    return <Select key={record} value={record} options={values} onChange={(e) => setSelection(e, order)} valueField={'Id'} labelField={'Title__c'} />
+    return <Select key={record.Id} value={record.Field__c} options={values} onChange={(e) => setSelection(e, order)} valueField={'Id'} labelField={'Title__c'} />
 
 }
 

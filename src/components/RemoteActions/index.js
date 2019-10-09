@@ -88,7 +88,7 @@ const mockCall = (func, params, callback) => {
             break;
         case 'saveQuestionWithOptions': 
             callback({
-                'Question': [{ Id: 1, Type__c: 'Comment', Title__c: 'Comment', Order__c: 0  }], 
+                'Question': [{ Id: 1, Type__c: 'Checkbox', Title__c: 'Checkbox', Order__c: 0  }], 
                 'Options': [{ Id: 31, Label__c: 'Option 1', Active_Flow__c: true, Clarity_Form_Question__c: 2},{ Id: 32, Label__c: 'Option 2', Active_Flow__c: false, Clarity_Form_Question__c: 2}]
             });
             break;
@@ -96,11 +96,11 @@ const mockCall = (func, params, callback) => {
             callback(2);
             break;
         case 'deleteQuestion':
-            callback([{ Id: 1, Type__c: 'Comment', Title__c: 'Comment', Order__c: 0 }]);
+            callback([{ Id: 2, Type__c: 'Comment', Title__c: 'Comment', Order__c: 0 }]);
             break;
         case 'getQuestionEditDetails':
             callback({
-                'Criteria': [{Id: 31, Clarity_Form_Question__c: 1, Field__c: 1, Field_Type__c: 'Comment', Operator__c: 'Is Not Null', Type__c: 'Boolean', Value__c: 'True' }],
+                'Criteria': [{Id: 31, Clarity_Form_Question__c: 2, Field__c: 2, Field_Type__c: 'Comment', Operator__c: 'Is Not Null', Type__c: 'Boolean', Value__c: 'True' }],
                 'Options' : [{ Id: 31, Label__c: 'Pickture Option 1', Active_Flow__c: true, Clarity_Form_Question__c: 2, Choice_Image__c: 'https://images.unsplash.com/photo-1562743338-51caec0b0e65?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1955&q=80'},{ Id: 32, Label__c: 'Pickture Option 2', Active_Flow__c: false, Clarity_Form_Question__c: 2, Choice_Image__c: 'https://images.unsplash.com/photo-1562743338-51caec0b0e65?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1955&q=80'}],
                 'FlowDesign': [{ Id: 31, Clarity_Form_Question__c: 123, Form_Submission__c: true, Active__c: false }]
             });

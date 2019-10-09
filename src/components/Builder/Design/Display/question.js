@@ -55,9 +55,13 @@ export const Question = ({ question }) => {
 
             <FieldBox>
 
-                <FormItem key={question.Id} label={question.Title__c}>
-                    {getType(question)}
-                </FormItem>
+                {
+                    hasFormLabel(question.Type__c) ? 
+                        <FormItem key={question.Id} label={question.Title__c}>
+                            {getType(question)}
+                        </FormItem> :
+                        <div>{getType(question)}</div>
+                }
 
             </FieldBox>
 
@@ -65,6 +69,15 @@ export const Question = ({ question }) => {
     )
 }
 
+const hasFormLabel = (type) => {
+
+    if(type == 'RecordGroup' || type == 'FreeText') {
+        return false; 
+    }
+
+    return true;
+
+}
 const Options = styled.div`
 
     border-right: 1px dashed ${Main.color.light}

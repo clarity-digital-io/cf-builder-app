@@ -13,7 +13,7 @@ import {Color} from './color';
 import { BuilderContext } from '../../../Context';
 
 const configUrl = (style) => {
-
+    console.log('configUrl', style); 
     let forceImage = (style.Background_Image__c != null && style.Background_Image__c != '') ? (style.Background_Image__c.length > 18 ? false : true ) : false;
 
     return forceImage ? [{ uid: style.Id, thumbUrl:  `/sfc/servlet.shepherd/document/download/${style.Background_Image__c}` }] : [];
@@ -24,6 +24,8 @@ export const DesignEditState = () => {
 
     const { style, setStyle, setNavState, setDirtyState } = useContext(BuilderContext);
 
+    const [previousStyle, setPreviousStyle] = useState(style); 
+
     const [update, setUpdate] = useState(false);
 
     const [files, setFiles] = useState(() => configUrl(style));
@@ -31,12 +33,19 @@ export const DesignEditState = () => {
     useEffect(() => {
 
         if(update) {
-
+            console.log('update')
             save(); 
 
         }
         
     }, [update]);
+
+    const revertAndNavigate = () => {
+
+        setStyle(previousStyle); 
+        setNavState('DESIGN'); 
+
+    }
 
     const save = () => {
 
@@ -44,7 +53,7 @@ export const DesignEditState = () => {
 
         let base64result = ''; 
 
-        if(file.length > 18) {
+        if(file != '' && file.length > 18) {
 
             base64result = file != '' ? file.split(',')[1] : '';
 
@@ -136,6 +145,7 @@ export const DesignEditState = () => {
         setDirtyState(dirty => {
             return { ...dirty, edited: true, save: save }
         }); 
+
     }
 
     return [
@@ -193,9 +203,12 @@ export const DesignEditState = () => {
                                 </ViewStyle>
 
                                 <ViewStyle space border>
-
-                                    <Upload files={files} setFiles={setFiles} style={style} onChange={uploadChange} />
-
+                                    <div className="slds-form-element">
+                                        <label className="slds-checkbox_toggle slds-grid">
+                                            <span className="slds-form-element__label slds-m-bottom_none">Background Image</span>
+                                        </label>
+                                        <Upload files={files} setFiles={setFiles} style={style} onChange={uploadChange} />
+                                    </div>
                                 </ViewStyle>
 
                                 <ViewStyle space border>
@@ -227,8 +240,8 @@ export const DesignEditState = () => {
         <View key={'footer'} footer className="row middle-xs end-xs">
             <View className="col-xs-12">
                 <ViewStyle middle>
-                    <Button neutral onClick={() => setNavState('DESIGN')}>
-                        Back
+                    <Button cancel onClick={() => revertAndNavigate()}>
+                        Cancel
                     </Button>
                     <Button cta onClick={() => setUpdate(true)}>
                     { update ? 'Saving...' : 'Save Changes' }

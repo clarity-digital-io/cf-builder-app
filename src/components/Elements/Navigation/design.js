@@ -10,12 +10,6 @@ const DesignNavigation = () => {
 
     const [locSelected, setLocSelected] = useState(null); 
 
-    const getDistributionStates = (nav) => {
-
-        return nav == 'DISTRIBUTE' || nav == 'EMAIL' || nav == 'SALESFORCECOMMUNITY' || nav == 'LIGHTNING' || nav == 'MOBILE' || nav == 'SALESFORCECHAT' || nav == 'SALESFORCEPARDOT';
-    
-    }
-
     const navigate = (loc) => {
 
         if(dirtyState.edited) {
@@ -63,7 +57,7 @@ const DesignNavigation = () => {
                 <li className={ (navState == 'CONNECT' || navState == 'MAPPING') ? 'active' : '' } onClick={() => navigate('CONNECT')}>
                     <span>Connect</span>
                 </li>
-                <li className={ navState == 'DESIGN' ? 'active' : '' } onClick={() => navigate('DESIGN')}>
+                <li className={ getDesignStates(navState) ? 'active' : '' } onClick={() => navigate('DESIGN')}>
                     <span>Design</span>
                 </li>
                 <li className={ navState == 'ASSIGNMENTS' ? 'active' : '' } onClick={() => navigate('ASSIGNMENTS')}>
@@ -95,6 +89,17 @@ const DesignNavigation = () => {
         </Modal>
     ];
 
+}
+
+
+const getDistributionStates = (nav) => {
+
+    return nav == 'DISTRIBUTE' || nav == 'EMAIL' || nav == 'SALESFORCECOMMUNITY' || nav == 'LIGHTNING' || nav == 'MOBILE' || nav == 'SALESFORCECHAT' || nav == 'SALESFORCEPARDOT';
+
+}
+
+const getDesignStates = (nav) => {
+    return nav == 'DESIGN' || nav == 'DESIGNEDIT';
 }
 
 const BuildDirtyStateMessage = ({ navState }) => {

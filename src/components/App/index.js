@@ -85,11 +85,12 @@ const BuilderProvider = ({ children }) => {
         if(navState == 'ASSIGNMENTS') {
 
             setLoading(true);
-
+            console.log('assign', assign);
             if(assign.Id != null) {
+                console.log('form.Clarity_Form_Assignment__c', form.Clarity_Form_Assignment__c);
                 call("ClarityFormBuilder.getAssignmentRules", [form.Clarity_Form_Assignment__c], (result, e) => assignmentRulesHandler(result, e, setAssignmentRules, setLoading));
             } else {
-                call("ClarityFormBuilder.createAssignment", [`${form.Name} Assignment`, form.Id], (result, e) => assignmentCreateHandler(result, e, setAssignment, setAssignmentRules, setLoading));
+                call("ClarityFormBuilder.createAssignment", [`${form.Name} Assignment`, form.Id], (result, e) => assignmentCreateHandler(result, e, setForm, setAssignment, setAssignmentRules, setLoading));
             }
 
         }
@@ -153,11 +154,17 @@ const designsResultHandler = (result, e, setStyles, setLoading) => {
 
 }
 
-const assignmentCreateHandler = (result, e, setAssignment, setAssignmentRules, setLoading) => {
+const assignmentCreateHandler = (result, e, setForm, setAssignment, setAssignmentRules, setLoading) => {
 
     setLoading(false);
     setAssignment(result); 
     setAssignmentRules([]);
+    setForm(form => {
+        return { 
+            ...form, 
+            Clarity_Form_Assignment__c: result.Id
+        }
+    });
 
 }
 

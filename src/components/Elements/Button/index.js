@@ -52,6 +52,14 @@ export const Button = styled.button`
         background: ${Main.color.bright}
     `}
 
+    ${props => props.cancel && css`
+        padding: 0.5em;
+        font-weight: 900; 
+        color: ${Main.color.body};
+        background: ${Main.color.white};
+        border: 1px solid ${Main.color.light}
+    `}
+
     ${props => props.add && css`
         padding: 0.5em;
         font-weight: 900; 
