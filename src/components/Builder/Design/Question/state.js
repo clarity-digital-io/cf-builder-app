@@ -129,9 +129,14 @@ const Save = ({ children }) => {
         }
 
         if(questionUpdate && questionState == 'SF') {
+
+            let updatedActiveRecords = activeRecordGroup.map(a => {
+                delete a.Id;
+                return a;
+            })
             call(
                 "ClarityFormBuilder.saveRecordGroupFields", 
-                [JSON.stringify(activeRecordGroup), activeQuestion.Id], 
+                [JSON.stringify(updatedActiveRecords), activeQuestion.Id], 
                 (result, e) => resultRecordGroupFieldsHandler(result, e, setQuestionUpdate, setRecordGroup, setActiveRecordGroup, activeQuestion)
             )
         }

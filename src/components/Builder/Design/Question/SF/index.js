@@ -92,9 +92,7 @@ const ControlSelect = ({ order, row }) => {
 
     }
 
-    const setSelection = (e, order) => {
-
-        let value = e.target.value; 
+    const setSelection = (value, order) => {
 
         setActiveRecordGroup(records => {
 

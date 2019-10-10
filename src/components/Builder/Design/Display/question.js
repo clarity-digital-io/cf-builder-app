@@ -33,7 +33,11 @@ export const Question = ({ question }) => {
             <div>
                 <li onClick={() => edit('EDIT')}><Icon style={{ fontSize: '1.25em', color: Main.color.body }} type="edit" /></li>
 
-                <li onClick={() => edit('AUTOMATE')}><Icon style={{ fontSize: '1.25em', color: Main.color.body }} type="api" /></li>
+                {
+                    question.Type__c != 'FreeText' ?
+                    <li onClick={() => edit('AUTOMATE')}><Icon style={{ fontSize: '1.25em', color: Main.color.body }} type="api" /></li> :
+                    null
+                }
 
                 <li onClick={() => edit('LOGIC')} ><Icon style={{ fontSize: '1.25em', color: Main.color.body }} type="interaction" /></li>
 

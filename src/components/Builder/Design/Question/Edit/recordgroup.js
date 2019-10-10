@@ -11,10 +11,8 @@ export const RecordGroup = () => {
     
     const { sObjects, activeQuestion, setActiveQuestion, setQuestions, setQuestionState, setQuestionUpdate } = useContext(DesignContext);
 
-    const updateLookupQuestion = (e) => {
-        
-        let value = e.target.value; 
-
+    const updateLookupQuestion = (value) => {
+        console.log('value', value); 
         setActiveQuestion(question => {
             return { ...question, Salesforce_Object__c: value }
         })
@@ -40,7 +38,7 @@ export const RecordGroup = () => {
                 Create a new Record for any standard or custom object you chose. (At a minimum Required fields will be displayed).
             </p>
 
-            <Select options={sObjects} value={activeQuestion.Salesforce_Object__c} onChange={updateLookupQuestion} />
+            <Select options={sObjects} value={activeQuestion.Salesforce_Object__c} onChange={(e) => updateLookupQuestion(e)} />
 
         </ViewStyle>,
         <ViewStyle key={'add'}>
