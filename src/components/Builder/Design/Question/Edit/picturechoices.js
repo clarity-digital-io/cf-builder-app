@@ -5,6 +5,7 @@ import { Upload, Icon, Modal } from 'antd';
 import ViewStyle from '../../../../Elements/View/style';
 import View from '../../../../Elements/View';
 import Box from '../../../../Elements/Box';
+import CloseIcon from '../../../../Elements/Icons/close';
 
 import { Button } from '../../../../Elements/Button';
 import { EditContext, DesignContext } from '../../../../Context';
@@ -249,8 +250,10 @@ const PictureChoice = ({ isNew, activeQuestionId, option, order, handlePreview, 
                     <View className="col-xs-1">
                         <Box padding={'.5em'}>
                             <div onClick={() => removeRow(order)}>
-                                X
-                            </div>            
+                                <svg className="slds-button__icon" aria-hidden="true">
+                                    <CloseIcon />
+                                </svg>
+                            </div>          
                         </Box>
                     </View>
                 ]
