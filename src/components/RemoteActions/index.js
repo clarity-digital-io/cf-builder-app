@@ -172,7 +172,8 @@ const mockCall = (func, params, callback) => {
             break; 
         case 'getConnectionFieldMapping': 
             callback({
-                'Mapping': [{ Id: 15, Clarity_Form_Connection__c: 12, Salesforce_Field__c: 'AccountId', Clarity_Form_Question__c: 3 },  { Id: 16, Clarity_Form_Connection__c: 12, Salesforce_Field__c: 'Subject', Custom_Value__c: 'This is from Clarity Form' }],
+                'Mapping': [{ Id: 16, Clarity_Form_Connection__c: 12, Salesforce_Field__c: 'Subject', Custom_Value__c: 'This is from Clarity Form' }],
+                'Prefills': [{ Id: 15, Clarity_Form_Connection__c: 12, Salesforce_Field__c: 'AccountId', Clarity_Form_Question__c: 2, PreFill__c: true }],
                 'Fields' : ['AccountId', 'Subject', 'OwnerId']            
             });
             break;

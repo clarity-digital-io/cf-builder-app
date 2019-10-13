@@ -12,7 +12,7 @@ export const Slider = () => {
     const updateMin = (v) => {
 
         let value = parseInt(v); 
-        console.log(value); 
+
         if(activeQuestion.Max_Range__c > value) {
             setActiveQuestion(question => {
                 return { ...question, Min_Range__c: value }
@@ -49,6 +49,8 @@ export const Slider = () => {
         <ViewStyle>
             <h1>Slider Settings</h1>
 
+            <p>Control minimum number, maximum number, and step size of the slider.</p>
+            
             <ViewStyle>
 
             <View className="row">

@@ -1,76 +1,46 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { call } from '../../../RemoteActions'; 
+import styled, { css } from 'styled-components';
 
 import View from '../../../Elements/View';
 import ViewStyle from '../../../Elements/View/style';
 import Box from '../../../Elements/Box';
 import {Button, ButtonInput} from '../../../Elements/Button';
 import { SmallSpinner } from '../../../Elements/Spinner';
+import Main from '../../../Elements/Theme';
 
 import { BuilderContext, DesignContext } from '../../../Context';
-
+import { ConnectState } from './connect';
+import { PreFillState } from './prefill';
+ 
 export const MappingState = () => {
 
-    const { questions } = useContext(DesignContext);
+    const [localNavState, setLocalNavState] = useState('CONNECT');
 
-    const { loading, connections, navState, setNavState, activeFieldMapping, setActiveFieldMapping, activeConnection, activeFields } = useContext(BuilderContext);
-
-    const [questionOptions, setQuestionOptions] = useState(
-        questions.filter(question => (question.Type__c != 'Text' && question.Type__c != 'RecordGroup' && question.Type__c != 'PictureChoice'))
-    )
+    const { loading, navState, setNavState, activeFieldMapping, setActiveFieldMapping, activeConnection } = useContext(BuilderContext);
 
     const [update, setUpdate] = useState(false);
 
     useEffect(() => {
-
         if(update) {
+
+            const combinedConnections = activeFieldMapping.concat(activeFieldPrefills);
+
             call(
                 "ClarityFormBuilder.saveActiveFieldConnections", 
-                [JSON.stringify(activeFieldMapping), activeConnection.Id], 
+                [JSON.stringify(combinedConnections), activeConnection.Id], 
                 (result, e) => fieldConnectionsResultHandler(result, e, setActiveFieldMapping, setUpdate)
             );
         }
         
     }, [update]);
 
+    const navigateMapping = (loc) => {
+        if(loc == 'PREPOPULATE' && activeConnection.New__c) {
+            return;
+        }
 
-    const addConnectionField = () => {
-        setActiveFieldMapping((mappings) => {
-            return mappings.concat([{ Clarity_Form_Connection__c: activeConnection.Id, Salesforce_Field__c: '', Clarity_Form_Question__c: '' }])
-        })
-    }
-
-    const setFieldSelection = (e, order) => {
-
-        let value = e.target.value; 
-
-        setActiveFieldMapping((mappings) => {
-
-            return mappings.map((mapping, i) => {
-                if(i == order) {
-                    return { ...mapping, Salesforce_Field__c: value }
-                }
-                return mapping
-            })
-
-        });
-    }
-    
-    const setQuestionSelection = (e, order, custom) => {
-
-        let value = e.target.value; 
-
-        setActiveFieldMapping((mappings) => {
-
-            return mappings.map((mapping, i) => {
-                if(i == order) {
-                    return custom ? { ...mapping, Custom_Value__c: value } : { ...mapping, Clarity_Form_Question__c: value }
-                }
-                return mapping
-            })
-
-        });
-
+        setLocalNavState(loc); 
     }
 
     return [
@@ -79,92 +49,52 @@ export const MappingState = () => {
             <View className="col-xs-12">
                 <Box padding='0'>
 
-                    <ViewStyle space border>
-                    
+                    <ViewStyle border>
+                        <View className="row middle-xs">
+                            <View className="col-xs-4">
+                                <Box padding='0'>
+
+                                    <Navigation>
+                                        <ul>
+                                            <li className={ localNavState == 'CONNECT' ? 'active' : '' } onClick={() => navigateMapping('CONNECT')}>
+                                                <a>Connect</a>
+                                            </li>
+
+                                            <li className={ getClassName(activeConnection.New__c, localNavState) } onClick={() => navigateMapping('PREFILL')}>
+                                                <a>Prefill</a>
+                                            </li>
+
+                                        </ul>
+                                    </Navigation>
+
+                                </Box>
+                            </View>
+                        </View>
+                    </ViewStyle>
+
+                    <ViewStyle space>
+                        
                         <h1>Connection Fields: { activeConnection.Salesforce_Object__c }</h1>
 
-                        <p>Map question values from a Clarity Form Response to a selected Salesforce Object.</p>
+                        {
+                            localNavState == 'CONNECT' ? 
+                            <p>Map question values from a Clarity Form Response to the <strong>{ activeConnection.Salesforce_Object__c }</strong> type record.</p> :
+                            <p>Prefill question values with <strong>{ activeConnection.Salesforce_Object__c }</strong> record field values.</p>
+
+                        }
 
                     </ViewStyle>
 
                     {
                         loading ? 
                         <SmallSpinner /> :
-                        <ViewStyle>
-                            <View border className="row center-xs middle-xs">
-                                <View className="col-xs-5">
-                                    <Box padding='.5em'>
-                                        
-                                        <h2>Salesforce Field</h2>
-
-                                    </Box>
-                                </View>
-                                <View className="col-xs-2">
-                                    <Box padding='.5em'>
-                                        
-                                    </Box>
-                                </View>
-                                <View className="col-xs-5">
-                                    <Box padding='.5em'>
-                                        
-                                        <h2>Form Value</h2>
-
-                                    </Box>
-                                </View>
-                            </View>
-
-                            {
-                                activeFieldMapping.map((field, order) => {
-
-                                    return (
-                                        <View key={order} border space className="row center-xs middle-xs">
-                                            <View className="col-xs-5">
-                                                <Box padding='.5em'>
-                                                    
-                                                    <FieldSelect order={order} options={activeFields} value={field.Salesforce_Field__c} onChange={setFieldSelection} />
-
-                                                </Box>
-                                            </View>
-                                            <View className="col-xs-2">
-                                                <Box padding='.5em'>
-                                                    &#x2190;
-                                                </Box>
-                                            </View>
-
-                                            <QuestionFieldSelect 
-                                                order={order} 
-                                                options={questionOptions} 
-                                                customValue={field.Clarity_Form_Question__c != null ? false : true }
-                                                value={field} 
-                                                onChange={setQuestionSelection} 
-                                            />
-
-                                        </View>
-                                    )
-
-                                })
-                            }
-
-                            <View border space className="row center-xs middle-xs">
-                                <View className="col-xs-5">
-                                    <Box padding='.5em'>
-
-                                        {
-                                            update ? 
-                                            <SmallSpinner /> :
-                                            <Button add onClick={() => addConnectionField()}>Add Connection Field &#x2b;</Button>
-                                        }
-                                    </Box>
-                                </View>
-                            </View>
-
-                        </ViewStyle> 
+                        getMappingState(localNavState)
                     }
 
                     <ViewStyle>
                         <View className="row middle-xs">
                             <View className="col-xs-8">
-                                <Box padding='.5em'>
+                                <Box padding='0em'>
 
                                     <h1>Record Id stored as { `{Connection_${activeConnection.Salesforce_Object__c}}` }</h1>
 
@@ -199,69 +129,64 @@ export const MappingState = () => {
     ]
 }
 
-const FieldSelect = ({ order, options, value, onChange }) => {
-
-    return (
-        <div className="slds-form-element">
-            <div className="slds-form-element__control">
-                <div className="slds-select_container">
-                <select className="slds-select" id="select-02" value={value} onChange={(e) => onChange(e, order)} >
-                    <option value="">Please select</option>
-                    {
-                        options.map(option => {
-                            return <option key={option} value={option}>{option}</option>
-                        })
-                    }
-                </select>
-                </div>
-            </div>
-        </div>
-    )
-
-}
-
-
-const QuestionFieldSelect = ({ customValue, order, options, value, onChange }) => {
-
-    const [custom, setCustom] = useState(customValue);
-    
-    return [
-        <View key={'Custom'} className="col-xs-1">
-            <Box padding='.5em'>
-                {
-                    custom ?  
-                    <Button add onClick={() => setCustom(false)}>Form</Button> :
-                    <Button add onClick={() => setCustom(true)}>Custom</Button>
-                }
-            </Box>
-        </View>,
-        <View key={'Select'} className="col-xs-4">
-            <Box padding='.5em'>
-                {
-                    custom ?  
-                    <ButtonInput value={value.Clarity_Form_Question__c ? value.Clarity_Form_Question__c : value.Custom_Value__c} add onChange={(e) => onChange(e, order, true)} /> :
-                    <div className="slds-form-element">
-                        <div className="slds-form-element__control">
-                            <div className="slds-select_container">
-                            <select className="slds-select" id="select-02" value={value.Clarity_Form_Question__c ? value.Clarity_Form_Question__c : value.Custom_Value__c} onChange={(e) => onChange(e, order)} >
-                                <option value="">Please select</option>
-                                {
-                                    options.map(option => {
-                                        return <option key={option.Id} value={option.Id}>{option.Title__c}</option>
-                                    })
-                                }
-                            </select>
-                            </div>
-                        </div>
-                    </div> 
-                }
-            </Box>
-        </View>
-    ]
-
-}
-
 const fieldConnectionsResultHandler = (result, e, setActiveFieldMapping, setUpdate) => {
     setActiveFieldMapping(result); 
     setUpdate(false);
 }
+
+const getClassName = (status, localNavState) => {
+
+    if(status) {
+        return 'disabled'
+    }
+
+    if(localNavState == 'PREFILL') {
+        return 'active'; 
+    }
+    
+}
+
+const getMappingState = (nav) => {
+    switch (nav) {
+        case 'PREFILL':
+            return <PreFillState />
+            break;
+        default:
+            return <ConnectState />
+            break;
+    }
+} 
+
+const Navigation = styled.nav`
+
+    .active {
+        font-weight: 900;
+    }
+
+    .disabled {
+        pointer-events: none;
+        cursor: default;
+    }
+
+    .disabled a {
+        color: ${Main.color.grey} !important;
+    }
+
+    ul {
+        margin: 0; 
+    }
+
+    li {
+        cursor: pointer;
+        text-decoration: none !important;
+        display: inline-block;
+        padding-right: 2.5em;
+
+        font-size: 1em;
+        text-align: left;
+    }
+
+    li:hover {
+        font-weight: 900;
+    }
+`;

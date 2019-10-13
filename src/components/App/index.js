@@ -34,7 +34,7 @@ const BuilderProvider = ({ children }) => {
             call(
                 "ClarityFormBuilder.getConnectionFieldMapping", 
                 [activeConnection.Id, activeConnection.Salesforce_Object__c], 
-                (result, e) => mappingResultHandler(result, e, setActiveFieldMapping, setActiveFields, setLoading)
+                (result, e) => mappingResultHandler(result, e, setActiveFieldMapping, setActiveFieldPrefills, setActiveFields, setLoading)
             );
 
         }
@@ -42,6 +42,8 @@ const BuilderProvider = ({ children }) => {
     }, [activeConnection])
 
     const [activeFieldMapping, setActiveFieldMapping] = useState([]);
+
+    const [activeFieldPrefills, setActiveFieldPrefills] = useState([]);
 
     const [activeFields, setActiveFields] = useState([]);
 
@@ -128,6 +130,8 @@ const BuilderProvider = ({ children }) => {
             setActiveConnection, 
             activeFieldMapping, 
             setActiveFieldMapping,
+            activeFieldPrefills, 
+            setActiveFieldPrefills,
             connections, 
             setConnections,
             assign, 
@@ -232,8 +236,9 @@ const connectionsResultHandler = (result, e, setConnections, setLoading) => {
     setLoading(false); 
 }
 
-const mappingResultHandler = (result, e, setActiveFieldMapping, setActiveFields, setLoading) => {
+const mappingResultHandler = (result, e, setActiveFieldMapping, setActiveFieldPrefills, setActiveFields, setLoading) => {
     setActiveFieldMapping(result.Mapping); 
+    setActiveFieldPrefills(result.Prefills);
     setActiveFields(result.Fields); 
     setLoading(false); 
 }

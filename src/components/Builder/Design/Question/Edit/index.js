@@ -8,12 +8,12 @@ import Box from '../../../../Elements/Box';
 import { Attachments } from './Attachments'; 
 import { Multiple } from './multiple'; 
 import { Comment } from './comment'; 
-import { Email } from './email'; 
 import { Slider } from './slider'; 
 import { Lookup } from './lookup'; 
 import { RecordGroup } from './recordgroup'; 
 import { ConnectedObject } from './connectedobject'; 
 import { PictureChoices } from './picturechoices'; 
+import { FreeText } from './freetext'; 
 import { SmallSpinner } from '../../../../Elements/Spinner';
 
 const getQuestionType = (type) => {
@@ -55,6 +55,9 @@ const getQuestionType = (type) => {
             break;
         case 'PictureChoice':
             return <PictureChoices />
+            break;
+        case 'FreeText':
+            return <FreeText />
             break;
         default:
             return <div>DefaultType: { type }</div>

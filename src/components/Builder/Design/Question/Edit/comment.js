@@ -21,6 +21,8 @@ export const Comment = () => {
 
             <ViewStyle>
 
+                <p>Maximum characters accepted.</p>
+
                 <Slider min={0} max={1000} defaultValue={activeQuestion.Max_Length__c} onChange={(e) => handleMaxLengthUpdate(e)}  />
 
             </ViewStyle>
