@@ -17,19 +17,22 @@ export const MappingState = () => {
 
     const [localNavState, setLocalNavState] = useState('CONNECT');
 
-    const { loading, navState, setNavState, activeFieldMapping, setActiveFieldMapping, activeConnection } = useContext(BuilderContext);
+    const { loading, navState, setNavState, activeFieldPrefills, setActiveFieldPrefills, activeFieldMapping, setActiveFieldMapping, activeConnection } = useContext(BuilderContext);
 
     const [update, setUpdate] = useState(false);
 
     useEffect(() => {
         if(update) {
 
-            const combinedConnections = activeFieldMapping.concat(activeFieldPrefills);
+            const combinedConnections = activeFieldMapping.concat(activeFieldPrefills).map(fieldMapping => {
+                delete fieldMapping.Id; 
+                return fieldMapping;
+            });
 
             call(
                 "ClarityFormBuilder.saveActiveFieldConnections", 
                 [JSON.stringify(combinedConnections), activeConnection.Id], 
-                (result, e) => fieldConnectionsResultHandler(result, e, setActiveFieldMapping, setUpdate)
+                (result, e) => fieldConnectionsResultHandler(result, e, setActiveFieldPrefills, setActiveFieldMapping, setUpdate)
             );
         }
         
@@ -129,8 +132,9 @@ export const MappingState = () => {
     ]
 }
 
-const fieldConnectionsResultHandler = (result, e, setActiveFieldMapping, setUpdate) => {
-    setActiveFieldMapping(result); 
+const fieldConnectionsResultHandler = (result, e, setActiveFieldPrefills, setActiveFieldMapping, setUpdate) => {
+    setActiveFieldMapping(result.Mapping); 
+    setActiveFieldPrefills(result.Prefills);
     setUpdate(false);
 }
 
