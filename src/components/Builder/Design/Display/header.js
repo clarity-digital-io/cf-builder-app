@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import LCC from 'lightning-container';
 
 import styled, { css } from 'styled-components';
@@ -6,21 +6,51 @@ import View from '../../../Elements/View';
 import { Button } from '../../../Elements/Button';
 import { BuilderContext, DesignContext } from '../../../Context';
 
+import { Modal, Button as AntButton, message } from 'antd';
+
 export const Header = () => {
+
+    const [pubishCheck, setPublishCheck] = useState(false);
+
+    const [type, setType] = useState(null);
 
     const { form, style } = useContext(BuilderContext); 
 
-    const { setAddPageUpdate, update } = useContext(DesignContext); 
+    const { setAddPageUpdate, update, questions } = useContext(DesignContext); 
 
     const preview = () => {
         LCC.sendMessage({name: "Preview", value: form.Id });
     }
 
     const publish = () => {
-        LCC.sendMessage({name: "Preview", value: form.Id });
+        if(questions.length > 0) {
+
+            setType('Publish');
+
+            setPublishCheck(true);
+
+        } else {
+
+            setType('Publish Error');   
+            
+            setPublishCheck(true); 
+
+        }
     }
 
-    return (
+    const handleCancel = () => {
+        
+        setPublishCheck(false); 
+
+    }
+
+    const handlePublish = () => {
+
+        LCC.sendMessage({name: "Publish", value: form.Id });
+
+    }
+
+    return [
         <View className="row middle-xs" header space>
 
             <View className="col-xs-6">
@@ -61,8 +91,75 @@ export const Header = () => {
 
             </View>
             
-        </View>
-    )
+        </View>,
+        <Modal
+            visible={pubishCheck}
+            onOk={() => handlePublish()}
+            onCancel={() => handleCancel()}
+            footer={<BuildFooter handleCancel={handleCancel} handleSave={handlePublish} type={type} />}
+        >
+            <BuildMessage type={type} />
+        </Modal>
+    ]
+
+}
+
+const BuildFooter = ({ type, handleCancel, handleSave }) => {
+
+    const getFooter = (type) => {
+
+        switch (type) {
+            case 'Publish':
+                return ([<AntButton key="back" onClick={() => handleCancel()}>
+                            Cancel
+                        </AntButton>,
+                        <AntButton key="submit" type="primary" onClick={() => handleSave()}>
+                            Publish
+                        </AntButton>])
+                break;
+            default:
+                return (<AntButton key="back" onClick={() => handleCancel()}>
+                            Cancel
+                        </AntButton>)
+                break;
+        }
+
+    }
+
+    return getFooter(type);
+
+}
+
+const BuildMessage = ({ type }) => {
+
+    const getMessage = (type) => {
+
+        switch (type) {
+            case 'Publish':
+                return (<div>
+                            <h1>
+                                Are you sure you want to publish this form?
+                            </h1>
+                            <p>
+                                Updates to the form are only possible in Draft mode.
+                            </p>
+                        </div>)
+                break;
+            default:
+                return (<div>
+                            <h1>
+                                Unable to publish form without questions.
+                            </h1>
+                            <p>
+                                Please add a question before publishing this form.
+                            </p>
+                        </div>)
+                break;
+        }
+        
+    }
+
+    return getMessage(type);
 
 }
 

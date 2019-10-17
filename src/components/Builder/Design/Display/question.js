@@ -118,11 +118,11 @@ const QuestionStyle = styled.div`
     }
 
     ${props => props.repeatable && css`
-        border: 1px solid ${Main.color.body}
+        border: 1px solid ${Main.color.body};
     `}
 
     width: 100%;
     display: flex;
     flex-direction: row;
-
+    background: ${Main.color.white};
 `;
