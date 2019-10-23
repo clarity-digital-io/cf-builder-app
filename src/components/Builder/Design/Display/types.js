@@ -35,6 +35,7 @@ export const getType = (question) => {
             return <Number question={question} />
             break;
         case 'Lookup':
+        case 'REFERENCE':
             return <Lookup question={question} />
             break;
         case 'RecordGroup':

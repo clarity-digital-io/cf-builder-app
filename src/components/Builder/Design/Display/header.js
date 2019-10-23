@@ -1,6 +1,8 @@
 import React, { useContext, useState } from 'react';
 import LCC from 'lightning-container';
 
+import { call } from '../../../RemoteActions';
+
 import styled, { css } from 'styled-components';
 import View from '../../../Elements/View';
 import { Button } from '../../../Elements/Button';
@@ -10,11 +12,11 @@ import { Modal, Button as AntButton, message } from 'antd';
 
 export const Header = () => {
 
-    const [pubishCheck, setPublishCheck] = useState(false);
+    const [publishCheck, setPublishCheck] = useState(false);
 
     const [type, setType] = useState(null);
 
-    const { form, style } = useContext(BuilderContext); 
+    const { form, style, setForm, setLoading } = useContext(BuilderContext); 
 
     const { setAddPageUpdate, update, questions } = useContext(DesignContext); 
 
@@ -45,8 +47,26 @@ export const Header = () => {
     }
 
     const handlePublish = () => {
+        
+        setLoading(true); 
 
-        LCC.sendMessage({name: "Publish", value: form.Id });
+        call(
+            "ClarityFormBuilder.updateStatus", 
+            [form.Id, 'Published'], 
+            (result, e) => publishHandler(result, e, setLoading, setPublishCheck, setForm)
+        );
+
+    }
+
+    const handleDraft = () => {
+        
+        setLoading(true); 
+
+        call(
+            "ClarityFormBuilder.updateStatus", 
+            [form.Id, 'Draft'], 
+            (result, e) => publishHandler(result, e, setLoading, setPublishCheck, setForm)
+        );
 
     }
 
@@ -82,7 +102,7 @@ export const Header = () => {
                         {
                             form.Status__c == 'Draft' ? 
                             <Button small publish onClick={() => publish()}>Publish Form</Button> :
-                            <Button small publish onClick={() => publish()}>Set to Draft</Button>
+                            <Button small publish onClick={() => draft()}>Set to Draft</Button>
                         }
 
                     </View>
@@ -93,9 +113,7 @@ export const Header = () => {
             
         </View>,
         <Modal
-            visible={pubishCheck}
-            onOk={() => handlePublish()}
-            onCancel={() => handleCancel()}
+            visible={publishCheck}
             footer={<BuildFooter handleCancel={handleCancel} handleSave={handlePublish} type={type} />}
         >
             <BuildMessage type={type} />
@@ -161,6 +179,21 @@ const BuildMessage = ({ type }) => {
 
     return getMessage(type);
 
+}
+
+const publishHandler = (result, e, setLoading, setPublishCheck, setForm) => {
+    let publishResult = JSON.parse(result); 
+    setLoading(false); 
+
+    setPublishCheck(false); 
+
+    if(publishResult.Status == 'Success') {
+
+        setForm(form => {
+            return { ...form, Status__c: publishResult.Form.Status__c }
+        });
+
+    }
 }
 
 const Title = styled.div`

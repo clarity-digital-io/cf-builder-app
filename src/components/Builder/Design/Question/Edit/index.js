@@ -131,7 +131,7 @@ export const EditQuestion = () => {
                             <div className="slds-form-element">
                                 <label className="slds-form-element__label" htmlFor="text-input-id-1">Label</label>
                                 <div className="slds-form-element__control">
-                                    <input onChange={(e) => updateActiveQuestion(e)} value={ activeQuestion.Title__c } type="text" id="text-input-id-1" placeholder="Placeholder Text" className="slds-input" />
+                                    <input onChange={(e) => updateActiveQuestion(e)} value={ activeQuestion.Title__c || activeQuestion.Salesforce_Field__c } type="text" id="text-input-id-1" placeholder="Placeholder Text" className="slds-input" />
                                 </div>
                             </div>
 

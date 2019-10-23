@@ -38,7 +38,7 @@ const mockCall = (func, params, callback) => {
                 End_Date__c: null,
                 Connected_Object__c: 'Account',
                 Clarity_Form_Style__c: 15, 
-                Status__c: 'Published', 
+                Status__c: 'Draft', 
                 Clarity_Form_Assignment__c: 1,
                 Clarity_Form_Style__r: { Id: 15, Name:'Greens', Background_Image__c: '', Background_Color__c: '#FFF', Color__c: '#333', Button_Color__c: '', Multi_Page__c: false }, 
                 //Clarity_Form_Style__r: { Id: 15, Name:'Greens', Background_Image__c: 'https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2565&q=80', Background_Color__c: '#333333', Color__c: '#FFFFFF', Button_Color__c: '', Multi_Page__c: false }, 
@@ -79,7 +79,7 @@ const mockCall = (func, params, callback) => {
                 { Id: 9, Logic__c: 'AND', Type__c: 'Number', Title__c: 'Number', Order__c: 8, Page__c: 0 },
                 { Id: 10, Logic__c: 'AND', Type__c: 'PictureChoice', Title__c: 'Picture Choice', Order__c: 9, Page__c: 0 },
                 { Id: 11, Logic__c: 'AND', Type__c: 'RecordGroup', Title__c: 'Create Opportunity Line Items', Salesforce_Object__c: 'OpportunityLineItem', Order__c: 10, Page__c: 0 }, 
-                { Id: 12, Logic__c: 'AND', Type__c: 'REFERENCE', Title__c: 'Add an account:', Salesforce_Field__c: 'OpportunityId', Record_Group__c: 7, Order__c: 11, Page__c: 0 },
+                { Id: 12, Logic__c: 'AND', Type__c: 'REFERENCE', Title__c: 'Add an account:', Salesforce_Field__c: 'OpportunityId', Record_Group__c: 11, Order__c: 11, Page__c: 0 },
                 { Id: 13, Logic__c: 'AND', Type__c: 'Slider', Title__c: 'Slider', Order__c: 12, Max_Length__c: 10, Min_Range__c: 0, Max_Range__c: 100, Step__c: 10, Page__c: 0 }, 
             ]); 
             break;
@@ -196,6 +196,9 @@ const mockCall = (func, params, callback) => {
                 { Name: 'Spring', Id: 19, Background_Color__c: '#F1F1F1', Color__c: '#FFFFFF', Button_Color__c: '#FFFFFF', Background_Image__c: 'https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2565&q=80', Multi_Page__c: true }
             ])
             break; 
+        case 'updateStatus':
+            callback({ Status: 'Success', Form: { Id: 1, Status__c: 'Success' } })
+            break;
         default:
             break;
     }

@@ -62,7 +62,7 @@ const BuilderProvider = ({ children }) => {
         let url = new URLSearchParams(window.location.search);
 
         let recordId = url.get('recordId') != null ? url.get('recordId') : '';
-
+        console.log('recordId', recordId);
         call("ClarityFormBuilder.startup", [recordId], (result, e) => createHandler(result, e, setForm, setStyle, setAssignment));
         
     }, []);
@@ -124,6 +124,7 @@ const BuilderProvider = ({ children }) => {
             dirtyState,
             setDirtyState,
             loading,
+            setLoading,
             activeFields,
             styles,
             activeConnection, 

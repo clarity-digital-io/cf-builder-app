@@ -1,7 +1,9 @@
 import React from 'react';
 
+import { TextStyle } from '../View/fieldstyle'
+
 export const FreeText = ({ question }) => {
 
-    return question.Title__c
+    return <TextStyle>{question.Title__c}</TextStyle>
 
 }
