@@ -98,6 +98,7 @@ const optionFetchHandler = (result, e, setLoading, setActiveQuestionOptions, set
 }
 
 const getSObjectFieldResultHandler = (result, e, setRequiredFields, setAdditionalFields, setSObjectEdit, setLoading) => {
+    console.log('getSObjectFieldResultHandler', result); 
     setSObjectEdit('');
     setAdditionalFields(result.NotRequired);
     setRequiredFields(result.Required);

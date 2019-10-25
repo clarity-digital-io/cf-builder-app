@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 
 import { Card, Spin, Icon, Table, Form } from 'antd';
 import { DesignContext } from '../../Context';
@@ -9,6 +9,8 @@ const FormItem = Form.Item;
 export const RecordGroup = ({ question }) => {
 
     const [newItem, addNewItem] = useState(false);
+
+    const [recordQuestion, setRecordQuestion] = useState(question); 
     
     return (
         <Card
@@ -24,7 +26,7 @@ export const RecordGroup = ({ question }) => {
             <RecordBody 
                 items={[]} 
                 newItem={newItem} 
-                question={question} 
+                question={recordQuestion} 
             />
 
         </Card>
@@ -35,35 +37,45 @@ export const RecordGroup = ({ question }) => {
 const RecordBody = ({ items, newItem, question }) => {
 
     const { recordGroup } = useContext(DesignContext);
+    console.log('ecordGroup', recordGroup);
+    const [recordGroupFields, setRecordGroupFields] = useState(recordGroup.get(question.Id) || []);
 
-    const [recordGroupFields, setRecordGroupFields] = useState(recordGroup != null ? (recordGroup.get(question.Id) || []): []);
+    const [columns, setColumns] = useState([]);
 
-    const getRecordColumns = () => {
+    console.log('columns 1', columns); 
 
-        return recordGroupFields.map(question => {
+    useEffect(() => {
 
-            return {
-                title: question.Title__c,
-                dataIndex: question.Salesforce_Field__c, 
-                key: question.Salesforce_Field__c
-            }
+        if(recordGroupFields && recordGroupFields != null) {
+            setColumns(getRecordColumns(recordGroupFields));
+        }
 
-        })
-        
-    }
-
-    const [columns, setColumns] = useState(getRecordColumns());
+    }, [recordGroupFields])
 
     return newItem ?
-        <div className="slds-p-around_small">
-        {
+        [
             recordGroupFields.map(question => {
                 return <FormItem key={question.Id} label={question.Title__c} required={question.Required__c}>
                     { getType(question) }
                 </FormItem>
             })
-        }
-        </div> :
+        ]
+        :
         <Table dataSource={items} columns={columns} />
 
+}
+
+const getRecordColumns = (recordGroupFields) => {
+    console.log('recordGroupFields 2', recordGroupFields); 
+
+    return recordGroupFields.map(question => {
+        console.log('question', question); 
+        return {
+            title: question.Salesforce_Field__c,
+            dataIndex: question.Salesforce_Field__c, 
+            key: question.Salesforce_Field__c
+        }
+
+    })
+    
 }

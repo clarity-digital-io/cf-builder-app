@@ -81,6 +81,7 @@ const mockCall = (func, params, callback) => {
                 { Id: 11, Logic__c: 'AND', Type__c: 'RecordGroup', Title__c: 'Create Opportunity Line Items', Salesforce_Object__c: 'OpportunityLineItem', Order__c: 10, Page__c: 0 }, 
                 { Id: 12, Logic__c: 'AND', Type__c: 'REFERENCE', Title__c: 'Add an account:', Salesforce_Field__c: 'OpportunityId', Record_Group__c: 11, Order__c: 11, Page__c: 0 },
                 { Id: 13, Logic__c: 'AND', Type__c: 'Slider', Title__c: 'Slider', Order__c: 12, Max_Length__c: 10, Min_Range__c: 0, Max_Range__c: 100, Step__c: 10, Page__c: 0 }, 
+                { Id: 14, Logic__c: 'AND', Type__c: 'PICKLIST', Title__c: 'Type', Salesforce_Field__c: 'Type', Record_Group__c: 11, Order__c: 2, Page__c: 0 }
             ]); 
             break;
         case 'save': 
@@ -140,7 +141,7 @@ const mockCall = (func, params, callback) => {
             callback(['Account', 'Case', 'Contact', 'Opportunity', 'AccountRole', 'OpportunityLineItem', 'Service_Request__c']);
             break; 
         case 'getSObjectFields': 
-            callback({ Required: {'OwnerId': 'Reference', 'Name': 'Text'}, NotRequired: {'OpportunityId': 'REFERENCE', 'UnitPrice': 'Currency', 'Product2Id': 'REFERENCE', 'Quantity': 'Number'}});
+            callback({ Required: {'OwnerId': { 'REFERENCE' : 'User' }, 'Name': { 'Text' : null } }, NotRequired: {'OpportunityId': { 'REFERENCE' : 'Opportunity' }, 'UnitPrice': { 'Currency' : null }, 'Product2Id': { 'REFERENCE' : 'Product2' }, 'Quantity': { 'Number' : null } }});
             break; 
         case 'getUsers':
             callback([{Id: 1, Name: 'Test User1', UserName: 'User1'}, {Id: 2, Name: 'Test User2', UserName: 'User2'}]);

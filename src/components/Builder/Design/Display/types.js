@@ -2,7 +2,7 @@ import React from 'react';
 import { FreeText, Attachments, Checkbox, Comment, ConnectedObject, Date, Dropdown, Email, Image, Lookup, MultipleChoice, NetPromoterScore, Number, Ranking, RecordGroup, Slider } from '../../../Elements/Field';
 
 export const getType = (question) => {
-
+    console.log('question', question.Type__c); 
     switch (question.Type__c) {
         case 'ConnectedObject':
             return <ConnectedObject question={question} />
@@ -14,6 +14,7 @@ export const getType = (question) => {
             return <Comment question={question} />
             break;
         case 'Dropdown':
+        case 'PICKLIST':
             return <Dropdown question={question} />
             break;
         case 'Ranking':

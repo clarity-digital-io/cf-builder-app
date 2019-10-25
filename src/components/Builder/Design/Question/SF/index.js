@@ -82,7 +82,7 @@ const ControlSelects = ({ records }) => {
 const ControlSelect = ({ order, row }) => {
 
     const { setActiveRecordGroup, additionalFields } = useContext(EditContext); 
-
+    console.log('additionalFields', additionalFields); 
     const { setQuestionState, setActiveQuestion } = useContext(DesignContext); 
 
     const edit = (state) => {
@@ -98,8 +98,20 @@ const ControlSelect = ({ order, row }) => {
 
             return records.map((record, i) => {
 
+                console.log('additionalFields[value]', additionalFields); 
+
+                let val = additionalFields[value];
+                
+                let fieldType = Object.keys(val)[0];
+
+                let sObject = null; 
+
+                if(val.hasOwnProperty('REFERENCE')) {
+                    sObject = val['REFERENCE']; 
+                }
+
                 if(i == order) {
-                    return { ...record, Salesforce_Field__c: value, Type__c: additionalFields[value] }
+                    return { ...record, Salesforce_Field__c: value, Type__c: fieldType, Lookup__c: sObject }
                 }
 
                 return record; 

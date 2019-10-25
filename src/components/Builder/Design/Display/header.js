@@ -182,15 +182,15 @@ const BuildMessage = ({ type }) => {
 }
 
 const publishHandler = (result, e, setLoading, setPublishCheck, setForm) => {
-    let publishResult = JSON.parse(result); 
+    console.log('result', result); 
     setLoading(false); 
 
     setPublishCheck(false); 
 
-    if(publishResult.Status == 'Success') {
+    if(result.Status == 'Success') {
 
         setForm(form => {
-            return { ...form, Status__c: publishResult.Form.Status__c }
+            return { ...form, Status__c: result.Form.Status__c }
         });
 
     }
