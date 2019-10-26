@@ -13,9 +13,7 @@ export const Lookup = () => {
 
     const [rows, setRows] = useState([])
 
-    const updateLookupQuestion = (e) => {
-        
-        let value = e.target.value; 
+    const updateLookupQuestion = (value) => {
 
         setActiveQuestion(question => {
             return { ...question, Lookup__c: value }

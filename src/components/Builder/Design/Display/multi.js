@@ -17,6 +17,8 @@ export const Multi = ({ style }) => {
                 <Card key={key} style={style}>
 
                     <View className="row middle-xs end-xs" white space>
+                        <View className="col-xs-6">
+                        </View> 
                         <View className="col-xs-3">
                             <Button small add space>Page { key + 1}</Button>
                             <Button small delete space onClick={(e) => setDeletePage(key)}>Delete Page { key + 1}</Button>

@@ -180,6 +180,7 @@ const move = (source, destination, droppableSource, droppableDestination, formId
 };
 
 const clean = (question, index, formId, page) => {
+    console.log('clean page', question, index, formId, page);
     return {
         Title__c        : question.name, 
         Order__c        : parseInt(page + '' + index), 
