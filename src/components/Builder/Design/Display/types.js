@@ -1,8 +1,8 @@
 import React from 'react';
-import { FreeText, Attachments, Checkbox, Comment, ConnectedObject, Date, Dropdown, Email, Image, Lookup, MultipleChoice, NetPromoterScore, Number, Ranking, RecordGroup, Slider } from '../../../Elements/Field';
+import { InputField, FreeText, Attachments, Checkbox, Comment, ConnectedObject, Date, Dropdown, Email, Image, Lookup, MultipleChoice, NetPromoterScore, Number, Ranking, RecordGroup, Slider } from '../../../Elements/Field';
 
 export const getType = (question) => {
-    console.log('question', question.Type__c); 
+
     switch (question.Type__c) {
         case 'ConnectedObject':
             return <ConnectedObject question={question} />
@@ -53,6 +53,9 @@ export const getType = (question) => {
             break;
         case 'FreeText':
             return <FreeText question={question} />
+        case 'InputField':
+        case 'STRING':
+            return <InputField question={question} />
             break;
     }
 

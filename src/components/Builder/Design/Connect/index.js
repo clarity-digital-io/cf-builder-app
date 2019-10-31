@@ -20,7 +20,7 @@ export const ConnectState = () => {
     useEffect(() => {
 
         if(update) {
-            console.log(connections); 
+
             call(
                 "ClarityFormBuilder.saveConnections", 
                 [JSON.stringify(connections), form.Id], 
@@ -31,7 +31,7 @@ export const ConnectState = () => {
     }, [update]);
 
     const activate = (e, order) => {
-        console.log(e.target.checked); 
+
         let checked = e.target.checked;
 
         setConnections((rows) => {
@@ -77,9 +77,16 @@ export const ConnectState = () => {
 
     }
 
-    const save = () => {
+    const removeRow = (order) => {
+
+        setConnections(rows => {
+            let updated = rows.slice();
+            updated.splice(order, 1);
+            return updated;
+        })
 
     }
+
 
     return [
         
@@ -180,7 +187,7 @@ export const ConnectState = () => {
                                         <View className="col-xs-1">
                                             <Box padding='.5em'>
                                                 
-                                                <div onClick={() => console.log()}>
+                                                <div onClick={() => removeRow(order)}>
                                                     <svg className="slds-button__icon" aria-hidden="true">
                                                         <CloseIcon />
                                                     </svg>

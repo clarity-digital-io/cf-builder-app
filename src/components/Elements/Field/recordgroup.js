@@ -37,12 +37,10 @@ export const RecordGroup = ({ question }) => {
 const RecordBody = ({ items, newItem, question }) => {
 
     const { recordGroup } = useContext(DesignContext);
-    console.log('ecordGroup', recordGroup);
+
     const [recordGroupFields, setRecordGroupFields] = useState(recordGroup.get(question.Id) || []);
 
     const [columns, setColumns] = useState([]);
-
-    console.log('columns 1', columns); 
 
     useEffect(() => {
 
@@ -66,10 +64,9 @@ const RecordBody = ({ items, newItem, question }) => {
 }
 
 const getRecordColumns = (recordGroupFields) => {
-    console.log('recordGroupFields 2', recordGroupFields); 
 
     return recordGroupFields.map(question => {
-        console.log('question', question); 
+
         return {
             title: question.Salesforce_Field__c,
             dataIndex: question.Salesforce_Field__c, 

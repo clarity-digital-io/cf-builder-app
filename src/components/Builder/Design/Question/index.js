@@ -48,13 +48,13 @@ export const EditProvider = ({ children }) => {
 
             if(activeQuestion.Type__c == 'ConnectedObject') {
                 setLoading(true);
-                call("ClarityFormBuilder.getSObjectFields", [sObjectEdit], (result, e) => getSObjectFieldResultHandler(result, e, setRequiredFields, setAdditionalFields, setSObjectEdit, setLoading));
+                call("ClarityFormBuilder.getSObjectFields", [sObjectEdit], (result, e) => getSObjectFieldResultHandler(result, e, activeQuestion, setRequiredFields, setAdditionalFields, setSObjectEdit, setActiveRecordGroup, setLoading));
 
             }
             
             if(activeQuestion.Type__c == 'RecordGroup') {
                 setLoading(true); 
-                call("ClarityFormBuilder.getSObjectFields", [activeQuestion.Salesforce_Object__c], (result, e) => getSObjectFieldResultHandler(result, e, setRequiredFields, setAdditionalFields, setSObjectEdit, setLoading));
+                call("ClarityFormBuilder.getSObjectFields", [activeQuestion.Salesforce_Object__c], (result, e) => getSObjectFieldResultHandler(result, e, activeQuestion, setRequiredFields, setAdditionalFields, setSObjectEdit, setActiveRecordGroup, setLoading));
             }
 
         }
@@ -97,10 +97,26 @@ const optionFetchHandler = (result, e, setLoading, setActiveQuestionOptions, set
     setLoading(false);
 }
 
-const getSObjectFieldResultHandler = (result, e, setRequiredFields, setAdditionalFields, setSObjectEdit, setLoading) => {
+const getSObjectFieldResultHandler = (result, e, activeQuestion, setRequiredFields, setAdditionalFields, setSObjectEdit, setActiveRecordGroup, setLoading) => {
     console.log('getSObjectFieldResultHandler', result); 
     setSObjectEdit('');
     setAdditionalFields(result.NotRequired);
     setRequiredFields(result.Required);
+
+    setActiveRecordGroup(records => {   
+
+        return Object.keys(result.Required).map((field, index) => {
+
+            let val = result.Required[field];
+
+            let fieldType = Object.keys(val)[0];
+
+            return { Clarity_Form__c: activeQuestion.Clarity_Form__c, Logic__c: 'AND', Type__c: fieldType, Title__c: field, Salesforce_Field__c: field, Record_Group__c: activeQuestion.Id, Order__c: index, Page__c: 0, RG_Required__c: true }
+
+        });
+
+    })
+
+
     setLoading(false);
 }

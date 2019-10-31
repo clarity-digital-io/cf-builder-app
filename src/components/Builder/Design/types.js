@@ -79,7 +79,7 @@ export const types = [
     }, 
     {   
         id: 13, 
-        active: true, 
+        active: false, 
         name: 'Attachments',
         type: 'Attachments'
     }, 
@@ -91,9 +91,15 @@ export const types = [
     }, 
     {   
         id: 15, 
-        active: true, 
+        active: false, 
         name: 'Picture Choice',
         type: 'PictureChoice'
+    },
+    {   
+        id: 16, 
+        active: true, 
+        name: 'Input Field',
+        type: 'InputField'
     }
 ];
 

@@ -8,6 +8,7 @@ export const getType = (type) => {
             return <SelectMultipleDarkIcon />
             break;
         case 'Comment':
+        case 'InputField':
             return <MessageDetail1DarkIcon />
             break;
         case 'Dropdown':

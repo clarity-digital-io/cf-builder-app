@@ -6,7 +6,7 @@ import { Slider } from '../../../../Elements/Slider';
 export const Comment = () => {
 
     const { activeQuestion, setActiveQuestion } = useContext(DesignContext);
-    console.log('activeQuestion', activeQuestion);
+
     const handleMaxLengthUpdate = (value) => {
 
         setActiveQuestion(question => {

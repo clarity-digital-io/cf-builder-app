@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Upload as AntUpload, Icon, Modal, message } from 'antd';
 
 export const Upload = ({ files, setFiles, onChange }) => {
-    console.log('files1: ', files);
+
     const [preview, setPreview] = useState({ image: null, visible: false });
 
     const uploadChange = ({ fileList }) => {
@@ -30,7 +30,7 @@ export const Upload = ({ files, setFiles, onChange }) => {
             message.error('Image must smaller than 2MB!');
 
         }
-        console.log('isJpgOrPng && isLt2M', isJpgOrPng && isLt2M);
+
         return isJpgOrPng && isLt2M;
 
     }

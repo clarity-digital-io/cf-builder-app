@@ -133,7 +133,8 @@ const Save = ({ children }) => {
             let updatedActiveRecords = activeRecordGroup.map(a => {
                 delete a.Id;
                 return a;
-            })
+            });
+
             call(
                 "ClarityFormBuilder.saveRecordGroupFields", 
                 [JSON.stringify(updatedActiveRecords), activeQuestion.Id], 

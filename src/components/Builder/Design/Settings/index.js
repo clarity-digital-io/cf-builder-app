@@ -10,7 +10,7 @@ import { BuilderContext } from '../../../Context';
 
 export const SettingsState = () => {
 
-    const { form, setForm } = useContext(BuilderContext);
+    const { style, form, setForm } = useContext(BuilderContext);
 
     const [update, setUpdate] = useState(false);
 

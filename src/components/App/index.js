@@ -62,7 +62,7 @@ const BuilderProvider = ({ children }) => {
         let url = new URLSearchParams(window.location.search);
 
         let recordId = url.get('recordId') != null ? url.get('recordId') : '';
-        console.log('recordId', recordId);
+
         call("ClarityFormBuilder.startup", [recordId], (result, e) => createHandler(result, e, setForm, setStyle, setAssignment));
         
     }, []);
@@ -87,9 +87,8 @@ const BuilderProvider = ({ children }) => {
         if(navState == 'ASSIGNMENTS') {
 
             setLoading(true);
-            console.log('assign', assign);
+
             if(assign.Id != null) {
-                console.log('form.Clarity_Form_Assignment__c', form.Clarity_Form_Assignment__c);
                 call("ClarityFormBuilder.getAssignmentRules", [form.Clarity_Form_Assignment__c], (result, e) => assignmentRulesHandler(result, e, setAssignmentRules, setLoading));
             } else {
                 call("ClarityFormBuilder.createAssignment", [`${form.Name} Assignment`, form.Id], (result, e) => assignmentCreateHandler(result, e, setForm, setAssignment, setAssignmentRules, setLoading));

@@ -13,13 +13,13 @@ import { Button } from '../../../../Elements/Button';
 
 export const SalesforceFields = () => {
 
-    const { activeRecordGroup, setActiveRecordGroup, setSObjectEdit } = useContext(EditContext); 
+    const { activeRecordGroup, setActiveRecordGroup, setSObjectEdit, requiredFields } = useContext(EditContext); 
 
     const { recordGroup, activeQuestion } = useContext(DesignContext); 
 
     useEffect(() => {
         
-        setActiveRecordGroup(recordGroup.get(activeQuestion.Id) || []);
+        //setActiveRecordGroup(recordGroup.get(activeQuestion.Id) || []);
         setSObjectEdit(activeQuestion.Type__c);
 
     }, []);
@@ -81,8 +81,8 @@ const ControlSelects = ({ records }) => {
 
 const ControlSelect = ({ order, row }) => {
 
-    const { setActiveRecordGroup, additionalFields } = useContext(EditContext); 
-    console.log('additionalFields', additionalFields); 
+    const { setActiveRecordGroup, additionalFields, requiredFields } = useContext(EditContext); 
+
     const { setQuestionState, setActiveQuestion } = useContext(DesignContext); 
 
     const edit = (state) => {
@@ -96,9 +96,7 @@ const ControlSelect = ({ order, row }) => {
 
         setActiveRecordGroup(records => {
 
-            return records.map((record, i) => {
-
-                console.log('additionalFields[value]', additionalFields); 
+            let newFields = records.map((record, i) => {
 
                 let val = additionalFields[value];
                 
@@ -116,7 +114,11 @@ const ControlSelect = ({ order, row }) => {
 
                 return record; 
 
-            })
+            });
+
+
+
+            return newFields; 
         })
 
     }
@@ -147,14 +149,14 @@ const ControlSelect = ({ order, row }) => {
 
             <View className="col-xs-4">
                 <Box padding='.5em'> 
-                    <Select key={row.Order__c} value={row.Salesforce_Field__c} options={Object.keys(additionalFields)} onChange={(e) => setSelection(e, row.Order__c)}/>
+                    <Select disabled={row.RG_Required__c} key={row.Order__c} value={row.Salesforce_Field__c} options={Object.keys(additionalFields)} onChange={(e) => setSelection(e, row.Order__c)}/>
                 </Box>
             </View>
             <View className="col-xs-2">
                 <Box padding='.5em'> 
 
                     {
-                        row.Id != null ? 
+                        row.Id != null && !row.RG_Required__c? 
                         <Button add onClick={() => edit('EDIT')}>Edit</Button>
                         :
                         <Button disabled>Edit</Button>
@@ -166,7 +168,7 @@ const ControlSelect = ({ order, row }) => {
                 <Box padding='.5em'> 
 
                     {
-                        row.Id != null ? 
+                        row.Id != null && !row.RG_Required__c? 
                         <Button add onClick={() => edit('AUTOMATE')}>Automate</Button>
                         :
                         <Button disabled>Automate</Button>
@@ -178,7 +180,7 @@ const ControlSelect = ({ order, row }) => {
                 <Box padding='.5em'> 
 
                     {
-                        row.Id != null ? 
+                        row.Id != null && !row.RG_Required__c? 
                         <Button add onClick={() => edit('LOGIC')}>Logic</Button> :
                         <Button disabled>Logic</Button>
                     }
@@ -188,11 +190,17 @@ const ControlSelect = ({ order, row }) => {
              
             <View className="col-xs-1">
                 <Box padding='.5em'> 
-                    <div onClick={() => removeRow(order)}>
-                        <svg className="slds-button__icon" aria-hidden="true">
-                            <CloseIcon />
-                        </svg>
-                    </div>
+
+                    {
+                        !row.RG_Required__c ? 
+                        <div disabled={true} onClick={() => removeRow(order)}>
+                            <svg className="slds-button__icon" aria-hidden="true">
+                                <CloseIcon />
+                            </svg>
+                        </div> :
+                        null
+                    }
+
                 </Box>
             </View>
         </View>

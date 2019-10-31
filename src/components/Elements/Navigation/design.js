@@ -57,18 +57,18 @@ const DesignNavigation = () => {
                 <li className={ (navState == 'CONNECT' || navState == 'MAPPING') ? 'active' : '' } onClick={() => navigate('CONNECT')}>
                     <span>Connect</span>
                 </li>
-                <li className={ getDesignStates(navState) ? 'active' : '' } onClick={() => navigate('DESIGN')}>
+                {/* <li className={ getDesignStates(navState) ? 'active' : '' } onClick={() => navigate('DESIGN')}>
                     <span>Design</span>
-                </li>
-                <li className={ navState == 'ASSIGNMENTS' ? 'active' : '' } onClick={() => navigate('ASSIGNMENTS')}>
+                </li> */}
+                {/* <li className={ navState == 'ASSIGNMENTS' ? 'active' : '' } onClick={() => navigate('ASSIGNMENTS')}>
                     <span>Assignments</span>
-                </li>
+                </li> */}
                 <li className={ navState == 'SETTINGS' ? 'active' : '' } onClick={() => navigate('SETTINGS')}>
                     <span>Settings</span>
                 </li>
-                <li className={ getDistributionStates(navState) ? 'active' : '' } onClick={() => navigate('DISTRIBUTE')}>
+                {/* <li className={ getDistributionStates(navState) ? 'active' : '' } onClick={() => navigate('DISTRIBUTE')}>
                     <span>Distribute</span>
-                </li>
+                </li> */}
             </ul>
 
         </Nav>,

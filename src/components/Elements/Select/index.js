@@ -4,10 +4,10 @@ import { Select as AntSelect } from 'antd';
 
 const { Option } = AntSelect;
 
-export const Select = ({ key, placeholder, options, value, onChange, order, valueField, labelField }) => {
+export const Select = ({ disabled, key, placeholder, options, value, onChange, order, valueField, labelField }) => {
 
     return (
-        <AntSelect showSearch key={key} style={{ width: '100%' }} defaultValue={value} onChange={(e) => onChange(e, order)}>
+        <AntSelect disabled={disabled} showSearch key={key} style={{ width: '100%' }} defaultValue={value} onChange={(e) => onChange(e, order)}>
             
             <Option value="">{ placeholder || 'Select' }</Option>
 

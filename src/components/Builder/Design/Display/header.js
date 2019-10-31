@@ -182,7 +182,7 @@ const BuildMessage = ({ type }) => {
 }
 
 const publishHandler = (result, e, setLoading, setPublishCheck, setForm) => {
-    console.log('result', result); 
+
     setLoading(false); 
 
     setPublishCheck(false); 

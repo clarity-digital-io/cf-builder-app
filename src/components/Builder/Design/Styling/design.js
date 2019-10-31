@@ -13,7 +13,7 @@ import {Color} from './color';
 import { BuilderContext } from '../../../Context';
 
 const configUrl = (style) => {
-    console.log('configUrl', style); 
+
     let forceImage = (style.Background_Image__c != null && style.Background_Image__c != '') ? (style.Background_Image__c.length > 18 ? false : true ) : false;
 
     return forceImage ? [{ uid: style.Id, thumbUrl:  `/sfc/servlet.shepherd/document/download/${style.Background_Image__c}` }] : [];
@@ -33,7 +33,7 @@ export const DesignEditState = () => {
     useEffect(() => {
 
         if(update) {
-            console.log('update')
+
             save(); 
 
         }
@@ -254,7 +254,6 @@ export const DesignEditState = () => {
 }
 
 const resultHandler = (result, e, setStyle, setUpdate, setDirtyState) => {
-    console.log('result', result); 
     setDirtyState(false);
     setUpdate(false);
     setStyle(result); 

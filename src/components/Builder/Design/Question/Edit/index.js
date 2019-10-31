@@ -60,7 +60,7 @@ const getQuestionType = (type) => {
             return <FreeText />
             break;
         default:
-            return <div>DefaultType: { type }</div>
+            return <div></div>
             break;
     }
 

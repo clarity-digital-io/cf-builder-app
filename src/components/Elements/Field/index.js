@@ -14,3 +14,4 @@ export {Number} from './number';
 export {Ranking} from './ranking';
 export {RecordGroup} from './recordgroup';
 export {Slider} from './slider';
+export {InputField} from './input';
