@@ -9,15 +9,30 @@ import { SmallSpinner } from '../../../Elements/Spinner';
 
 import { BuilderContext, DesignContext } from '../../../Context';
 
+const combineQuestions = (questions, recordGroup) => {
+
+    let filteredQuestions = questions.filter(question => (question.Type__c != 'FreeText' && question.Type__c != 'RecordGroup' && question.Type__c != 'PictureChoice'));
+
+    console.log('recordGroup', recordGroup,  Array.from(recordGroup.values())); 
+
+    let rcQuestions =  Array.from(recordGroup.values()).reduce((accum, qs, index) => {
+        console.log('qs', accum, qs);
+        return accum.concat(qs.map(q => q)); 
+
+    }, []);
+
+    console.log('rcQuestions', rcQuestions); 
+
+    return filteredQuestions.concat(rcQuestions); 
+}
+
 export const PreFillState = () => {
 
-    const { questions } = useContext(DesignContext);
+    const { questions, recordGroup } = useContext(DesignContext);
 
     const { activeFieldPrefills, setActiveFieldPrefills, activeConnection, activeFields } = useContext(BuilderContext);
 
-    const [questionOptions, setQuestionOptions] = useState(
-        questions.filter(question => (question.Type__c != 'FreeText' && question.Type__c != 'RecordGroup' && question.Type__c != 'PictureChoice'))
-    )
+    const [questionOptions, setQuestionOptions] = useState(combineQuestions(questions, recordGroup));
 
     const addConnectionField = () => {
         setActiveFieldPrefills((mappings) => {
@@ -30,7 +45,7 @@ export const PreFillState = () => {
         let value = e.target.value; 
 
         setActiveFieldPrefills((mappings) => {
-
+            //same field as used record group fields must replace to be able to prefill record group fields
             return mappings.map((mapping, i) => {
                 if(i == order) {
                     return { ...mapping, Salesforce_Field__c: value }
@@ -152,7 +167,7 @@ const FieldSelect = ({ order, options, value, onChange }) => {
 
 
 const QuestionFieldSelect = ({ order, options, value, onChange }) => {
-    
+    console.log('options', options); 
     return (
         <View key={'Select'} className="col-xs-5">
             <Box padding='.5em'>
@@ -163,7 +178,15 @@ const QuestionFieldSelect = ({ order, options, value, onChange }) => {
                             <option value="">Please select</option>
                             {
                                 options.map(option => {
-                                    return <option key={option.Id} value={option.Id}>{option.Title__c}</option>
+
+                                    return <option key={option.Id} value={option.Id}>
+                                        {
+                                            option.Record_Group__c != null ? 
+                                            'Record Group: ' + option.Title__c + ' (' + option.Salesforce_Field__c + ')' :
+                                            option.Title__c
+                                        }
+                                    </option>
+                                
                                 })
                             }
                         </select>

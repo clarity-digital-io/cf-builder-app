@@ -79,7 +79,7 @@ export const types = [
     }, 
     {   
         id: 13, 
-        active: false, 
+        active: true, 
         name: 'Attachments',
         type: 'Attachments'
     }, 
