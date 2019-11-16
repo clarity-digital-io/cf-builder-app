@@ -18,7 +18,7 @@ import { DesignContext, EditContext } from '../../../Context';
 
 export const QuestionState = () => {
 
-    const { activeQuestion, questionState } = useContext(DesignContext);
+    const { activeQuestion, questionState,  } = useContext(DesignContext);
 
     const getState = (state) => {
 
@@ -121,7 +121,7 @@ const Save = ({ children }) => {
             let updatedCriteria = criteria.map(c => { delete c.Id; return c });
             
             call(
-                "ClarityFormBuilder.savQuestionWithCriteria", 
+                "ClarityFormBuilder.saveQuestionWithCriteria", 
                 [JSON.stringify(activeQuestion), JSON.stringify(updatedCriteria)], 
                 (result, e) => resultCriteriaHandler(result, e,setQuestionUpdate, setQuestions, setCriteria, activeQuestion)
             )

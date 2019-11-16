@@ -180,7 +180,7 @@ const assignmentRulesHandler = (result, e, setAssignmentRules, setLoading) => {
 }
 
 const createHandler = (result, e, setForm, setStyle, setAssignment) => {
-
+    console.log('createHandler', result, e, setForm, setStyle, setAssignment); 
     let convertedDate = new Date(result.End_Date__c);
     let year = convertedDate.getFullYear();
     let dateMonth = convertedDate.getMonth()

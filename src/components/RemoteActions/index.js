@@ -1,4 +1,5 @@
 import LCC from 'lightning-container';
+import { openNotificationWithIcon } from '../Elements/Notification';
 
 export const call = (func, params, callback) => {
 
@@ -8,15 +9,26 @@ export const call = (func, params, callback) => {
 
 const prodCall = (func, params, callback) => {
 
+    const handler = (result, e) => {
+
+        if(e.statusCode != 200) {
+            openNotificationWithIcon('error', e.method)
+        } else {
+            openNotificationWithIcon('success', e.method);
+            callback(result, e);
+        }
+
+    }
+
     switch (params.length) {
         case 0:
-            LCC.callApex(func, callback, { escape: true });
+            LCC.callApex(func, handler, { escape: true });
             break;
         case 1:
-            LCC.callApex(func, params[0], callback, { escape: true });
+            LCC.callApex(func, params[0], handler, { escape: true });
             break;
         case 2:
-            LCC.callApex(func, params[0], params[1], callback, { escape: true });
+            LCC.callApex(func, params[0], params[1], handler, { escape: true });
             break;
         default:
             break;
@@ -131,7 +143,7 @@ const mockCall = (func, params, callback) => {
                 'FlowDesign': [{ Id: 31, Clarity_Form_Question__c: 123, Form_Submission__c: true, Active__c: false }]
             });
             break;
-        case 'savQuestionWithCriteria':
+        case 'saveQuestionWithCriteria':
             callback({
                 'Question' : [{ Id: 1, Type__c: 'RecordGroup', Title__c: 'RecordGroup', Order__c: 0, Logic__c: 'OR'  }],
                 'Criteria': [{Id: 31, Clarity_Form_Question__c: 1, Field__c: 1, Field_Type__c: 'Comment', Operator__c: 'Is Not Null', Type__c: 'Boolean', Value__c: 'True' }]
