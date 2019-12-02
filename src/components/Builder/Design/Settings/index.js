@@ -105,7 +105,7 @@ export const SettingsState = () => {
                                     <div className="slds-form-element">
                                         <label className="slds-form-element__label" for="text-input-id-1">Form Response Submission Limit</label>
                                         <div className="slds-form-element__control">
-                                            <input type="number" value={ form.Limit__c } onChange={(e) => updateLimit(e)} id="text-input-id-1" placeholder="Set Number Limit" className="slds-input" />
+                                            <input min="0" type="number" value={ form.Limit__c } onChange={(e) => updateLimit(e)} id="text-input-id-1" placeholder="Set Number Limit" className="slds-input" />
                                         </div>
                                     </div>
 
@@ -120,7 +120,7 @@ export const SettingsState = () => {
                                     <div className="slds-form-element">
                                         <label className="slds-form-element__label" for="text-input-id-2">End Date</label>
                                         <div className="slds-form-element__control">
-                                            <input type="date" value={ form.End_Date__c } onChange={(e) => updateEndDate(e)} id="text-input-id-2" placeholder="Set an End Date" className="slds-input" />
+                                            <input min={calcualteMinDate()} type="date" value={ form.End_Date__c } onChange={(e) => updateEndDate(e)} id="text-input-id-2" placeholder="Set an End Date" className="slds-input" />
                                         </div>
                                     </div>
 
@@ -145,6 +145,12 @@ export const SettingsState = () => {
         </View>
 
     ]
+}
+
+const calcualteMinDate = () => {
+
+    return new Date().toISOString().split("T")[0];
+
 }
 
 const resultHandler = (result, e, setForm, setUpdate) => {

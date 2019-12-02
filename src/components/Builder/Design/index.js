@@ -59,7 +59,7 @@ const DragDropUpdateProvider = ({ children }) => {
 
 const DesignProvider = ({ children }) => {
 
-    const { form, sObjects } = useContext(BuilderContext);
+    const { form, sObjects, navState } = useContext(BuilderContext);
 
     const [navQuestion, setNavQuestion] = useState(null); 
 

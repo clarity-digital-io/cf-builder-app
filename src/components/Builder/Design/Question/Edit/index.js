@@ -102,7 +102,7 @@ export const EditQuestion = () => {
                         <h1>Settings</h1>
 
                         {
-                            activeQuestion.Type__c != 'ConnectedObject' ?
+                            showRequiredInput(activeQuestion.Type__c) ?
                             <ViewStyle>
 
                                 <div className="slds-form-element">
@@ -167,6 +167,21 @@ const hasExtraEditSettings = (type) => {
             break;
         default:
             return true; 
+            break;
+    }
+
+}
+
+const showRequiredInput = (type) => {
+
+    switch (type) {
+        case 'ConnectedObject':
+        case 'RecordGroup':
+        case 'FreeText':
+            return false;
+            break;
+        default:
+            return true;
             break;
     }
 

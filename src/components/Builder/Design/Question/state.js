@@ -14,11 +14,11 @@ import { SalesforceFields } from './SF';
 import { AutomateQuestion } from './Automate';
 import { LogicQuestion } from './Logic';
 
-import { DesignContext, EditContext } from '../../../Context';
+import { DesignContext, EditContext, BuilderContext } from '../../../Context';
 
 export const QuestionState = () => {
 
-    const { activeQuestion, questionState,  } = useContext(DesignContext);
+    const { activeQuestion, questionState } = useContext(DesignContext);
 
     const getState = (state) => {
 

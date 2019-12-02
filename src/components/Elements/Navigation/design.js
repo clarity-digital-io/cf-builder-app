@@ -6,7 +6,7 @@ import { Modal, Button } from 'antd';
 
 const DesignNavigation = () => {
 
-    const { navState, setNavState, dirtyState, setDirtyState } = useContext(BuilderContext);
+    const { navState, setNavState, dirtyState, setDirtyState, setNewQuestionNav } = useContext(BuilderContext);
 
     const [locSelected, setLocSelected] = useState(null); 
 

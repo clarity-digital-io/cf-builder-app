@@ -1,4 +1,4 @@
-import { Button, notification } from 'antd';
+import { notification } from 'antd';
 
 export const openNotificationWithIcon = (type, method) => {
 
@@ -29,6 +29,7 @@ const StatusMessage = {
         saveActiveFieldConnections: ['Error', 'Something went wrong on startup.'],
         saveConnections: ['Error', 'Something went wrong on startup.'],
         updateStatus: ['Error', 'Something went wrong on startup.'],
+        updateForm: ['Error', 'Form setting errors.']
     },
     success: {
         startup: ['Success', 'Everything went right on startup.'],
@@ -45,6 +46,7 @@ const StatusMessage = {
         saveActiveFieldConnections: ['Success', 'Field Connections successfully saved.'],
         saveConnections: ['Success', 'Connections saved.'],
         updateStatus: ['Success', 'Form status updated.'],
+        updateForm: ['Success', 'Form settings updated.']
     }
 }
 

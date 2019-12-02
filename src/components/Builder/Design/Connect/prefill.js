@@ -13,8 +13,6 @@ const combineQuestions = (questions, recordGroup) => {
 
     let filteredQuestions = questions.filter(question => (question.Type__c != 'FreeText' && question.Type__c != 'RecordGroup' && question.Type__c != 'PictureChoice'));
 
-    console.log('recordGroup', recordGroup,  Array.from(recordGroup.values())); 
-
     let rcQuestions =  Array.from(recordGroup.values()).reduce((accum, qs, index) => {
         console.log('qs', accum, qs);
         return accum.concat(qs.map(q => q)); 
