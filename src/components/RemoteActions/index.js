@@ -1,14 +1,14 @@
 import LCC from 'lightning-container';
 import { openNotificationWithIcon } from '../Elements/Notification';
 
-export const call = (func, params, callback) => {
+export const call = (func, params, callback, status) => {
 
-    process.env.NODE_ENV == 'development' ? mockCall(func.split('.')[1], params, callback) : prodCall(func, params, callback); 
+    process.env.NODE_ENV == 'development' ? mockCall(func.split('.')[1], params, callback, status) : prodCall(func, params, callback, status); 
     
 }
 
-const prodCall = (func, params, callback) => {
-
+const prodCall = (func, params, callback, status) => {
+    
     const handler = (result, e) => {
 
         if(e.statusCode != 200) {
@@ -36,7 +36,7 @@ const prodCall = (func, params, callback) => {
 
 }
 
-const mockCall = (func, params, callback) => {
+const mockCall = (func, params, callback, status) => {
 
     let date = new Date();
     let timestamp = date.getTime();

@@ -12,13 +12,14 @@ import { ControlGroup } from '../../../Elements/ControlField';
 import { Lookup } from './lookup';
 
 import { BuilderContext, DesignContext } from '../../../Context';
+import { StatusHandler } from '../../../Elements/Notification';
 
 
 export const AssignmentState = () => {
 
     const { questions } = useContext(DesignContext);
 
-    const { loading, assignmentRules, setAssignmentRules, assign, setAssignment } = useContext(BuilderContext);
+    const { loading, assignmentRules, setAssignmentRules, assign, setAssignment, form } = useContext(BuilderContext);
 
     const updateCondition = (e) => {
 
@@ -36,10 +37,14 @@ export const AssignmentState = () => {
 
         if(update) {
 
-            call(
-                "ClarityFormBuilder.saveAssignmentRules", 
-                [JSON.stringify(assign), JSON.stringify(assignmentRules)], 
-                (result, e) => resultHandler(result, e, setAssignmentRules, setUpdate)
+            StatusHandler(
+                form.Status__c,
+                () => setUpdate(false),
+                () => call(
+                    "ClarityFormBuilder.saveAssignmentRules", 
+                    [JSON.stringify(assign), JSON.stringify(assignmentRules)], 
+                    (result, e) => resultHandler(result, e, setAssignmentRules, setUpdate)
+                )
             );
 
         }

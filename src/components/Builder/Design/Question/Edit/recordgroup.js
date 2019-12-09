@@ -6,6 +6,7 @@ import { call } from '../../../../RemoteActions';
 
 import { DesignContext, EditContext } from '../../../../Context';
 import { Select } from '../../../../Elements/Select';
+import { StatusHandler } from '../../../../Elements/Notification';
 
 export const RecordGroup = () => {
     
@@ -21,11 +22,15 @@ export const RecordGroup = () => {
 
     const saveAndAddFields = () => {
 
-        call(
-            "ClarityFormBuilder.saveQuestion", 
-            [JSON.stringify(activeQuestion)], 
-            (result, e) => resultHandler(result, e, setQuestionUpdate, setQuestions, activeQuestion, setQuestionState)
-        );
+        StatusHandler(
+            form.Status__c,
+            () => setQuestionUpdate(false),
+            () => call(
+                "ClarityFormBuilder.saveQuestion", 
+                [JSON.stringify(activeQuestion)], 
+                (result, e) => resultHandler(result, e, setQuestionUpdate, setQuestions, activeQuestion, setQuestionState),
+            )
+        )
 
     }
 

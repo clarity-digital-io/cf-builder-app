@@ -4,6 +4,7 @@ import { call } from '../RemoteActions';
 import { BuilderContext } from '../Context';
 import styled from 'styled-components';
 import Main from '../Elements/Theme';
+import { StatusHandler } from '../Elements/Notification';
 
 const App = ({ children }) => {
 
@@ -89,9 +90,21 @@ const BuilderProvider = ({ children }) => {
             setLoading(true);
 
             if(assign.Id != null) {
-                call("ClarityFormBuilder.getAssignmentRules", [form.Clarity_Form_Assignment__c], (result, e) => assignmentRulesHandler(result, e, setAssignmentRules, setLoading));
+                call(
+                    "ClarityFormBuilder.getAssignmentRules", 
+                    [form.Clarity_Form_Assignment__c], 
+                    (result, e) => assignmentRulesHandler(result, e, setAssignmentRules, setLoading)
+                );
             } else {
-                call("ClarityFormBuilder.createAssignment", [`${form.Name} Assignment`, form.Id], (result, e) => assignmentCreateHandler(result, e, setForm, setAssignment, setAssignmentRules, setLoading));
+                StatusHandler(
+                    form.Status__c,
+                    () => setLoading(false),
+                    () => call(
+                        "ClarityFormBuilder.createAssignment", 
+                        [`${form.Name} Assignment`, form.Id], 
+                        (result, e) => assignmentCreateHandler(result, e, setForm, setAssignment, setAssignmentRules, setLoading)
+                    )
+                )
             }
 
         }
@@ -180,7 +193,7 @@ const assignmentRulesHandler = (result, e, setAssignmentRules, setLoading) => {
 }
 
 const createHandler = (result, e, setForm, setStyle, setAssignment) => {
-    console.log('createHandler', result, e, setForm, setStyle, setAssignment); 
+
     let convertedDate = new Date(result.End_Date__c);
     let year = convertedDate.getFullYear();
     let dateMonth = convertedDate.getMonth()

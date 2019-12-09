@@ -11,6 +11,7 @@ import {Upload} from '../../../Elements/Upload';
 import {Color} from './color'; 
 
 import { BuilderContext } from '../../../Context';
+import { StatusHandler } from '../../../Elements/Notification';
 
 const configUrl = (style) => {
 
@@ -61,11 +62,15 @@ export const DesignEditState = () => {
 
         }
 
-        call(
-            "ClarityFormBuilder.updateDesign", 
-            [JSON.stringify(style), base64result], 
-            (result, e) => resultHandler(result, e, setStyle, setUpdate, setDirtyState)
-        );
+        StatusHandler(
+            form.Status__c, 
+            () => setUpdate(false),
+            () => call(
+                "ClarityFormBuilder.updateDesign", 
+                [JSON.stringify(style), base64result], 
+                (result, e) => resultHandler(result, e, setStyle, setUpdate, setDirtyState),
+            )
+        )
 
     }
 

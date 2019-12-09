@@ -29,7 +29,8 @@ const StatusMessage = {
         saveActiveFieldConnections: ['Error', 'Something went wrong on startup.'],
         saveConnections: ['Error', 'Something went wrong on startup.'],
         updateStatus: ['Error', 'Something went wrong on startup.'],
-        updateForm: ['Error', 'Form setting errors.']
+        updateForm: ['Error', 'Form setting errors.'],
+        FormPublished: ['Error', 'Changes to form will not be saved because form has been published.']
     },
     success: {
         startup: ['Success', 'Everything went right on startup.'],
@@ -48,6 +49,24 @@ const StatusMessage = {
         updateStatus: ['Success', 'Form status updated.'],
         updateForm: ['Success', 'Form settings updated.']
     }
+}
+
+export const StatusHandler = (status, setUpdate, cb, setUpdateSecond) => {
+
+    if(status != null && status == 'Published') {
+
+        openNotificationWithIcon('error', 'FormPublished');
+        setUpdate();
+        if(setUpdateSecond != null) {
+            setUpdateSecond();
+        }
+        
+        return;
+
+    }
+    console.log('status, question saved'); 
+    cb();
+
 }
 
 // startup

@@ -15,6 +15,7 @@ import { AutomateQuestion } from './Automate';
 import { LogicQuestion } from './Logic';
 
 import { DesignContext, EditContext, BuilderContext } from '../../../Context';
+import { StatusHandler } from '../../../Elements/Notification';
 
 export const QuestionState = () => {
 
@@ -54,6 +55,8 @@ export const QuestionState = () => {
 
 const Save = ({ children }) => {
 
+    const { form } = useContext(BuilderContext);
+
     const { 
         activeRecordGroup, 
         setActiveRecordGroup,
@@ -82,37 +85,50 @@ const Save = ({ children }) => {
     useEffect(() => {
 
         if(questionUpdate && activeQuestionOptions.length == 0 && questionState == 'EDIT') {
-            call(
-                "ClarityFormBuilder.saveQuestion", 
-                [JSON.stringify(activeQuestion)], 
-                (result, e) => resultHandler(result, e, setQuestionUpdate, setQuestions, setPageQuestions, activeQuestion)
-            );
+            StatusHandler(
+                form.Status__c,
+                () => setQuestionUpdate(false),
+                () => call(
+                    "ClarityFormBuilder.saveQuestion", 
+                    [JSON.stringify(activeQuestion)], 
+                    (result, e) => resultHandler(result, e, setQuestionUpdate, setQuestions, setPageQuestions, activeQuestion),
+                )
+            )
         }
 
         if(activeQuestion.Type__c != 'PictureChoice' && questionUpdate && activeQuestionOptions.length && questionState == 'EDIT') {
-
-            call(
-                "ClarityFormBuilder.saveQuestionWithOptions", 
-                [JSON.stringify(activeQuestion), JSON.stringify(activeQuestionOptions)], 
-                (result, e) => resultOptionHandler(result, e, setQuestionUpdate, setQuestions, setPageQuestions, activeQuestion, setActiveQuestionOptions, setQuestionOptions)
-            );
+            StatusHandler(
+                form.Status__c,
+                () => setQuestionUpdate(false),
+                () => call(
+                    "ClarityFormBuilder.saveQuestionWithOptions", 
+                    [JSON.stringify(activeQuestion), JSON.stringify(activeQuestionOptions)], 
+                    (result, e) => resultOptionHandler(result, e, setQuestionUpdate, setQuestions, setPageQuestions, activeQuestion, setActiveQuestionOptions, setQuestionOptions),
+                )
+            )
         }
 
         if(activeQuestion.Type__c == 'PictureChoice' && questionUpdate && activeQuestionOptions.length && questionState == 'EDIT') {
-            
-            call(
-                "ClarityFormBuilder.saveQuestionWithPictureOptions", 
-                [JSON.stringify(activeQuestion), JSON.stringify(activeQuestionOptions)], 
-                (result, e) => resultOptionHandler(result, e, setQuestionUpdate, setQuestions, setPageQuestions, activeQuestion, setActiveQuestionOptions)
-            );
-
+            StatusHandler(
+                form.Status__c,
+                () => setQuestionUpdate(false),
+                () => call(
+                    "ClarityFormBuilder.saveQuestionWithPictureOptions", 
+                    [JSON.stringify(activeQuestion), JSON.stringify(activeQuestionOptions)], 
+                    (result, e) => resultOptionHandler(result, e, setQuestionUpdate, setQuestions, setPageQuestions, activeQuestion, setActiveQuestionOptions),
+                )
+            )
         }
 
         if(questionUpdate && questionState == 'AUTOMATE') {
-            call(
-                "ClarityFormBuilder.saveFlowDesign", 
-                [JSON.stringify(activeFlowDesign), JSON.stringify(activeQuestionOptions)], 
-                (result, e) => resultFlowHandler(result, e,setQuestionUpdate, setActiveQuestionOptions, setActiveFlowDesign)
+            StatusHandler(
+                form.Status__c,
+                () => setQuestionUpdate(false),
+                () => call(
+                    "ClarityFormBuilder.saveFlowDesign", 
+                    [JSON.stringify(activeFlowDesign), JSON.stringify(activeQuestionOptions)], 
+                    (result, e) => resultFlowHandler(result, e,setQuestionUpdate, setActiveQuestionOptions, setActiveFlowDesign),
+                )
             )
         }
 
@@ -120,10 +136,14 @@ const Save = ({ children }) => {
             
             let updatedCriteria = criteria.map(c => { delete c.Id; return c });
             
-            call(
-                "ClarityFormBuilder.saveQuestionWithCriteria", 
-                [JSON.stringify(activeQuestion), JSON.stringify(updatedCriteria)], 
-                (result, e) => resultCriteriaHandler(result, e,setQuestionUpdate, setQuestions, setCriteria, activeQuestion)
+            StatusHandler(
+                form.Status__c,
+                () => setQuestionUpdate(false),
+                () => call(
+                    "ClarityFormBuilder.saveQuestionWithCriteria", 
+                    [JSON.stringify(activeQuestion), JSON.stringify(updatedCriteria)], 
+                    (result, e) => resultCriteriaHandler(result, e,setQuestionUpdate, setQuestions, setCriteria, activeQuestion),
+                )
             )
 
         }
@@ -135,10 +155,14 @@ const Save = ({ children }) => {
                 return a;
             });
 
-            call(
-                "ClarityFormBuilder.saveRecordGroupFields", 
-                [JSON.stringify(updatedActiveRecords), activeQuestion.Id], 
-                (result, e) => resultRecordGroupFieldsHandler(result, e, setQuestionUpdate, setRecordGroup, setActiveRecordGroup, activeQuestion)
+            StatusHandler(
+                form.Status__c,
+                () => setQuestionUpdate(false),
+                () => call(
+                    "ClarityFormBuilder.saveRecordGroupFields", 
+                    [JSON.stringify(updatedActiveRecords), activeQuestion.Id], 
+                    (result, e) => resultRecordGroupFieldsHandler(result, e, setQuestionUpdate, setRecordGroup, setActiveRecordGroup, activeQuestion),
+                )
             )
         }
 

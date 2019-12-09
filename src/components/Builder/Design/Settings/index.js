@@ -7,6 +7,7 @@ import Box from '../../../Elements/Box';
 import {Button} from '../../../Elements/Button';
 
 import { BuilderContext } from '../../../Context';
+import { StatusHandler } from '../../../Elements/Notification';
 
 export const SettingsState = () => {
 
@@ -17,11 +18,15 @@ export const SettingsState = () => {
     useEffect(() => {
 
         if(update) {
-            call(
-                "ClarityFormBuilder.updateForm", 
-                [JSON.stringify(form)], 
-                (result, e) => resultHandler(result, e, setForm, setUpdate)
-            );
+            StatusHandler(
+                form.Status__c,
+                () => setUpdate(false),
+                () => call(
+                    "ClarityFormBuilder.updateForm", 
+                    [JSON.stringify(form)], 
+                    (result, e) => resultHandler(result, e, setForm, setUpdate),
+                )
+            )
         }
         
     }, [update]);

@@ -7,6 +7,7 @@ import Box from '../../../Elements/Box';
 
 import { BuilderContext } from '../../../Context';
 import DistributionNavigation from '../../../Elements/Navigation/distribution';
+import { StatusHandler } from '../../../Elements/Notification';
 
 export const DistributeState = () => {
 
@@ -17,11 +18,15 @@ export const DistributeState = () => {
     useEffect(() => {
 
         if(update) {
-            call(
-                "ClarityFormBuilder.updateForm", 
-                [JSON.stringify(form)], 
-                (result, e) => resultHandler(result, e, setForm, setUpdate)
-            );
+            StatusHandler(
+                form.Status__c,
+                () => setUpdate(false),
+                () => call(
+                    "ClarityFormBuilder.updateForm", 
+                    [JSON.stringify(form)], 
+                    (result, e) => resultHandler(result, e, setForm, setUpdate),
+                )
+            )
         }
         
     }, [update]);

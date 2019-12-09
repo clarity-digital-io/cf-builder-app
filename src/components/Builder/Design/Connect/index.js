@@ -10,6 +10,7 @@ import { Select } from '../../../Elements/Select';
 
 import { BuilderContext } from '../../../Context';
 import { SmallSpinner } from '../../../Elements/Spinner';
+import { StatusHandler } from '../../../Elements/Notification';
 
 export const ConnectState = () => {
 
@@ -21,11 +22,16 @@ export const ConnectState = () => {
 
         if(update) {
 
-            call(
-                "ClarityFormBuilder.saveConnections", 
-                [JSON.stringify(connections), form.Id], 
-                (result, e) => connectionsResultHandler(result, e, setConnections, setUpdate)
-            );
+            StatusHandler(
+                form.Status__c,
+                () => setUpdate(false),
+                () => call(
+                    "ClarityFormBuilder.saveConnections", 
+                    [JSON.stringify(connections), form.Id], 
+                    (result, e) => connectionsResultHandler(result, e, setConnections, setUpdate),
+                    form.Status__c
+                )
+            )
         }
         
     }, [update]);

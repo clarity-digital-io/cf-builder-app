@@ -12,6 +12,7 @@ import Main from '../../../Elements/Theme';
 import { BuilderContext, DesignContext } from '../../../Context';
 import { ConnectState } from './connect';
 import { PreFillState } from './prefill';
+import { StatusHandler } from '../../../Elements/Notification';
  
 export const MappingState = () => {
 
@@ -29,13 +30,17 @@ export const MappingState = () => {
                 return fieldMapping;
             });
 
-            console.log('combinedConnections', combinedConnections); 
+            StatusHandler(
+                form.Status__c,
+                () => setUpdate(false),
+                () => call(
+                    "ClarityFormBuilder.saveActiveFieldConnections", 
+                    [JSON.stringify(combinedConnections), activeConnection.Id], 
+                    (result, e) => fieldConnectionsResultHandler(result, e, setActiveFieldPrefills, setActiveFieldMapping, setUpdate),
+                    form.Status__c
+                )
+            )
 
-            call(
-                "ClarityFormBuilder.saveActiveFieldConnections", 
-                [JSON.stringify(combinedConnections), activeConnection.Id], 
-                (result, e) => fieldConnectionsResultHandler(result, e, setActiveFieldPrefills, setActiveFieldMapping, setUpdate)
-            );
         }
         
     }, [update]);
