@@ -126,6 +126,7 @@ const clean = (question, index, formId, page) => {
         Min_Range__c    : 0, 
         Max_Range__c    : 100, 
         Step__c         : 10, 
-        Page__c         : page != null ? page : 0
+        Page__c         : page != null ? page : 0,
+        FreeText_Type__c: question.FreeText_Type__c || 'Header'
     }
 }

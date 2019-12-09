@@ -11,3 +11,8 @@ export const TextStyle = styled.div`
     margin-bottom: .5em;
     padding-bottom: .5em;
 `
+
+export const ParagraphStyle = styled.p`
+    margin-bottom: .5em;
+    padding-bottom: .5em;
+`

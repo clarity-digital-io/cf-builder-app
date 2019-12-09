@@ -29,6 +29,8 @@ export const MappingState = () => {
                 return fieldMapping;
             });
 
+            console.log('combinedConnections', combinedConnections); 
+
             call(
                 "ClarityFormBuilder.saveActiveFieldConnections", 
                 [JSON.stringify(combinedConnections), activeConnection.Id], 
