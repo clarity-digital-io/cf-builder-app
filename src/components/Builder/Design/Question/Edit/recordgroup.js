@@ -4,12 +4,14 @@ import View from '../../../../Elements/View';
 import {Button} from '../../../../Elements/Button';
 import { call } from '../../../../RemoteActions'; 
 
-import { DesignContext, EditContext } from '../../../../Context';
+import { DesignContext, BuilderContext } from '../../../../Context';
 import { Select } from '../../../../Elements/Select';
 import { StatusHandler } from '../../../../Elements/Notification';
 
 export const RecordGroup = () => {
     
+    const { form } = useContext(BuilderContext); 
+
     const { sObjects, activeQuestion, setActiveQuestion, setQuestions, setQuestionState, setQuestionUpdate } = useContext(DesignContext);
 
     const updateLookupQuestion = (value) => {

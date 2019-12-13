@@ -112,7 +112,7 @@ const DesignProvider = ({ children }) => {
     useEffect(() => {
 
         if(update && updateSingle) {
-            console.log('form', form, setUpdate);
+
             StatusHandler(
                 form.Status__c,
                 () => setUpdate(false),

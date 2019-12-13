@@ -1,4 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
+// import { Form, DatePicker } from 'antd';
+// import moment from 'moment';
 
 import { call } from '../../../RemoteActions'; 
 import View from '../../../Elements/View';
@@ -8,6 +10,8 @@ import {Button} from '../../../Elements/Button';
 
 import { BuilderContext } from '../../../Context';
 import { StatusHandler } from '../../../Elements/Notification';
+
+// const FormItem = Form.Item;
 
 export const SettingsState = () => {
 
@@ -49,14 +53,14 @@ export const SettingsState = () => {
         })
     }
 
-    const updateEndDate = (e) => {
+    // const updateEndDate = (e) => {
 
-        let value = e.target.value; 
+    //     let value = e.format('YYYY-MM-DD');
         
-        setForm(form => {
-            return { ...form, End_Date__c: value }
-        })
-    }
+    //     setForm(form => {
+    //         return { ...form, End_Date__c: value }
+    //     })
+    // }
 
     return [
 
@@ -117,21 +121,21 @@ export const SettingsState = () => {
                                 </Box>
                             </View>
                         </View>
-
+{/* 
                         <View className="row">
                             <View className="col-xs-12">
                                 <Box padding='1em 0 0 0'>
-
-                                    <div className="slds-form-element">
-                                        <label className="slds-form-element__label" for="text-input-id-2">End Date</label>
-                                        <div className="slds-form-element__control">
-                                            <input min={calcualteMinDate()} type="date" value={ form.End_Date__c } onChange={(e) => updateEndDate(e)} id="text-input-id-2" placeholder="Set an End Date" className="slds-input" />
-                                        </div>
-                                    </div>
+                                    
+                                    <FormItem label={'Set a Form End Date'} required={false}>
+                                        <DatePicker 
+                                            value={ moment(form.End_Date__c) }
+                                            disabledDate={disabledDate}
+                                            onChange={(e) => updateEndDate(e)} /> 
+                                    </FormItem> 
 
                                 </Box>
                             </View>
-                        </View>
+                        </View> */}
 
                     </ViewStyle>
 
@@ -152,25 +156,25 @@ export const SettingsState = () => {
     ]
 }
 
-const calcualteMinDate = () => {
+// const disabledDate = (current) => {
+    
+//     return current && current < moment().endOf('day');
 
-    return new Date().toISOString().split("T")[0];
-
-}
+// }
 
 const resultHandler = (result, e, setForm, setUpdate) => {
     
     setUpdate(false);
 
-    let convertedDate = new Date(result.End_Date__c);
-    let year = convertedDate.getFullYear();
-    let dateMonth = convertedDate.getMonth()
-    let month = dateMonth < 10 ? '0' + (dateMonth + 1) : dateMonth;
-    let day = convertedDate.getDate() + 1; 
-    let stringDate = year + '-' + month + '-' + day;
+    // let convertedDate = new Date(result.End_Date__c);
+    // let year = convertedDate.getFullYear();
+    // let dateMonth = convertedDate.getMonth()
+    // let month = dateMonth < 10 ? '0' + (dateMonth + 1) : dateMonth;
+    // let day = convertedDate.getDate() + 1; 
+    // let stringDate = year + '-' + month + '-' + day;
     
     setForm(form => {
-        return { ...form, Name: result.Name, Limit__c: result.Limit__c, End_Date__c: stringDate }
+        return { ...form, Name: result.Name, Limit__c: result.Limit__c }
     }); 
 
 }

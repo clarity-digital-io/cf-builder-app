@@ -102,7 +102,7 @@ export const Header = () => {
                         {
                             form.Status__c == 'Draft' ? 
                             <Button small publish onClick={() => publish()}>Publish Form</Button> :
-                            <Button small publish onClick={() => draft()}>Set to Draft</Button>
+                            <Button small publish onClick={() => handleDraft()}>Set to Draft</Button>
                         }
 
                     </View>

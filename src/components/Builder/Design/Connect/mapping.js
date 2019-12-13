@@ -10,7 +10,7 @@ import { SmallSpinner } from '../../../Elements/Spinner';
 import Main from '../../../Elements/Theme';
 
 import { BuilderContext, DesignContext } from '../../../Context';
-import { ConnectState } from './connect';
+import { FieldConnectState } from './connect';
 import { PreFillState } from './prefill';
 import { StatusHandler } from '../../../Elements/Notification';
  

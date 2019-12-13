@@ -18,6 +18,8 @@ export const ConnectState = () => {
 
     const [update, setUpdate] = useState(false);
 
+    const [removed, setRemoved] = useState([]);
+
     useEffect(() => {
 
         if(update) {
@@ -27,7 +29,7 @@ export const ConnectState = () => {
                 () => setUpdate(false),
                 () => call(
                     "ClarityFormBuilder.saveConnections", 
-                    [JSON.stringify(connections), form.Id], 
+                    [JSON.stringify(connections), form.Id, JSON.stringify(removed)], 
                     (result, e) => connectionsResultHandler(result, e, setConnections, setUpdate),
                     form.Status__c
                 )
@@ -83,12 +85,16 @@ export const ConnectState = () => {
 
     }
 
-    const removeRow = (order) => {
+    const removeRow = (order, connection) => {
 
         setConnections(rows => {
             let updated = rows.slice();
             updated.splice(order, 1);
             return updated;
+        });
+
+        setRemoved(removed => {
+            return removed.concat([connection]);
         })
 
     }
@@ -193,7 +199,7 @@ export const ConnectState = () => {
                                         <View className="col-xs-1">
                                             <Box padding='.5em'>
                                                 
-                                                <div onClick={() => removeRow(order)}>
+                                                <div onClick={() => removeRow(order, connection)}>
                                                     <svg className="slds-button__icon" aria-hidden="true">
                                                         <CloseIcon />
                                                     </svg>

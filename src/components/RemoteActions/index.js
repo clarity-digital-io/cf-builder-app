@@ -30,6 +30,10 @@ const prodCall = (func, params, callback, status) => {
         case 2:
             LCC.callApex(func, params[0], params[1], handler, { escape: true });
             break;
+        case 3:
+        case 4:
+            LCC.callApex(func, params, handler, { escape: true });
+            break;
         default:
             break;
     }
@@ -47,7 +51,7 @@ const mockCall = (func, params, callback, status) => {
                 Id: 1, 
                 Name: 'Clarity Form', 
                 Limit__c: 10, 
-                End_Date__c: null,
+                End_Date__c: '2019-12-31',
                 Connected_Object__c: 'Account',
                 Clarity_Form_Style__c: 15, 
                 Status__c: 'Draft', 
@@ -58,7 +62,7 @@ const mockCall = (func, params, callback, status) => {
             }); 
             break;
         case 'updateForm':
-            callback({ Id: 1, Name: 'Clarity Form Title', End_Date__c: null, Limit__c: 1000 })
+            callback({ Id: 1, Name: 'Clarity Form Title', End_Date__c: '2019-12-31', Limit__c: 1000 })
             break;
         case 'getQuestions':
             callback([

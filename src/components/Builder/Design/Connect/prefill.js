@@ -14,12 +14,10 @@ const combineQuestions = (questions, recordGroup) => {
     let filteredQuestions = questions.filter(question => (question.Type__c != 'FreeText' && question.Type__c != 'RecordGroup' && question.Type__c != 'PictureChoice'));
 
     let rcQuestions =  Array.from(recordGroup.values()).reduce((accum, qs, index) => {
-        console.log('qs', accum, qs);
+
         return accum.concat(qs.map(q => q)); 
 
     }, []);
-
-    console.log('rcQuestions', rcQuestions); 
 
     return filteredQuestions.concat(rcQuestions); 
 }
@@ -165,7 +163,7 @@ const FieldSelect = ({ order, options, value, onChange }) => {
 
 
 const QuestionFieldSelect = ({ order, options, value, onChange }) => {
-    console.log('options', options); 
+
     return (
         <View key={'Select'} className="col-xs-5">
             <Box padding='.5em'>

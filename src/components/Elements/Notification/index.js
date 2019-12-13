@@ -64,7 +64,7 @@ export const StatusHandler = (status, setUpdate, cb, setUpdateSecond) => {
         return;
 
     }
-    console.log('status, question saved'); 
+
     cb();
 
 }

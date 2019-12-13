@@ -9,7 +9,7 @@ import { SmallSpinner } from '../../../Elements/Spinner';
 
 import { BuilderContext, DesignContext } from '../../../Context';
 
-export const ConnectState = () => {
+export const FieldConnectState = () => {
 
     const { questions } = useContext(DesignContext);
 
