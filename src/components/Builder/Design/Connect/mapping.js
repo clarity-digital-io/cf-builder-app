@@ -18,7 +18,7 @@ export const MappingState = () => {
 
     const [localNavState, setLocalNavState] = useState('CONNECT');
 
-    const { loading, navState, setNavState, activeFieldPrefills, setActiveFieldPrefills, activeFieldMapping, setActiveFieldMapping, activeConnection } = useContext(BuilderContext);
+    const { loading, navState, setNavState, activeFieldPrefills, setActiveFieldPrefills, activeFieldMapping, setActiveFieldMapping, activeConnection, form } = useContext(BuilderContext);
 
     const [update, setUpdate] = useState(false);
 
@@ -163,7 +163,7 @@ const getMappingState = (nav) => {
             return <PreFillState />
             break;
         default:
-            return <ConnectState />
+            return <FieldConnectState />
             break;
     }
 } 

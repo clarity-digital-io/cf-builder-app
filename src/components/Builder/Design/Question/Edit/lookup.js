@@ -38,15 +38,15 @@ export const Lookup = () => {
         
         </ViewStyle>,
 
-        <ViewStyle key="Filter">
+        // <ViewStyle key="Filter">
 
 
-            <h1>Filter on Lookup</h1>
+        //     <h1>Filter on Lookup</h1>
 
-            <ControlGroup relatedId={activeQuestion.Id} value={activeQuestion.Filter__c} rows={rows} setRows={setRows} setCondition={updatFilter} questions={Object.keys(additionalFields)} filter={true} /> 
+        //     <ControlGroup relatedId={activeQuestion.Id} value={activeQuestion.Filter__c} rows={rows} setRows={setRows} setCondition={updatFilter} questions={Object.keys(additionalFields)} filter={true} /> 
 
 
-        </ViewStyle>
+        // </ViewStyle>
     ]
 
 }
