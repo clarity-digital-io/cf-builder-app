@@ -46,15 +46,15 @@ export const EditProvider = ({ children }) => {
 
         if(sObjectEdit) {
 
-            if(activeQuestion.Type__c == 'ConnectedObject') {
+            if(activeQuestion.forms__Type__c == 'ConnectedObject') {
                 setLoading(true);
                 call("ClarityFormBuilder.getSObjectFields", [sObjectEdit], (result, e) => getSObjectFieldResultHandler(result, e, activeQuestion, setRequiredFields, setAdditionalFields, setSObjectEdit, setActiveRecordGroup, setLoading));
 
             }
             
-            if(activeQuestion.Type__c == 'RecordGroup') {
+            if(activeQuestion.forms__Type__c == 'RecordGroup') {
                 setLoading(true); 
-                call("ClarityFormBuilder.getSObjectFields", [activeQuestion.Salesforce_Object__c], (result, e) => getSObjectFieldResultHandler(result, e, activeQuestion, setRequiredFields, setAdditionalFields, setSObjectEdit, setActiveRecordGroup, setLoading));
+                call("ClarityFormBuilder.getSObjectFields", [activeQuestion.forms__Salesforce_Object__c], (result, e) => getSObjectFieldResultHandler(result, e, activeQuestion, setRequiredFields, setAdditionalFields, setSObjectEdit, setActiveRecordGroup, setLoading));
             }
 
         }
@@ -111,7 +111,7 @@ const getSObjectFieldResultHandler = (result, e, activeQuestion, setRequiredFiel
 
             let fieldType = Object.keys(val)[0];
 
-            return { Clarity_Form__c: activeQuestion.Clarity_Form__c, Logic__c: 'AND', Type__c: fieldType, Title__c: field, Salesforce_Field__c: field, Record_Group__c: activeQuestion.Id, Order__c: index, Page__c: 0, RG_Required__c: true }
+            return { forms__Clarity_Form__c: activeQuestion.forms__Clarity_Form__c, forms__Logic__c: 'AND', forms__Type__c: fieldType, forms__Title__c: field, forms__Salesforce_Field__c: field, forms__Record_Group__c: activeQuestion.Id, forms__Order__c: index, forms__Page__c: 0, forms__RG_Required__c: true }
 
         });
 

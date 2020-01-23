@@ -28,16 +28,16 @@ export const QuestionState = () => {
                 return <NewQuestion />
                 break;
             case 'EDIT': 
-                return <EditProvider><Save><EditQuestion type={activeQuestion.Type__c} /></Save></EditProvider>
+                return <EditProvider><Save><EditQuestion type={activeQuestion.forms__Type__c} /></Save></EditProvider>
                 break;
             case 'SF': 
                 return <EditProvider><Save><SalesforceFields /></Save></EditProvider>
                 break; 
             case 'AUTOMATE': 
-                return <EditProvider><Save><AutomateQuestion type={activeQuestion.Type__c} /></Save></EditProvider>
+                return <EditProvider><Save><AutomateQuestion type={activeQuestion.forms__Type__c} /></Save></EditProvider>
                 break;
             case 'LOGIC': 
-                return <EditProvider><Save><LogicQuestion type={activeQuestion.Type__c} /></Save></EditProvider>
+                return <EditProvider><Save><LogicQuestion type={activeQuestion.forms__Type__c} /></Save></EditProvider>
                 break;
             case 'CALCULATOR': 
                 return <EditProvider><Save><div>calculator</div></Save></EditProvider>
@@ -86,7 +86,7 @@ const Save = ({ children }) => {
 
         if(questionUpdate && activeQuestionOptions.length == 0 && questionState == 'EDIT') {
             StatusHandler(
-                form.Status__c,
+                form.forms__Status__c,
                 () => setQuestionUpdate(false),
                 () => call(
                     "ClarityFormBuilder.saveQuestion", 
@@ -98,7 +98,7 @@ const Save = ({ children }) => {
 
         if(activeQuestion.Type__c != 'PictureChoice' && questionUpdate && activeQuestionOptions.length && questionState == 'EDIT') {
             StatusHandler(
-                form.Status__c,
+                form.forms__Status__c,
                 () => setQuestionUpdate(false),
                 () => call(
                     "ClarityFormBuilder.saveQuestionWithOptions", 
@@ -108,9 +108,9 @@ const Save = ({ children }) => {
             )
         }
 
-        if(activeQuestion.Type__c == 'PictureChoice' && questionUpdate && activeQuestionOptions.length && questionState == 'EDIT') {
+        if(activeQuestion.forms__Type__c == 'PictureChoice' && questionUpdate && activeQuestionOptions.length && questionState == 'EDIT') {
             StatusHandler(
-                form.Status__c,
+                form.forms__Status__c,
                 () => setQuestionUpdate(false),
                 () => call(
                     "ClarityFormBuilder.saveQuestionWithPictureOptions", 
@@ -122,7 +122,7 @@ const Save = ({ children }) => {
 
         if(questionUpdate && questionState == 'AUTOMATE') {
             StatusHandler(
-                form.Status__c,
+                form.forms__Status__c,
                 () => setQuestionUpdate(false),
                 () => call(
                     "ClarityFormBuilder.saveFlowDesign", 
@@ -137,7 +137,7 @@ const Save = ({ children }) => {
             let updatedCriteria = criteria.map(c => { delete c.Id; return c });
             
             StatusHandler(
-                form.Status__c,
+                form.forms__Status__c,
                 () => setQuestionUpdate(false),
                 () => call(
                     "ClarityFormBuilder.saveQuestionWithCriteria", 
@@ -156,7 +156,7 @@ const Save = ({ children }) => {
             });
 
             StatusHandler(
-                form.Status__c,
+                form.forms__Status__c,
                 () => setQuestionUpdate(false),
                 () => call(
                     "ClarityFormBuilder.saveRecordGroupFields", 
@@ -185,8 +185,8 @@ const Save = ({ children }) => {
                 <ViewStyle middle>
 
                     {
-                        activeQuestion.Record_Group__c != null ? 
-                            <Button neutral onClick={() => edit(activeQuestion.Record_Group__c)}>Back</Button> : 
+                        activeQuestion.forms__Record_Group__c != null ? 
+                            <Button neutral onClick={() => edit(activeQuestion.forms__Record_Group__c)}>Back</Button> : 
                             null
                     }
 

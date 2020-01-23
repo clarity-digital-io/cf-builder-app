@@ -62,13 +62,13 @@ const ControlRows = ({ rows, setRows, questions, filter }) => {
 
 const ControlRow = ({ order, row, setRows, questions, filter }) => {
 
-    const [operators, setOperators] = useState(getCorrectOperators(row.Field_Type__c));
+    const [operators, setOperators] = useState(getCorrectOperators(row.forms__Field_Type__c));
 
     const [types, setTypes] = useState(getCorrectTypes(row));
 
     const [options, setOptions] = useState([]); 
     
-    const [valueField, setValueField] = useState(row.Type__c);
+    const [valueField, setValueField] = useState(row.forms__forms__Type__c);
 
     useEffect(() => {
 
@@ -76,12 +76,12 @@ const ControlRow = ({ order, row, setRows, questions, filter }) => {
             setOptions(['True'])
         }
 
-        if(valueField == 'Picklist' && row.Field_Type__c == 'Date') {
+        if(valueField == 'Picklist' && row.forms__Field_Type__c == 'Date') {
             setOptions(['TODAY', 'YESTERDAY', 'LAST_WEEK', 'LAST_MONTH', 'NEXT_WEEK', 'NEXT_MONTH'])
         }
 
-        if(valueField == 'Picklist' && row.Field_Type__c != 'Date') {
-            call("ClarityFormBuilder.getQuestionOptions", [row.Field__c], (result, e) => getOptionsHandler(result, e, setOptions));
+        if(valueField == 'Picklist' && row.forms__Field_Type__c != 'Date') {
+            call("ClarityFormBuilder.getQuestionOptions", [row.forms__Field__c], (result, e) => getOptionsHandler(result, e, setOptions));
         }
 
     }, [valueField])
@@ -89,12 +89,12 @@ const ControlRow = ({ order, row, setRows, questions, filter }) => {
     const setQuestionSelection = (value, order) => {
         let question = questions.find(question => question.Id == value); 
 
-        setOperators(getCorrectOperators(question.Type__c));
+        setOperators(getCorrectOperators(question.forms__Type__c));
 
         setRows((rows) => {
             return rows.map((row, i) => {
                 if(i == order) {
-                    return { ...row, Title__c: question.Title__c, Field__c: question.Id, Field_Type__c: question.Type__c, Operator__c: '' }
+                    return { ...row, forms__Title__c: question.forms__Title__c, forms__Field__c: question.Id, forms__Field_Type__c: question.forms__Type__c, forms__Operator__c: '' }
                 }
                 return row;
             })
@@ -106,20 +106,20 @@ const ControlRow = ({ order, row, setRows, questions, filter }) => {
         setRows((rows) => {
             return rows.map((row, i) => {
                 if(i == order) {
-                    return { ...row, Operator__c: value }
+                    return { ...row, forms__Operator__c: value }
                 }
                 return row;
             })
         }); 
 
-        setTypes(getCorrectTypes({ ...row, Operator__c: value }));
+        setTypes(getCorrectTypes({ ...row, forms__Operator__c: value }));
     }
 
     const setTypeSelection = (value, order) => {
         setRows((rows) => {
             return rows.map((row, i) => {
                 if(i == order) {
-                    return { ...row, Type__c: value }
+                    return { ...row, forms__Type__c: value }
                 }
                 return row;
             })
@@ -132,7 +132,7 @@ const ControlRow = ({ order, row, setRows, questions, filter }) => {
         setRows((rows) => {
             return rows.map((row, i) => {
                 if(i == order) {
-                    return { ...row, Value__c: value }
+                    return { ...row, forms__Value__c: value }
                 }
                 return row;
             })
@@ -167,14 +167,14 @@ const ControlRow = ({ order, row, setRows, questions, filter }) => {
                 <Box padding='.5em'> 
                     {
                         filter ? 
-                        <ControlFieldSF order={order} record={row.Field__c} values={questions} setSelection={setQuestionSelection} /> :
+                        <ControlFieldSF order={order} record={row.forms__Field__c} values={questions} setSelection={setQuestionSelection} /> :
                         <ControlFieldQuestion order={order} record={row} values={questions} setSelection={setQuestionSelection} />
                     }
                 </Box>
             </View>
             <View className="col-xs-2">
                 <Box padding='.5em'>
-                    <ControlField order={order} record={row.Operator__c} values={operators} setSelection={setOperatorSelection} />
+                    <ControlField order={order} record={row.forms__Operator__c} values={operators} setSelection={setOperatorSelection} />
                 </Box>
             </View>
             <View className="col-xs-2">
@@ -209,10 +209,10 @@ const ControlAddRow = ({ type, setRows, relatedId }) => {
         setRows(rows => {
             switch (type) {
                 case 'assign':
-                    return rows.concat([{ Operator__c: '', Type__c: '', Value__c: '', Title__c: '', Field__c: null, Field_Type__c: '', Clarity_Form_Assignment__c: relatedId }])
+                    return rows.concat([{ forms__Operator__c: '', forms__Type__c: '', forms__Value__c: '', forms__Title__c: '', forms__Field__c: null, forms__Field_Type__c: '', forms__Clarity_Form_Assignment__c: relatedId }])
                     break;  
                 default:
-                    return rows.concat([{ Operator__c: '', Type__c: '', Value__c: '', Title__c: '', Field__c: null, Field_Type__c: '', Clarity_Form_Question__c: relatedId }])
+                    return rows.concat([{ forms__Operator__c: '', forms__Type__c: '', forms__Value__c: '', forms__Title__c: '', forms__Field__c: null, forms__Field_Type__c: '', forms__Clarity_Form_Question__c: relatedId }])
                     break;
             }
         });
@@ -257,7 +257,7 @@ const ControlFieldSF = ({ order, record, values, setSelection }) => {
 
 const ControlFieldQuestion = ({ order, record, values, setSelection }) => {
 
-    return <Select key={record.Id} value={record.Field__c} options={values} onChange={(e) => setSelection(e, order)} valueField={'Id'} labelField={'Title__c'} />
+    return <Select key={record.Id} value={record.forms__Field__c} options={values} onChange={(e) => setSelection(e, order)} valueField={'Id'} labelField={'forms__Title__c'} />
 
 }
 
@@ -278,30 +278,30 @@ const ControlFieldInput = ({ type, order, record, setSelection }) => {
 }
 
 const getOptionsHandler = (result, e, setOptions) => {
-    setOptions(result.map(r => r.Label__c)); 
+    setOptions(result.map(r => r.forms__Label__c)); 
 }
 
 const ControlValueField = ({ options, order, record, setSelection }) => {
 
-    switch (record.Type__c) {
+    switch (record.forms__Type__c) {
         case 'String':
-            return <ControlFieldInput type={'text'} order={order} record={record.Value__c} setSelection={setSelection} />
+            return <ControlFieldInput type={'text'} order={order} record={record.forms__Value__c} setSelection={setSelection} />
             break; 
         case 'Number of New Records':
         case 'Number':
-            return <ControlFieldInput type={'number'} order={order} record={record.Value__c} setSelection={setSelection} />
+            return <ControlFieldInput type={'number'} order={order} record={record.forms__Value__c} setSelection={setSelection} />
             break;
         case 'Reference':
-            return <ControlFieldInput type={'text'} order={order} record={record.Value__c} setSelection={setSelection} />
+            return <ControlFieldInput type={'text'} order={order} record={record.forms__Value__c} setSelection={setSelection} />
             break;
         case 'Picklist':
-            return <ControlField order={order} record={record.Value__c} values={options} setSelection={setSelection} />
+            return <ControlField order={order} record={record.forms__Value__c} values={options} setSelection={setSelection} />
             break;
         case 'Boolean':
-            return <ControlField order={order} record={record.Value__c} values={options} setSelection={setSelection} />
+            return <ControlField order={order} record={record.forms__Value__c} values={options} setSelection={setSelection} />
             break; 
         case 'Date':
-            return <ControlFieldInput type={'date'} order={order} record={record.Value__c} setSelection={setSelection} />
+            return <ControlFieldInput type={'date'} order={order} record={record.forms__Value__c} setSelection={setSelection} />
             break;
         default:
             return ''
@@ -381,21 +381,21 @@ const getCorrectOperators = (fieldType) => {
 
 const getCorrectTypes = (row) => {
 
-    switch (row.Operator__c) {
+    switch (row.forms__Operator__c) {
         case 'Equals':
-            return getTypeForEquals(row.Field_Type__c); 
+            return getTypeForEquals(row.forms__Field_Type__c); 
             break;
         case 'Not Equal':
-            return getTypeForEquals(row.Field_Type__c); 
+            return getTypeForEquals(row.forms__Field_Type__c); 
             break;
         case 'Is Not Null':
             return ['Boolean'];
             break;
         case 'Is Greater than or equal to':
-            return getTypeForGLEqual(row.Field_Type__c);
+            return getTypeForGLEqual(row.forms__Field_Type__c);
             break;
         case 'Is Less than or equal to':
-            return getTypeForGLEqual(row.Field_Type__c);
+            return getTypeForGLEqual(row.forms__Field_Type__c);
             break;
         default:
             return [];

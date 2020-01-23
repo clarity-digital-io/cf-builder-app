@@ -133,7 +133,7 @@ const designEditMessage = () => {
 }
 
 const Nav = styled.nav`
-    background: ${Main.color.body};
+    background: ${Main.color.light};
     height: 100vh; 
 
     .active {
@@ -149,7 +149,8 @@ const Nav = styled.nav`
     }
 
     li {
-        color: ${Main.color.white};
+			
+        color: ${Main.color.bright};
         cursor: pointer;
         text-decoration: none !important;
         display: inline-block;
@@ -159,6 +160,7 @@ const Nav = styled.nav`
     }
     
     li:hover {
+				border-left: 3px solid ${Main.color.bright}
         font-weight: 900;
     }
 

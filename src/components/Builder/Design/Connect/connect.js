@@ -16,12 +16,12 @@ export const FieldConnectState = () => {
     const { activeFieldMapping, setActiveFieldMapping, activeConnection, activeFields } = useContext(BuilderContext);
 
     const [questionOptions, setQuestionOptions] = useState(
-        questions.filter(question => (question.Type__c != 'Text' && question.Type__c != 'RecordGroup' && question.Type__c != 'PictureChoice'))
+        questions.filter(question => (question.forms__Type__c != 'Text' && question.forms__Type__c != 'RecordGroup' && question.forms__Type__c != 'PictureChoice'))
     )
 
     const addConnectionField = () => {
         setActiveFieldMapping((mappings) => {
-            return mappings.concat([{ Clarity_Form_Connection__c: activeConnection.Id, Salesforce_Field__c: '', Clarity_Form_Question__c: '' }])
+            return mappings.concat([{ forms__Clarity_Form_Connection__c: activeConnection.Id, forms__Salesforce_Field__c: '', forms__Clarity_Form_Question__c: '' }])
         })
     }
 
@@ -33,7 +33,7 @@ export const FieldConnectState = () => {
 
             return mappings.map((mapping, i) => {
                 if(i == order) {
-                    return { ...mapping, Salesforce_Field__c: value }
+                    return { ...mapping, forms__Salesforce_Field__c: value }
                 }
                 return mapping
             })
@@ -49,7 +49,7 @@ export const FieldConnectState = () => {
 
             return mappings.map((mapping, i) => {
                 if(i == order) {
-                    return custom ? { ...mapping, Custom_Value__c: value } : { ...mapping, Clarity_Form_Question__c: value }
+                    return custom ? { ...mapping, forms__Custom_Value__c: value } : { ...mapping, forms__Clarity_Form_Question__c: value }
                 }
                 return mapping
             })
@@ -90,7 +90,7 @@ export const FieldConnectState = () => {
                             <View className="col-xs-5">
                                 <Box padding='.5em'>
                                     
-                                    <FieldSelect order={order} options={activeFields} value={field.Salesforce_Field__c} onChange={setFieldSelection} />
+                                    <FieldSelect order={order} options={activeFields} value={field.forms__Salesforce_Field__c} onChange={setFieldSelection} />
 
                                 </Box>
                             </View>
@@ -103,7 +103,7 @@ export const FieldConnectState = () => {
                             <QuestionFieldSelect 
                                 order={order} 
                                 options={questionOptions} 
-                                customValue={field.Clarity_Form_Question__c != null ? false : true }
+                                customValue={field.forms__Clarity_Form_Question__c != null ? false : true }
                                 value={field} 
                                 onChange={setQuestionSelection} 
                             />
@@ -168,15 +168,15 @@ const QuestionFieldSelect = ({ customValue, order, options, value, onChange }) =
             <Box padding='.5em'>
                 {
                     custom ?  
-                    <ButtonInput value={value.Clarity_Form_Question__c ? value.Clarity_Form_Question__c : value.Custom_Value__c} add onChange={(e) => onChange(e, order, true)} /> :
+                    <ButtonInput value={value.forms__Clarity_Form_Question__c ? value.forms__Clarity_Form_Question__c : value.forms__Custom_Value__c} add onChange={(e) => onChange(e, order, true)} /> :
                     <div className="slds-form-element">
                         <div className="slds-form-element__control">
                             <div className="slds-select_container">
-                            <select className="slds-select" id="select-02" value={value.Clarity_Form_Question__c ? value.Clarity_Form_Question__c : value.Custom_Value__c} onChange={(e) => onChange(e, order)} >
+                            <select className="slds-select" id="select-02" value={value.forms__Clarity_Form_Question__c ? value.forms__Clarity_Form_Question__c : value.forms__Custom_Value__c} onChange={(e) => onChange(e, order)} >
                                 <option value="">Please select</option>
                                 {
                                     options.map(option => {
-                                        return <option key={option.Id} value={option.Id}>{option.Title__c}</option>
+                                        return <option key={option.Id} value={option.Id}>{option.forms__Title__c}</option>
                                     })
                                 }
                             </select>

@@ -15,9 +15,9 @@ import { StatusHandler } from '../../../Elements/Notification';
 
 const configUrl = (style) => {
 
-    let forceImage = (style.Background_Image__c != null && style.Background_Image__c != '') ? (style.Background_Image__c.length > 18 ? false : true ) : false;
+    let forceImage = (style.forms__Background_Image__c != null && style.Background_Image__c != '') ? (style.forms__Background_Image__c.length > 18 ? false : true ) : false;
 
-    return forceImage ? [{ uid: style.Id, thumbUrl:  `/sfc/servlet.shepherd/document/download/${style.Background_Image__c}` }] : [];
+    return forceImage ? [{ uid: style.Id, thumbUrl:  `/sfc/servlet.shepherd/document/download/${style.forms__Background_Image__c}` }] : [];
 
 }
 
@@ -50,7 +50,7 @@ export const DesignEditState = () => {
 
     const save = () => {
 
-        let file = style.Background_Image__c ? style.Background_Image__c : '';
+        let file = style.forms__Background_Image__c ? style.forms__Background_Image__c : '';
 
         let base64result = ''; 
 
@@ -58,12 +58,12 @@ export const DesignEditState = () => {
 
             base64result = file != '' ? file.split(',')[1] : '';
 
-            style.Background_Image__c = ''; 
+            style.forms__Background_Image__c = ''; 
 
         }
 
         StatusHandler(
-            form.Status__c, 
+            form.forms__Status__c, 
             () => setUpdate(false),
             () => call(
                 "ClarityFormBuilder.updateDesign", 
@@ -93,7 +93,7 @@ export const DesignEditState = () => {
         let checked = e.target.checked;
 
         setStyle(style => {
-            return { ...style, Multi_Page__c: checked };
+            return { ...style, forms__Multi_Page__c: checked };
         });
 
         setDirtyState(dirty => {
@@ -107,7 +107,7 @@ export const DesignEditState = () => {
         let hex = color.hex;
 
         setStyle(style => {
-            return { ...style, Button_Color__c: hex };
+            return { ...style, forms__Button_Color__c: hex };
         });
 
         setDirtyState(dirty => {
@@ -120,7 +120,7 @@ export const DesignEditState = () => {
         let hex = color.hex;
 
         setStyle(style => {
-            return { ...style, Background_Color__c: hex };
+            return { ...style, forms__Background_Color__c: hex };
         });
 
         setDirtyState(dirty => {
@@ -133,7 +133,7 @@ export const DesignEditState = () => {
         let hex = color.hex;
 
         setStyle(style => {
-            return { ...style, Color__c: hex };
+            return { ...style, forms__Color__c: hex };
         });
         
         setDirtyState(dirty => {
@@ -144,7 +144,7 @@ export const DesignEditState = () => {
     const uploadChange = (fileContents) => {
 
         setStyle(style => {
-            return { ...style, Background_Image__c: fileContents };
+            return { ...style, forms__Background_Image__c: fileContents };
         });
 
         setDirtyState(dirty => {
@@ -198,7 +198,7 @@ export const DesignEditState = () => {
                                     <div className="slds-form-element">
                                         <label className="slds-checkbox_toggle slds-grid">
                                             <span className="slds-form-element__label slds-m-bottom_none">Multi Page Form</span>
-                                            <input checked={style.Multi_Page__c} onChange={(e) => updateMultiPage(e)} type="checkbox" name="checkbox-toggle-14" value="checkbox-toggle-14" aria-describedby="checkbox-toggle-14" />
+                                            <input checked={style.forms__Multi_Page__c} onChange={(e) => updateMultiPage(e)} type="checkbox" name="checkbox-toggle-14" value="checkbox-toggle-14" aria-describedby="checkbox-toggle-14" />
                                             <span id="checkbox-toggle-14" className="slds-checkbox_faux_container" aria-live="assertive">
                                             <span className="slds-checkbox_faux"></span>
                                             </span>
@@ -218,19 +218,19 @@ export const DesignEditState = () => {
 
                                 <ViewStyle space border>
 
-                                    <Color color={style.Color__c} title={'Question'} handleColorChange={handleQuestionColorChange} />
+                                    <Color color={style.forms__Color__c} title={'Question'} handleColorChange={handleQuestionColorChange} />
 
                                 </ViewStyle>
 
                                 <ViewStyle space border>
 
-                                    <Color color={style.Background_Color__c} title={'Background'} handleColorChange={handleBackgroundColorChange} />
+                                    <Color color={style.forms__Background_Color__c} title={'Background'} handleColorChange={handleBackgroundColorChange} />
 
                                 </ViewStyle>
 
                                 <ViewStyle space border>
 
-                                    <Color color={style.Button_Color__c} title={'Button'} handleColorChange={handleButtonColorChange} />
+                                    <Color color={style.forms__Button_Color__c} title={'Button'} handleColorChange={handleButtonColorChange} />
 
                                 </ViewStyle>
 

@@ -5,7 +5,7 @@ export const Email = ({ question }) => {
 
     return (
         <Input 
-            placeholder={question.Title__c}
+            placeholder={question.forms__Title__c}
             id={question.Name}
         />
     )

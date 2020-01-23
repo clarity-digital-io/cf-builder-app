@@ -8,9 +8,9 @@ export const Comment = ({ question }) => {
     return <TextArea
         aria-describedby={question.Id}
         id={question.Name}
-        addonAfter={question.Title__c}
-        required={question.Required__c}
-        placeholder={question.Placeholder__c}
+        addonAfter={question.forms__Title__c}
+        required={question.forms__Required__c}
+        placeholder={question.forms__Placeholder__c}
     />
 
 }

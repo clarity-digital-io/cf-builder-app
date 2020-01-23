@@ -9,6 +9,8 @@ export const call = (func, params, callback, status) => {
 
 const prodCall = (func, params, callback, status) => {
     
+    const managedPackageFunction = 'forms.' + func; 
+
     const handler = (result, e) => {
 
         if(e.statusCode != 200) {
@@ -22,17 +24,17 @@ const prodCall = (func, params, callback, status) => {
 
     switch (params.length) {
         case 0:
-            LCC.callApex(func, handler, { escape: true });
+            LCC.callApex(managedPackageFunction, handler, { escape: true });
             break;
         case 1:
-            LCC.callApex(func, params[0], handler, { escape: true });
+            LCC.callApex(managedPackageFunction, params[0], handler, { escape: true });
             break;
         case 2:
-            LCC.callApex(func, params[0], params[1], handler, { escape: true });
+            LCC.callApex(managedPackageFunction, params[0], params[1], handler, { escape: true });
             break;
         case 3:
         case 4:
-            LCC.callApex(func, params, handler, { escape: true });
+            LCC.callApex(managedPackageFunction, params, handler, { escape: true });
             break;
         default:
             break;
@@ -50,54 +52,54 @@ const mockCall = (func, params, callback, status) => {
             callback({
                 Id: 1, 
                 Name: 'Clarity Form', 
-                Limit__c: 10, 
-                End_Date__c: '2019-12-31',
-                Connected_Object__c: 'Account',
-                Clarity_Form_Style__c: 15, 
-                Status__c: 'Draft', 
-                Clarity_Form_Assignment__c: 1,
-                Clarity_Form_Style__r: { Id: 15, Name:'Greens', Background_Image__c: '', Background_Color__c: '#FFF', Color__c: '#333', Button_Color__c: '', Multi_Page__c: false }, 
+                forms__Limit__c: 10, 
+                forms__End_Date__c: '2019-12-31',
+                forms__Connected_Object__c: 'Account',
+                forms__Clarity_Form_Style__c: 15, 
+                forms__Status__c: 'Draft', 
+                forms__Clarity_Form_Assignment__c: 1,
+                forms__Clarity_Form_Style__r: { Id: 15, Name:'Greens', forms__Background_Image__c: '', forms__Background_Color__c: '#FFF', forms__Color__c: '#333', forms__Button_Color__c: '', forms__Multi_Page__c: false }, 
                 //Clarity_Form_Style__r: { Id: 15, Name:'Greens', Background_Image__c: 'https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2565&q=80', Background_Color__c: '#333333', Color__c: '#FFFFFF', Button_Color__c: '', Multi_Page__c: false }, 
-                Clarity_Form_Assignment__r: { Id: 1, Name: 'Clarity Form Assignment', Assign__c: 1, Default_Assign__c: 2 } 
+                forms__Clarity_Form_Assignment__r: { Id: 1, Name: 'Clarity Form Assignment', forms__Assign__c: 1, forms__Default_Assign__c: 2 } 
             }); 
             break;
         case 'updateForm':
-            callback({ Id: 1, Name: 'Clarity Form Title', End_Date__c: '2019-12-31', Limit__c: 1000 })
+            callback({ Id: 1, Name: 'Clarity Form Title', forms__End_Date__c: '2019-12-31', forms__Limit__c: 1000 })
             break;
         case 'getQuestions':
             callback([
-                { Id: 1, Logic__c: 'AND', Type__c: 'Checkbox', Title__c: 'Checkbox', Order__c: 0, Max_Length__c: 10, Min_Range__c: 0, Max_Range__c: 100, Step__c: 10, Page__c: 0 }, 
-                { Id: 2, Logic__c: 'AND', Type__c: 'Comment', Title__c: 'Comment', Order__c: 1, Max_Length__c: 10, Min_Range__c: 0, Max_Range__c: 100, Step__c: 10, Page__c: 0 },
-                { Id: 3, Logic__c: 'OR', Type__c: 'Date', Title__c: 'Date', Order__c: 2, Max_Length__c: 10, Min_Range__c: 0, Max_Range__c: 100, Step__c: 10, Page__c: 0, 
-                    Clarity_Form_Question_Criteria__r: [
-                        { Id: 31, Clarity_Form_Question__c: 3, Field__c: 1, Field_Type__c: 'Comment', Operator__c: 'Is Not Null', Type__c: 'Boolean', Value__c: 'True'  },
-                        { Id: 32, Clarity_Form_Question__c: 3, Field__c: 2, Field_Type__c: 'Comment', Operator__c: 'Is Not Null', Type__c: 'Boolean', Value__c: 'True'  },
-                        { Id: 33, Clarity_Form_Question__c: 3, Field__c: 3, Field_Type__c: 'Comment', Operator__c: 'Is Not Null', Type__c: 'Boolean', Value__c: 'True'  }
+                { Id: 1, forms__Logic__c: 'AND', forms__Type__c: 'Checkbox', forms__Title__c: 'Checkbox', forms__Order__c: 0, forms__Max_Length__c: 10, forms__Min_Range__c: 0, forms__Max_Range__c: 100, forms__Step__c: 10, forms__Page__c: 0 }, 
+                { Id: 2, forms__Logic__c: 'AND', forms__Type__c: 'Comment', forms__Title__c: 'Comment', forms__Order__c: 1, forms__Max_Length__c: 10, forms__Min_Range__c: 0, forms__Max_Range__c: 100, forms__Step__c: 10, forms__Page__c: 0 },
+                { Id: 3, forms__Logic__c: 'OR', forms__Type__c: 'Date', forms__Title__c: 'Date', forms__Order__c: 2, forms__Max_Length__c: 10, forms__Min_Range__c: 0, forms__Max_Range__c: 100, forms__Step__c: 10, forms__Page__c: 0, 
+                    forms__Clarity_Form_Question_Criteria__r: [
+                        { Id: 31, forms__Clarity_Form_Question__c: 3, forms__Field__c: 1, forms__Field_Type__c: 'Comment', forms__Operator__c: 'Is Not Null', forms__Type__c: 'Boolean', forms__Value__c: 'True'  },
+                        { Id: 32, forms__Clarity_Form_Question__c: 3, forms__Field__c: 2, forms__Field_Type__c: 'Comment', forms__Operator__c: 'Is Not Null', forms__Type__c: 'Boolean', forms__Value__c: 'True'  },
+                        { Id: 33, forms__Clarity_Form_Question__c: 3, forms__Field__c: 3, forms__Field_Type__c: 'Comment', forms__Operator__c: 'Is Not Null', forms__Type__c: 'Boolean', forms__Value__c: 'True'  }
                     ]
                 },                
-                { Id: 4, Logic__c: 'AND', Type__c: 'Dropdown', Title__c: 'Dropdown', Order__c: 3, Max_Length__c: 10, Min_Range__c: 0, Max_Range__c: 100, Step__c: 10, Page__c: 0, 
-                    Clarity_Form_Question_Options__r: [
-                        { Id: 41, Label__c: 'Dropdown 1', Clarity_Form_Question__c: 4 },
-                        { Id: 42, Label__c: 'Dropdown 2', Clarity_Form_Question__c: 4 },
-                        { Id: 43, Label__c: 'Dropdown 3', Clarity_Form_Question__c: 4 }
+                { Id: 4, forms__Logic__c: 'AND', forms__Type__c: 'Dropdown', forms__Title__c: 'Dropdown', forms__Order__c: 3, forms__Max_Length__c: 10, forms__Min_Range__c: 0, forms__Max_Range__c: 100, forms__Step__c: 10, forms__Page__c: 0, 
+                    forms__Clarity_Form_Question_Options__r: [
+                        { Id: 41, forms__Label__c: 'Dropdown 1', forms__Clarity_Form_Question__c: 4 },
+                        { Id: 42, forms__Label__c: 'Dropdown 2', forms__Clarity_Form_Question__c: 4 },
+                        { Id: 43, forms__Label__c: 'Dropdown 3', forms__Clarity_Form_Question__c: 4 }
                     ]
                 }, 
-                { Id: 5, Logic__c: 'AND', Type__c: 'Email', Title__c: 'Email', Order__c: 4, Max_Length__c: 10, Min_Range__c: 0, Max_Range__c: 100, Step__c: 10, Page__c: 0 }, 
-                { Id: 6, Logic__c: 'AND', Type__c: 'Lookup', Title__c: 'Lookup', Lookup__c: 'Case', Order__c: 5, Max_Length__c: 10, Min_Range__c: 0, Max_Range__c: 100, Step__c: 10, Page__c: 0 },
-                { Id: 7, Logic__c: 'AND', Type__c: 'MultipleChoice', Title__c: 'MultipleChoice', Order__c: 6, Max_Length__c: 10, Min_Range__c: 0, Max_Range__c: 100, Step__c: 10, Page__c: 0, 
-                    Clarity_Form_Question_Options__r: [
-                        { Id: 71, Label__c: 'MultipleChoice 1', Clarity_Form_Question__c: 7 },
-                        { Id: 72, Label__c: 'MultipleChoice 2', Clarity_Form_Question__c: 7 },
-                        { Id: 73, Label__c: 'MultipleChoice 3', Clarity_Form_Question__c: 7 }
+                { Id: 5, forms__Logic__c: 'AND', forms__Type__c: 'Email', forms__Title__c: 'Email', forms__Order__c: 4, forms__Max_Length__c: 10, forms__Min_Range__c: 0, forms__Max_Range__c: 100, forms__Step__c: 10, forms__Page__c: 0 }, 
+                { Id: 6, forms__Logic__c: 'AND', forms__Type__c: 'Lookup', forms__Title__c: 'Lookup', forms__Lookup__c: 'Case', forms__Order__c: 5, forms__Max_Length__c: 10, forms__Min_Range__c: 0, forms__Max_Range__c: 100, forms__Step__c: 10, forms__Page__c: 0 },
+                { Id: 7, forms__Logic__c: 'AND', forms__Type__c: 'MultipleChoice', forms__Title__c: 'MultipleChoice', forms__Order__c: 6, forms__Max_Length__c: 10, Min_Range__c: 0, forms__Max_Range__c: 100, forms__Step__c: 10, forms__Page__c: 0, 
+                forms__Clarity_Form_Question_Options__r: [
+                        { Id: 71, forms__Label__c: 'MultipleChoice 1', forms__Clarity_Form_Question__c: 7 },
+                        { Id: 72, forms__Label__c: 'MultipleChoice 2', forms__Clarity_Form_Question__c: 7 },
+                        { Id: 73, forms__Label__c: 'MultipleChoice 3', forms__Clarity_Form_Question__c: 7 }
                     ]
                 }, 
-                { Id: 8, Logic__c: 'AND', Type__c: 'NetPromoterScore', Title__c: 'NetPromoterScore', Order__c: 7, Max_Length__c: 10, Min_Range__c: 0, Max_Range__c: 100, Step__c: 10, Page__c: 0 }, 
-                { Id: 9, Logic__c: 'AND', Type__c: 'Number', Title__c: 'Number', Order__c: 8, Page__c: 0 },
-                { Id: 10, Logic__c: 'AND', Type__c: 'PictureChoice', Title__c: 'Picture Choice', Order__c: 9, Page__c: 0 },
-                { Id: 11, Logic__c: 'AND', Type__c: 'RecordGroup', Title__c: 'Create Opportunity Line Items', Salesforce_Object__c: 'OpportunityLineItem', Order__c: 10, Page__c: 0 }, 
-                { Id: 12, Logic__c: 'AND', Type__c: 'REFERENCE', Title__c: 'Add an account:', Salesforce_Field__c: 'OpportunityId', Record_Group__c: 11, Order__c: 11, Page__c: 0 },
-                { Id: 13, Logic__c: 'AND', Type__c: 'Slider', Title__c: 'Slider', Order__c: 12, Max_Length__c: 10, Min_Range__c: 0, Max_Range__c: 100, Step__c: 10, Page__c: 0 }, 
-                { Id: 14, Logic__c: 'AND', Type__c: 'PICKLIST', Title__c: 'Type', Salesforce_Field__c: 'Type', Record_Group__c: 11, Order__c: 2, Page__c: 0 }
+                { Id: 8, forms__Logic__c: 'AND', forms__Type__c: 'NetPromoterScore', forms__Title__c: 'NetPromoterScore', forms__Order__c: 7, forms__Max_Length__c: 10, forms__Min_Range__c: 0, forms__Max_Range__c: 100, forms__Step__c: 10, forms__Page__c: 0 }, 
+                { Id: 9, forms__Logic__c: 'AND', forms__Type__c: 'Number', forms__Title__c: 'Number', forms__Order__c: 8, forms__Page__c: 0 },
+                { Id: 10, forms__Logic__c: 'AND', forms__Type__c: 'PictureChoice', forms__Title__c: 'Picture Choice', forms__Order__c: 9, forms__Page__c: 0 },
+                { Id: 11, forms__Logic__c: 'AND', forms__Type__c: 'RecordGroup', forms__Title__c: 'Create Opportunity Line Items', forms__Salesforce_Object__c: 'OpportunityLineItem', forms__Order__c: 10, forms__Page__c: 0 }, 
+                { Id: 12, forms__Logic__c: 'AND', forms__Type__c: 'REFERENCE', forms__Title__c: 'Add an account:', forms__Salesforce_Field__c: 'OpportunityId', forms__Record_Group__c: 11, forms__Order__c: 11, forms__Page__c: 0 },
+                { Id: 13, forms__Logic__c: 'AND', forms__Type__c: 'Slider', forms__Title__c: 'Slider', forms__Order__c: 12, forms__Max_Length__c: 10, forms__Min_Range__c: 0, forms__Max_Range__c: 100, forms__Step__c: 10, forms__Page__c: 0 }, 
+                { Id: 14, forms__Logic__c: 'AND', forms__Type__c: 'PICKLIST', forms__Title__c: 'Type', forms__Salesforce_Field__c: 'Type', forms__Record_Group__c: 11, forms__Order__c: 2, forms__Page__c: 0 }
             ]); 
             break;
         case 'save': 
@@ -129,7 +131,7 @@ const mockCall = (func, params, callback, status) => {
             callback([
                 { Id: 1, Logic__c: 'AND', Type__c: 'Comment', Title__c: 'Comment', Order__c: 1, Max_Length__c: 10, Min_Range__c: 0, Max_Range__c: 100, Step__c: 10, Page__c: 0 }, 
                 { Id: 5, Logic__c: 'OR', Type__c: 'Date', Title__c: 'Date', Order__c: 5, Max_Length__c: 10, Min_Range__c: 0, Max_Range__c: 100, Step__c: 10, Page__c: 0, 
-                    Clarity_Form_Question_Criteria__r: [
+                forms__Clarity_Form_Question_Criteria__r: [
                         { Id: 1, Clarity_Form_Question__c: 5, Field__c: 1, Field_Type__c: 'Comment', Operator__c: 'Is Not Null', Type__c: 'Boolean', Value__c: 'True'  },
                         { Id: 2, Clarity_Form_Question__c: 5, Field__c: 2, Field_Type__c: 'Comment', Operator__c: 'Is Not Null', Type__c: 'Boolean', Value__c: 'True'  },
                         { Id: 3, Clarity_Form_Question__c: 5, Field__c: 3, Field_Type__c: 'Comment', Operator__c: 'Is Not Null', Type__c: 'Boolean', Value__c: 'True'  }

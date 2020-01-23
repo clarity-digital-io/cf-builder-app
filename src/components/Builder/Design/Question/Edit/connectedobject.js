@@ -14,8 +14,8 @@ export const ConnectedObject = () => {
 
     useEffect(() => {
 
-        if(form.Connected_Object__c) {
-            setSObjectEdit(form.Connected_Object__c);
+        if(form.forms__Connected_Object__c) {
+            setSObjectEdit(form.forms__Connected_Object__c);
         }
 
     }, [])
@@ -30,10 +30,10 @@ export const ConnectedObject = () => {
     return [
         <ViewStyle key={'description'}>
 
-            <h1>Connected Object: { form.Connected_Object__c ?  form.Connected_Object__c : <Button small add onClick={() => setNavState('SETTINGS')}>Create a Connected Section</Button> }</h1>
+            <h1>Connected Object: { form.forms__Connected_Object__c ?  form.forms__Connected_Object__c : <Button small add onClick={() => setNavState('SETTINGS')}>Create a Connected Section</Button> }</h1>
 
             <p>
-                Any fields updated in this { form.Connected_Object__c ? form.Connected_Object__c : 'Connected Object' } section will reflect in the { form.Connected_Object__c ? form.Connected_Object__c : 'Connected Object' } Record.
+                Any fields updated in this { form.forms__Connected_Object__c ? form.forms__Connected_Object__c : 'Connected Object' } section will reflect in the { form.forms__Connected_Object__c ? form.forms__Connected_Object__c : 'Connected Object' } Record.
             </p>
 
             <p>

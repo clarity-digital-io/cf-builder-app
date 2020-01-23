@@ -25,13 +25,13 @@ export const ConnectState = () => {
         if(update) {
 
             StatusHandler(
-                form.Status__c,
+                form.forms__Status__c,
                 () => setUpdate(false),
                 () => call(
                     "ClarityFormBuilder.saveConnections", 
                     [JSON.stringify(connections), form.Id, JSON.stringify(removed)], 
                     (result, e) => connectionsResultHandler(result, e, setConnections, setUpdate),
-                    form.Status__c
+                    form.forms__Status__c
                 )
             )
         }
@@ -46,7 +46,7 @@ export const ConnectState = () => {
 
             return rows.map((row, i) => {
                 if(i == order) {
-                    return { ...row, New__c: checked }
+                    return { ...row, forms__New__c: checked }
                 }
                 return row;
             })
@@ -60,7 +60,7 @@ export const ConnectState = () => {
 
             return rows.map((row, i) => {
                 if(i == order) {
-                    return { ...row, Salesforce_Object__c: value }
+                    return { ...row, forms__Salesforce_Object__c: value }
                 }
                 return row;
             })
@@ -79,7 +79,7 @@ export const ConnectState = () => {
 
         setConnections(connections => {
 
-            return connections.concat([{ Clarity_Form__c: form.Id, Salesforce_Object__c: '' }])
+            return connections.concat([{ forms__Clarity_Form__c: form.Id, forms__Salesforce_Object__c: '' }])
 
         })
 
@@ -168,7 +168,7 @@ export const ConnectState = () => {
 
                                                 <div className="slds-form-element">
                                                     <label className="slds-checkbox_toggle slds-grid">
-                                                        <input checked={connection.New__c} onChange={(e) => activate(e, order)} type="checkbox" name="checkbox-toggle-14" value="checkbox-toggle-14" aria-describedby="checkbox-toggle-14" />
+                                                        <input checked={connection.forms__New__c} onChange={(e) => activate(e, order)} type="checkbox" name="checkbox-toggle-14" value="checkbox-toggle-14" aria-describedby="checkbox-toggle-14" />
                                                         <span id="checkbox-toggle-14" className="slds-checkbox_faux_container" aria-live="assertive">
                                                         <span className="slds-checkbox_faux"></span>
                                                         </span>
@@ -180,7 +180,7 @@ export const ConnectState = () => {
                                         <View className="col-xs-4">
                                             <Box padding='.5em'>
 
-                                                <Select order={order} options={sObjects} value={connection.Salesforce_Object__c} onChange={setObjectSelection} />
+                                                <Select order={order} options={sObjects} value={connection.forms__Salesforce_Object__c} onChange={setObjectSelection} />
 
                                             </Box>
                                         </View>

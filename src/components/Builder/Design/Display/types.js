@@ -3,7 +3,7 @@ import { InputField, FreeText, Attachments, Checkbox, Comment, ConnectedObject, 
 
 export const getType = (question) => {
 
-    switch (question.Type__c) {
+    switch (question.forms__Type__c) {
         case 'ConnectedObject':
             return <ConnectedObject question={question} />
             break;

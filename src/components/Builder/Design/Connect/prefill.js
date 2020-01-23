@@ -11,7 +11,7 @@ import { BuilderContext, DesignContext } from '../../../Context';
 
 const combineQuestions = (questions, recordGroup) => {
 
-    let filteredQuestions = questions.filter(question => (question.Type__c != 'FreeText' && question.Type__c != 'RecordGroup' && question.Type__c != 'PictureChoice'));
+    let filteredQuestions = questions.filter(question => (question.forms__Type__c != 'FreeText' && question.forms__Type__c != 'RecordGroup' && question.forms__Type__c != 'PictureChoice'));
 
     let rcQuestions =  Array.from(recordGroup.values()).reduce((accum, qs, index) => {
 
@@ -32,7 +32,7 @@ export const PreFillState = () => {
 
     const addConnectionField = () => {
         setActiveFieldPrefills((mappings) => {
-            return mappings.concat([{ Clarity_Form_Connection__c: activeConnection.Id, Salesforce_Field__c: '', Clarity_Form_Question__c: '', PreFill__c: true }])
+            return mappings.concat([{ forms__Clarity_Form_Connection__c: activeConnection.Id, forms__Salesforce_Field__c: '', forms__Clarity_Form_Question__c: '', forms__PreFill__c: true }])
         })
     }
 
@@ -44,7 +44,7 @@ export const PreFillState = () => {
             //same field as used record group fields must replace to be able to prefill record group fields
             return mappings.map((mapping, i) => {
                 if(i == order) {
-                    return { ...mapping, Salesforce_Field__c: value }
+                    return { ...mapping, forms__Salesforce_Field__c: value }
                 }
                 return mapping
             })
@@ -60,7 +60,7 @@ export const PreFillState = () => {
 
             return mappings.map((mapping, i) => {
                 if(i == order) {
-                    return { ...mapping, Clarity_Form_Question__c: value }
+                    return { ...mapping, forms__Clarity_Form_Question__c: value }
                 }
                 return mapping
             })
@@ -115,7 +115,7 @@ export const PreFillState = () => {
                             <View className="col-xs-5">
                                 <Box padding='.5em'>
                                     
-                                    <FieldSelect order={order} options={activeFields} value={field.Salesforce_Field__c} onChange={setFieldSelection} />
+                                    <FieldSelect order={order} options={activeFields} value={field.forms__Salesforce_Field__c} onChange={setFieldSelection} />
 
                                 </Box>
                             </View>
@@ -170,16 +170,16 @@ const QuestionFieldSelect = ({ order, options, value, onChange }) => {
                 <div className="slds-form-element">
                     <div className="slds-form-element__control">
                         <div className="slds-select_container">
-                        <select className="slds-select" id="select-02" value={value.Clarity_Form_Question__c ? value.Clarity_Form_Question__c : value.Custom_Value__c} onChange={(e) => onChange(e, order)} >
+                        <select className="slds-select" id="select-02" value={value.forms__Clarity_Form_Question__c ? value.forms__Clarity_Form_Question__c : value.forms__Custom_Value__c} onChange={(e) => onChange(e, order)} >
                             <option value="">Please select</option>
                             {
                                 options.map(option => {
 
                                     return <option key={option.Id} value={option.Id}>
                                         {
-                                            option.Record_Group__c != null ? 
-                                            'Record Group: ' + option.Title__c + ' (' + option.Salesforce_Field__c + ')' :
-                                            option.Title__c
+                                            option.forms__Record_Group__c != null ? 
+                                            'Record Group: ' + option.forms__Title__c + ' (' + option.forms__Salesforce_Field__c + ')' :
+                                            option.forms__Title__c
                                         }
                                     </option>
                                 

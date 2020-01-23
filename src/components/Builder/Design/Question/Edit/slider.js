@@ -13,7 +13,7 @@ export const Slider = () => {
 
         let value = parseInt(v); 
 
-        if(activeQuestion.Max_Range__c > value) {
+        if(activeQuestion.forms__Max_Range__c > value) {
             setActiveQuestion(question => {
                 return { ...question, Min_Range__c: value }
             })
@@ -25,7 +25,7 @@ export const Slider = () => {
 
         let value = parseInt(v); 
 
-        if(activeQuestion.Min_Range__c < value) {
+        if(activeQuestion.forms__Min_Range__c < value) {
             setActiveQuestion(question => {
                 return { ...question, Max_Range__c: value }
             })
@@ -37,9 +37,9 @@ export const Slider = () => {
 
         let value = parseInt(v); 
 
-        if(activeQuestion.Max_Range__c > value) {
+        if(activeQuestion.forms__Max_Range__c > value) {
             setActiveQuestion(question => {
-                return { ...question, Step__c: value }
+                return { ...question, forms__Step__c: value }
             })
         }
 
@@ -60,7 +60,7 @@ export const Slider = () => {
                         <h2>Min.</h2>
 
 
-                        <InputNumber min={0} max={activeQuestion.Max_Range__c - 1} onChange={(e) => updateMin(e)} value={ activeQuestion.Min_Range__c } />
+                        <InputNumber min={0} max={activeQuestion.forms__Max_Range__c - 1} onChange={(e) => updateMin(e)} value={ activeQuestion.forms__Min_Range__c } />
 
                     </Box>
                 </View>
@@ -69,7 +69,7 @@ export const Slider = () => {
 
                         <h2>Max</h2>
 
-                        <InputNumber min={activeQuestion.Min_Range__c} onChange={(e) => updateMax(e)} value={ activeQuestion.Max_Range__c } />
+                        <InputNumber min={activeQuestion.forms__Min_Range__c} onChange={(e) => updateMax(e)} value={ activeQuestion.forms__Max_Range__c } />
 
                     </Box>
                 </View>
@@ -79,7 +79,7 @@ export const Slider = () => {
 
                         <h2>Step</h2>
 
-                        <InputNumber onChange={(e) => updateStep(e)} value={ activeQuestion.Step__c } />
+                        <InputNumber onChange={(e) => updateStep(e)} value={ activeQuestion.forms__Step__c } />
 
                     </Box>
                 </View>

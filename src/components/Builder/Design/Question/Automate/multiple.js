@@ -16,7 +16,7 @@ export const Multiple = () => {
 
         setActiveQuestionOptions(options => {
             return options.map(option => {
-                return { ...option, Active_Flow__c: option.Id == value ? checked : option.Active_Flow__c }
+                return { ...option, forms__Active_Flow__c: option.Id == value ? checked : option.forms__Active_Flow__c }
             })
         });
 
@@ -30,16 +30,16 @@ export const Multiple = () => {
             <p>Select values that will start this <span>Question Flow</span>.</p>
 
             <fieldset className="slds-form-element">
-                <legend className="slds-form-element__legend slds-form-element__label">{ activeQuestion.Title__c }</legend>
+                <legend className="slds-form-element__legend slds-form-element__label">{ activeQuestion.forms__Title__c }</legend>
                 <div className="slds-form-element__control">
                     <div className="slds-checkbox_button-group">
                         {
                             activeQuestionOptions.map(option => {
                                 return (
                                     <span className="slds-button slds-checkbox_button">
-                                        <input type="checkbox" checked={option.Active_Flow__c} onChange={(e) => select(e)} name="radio" id={ option.Id } value={ option.Id }/>
+                                        <input type="checkbox" checked={option.forms__Active_Flow__c} onChange={(e) => select(e)} name="radio" id={ option.Id } value={ option.Id }/>
                                         <label className="slds-checkbox_button__label" htmlFor={ option.Id }>
-                                            <span className="slds-checkbox_faux">{ option.Label__c }</span>
+                                            <span className="slds-checkbox_faux">{ option.forms__Label__c }</span>
                                         </label>
                                     </span>
                                 )

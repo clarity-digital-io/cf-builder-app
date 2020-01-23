@@ -13,7 +13,7 @@ export const Dropdown = ({ question }) => {
         <Select
             showSearch
             style={{ width: '100%' }}
-            placeholder={question.Placeholder__c}
+            placeholder={question.forms__Placeholder__c}
             optionFilterProp="children"
             filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
         >
@@ -23,7 +23,7 @@ export const Dropdown = ({ question }) => {
             {
                 questionOptions.get(question.Id) != null ? 
                     questionOptions.get(question.Id).map(option => {
-                        return <Option value={option.Id}>{option.Label__c}</Option>
+                        return <Option value={option.Id}>{option.forms__Label__c}</Option>
                     }): 
                     null
             }

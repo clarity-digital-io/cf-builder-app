@@ -23,7 +23,7 @@ export const SettingsState = () => {
 
         if(update) {
             StatusHandler(
-                form.Status__c,
+                form.forms__Status__c,
                 () => setUpdate(false),
                 () => call(
                     "ClarityFormBuilder.updateForm", 
@@ -49,7 +49,7 @@ export const SettingsState = () => {
         let value = e.target.value; 
         
         setForm(form => {
-            return { ...form, Limit__c: value }
+            return { ...form, forms__Limit__c: value }
         })
     }
 
@@ -114,7 +114,7 @@ export const SettingsState = () => {
                                     <div className="slds-form-element">
                                         <label className="slds-form-element__label" for="text-input-id-1">Form Response Submission Limit</label>
                                         <div className="slds-form-element__control">
-                                            <input min="0" type="number" value={ form.Limit__c } onChange={(e) => updateLimit(e)} id="text-input-id-1" placeholder="Set Number Limit" className="slds-input" />
+                                            <input min="0" type="number" value={ form.forms__Limit__c } onChange={(e) => updateLimit(e)} id="text-input-id-1" placeholder="Set Number Limit" className="slds-input" />
                                         </div>
                                     </div>
 
@@ -174,7 +174,7 @@ const resultHandler = (result, e, setForm, setUpdate) => {
     // let stringDate = year + '-' + month + '-' + day;
     
     setForm(form => {
-        return { ...form, Name: result.Name, Limit__c: result.Limit__c }
+        return { ...form, Name: result.Name, forms__Limit__c: result.forms__Limit__c }
     }); 
 
 }

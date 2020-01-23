@@ -16,7 +16,7 @@ export const LogicQuestion = () => {
     const { activeQuestion, questions, setActiveQuestion } = useContext(DesignContext); 
 
     const [questionOptions, setQuestionOptions] = useState(
-        questions.filter(question => (question.Title__c != activeQuestion.Title__c) && (question.Type__c != 'RecordGroup' && question.Type__c != 'FreeText' && question.Type__c != 'PageBreak'))
+        questions.filter(question => (question.forms__Title__c != activeQuestion.forms__Title__c) && (question.forms__Type__c != 'RecordGroup' && question.forms__Type__c != 'FreeText' && question.forms__Type__c != 'PageBreak'))
     )
 
     const updateCondition = (e) => {
@@ -25,7 +25,7 @@ export const LogicQuestion = () => {
         let id = e.target.id; 
 
         setActiveQuestion(q => {
-            return { ...q, Logic__c: checked ? id : q.Logic__c }
+            return { ...q, forms__Logic__c: checked ? id : q.forms__Logic__c }
         })
     }
 
@@ -38,7 +38,7 @@ export const LogicQuestion = () => {
 
                         <h1>Question</h1>
 
-                        <p>{activeQuestion.Title__c}</p>
+                        <p>{activeQuestion.forms__Title__c}</p>
                         
                     </ViewStyle>
                 
@@ -52,7 +52,7 @@ export const LogicQuestion = () => {
 
                                 <h2>Step 1: <span>Select the criteria for this rule</span></h2>
 
-                                <ControlGroup relatedId={activeQuestion.Id} value={activeQuestion.Logic__c} rows={criteria} setRows={setCriteria} setCondition={updateCondition} questions={questionOptions} />
+                                <ControlGroup relatedId={activeQuestion.Id} value={activeQuestion.forms__Logic__c} rows={criteria} setRows={setCriteria} setCondition={updateCondition} questions={questionOptions} />
 
                             </ViewStyle>
 

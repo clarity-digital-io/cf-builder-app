@@ -77,7 +77,7 @@ export const EditQuestion = () => {
         let checked = e.target.checked;
 
         setActiveQuestion(question => {
-            return { ...question, Required__c: checked }
+            return { ...question, forms__Required__c: checked }
         })
 
     }
@@ -87,7 +87,7 @@ export const EditQuestion = () => {
         let value = e.target.value; 
 
         setActiveQuestion(question => {
-            return { ...question, Title__c: value }
+            return { ...question, forms__Title__c: value }
         })
 
     }
@@ -102,13 +102,13 @@ export const EditQuestion = () => {
                         <h1>Settings</h1>
 
                         {
-                            showRequiredInput(activeQuestion.Type__c) ?
+                            showRequiredInput(activeQuestion.forms__Type__c) ?
                             <ViewStyle>
 
                                 <div className="slds-form-element">
                                     <label className="slds-checkbox_toggle slds-grid">
                                         <span className="slds-form-element__label slds-m-bottom_none">Required</span>
-                                        <input checked={activeQuestion.Required__c} onClick={(e) => updateRequiredStatus(e)} type="checkbox" name="checkbox-toggle-14" value="checkbox-toggle-14" aria-describedby="checkbox-toggle-14" />
+                                        <input checked={activeQuestion.forms__Required__c} onClick={(e) => updateRequiredStatus(e)} type="checkbox" name="checkbox-toggle-14" value="checkbox-toggle-14" aria-describedby="checkbox-toggle-14" />
                                         <span id="checkbox-toggle-14" className="slds-checkbox_faux_container" aria-live="assertive">
                                         <span className="slds-checkbox_faux"></span>
                                         </span>
@@ -131,7 +131,7 @@ export const EditQuestion = () => {
                             <div className="slds-form-element">
                                 <label className="slds-form-element__label" htmlFor="text-input-id-1">Label</label>
                                 <div className="slds-form-element__control">
-                                    <input onChange={(e) => updateActiveQuestion(e)} value={ activeQuestion.Title__c || activeQuestion.Salesforce_Field__c } type="text" id="text-input-id-1" placeholder="Placeholder Text" className="slds-input" />
+                                    <input onChange={(e) => updateActiveQuestion(e)} value={ activeQuestion.forms__Title__c || activeQuestion.forms__Salesforce_Field__c } type="text" id="text-input-id-1" placeholder="Placeholder Text" className="slds-input" />
                                 </div>
                             </div>
 
@@ -140,11 +140,11 @@ export const EditQuestion = () => {
                     </ViewStyle>
 
                     {
-                        hasExtraEditSettings(activeQuestion.Type__c) ?
+                        hasExtraEditSettings(activeQuestion.forms__Type__c) ?
                             <ViewStyle space scroll>
                             
                                 {
-                                    loading ? <SmallSpinner /> : getQuestionType(activeQuestion.Type__c) 
+                                    loading ? <SmallSpinner /> : getQuestionType(activeQuestion.forms__Type__c) 
                                 }
 
                             </ViewStyle> :

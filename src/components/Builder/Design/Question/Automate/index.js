@@ -50,7 +50,7 @@ export const AutomateQuestion = () => {
         let checked = e.target.checked;
 
         setActiveFlowDesign(design => {
-            return { ...design, Active__c: checked }
+            return { ...design, forms__Active__c: checked }
         })
 
     }
@@ -60,7 +60,7 @@ export const AutomateQuestion = () => {
         let checked = e.target.checked;
 
         setActiveFlowDesign(design => {
-            return { ...design, Form_Submission__c: checked }
+            return { ...design, forms__Form_Submission__c: checked }
         })
 
     }
@@ -95,7 +95,7 @@ export const AutomateQuestion = () => {
                             <div className="slds-form-element">
                                 <label className="slds-checkbox_toggle slds-grid">
                                     <span className="slds-form-element__label slds-m-bottom_none">Activate</span>
-                                    <input type="checkbox" checked={activeFlowDesign.Active__c} onClick={(e) => updateActivate(e)}  name="checkbox-toggle-14" value="checkbox-toggle-14" aria-describedby="checkbox-toggle-14" />
+                                    <input type="checkbox" checked={activeFlowDesign.forms__Active__c} onClick={(e) => updateActivate(e)}  name="checkbox-toggle-14" value="checkbox-toggle-14" aria-describedby="checkbox-toggle-14" />
                                     <span id="checkbox-toggle-14" className="slds-checkbox_faux_container" aria-live="assertive">
                                     <span className="slds-checkbox_faux"></span>
                                     </span>
@@ -109,7 +109,7 @@ export const AutomateQuestion = () => {
                             <div className="slds-form-element">
                                 <label className="slds-checkbox_toggle slds-grid">
                                     <span className="slds-form-element__label slds-m-bottom_none">Only On Form Submission</span>
-                                    <input type="checkbox" checked={activeFlowDesign.Form_Submission__c} onClick={(e) => updateFormSubmissionStatus(e)} name="checkbox-toggle-14" value="checkbox-toggle-14" aria-describedby="checkbox-toggle-14" />
+                                    <input type="checkbox" checked={activeFlowDesign.forms__Form_Submission__c} onClick={(e) => updateFormSubmissionStatus(e)} name="checkbox-toggle-14" value="checkbox-toggle-14" aria-describedby="checkbox-toggle-14" />
                                     <span id="checkbox-toggle-14" className="slds-checkbox_faux_container" aria-live="assertive">
                                     <span className="slds-checkbox_faux"></span>
                                     </span>
@@ -123,7 +123,7 @@ export const AutomateQuestion = () => {
                     <ViewStyle space border scrollAutomate> 
 
                         {
-                            loading ? <Spinner /> : getQuestionType(activeQuestion.Type__c) 
+                            loading ? <Spinner /> : getQuestionType(activeQuestion.forms__Type__c) 
                         }
 
                     </ViewStyle>

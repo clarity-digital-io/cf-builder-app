@@ -79,7 +79,7 @@ export const Header = () => {
 
                 <Button small update>{ update ? 'Saving... ' : 'Saved' }</Button>
 
-                <Button small status>{ form.Status__c } </Button>
+                <Button small status>{ form.forms__Status__c } </Button>
 
             </View>
 
@@ -88,7 +88,7 @@ export const Header = () => {
                 <View className="row end-xs">
 
                     {
-                        style.Multi_Page__c ? 
+                        style.forms__Multi_Page__c ? 
                         <View className="col-xs-2">
                             <Button small add onClick={() => setAddPageUpdate(true)}>Add Page</Button>
                         </View> :
@@ -100,7 +100,7 @@ export const Header = () => {
                         <Button small preview onClick={() => preview()}>Preview</Button>
 
                         {
-                            form.Status__c == 'Draft' ? 
+                            form.forms__Status__c == 'Draft' ? 
                             <Button small publish onClick={() => publish()}>Publish Form</Button> :
                             <Button small publish onClick={() => handleDraft()}>Set to Draft</Button>
                         }
@@ -190,7 +190,7 @@ const publishHandler = (result, e, setLoading, setPublishCheck, setForm) => {
     if(result.Status == 'Success') {
 
         setForm(form => {
-            return { ...form, Status__c: result.Form.Status__c }
+            return { ...form, forms__Status__c: result.Form.forms__Status__c }
         });
 
     }

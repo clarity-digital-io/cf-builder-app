@@ -9,10 +9,10 @@ import { Question } from './question';
 export const Card = ({ fullHeight, style, children }) => {
 
     const theme = {
-        background: style.Background_Color__c,
-        questionColor: style.Color__c, 
-        backgroundImage: style.Background_Image__c,
-        backgroundImageCD: (style.Background_Image__c != null && style.Background_Image__c != '') ? (style.Background_Image__c.length > 18 ? false : true ) : false
+        background: style.forms__Background_Color__c,
+        questionColor: style.forms__Color__c, 
+        backgroundImage: style.forms__Background_Image__c,
+        backgroundImageCD: (style.forms__Background_Image__c != null && style.forms__Background_Image__c != '') ? (style.forms__Background_Image__c.length > 18 ? false : true ) : false
     }
 
     return (    

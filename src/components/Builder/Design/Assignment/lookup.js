@@ -15,7 +15,7 @@ export const Lookup = ({ setSelected }) => {
     useEffect(() => {
         
         setSelected(selected => {
-            return { ...selected, Assign__c: selectedUser ? selectedUser.Id : null, Default_Assign__c: selectedUser ? selectedUser.Id : null }
+            return { ...selected, forms__Assign__c: selectedUser ? selectedUser.Id : null, forms__Default_Assign__c: selectedUser ? selectedUser.Id : null }
         }); 
 
     }, [selectedUser])

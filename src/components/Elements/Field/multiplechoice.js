@@ -19,7 +19,7 @@ export const MultipleChoice = ({ question }) => {
                                 value={option.Id}
                                 checked={false}
                             >
-                                {option.Label__c}
+                                {option.forms__Label__c}
                             </Radio>
                     }) :
                     null

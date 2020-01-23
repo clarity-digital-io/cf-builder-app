@@ -43,7 +43,7 @@ export const PictureChoice = () => {
                 return options.map((option, index) => {
 
                     if(order == index) {
-                        return { ...option, Label__c: value }
+                        return { ...option, forms__Label__c: value }
                     }
                     return option; 
                 })
@@ -66,7 +66,7 @@ export const PictureChoice = () => {
     const add = (value) => {
 
         setActiveQuestionOptions(options => {
-            return options.concat([{ Label__c: value, Clarity_Form_Question__c: activeQuestion.Id }]);
+            return options.concat([{ forms__Label__c: value, forms__Clarity_Form_Question__c: activeQuestion.Id }]);
         })
 
         setNewValue('');
@@ -119,12 +119,12 @@ export const PictureChoice = () => {
                                     <Box padding={'.5em'}>
 
                                         {
-                                            option.Choice_Image__c == null ? 
+                                            option.forms__Choice_Image__c == null ? 
                                             <Upload setOptions={setActiveQuestionOptions} order={order} newOption={false}>
                                                 <Emoticon>📷</Emoticon>
                                             </Upload> :
                                             <Upload setOptions={setActiveQuestionOptions} order={order} newOption={false}>
-                                                <Image src={option.Choice_Image__c} />
+                                                <Image src={option.forms__Choice_Image__c} />
                                             </Upload>
                                         }
 
@@ -133,7 +133,7 @@ export const PictureChoice = () => {
                                 <View className="col-xs-9">
                                     <Box padding={'.5em'}>
                                         <div className="slds-form-element__control">
-                                            <input onChange={(e) => updateOption(e, order)} onKeyDown={(e) => handleKeyDown(e)} value={option.Label__c} type="text" id={option.Id} placeholder="Option" className="slds-input" />
+                                            <input onChange={(e) => updateOption(e, order)} onKeyDown={(e) => handleKeyDown(e)} value={option.forms__Label__c} type="text" id={option.Id} placeholder="Option" className="slds-input" />
                                         </div>
                                     </Box>
                                 </View>
@@ -176,11 +176,11 @@ const Upload = ({ children, setOptions, order, activeQuestionId, newOption, valu
             setOptions(options => {
 
                 if(newOption) {
-                    return [{ Label__c: value, Clarity_Form_Question__c: activeQuestionId, Choice_Image__c: reader.result, Base64: base64result }].concat(options);
+                    return [{ forms__Label__c: value, forms__Clarity_Form_Question__c: activeQuestionId, forms__Choice_Image__c: reader.result, Base64: base64result }].concat(options);
                 } else {
                     return options.map((o, i) => {
                         if(i == order) {
-                            return { ...o, Choice_Image__c: reader.result, Base64: base64result }
+                            return { ...o, forms__Choice_Image__c: reader.result, Base64: base64result }
                         }
                         return o; 
                     })

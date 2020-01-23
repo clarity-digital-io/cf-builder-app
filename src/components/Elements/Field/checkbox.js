@@ -9,7 +9,7 @@ export const Checkbox = ({ question }) => {
     const options = () => {
         return questionOptions.get(question.Id) != null ? 
             questionOptions.get(question.Id).map(q => {
-                return { value: q.Id, label: q.Label__c }
+                return { value: q.Id, label: q.forms__Label__c }
             }) :
             []
     }

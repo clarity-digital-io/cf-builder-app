@@ -14,7 +14,7 @@ export const FreeText = () => {
         let value = e.target.value; 
 
         setActiveQuestion(question => {
-            return { ...question, FreeText_Type__c: value }
+            return { ...question, forms__FreeText_Type__c: value }
         });
 
     }
@@ -31,7 +31,7 @@ export const FreeText = () => {
                     <View className="col-xs-12">
                         <Box padding={'.5em'}>
 
-                        <Radio.Group buttonStyle="solid" onChange={(e) => onChange(e)} defaultValue={activeQuestion.FreeText_Type__c}>
+                        <Radio.Group buttonStyle="solid" onChange={(e) => onChange(e)} defaultValue={activeQuestion.forms__FreeText_Type__c}>
                             <Radio.Button value="Header">Header</Radio.Button>
                             <Radio.Button value="Paragraph">Paragraph</Radio.Button>
                         </Radio.Group> 

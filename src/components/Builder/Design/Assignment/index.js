@@ -27,7 +27,7 @@ export const AssignmentState = () => {
         let id = e.target.id; 
 
         setAssignment(a => {
-            return { ...a, Logic__c: checked ? id : a.Logic__c }
+            return { ...a, forms__Logic__c: checked ? id : a.forms__Logic__c }
         })
     }
 
@@ -38,7 +38,7 @@ export const AssignmentState = () => {
         if(update) {
 
             StatusHandler(
-                form.Status__c,
+                form.forms__Status__c,
                 () => setUpdate(false),
                 () => call(
                     "ClarityFormBuilder.saveAssignmentRules", 
@@ -77,7 +77,7 @@ export const AssignmentState = () => {
 
                                 <h2>Step 1: <span>Select the criteria for this rule</span></h2>
 
-                                <ControlGroup type={'assign'} relatedId={assign.Id} value={assign.Logic__c} rows={assignmentRules} setRows={setAssignmentRules} setCondition={updateCondition} questions={questions} />
+                                <ControlGroup type={'assign'} relatedId={assign.Id} value={assign.forms__Logic__c} rows={assignmentRules} setRows={setAssignmentRules} setCondition={updateCondition} questions={questions} />
 
                             </ViewStyle>,
 

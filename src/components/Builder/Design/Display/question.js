@@ -34,7 +34,7 @@ export const Question = ({ question }) => {
                 <li onClick={() => edit('EDIT')}><Icon style={{ fontSize: '1.25em', color: Main.color.body }} type="edit" /></li>
 
                 {
-                    question.Type__c != 'FreeText' ?
+                    question.forms__Type__c != 'FreeText' ?
                     <li onClick={() => edit('AUTOMATE')}><Icon style={{ fontSize: '1.25em', color: Main.color.body }} type="api" /></li> :
                     null
                 }
@@ -42,13 +42,13 @@ export const Question = ({ question }) => {
                 <li onClick={() => edit('LOGIC')} ><Icon style={{ fontSize: '1.25em', color: Main.color.body }} type="interaction" /></li>
 
                 {
-                    question.Type__c == 'Number' ? 
+                    question.forms__Type__c == 'Number' ? 
                     <li onClick={() => edit('CALCULATOR')}><Icon style={{ fontSize: '1.25em', color: Main.color.body }} type="calculator" /></li> : 
                         null 
                 }
 
                 {
-                    (question.Type__c == 'RecordGroup' && question.Salesforce_Object__c != null) ? 
+                    (question.forms__Type__c == 'RecordGroup' && question.forms__Salesforce_Object__c != null) ? 
                     <li onClick={() => edit('SF')}><Icon style={{ fontSize: '1.25em', color: Main.color.body }} type="folder-add" /></li> : 
                         null
                 }
@@ -60,8 +60,8 @@ export const Question = ({ question }) => {
             <FieldBox>
 
                 {
-                    hasFormLabel(question.Type__c) ? 
-                        <FormItem key={question.Id} label={question.Title__c} required={question.Required__c}>
+                    hasFormLabel(question.forms__Type__c) ? 
+                        <FormItem key={question.Id} label={question.forms__Title__c} required={question.forms__Required__c}>
                             {getType(question)}
                         </FormItem> :
                         <div>{getType(question)}</div>

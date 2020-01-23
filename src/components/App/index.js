@@ -34,7 +34,7 @@ const BuilderProvider = ({ children }) => {
 
             call(
                 "ClarityFormBuilder.getConnectionFieldMapping", 
-                [activeConnection.Id, activeConnection.Salesforce_Object__c], 
+                [activeConnection.Id, activeConnection.forms__Salesforce_Object__c], 
                 (result, e) => mappingResultHandler(result, e, setActiveFieldMapping, setActiveFieldPrefills, setActiveFields, setLoading)
             );
 
@@ -50,13 +50,13 @@ const BuilderProvider = ({ children }) => {
 
     const [connections, setConnections] = useState([]);
 
-    const [assign, setAssignment] = useState({ Id: null, Name: '', Assign__c : null, Default_Assign__c: null });
+    const [assign, setAssignment] = useState({ Id: null, Name: '', forms__Assign__c : null, forms__Default_Assign__c: null });
 
     const [styles, setStyles] = useState([]); 
 
-    const [style, setStyle] = useState({ Id: null, Color__c: '#333333', Background_Color__c : '#ffff', Columns: '', Multi_Page__c: false });
+    const [style, setStyle] = useState({ Id: null, forms__Color__c: '#333333', forms__Background_Color__c : '#ffff', Columns: '', forms__Multi_Page__c: false });
 
-    const [form, setForm] = useState({Id: null, Name: '', Clarity_Form_Style__c: null, Clarity_Form_Assignment__c: 1, Connected_Object__c: '', Status__c: '' });
+    const [form, setForm] = useState({Id: null, Name: '', forms__Clarity_Form_Style__c: null, forms__Clarity_Form_Assignment__c: 1, forms__Connected_Object__c: '', forms__Status__c: '' });
 
     useEffect(() => {
 
@@ -92,12 +92,12 @@ const BuilderProvider = ({ children }) => {
             if(assign.Id != null) {
                 call(
                     "ClarityFormBuilder.getAssignmentRules", 
-                    [form.Clarity_Form_Assignment__c], 
+                    [form.forms__Clarity_Form_Assignment__c], 
                     (result, e) => assignmentRulesHandler(result, e, setAssignmentRules, setLoading)
                 );
             } else {
                 StatusHandler(
-                    form.Status__c,
+                    form.forms__Status__c,
                     () => setLoading(false),
                     () => call(
                         "ClarityFormBuilder.createAssignment", 
@@ -179,7 +179,7 @@ const assignmentCreateHandler = (result, e, setForm, setAssignment, setAssignmen
     setForm(form => {
         return { 
             ...form, 
-            Clarity_Form_Assignment__c: result.Id
+            forms__Clarity_Form_Assignment__c: result.Id
         }
     });
 
@@ -193,8 +193,8 @@ const assignmentRulesHandler = (result, e, setAssignmentRules, setLoading) => {
 }
 
 const createHandler = (result, e, setForm, setStyle, setAssignment) => {
-
-    let convertedDate = new Date(result.End_Date__c);
+    console.log('result', result); 
+    let convertedDate = new Date(result.forms__End_Date__c);
     let year = convertedDate.getFullYear();
     let dateMonth = convertedDate.getMonth()
     let month = dateMonth < 10 ? '0' + (dateMonth + 1) : dateMonth;
@@ -218,23 +218,23 @@ const createHandler = (result, e, setForm, setStyle, setAssignment) => {
     setStyle(style => {
         return { 
             ...style, 
-            Id: result.Clarity_Form_Style__c, 
-            Multi_Page__c: result.Clarity_Form_Style__r.Multi_Page__c ,
-            Background_Image__c: result.Clarity_Form_Style__r.Background_Image__c, 
-            Background_Color__c: result.Clarity_Form_Style__r.Background_Color__c, 
-            Color__c: result.Clarity_Form_Style__r.Color__c 
+            Id: result.forms__Clarity_Form_Style__c, 
+            forms__Multi_Page__c: result.forms__Clarity_Form_Style__r.forms__Multi_Page__c ,
+            forms__Background_Image__c: result.forms__Clarity_Form_Style__r.forms__Background_Image__c, 
+            forms__Background_Color__c: result.forms__Clarity_Form_Style__r.forms__Background_Color__c, 
+            forms__Color__c: result.forms__Clarity_Form_Style__r.forms__Color__c 
         }
     })
 
-    if(result.Clarity_Form_Assignment__c == null) return;
+    if(result.forms__Clarity_Form_Assignment__c == null) return;
 
     setAssignment(assignment => {
         return { 
             ...assignment, 
-            Id: result.Clarity_Form_Assignment__c, 
-            Assign__c: result.Clarity_Form_Assignment__r.Assign__c, 
-            Default_Assign__c: result.Clarity_Form_Assignment__r.Default_Assign__c, 
-            Name: result.Clarity_Form_Assignment__r.Name
+            Id: result.forms__Clarity_Form_Assignment__c, 
+            forms__Assign__c: result.forms__Clarity_Form_Assignment__r.forms__Assign__c, 
+            forms__Default_Assign__c: result.forms__Clarity_Form_Assignment__r.forms__Default_Assign__c, 
+            Name: result.forms__Clarity_Form_Assignment__r.Name
         }
     });
 

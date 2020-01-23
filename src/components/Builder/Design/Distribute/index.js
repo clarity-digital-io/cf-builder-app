@@ -19,7 +19,7 @@ export const DistributeState = () => {
 
         if(update) {
             StatusHandler(
-                form.Status__c,
+                form.forms__Status__c,
                 () => setUpdate(false),
                 () => call(
                     "ClarityFormBuilder.updateForm", 
@@ -44,7 +44,7 @@ export const DistributeState = () => {
                         <p>Clarity Forms provides multiple ways for users to access your new Form.</p>
 
                         {
-                            form.Status__c == 'Draft' ? 
+                            form.forms__Status__c == 'Draft' ? 
                             <h2>Form must be published before distribution.</h2>:
                             null
                         }

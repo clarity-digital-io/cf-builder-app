@@ -70,7 +70,7 @@ export const useMultiDrag = () => {
 
                     let questionMoved = sourceValues.find((val, i) => sourceIndex == i);
 
-                    questionMoved.Page__c = destinationDropId;
+                    questionMoved.forms__Page__c = destinationDropId;
 
                     let sourceNewQuestions = sourceValues.filter((val, i) => sourceIndex != i);
 
@@ -148,15 +148,15 @@ const reorder = (list, startIndex, endIndex) => {
 const sort = (result) => {
 
     let sorted = result.map((r, i) => {
-        r.Order__c = i;
+        r.forms__Order__c = i;
         return r; 
     });
 
     sorted = sorted.sort((a, b) => {
-        if(a.Order__c < b.Order__c) {
+        if(a.forms__Order__c < b.forms__Order__c) {
             return -1; 
         }
-        if(a.Order__c > b.Order__c) {
+        if(a.forms__Order__c > b.forms__Order__c) {
             return 1; 
         }
     });
@@ -181,15 +181,15 @@ const move = (source, destination, droppableSource, droppableDestination, formId
 
 const clean = (question, index, formId, page) => {
     return {
-        Title__c        : question.name, 
-        Order__c        : parseInt(page + '' + index), 
-        Type__c         : question.type,
-        Clarity_Form__c : formId,
-        Required__c     : false, 
-        Max_Length__c   : 10, 
-        Min_Range__c    : 0, 
-        Max_Range__c    : 100, 
-        Step__c         : 10, 
-        Page__c         : page != null ? page : 0
+        forms__Title__c        : question.name, 
+        forms__Order__c        : parseInt(page + '' + index), 
+        forms__Type__c         : question.type,
+        forms__Clarity_Form__c : formId,
+        forms__Required__c     : false, 
+        forms__Max_Length__c   : 10, 
+        forms__Min_Range__c    : 0, 
+        forms__Max_Range__c    : 100, 
+        forms__Step__c         : 10, 
+        forms__Page__c         : page != null ? page : 0
     }
 }

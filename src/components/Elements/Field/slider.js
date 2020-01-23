@@ -6,9 +6,9 @@ export const Slider = ({ question }) => {
     return (
         <SliderComponent  
             value={0}
-            min={question.Min_Range__c}
-            max={question.Max_Range__c}
-            step={question.Step__c}
+            min={question.forms__Min_Range__c}
+            max={question.forms__Max_Range__c}
+            step={question.forms__Step__c}
         />
     )
 

@@ -34,7 +34,7 @@ export const PictureChoices = ({ question }) => {
             return options.map((option, index) => {
 
                 if(order == index) {
-                    return { ...option, Choice_Image__c: file }
+                    return { ...option, forms__Choice_Image__c: file }
                 }
                 return option; 
             })
@@ -52,7 +52,7 @@ export const PictureChoices = ({ question }) => {
                 return options.map((option, index) => {
 
                     if(order == index) {
-                        return { ...option, Label__c: value, Choice_Image__c: file }
+                        return { ...option, forms__Label__c: value, forms__Choice_Image__c: file }
                     }
                     return option; 
                 })
@@ -75,7 +75,7 @@ export const PictureChoices = ({ question }) => {
     const add = (value, activeQuestionId) => {
 
         setActiveQuestionOptions(options => {
-            return options.concat([{ Label__c: value, Clarity_Form_Question__c: activeQuestionId }]);
+            return options.concat([{ forms__Label__c: value, forms__Clarity_Form_Question__c: activeQuestionId }]);
         })
     }
     
@@ -242,7 +242,7 @@ const PictureChoice = ({ isNew, activeQuestionId, option, order, handlePreview, 
                     <Box padding={'.5em'}>
         
                         <div className="slds-form-element__control">
-                            <input onChange={(e) => updateOption(e, order)} onKeyDown={(e) => handleKeyDown(e)} value={option.Label__c} type="text" id={option.Id} placeholder="Option" className="slds-input" />
+                            <input onChange={(e) => updateOption(e, order)} onKeyDown={(e) => handleKeyDown(e)} value={option.forms__Label__c} type="text" id={option.Id} placeholder="Option" className="slds-input" />
                         </div>
                         
                     </Box>

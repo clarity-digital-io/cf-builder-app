@@ -25,7 +25,7 @@ export const Lookup = ({ question }) => {
         <Select
             mode="multiple"
             labelInValue
-            placeholder={question.Placeholder__c}
+            placeholder={question.forms__Placeholder__c}
             notFoundContent={search ? <Spin size="small" /> : null}
             filterOption={false}
             onChange={(value) => onSelect(value)}

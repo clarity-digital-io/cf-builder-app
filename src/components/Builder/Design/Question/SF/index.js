@@ -20,7 +20,7 @@ export const SalesforceFields = () => {
     useEffect(() => {
         
         //setActiveRecordGroup(recordGroup.get(activeQuestion.Id) || []);
-        setSObjectEdit(activeQuestion.Type__c);
+        setSObjectEdit(activeQuestion.forms__Type__c);
 
     }, []);
 
@@ -31,12 +31,12 @@ export const SalesforceFields = () => {
 
                     <ViewStyle space border>
 
-                        <h1>{ activeQuestion.Type__c }: { activeQuestion.Salesforce_Object__c } </h1>
+                        <h1>{ activeQuestion.forms__Type__c }: { activeQuestion.forms__Salesforce_Object__c } </h1>
 
                         <ViewStyle>
 
                             <p>
-                                { activeQuestion.Title__c }
+                                { activeQuestion.forms__Title__c }
                             </p>
 
                         </ViewStyle>
@@ -51,7 +51,7 @@ export const SalesforceFields = () => {
                             records={activeRecordGroup} 
                             setActiveRecordGroup={setActiveRecordGroup} 
                             relatedId={activeQuestion.Id} 
-                            formId={activeQuestion.Clarity_Form__c}
+                            formId={activeQuestion.forms__Clarity_Form__c}
                         /> 
 
                     </ViewStyle>
@@ -74,7 +74,7 @@ const SalesforceSelects = ({ records, setActiveRecordGroup, relatedId, formId })
 const ControlSelects = ({ records }) => {
 
     return records.map((row, i) => {
-        return <ControlSelect key={row.Order__c} order={i} row={row} />
+        return <ControlSelect key={row.forms__Order__c} order={i} row={row} />
     });
 
 }
@@ -109,7 +109,7 @@ const ControlSelect = ({ order, row }) => {
                 }
 
                 if(i == order) {
-                    return { ...record, Salesforce_Field__c: value, Type__c: fieldType, Lookup__c: sObject }
+                    return { ...record, forms__Salesforce_Field__c: value, forms__Type__c: fieldType, forms__Lookup__c: sObject }
                 }
 
                 return record; 
@@ -149,14 +149,14 @@ const ControlSelect = ({ order, row }) => {
 
             <View className="col-xs-4">
                 <Box padding='.5em'> 
-                    <Select disabled={row.RG_Required__c} key={row.Order__c} value={row.Salesforce_Field__c} options={Object.keys(additionalFields)} onChange={(e) => setSelection(e, row.Order__c)}/>
+                    <Select disabled={row.forms__RG_Required__c} key={row.forms__Order__c} value={row.forms__Salesforce_Field__c} options={Object.keys(additionalFields)} onChange={(e) => setSelection(e, row.forms__Order__c)}/>
                 </Box>
             </View>
             <View className="col-xs-2">
                 <Box padding='.5em'> 
 
                     {
-                        row.Id != null && !row.RG_Required__c? 
+                        row.Id != null && !row.forms__RG_Required__c? 
                         <Button add onClick={() => edit('EDIT')}>Edit</Button>
                         :
                         <Button disabled>Edit</Button>
@@ -168,7 +168,7 @@ const ControlSelect = ({ order, row }) => {
                 <Box padding='.5em'> 
 
                     {
-                        row.Id != null && !row.RG_Required__c? 
+                        row.Id != null && !row.forms__RG_Required__c? 
                         <Button add onClick={() => edit('AUTOMATE')}>Automate</Button>
                         :
                         <Button disabled>Automate</Button>
@@ -180,7 +180,7 @@ const ControlSelect = ({ order, row }) => {
                 <Box padding='.5em'> 
 
                     {
-                        row.Id != null && !row.RG_Required__c? 
+                        row.Id != null && !row.forms__RG_Required__c? 
                         <Button add onClick={() => edit('LOGIC')}>Logic</Button> :
                         <Button disabled>Logic</Button>
                     }
@@ -192,7 +192,7 @@ const ControlSelect = ({ order, row }) => {
                 <Box padding='.5em'> 
 
                     {
-                        !row.RG_Required__c ? 
+                        !row.forms__RG_Required__c ? 
                         <div disabled={true} onClick={() => removeRow(order)}>
                             <svg className="slds-button__icon" aria-hidden="true">
                                 <CloseIcon />
@@ -213,7 +213,7 @@ const ControlAddRow = ({ setActiveRecordGroup, relatedId, formId }) => {
     const add = () => {
  
         setActiveRecordGroup(records => {   
-            return records.concat([{ Clarity_Form__c: formId, Logic__c: 'AND', Type__c: '', Title__c: '', Salesforce_Field__c: '', Record_Group__c: relatedId, Order__c: records.length, Page__c: 0 }]);
+            return records.concat([{ forms__Clarity_Form__c: formId, forms__Logic__c: 'AND', forms__Type__c: '', forms__Title__c: '', forms__Salesforce_Field__c: '', forms__Record_Group__c: relatedId, forms__Order__c: records.length, forms__Page__c: 0 }]);
         })
 
     }

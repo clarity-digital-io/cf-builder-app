@@ -4,8 +4,8 @@ import { TextStyle, ParagraphStyle } from '../View/fieldstyle'
 
 export const FreeText = ({ question }) => {
 
-    return question.FreeText_Type__c == 'Header' ?
-    <TextStyle>{question.Title__c}</TextStyle> :
-    <ParagraphStyle>{question.Title__c}</ParagraphStyle>
+    return question.forms__FreeText_Type__c == 'Header' ?
+    <TextStyle>{question.forms__Title__c}</TextStyle> :
+    <ParagraphStyle>{question.forms__Title__c}</ParagraphStyle>
 
 }

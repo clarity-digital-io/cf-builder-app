@@ -25,7 +25,7 @@ export const Display = () => {
         <FormDesign key={'Display'}>
 
             {
-                !style.Multi_Page__c ? 
+                !style.forms__Multi_Page__c ? 
                 <Single style={style} /> :
                 <Multi style={style}  />
             }

@@ -114,7 +114,7 @@ const DesignProvider = ({ children }) => {
         if(update && updateSingle) {
 
             StatusHandler(
-                form.Status__c,
+                form.forms__Status__c,
                 () => setUpdate(false),
                 () => call(
                     "ClarityFormBuilder.save", 
@@ -133,7 +133,7 @@ const DesignProvider = ({ children }) => {
             }, []);
 
             StatusHandler(
-                form.Status__c,
+                form.forms__Status__c,
                 () => setUpdate(false),
                 () => call(
                     "ClarityFormBuilder.save", 
@@ -165,13 +165,13 @@ const DesignProvider = ({ children }) => {
             let questionsWithPageUpdate = Array.from(pageQuestionsCopy.values()).reduce((accum, values, key) => {
 
                 return accum.concat(values.map((val) => {
-                    return { ...val, Page__c: key }
+                    return { ...val, forms__Page__c: key }
                 }));
 
             }, []);
 
             StatusHandler(
-                form.Status__c,
+                form.forms__Status__c,
                 () => setUpdate(false),
                 () => call(
                     "ClarityFormBuilder.pageDelete", 
@@ -195,7 +195,7 @@ const DesignProvider = ({ children }) => {
             setUpdate(true);
             
             StatusHandler(
-                form.Status__c,
+                form.forms__Status__c,
                 () => setUpdate(false),
                 () => call(
                     "ClarityFormBuilder.deleteQuestion", 
@@ -283,13 +283,13 @@ const resultHandler = (result, e, setUpdate, setAdditionalUpdate, setQuestions, 
 
 const fetchHandler = (result, e, setQuestions, setRecordGroup, setPageQuestions, setQuestionOptions) => {
 
-    let questionWithOptions = result.filter(q => q.Clarity_Form_Question_Options__r != null);
+    let questionWithOptions = result.filter(q => q.forms__Clarity_Form_Question_Options__r != null);
 
     setQuestionOptions(questionOptions => {
 
         return questionWithOptions.reduce((accum, cur, i) => {
 
-            return accum.set(cur.Id, cur.Clarity_Form_Question_Options__r);
+            return accum.set(cur.Id, cur.forms__Clarity_Form_Question_Options__r);
 
         }, new Map())
 
@@ -297,8 +297,8 @@ const fetchHandler = (result, e, setQuestions, setRecordGroup, setPageQuestions,
 
     let cleanResult = result.map(q => {
 
-        if(q.hasOwnProperty('Clarity_Form_Question_Options__r')) {
-            delete q.Clarity_Form_Question_Options__r;
+        if(q.hasOwnProperty('forms__Clarity_Form_Question_Options__r')) {
+            delete q.forms__Clarity_Form_Question_Options__r;
         }
 
         return q; 
@@ -307,13 +307,13 @@ const fetchHandler = (result, e, setQuestions, setRecordGroup, setPageQuestions,
 
     let questions = sorted(cleanResult); 
 
-    let cleanQuestions = questions.filter(question => question.Record_Group__c == null);
+    let cleanQuestions = questions.filter(question => question.forms__Record_Group__c == null);
 
-    let recordGroupQuestions = questions.filter(question => question.Type__c == 'RecordGroup');
+    let recordGroupQuestions = questions.filter(question => question.forms__Type__c == 'RecordGroup');
 
     let recordGroups = recordGroupQuestions.reduce((accum, question) => {
 
-        return accum.set(question.Id, questions.filter(q => q.Record_Group__c == question.Id))
+        return accum.set(question.Id, questions.filter(q => q.forms__Record_Group__c == question.Id))
 
     }, new Map());
 
@@ -329,13 +329,13 @@ const deleteResultHandler = (result, e, setQuestions, setPageQuestions, setRecor
 
     let questions = sorted(result); 
 
-    let cleanQuestions = questions.filter(question => question.Record_Group__c == null);
+    let cleanQuestions = questions.filter(question => question.forms__Record_Group__c == null);
 
-    let recordGroupQuestions = questions.filter(question => question.Type__c == 'RecordGroup');
+    let recordGroupQuestions = questions.filter(question => question.forms__Type__c == 'RecordGroup');
 
     let recordGroups = recordGroupQuestions.reduce((accum, question) => {
 
-        return accum.set(question.Id, questions.filter(q => q.Record_Group__c == question.Id))
+        return accum.set(question.Id, questions.filter(q => q.forms__Record_Group__c == question.Id))
 
     }, new Map());
 
@@ -352,10 +352,10 @@ const deleteResultHandler = (result, e, setQuestions, setPageQuestions, setRecor
 const sorted = (questions) => {
 
     let result = questions.sort((a, b) => {
-        if(a.Order__c < b.Order__c) {
+        if(a.forms__Order__c < b.forms__Order__c) {
             return -1; 
         }
-        if(a.Order__c > b.Order__c) {
+        if(a.forms__Order__c > b.forms__Order__c) {
             return 1; 
         }
     });
@@ -367,15 +367,15 @@ const sorted = (questions) => {
 const sortDelete = (result) => {
 
     let s = result.map((r, i) => {
-        r.Order__c = i;
+        r.forms__Order__c = i;
         return r; 
     });
 
     s = s.sort((a, b) => {
-        if(a.Order__c < b.Order__c) {
+        if(a.forms__Order__c < b.forms__Order__c) {
             return -1; 
         }
-        if(a.Order__c > b.Order__c) {
+        if(a.forms__Order__c > b.forms__Order__c) {
             return 1; 
         }
     });
@@ -388,12 +388,12 @@ const pageBreaks = (questions) => {
 
     return questions.reduce((accum, question) => {
 
-        if(accum.has(question.Page__c)) {
-            let pageQuestions = accum.get(question.Page__c); 
+        if(accum.has(question.forms__Page__c)) {
+            let pageQuestions = accum.get(question.forms__Page__c); 
             let updatedPageQuestions = pageQuestions.concat([question]);
-            accum.set(question.Page__c, updatedPageQuestions)
+            accum.set(question.forms__Page__c, updatedPageQuestions)
         } else {
-            accum.set(question.Page__c, [question]);
+            accum.set(question.forms__Page__c, [question]);
         }
 
         return accum;

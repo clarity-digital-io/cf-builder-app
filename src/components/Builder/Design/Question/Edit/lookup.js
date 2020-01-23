@@ -16,7 +16,7 @@ export const Lookup = () => {
     const updateLookupQuestion = (value) => {
 
         setActiveQuestion(question => {
-            return { ...question, Lookup__c: value }
+            return { ...question, forms__Lookup__c: value }
         })
 
     }
@@ -31,9 +31,9 @@ export const Lookup = () => {
             <h1>Lookup</h1>
 
                 {
-                    activeQuestion.Type__c == 'REFERENCE' ? 
-                    <Select options={[activeQuestion.Salesforce_Field__c]} value={activeQuestion.Salesforce_Field__c} onChange={updateLookupQuestion} /> :
-                    <Select options={sObjects} value={activeQuestion.Lookup__c} onChange={updateLookupQuestion} />
+                    activeQuestion.forms__Type__c == 'REFERENCE' ? 
+                    <Select options={[activeQuestion.forms__Salesforce_Field__c]} value={activeQuestion.forms__Salesforce_Field__c} onChange={updateLookupQuestion} /> :
+                    <Select options={sObjects} value={activeQuestion.forms__Lookup__c} onChange={updateLookupQuestion} />
                 }
         
         </ViewStyle>,

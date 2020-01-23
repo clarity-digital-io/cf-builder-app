@@ -15,7 +15,7 @@ export const DesignState = () => {
 
     const setAddStyle = () => {
         setNavState('DESIGNEDIT')
-        setStyle({ Background_Color__c: '#FFFFFF', Color__c: '#333333', Button_Color__c: '#333333', Background_Image__c: '', Multi_Page__c: true })
+        setStyle({ forms__Background_Color__c: '#FFFFFF', forms__Color__c: '#333333', forms__Button_Color__c: '#333333', forms__Background_Image__c: '', forms__Multi_Page__c: true })
     }
 
     const setEditStyle = (style) => {
@@ -92,11 +92,11 @@ export const DesignState = () => {
 const Style = ({ setEditStyle, active, style, setStyle }) => {
 
     const theme = {
-        background: style.Background_Color__c,
-        questionColor: style.Color__c, 
-        buttonColor: style.Button_Color__c, 
-        backgroundImage: style.Background_Image__c,
-        backgroundImageCD: (style.Background_Image__c != null && style.Background_Image__c != '') ? (style.Background_Image__c.length > 18 ? false : true ) : false 
+        background: style.forms__Background_Color__c,
+        questionColor: style.forms__Color__c, 
+        buttonColor: style.forms__Button_Color__c, 
+        backgroundImage: style.forms__Background_Image__c,
+        backgroundImageCD: (style.forms__Background_Image__c != null && style.forms__Background_Image__c != '') ? (style.forms__Background_Image__c.length > 18 ? false : true ) : false 
     }
 
     return <ThemeProvider theme={theme}>

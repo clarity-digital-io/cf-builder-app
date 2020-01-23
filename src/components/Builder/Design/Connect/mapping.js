@@ -31,13 +31,13 @@ export const MappingState = () => {
             });
 
             StatusHandler(
-                form.Status__c,
+                form.forms__Status__c,
                 () => setUpdate(false),
                 () => call(
                     "ClarityFormBuilder.saveActiveFieldConnections", 
                     [JSON.stringify(combinedConnections), activeConnection.Id], 
                     (result, e) => fieldConnectionsResultHandler(result, e, setActiveFieldPrefills, setActiveFieldMapping, setUpdate),
-                    form.Status__c
+                    form.forms__Status__c
                 )
             )
 
@@ -46,7 +46,7 @@ export const MappingState = () => {
     }, [update]);
 
     const navigateMapping = (loc) => {
-        if(loc == 'PREPOPULATE' && activeConnection.New__c) {
+        if(loc == 'PREPOPULATE' && activeConnection.forms__New__c) {
             return;
         }
 
@@ -70,7 +70,7 @@ export const MappingState = () => {
                                                 <a>Connect</a>
                                             </li>
 
-                                            <li className={ getClassName(activeConnection.New__c, localNavState) } onClick={() => navigateMapping('PREFILL')}>
+                                            <li className={ getClassName(activeConnection.forms__New__c, localNavState) } onClick={() => navigateMapping('PREFILL')}>
                                                 <a>Prefill</a>
                                             </li>
 
@@ -84,12 +84,12 @@ export const MappingState = () => {
 
                     <ViewStyle space>
                         
-                        <h1>Connection Fields: { activeConnection.Salesforce_Object__c }</h1>
+                        <h1>Connection Fields: { activeConnection.forms__Salesforce_Object__c }</h1>
 
                         {
                             localNavState == 'CONNECT' ? 
-                            <p>Map question values from a Clarity Form Response to the <strong>{ activeConnection.Salesforce_Object__c }</strong> type record.</p> :
-                            <p>Prefill question values with <strong>{ activeConnection.Salesforce_Object__c }</strong> record field values.</p>
+                            <p>Map question values from a Clarity Form Response to the <strong>{ activeConnection.forms__Salesforce_Object__c }</strong> type record.</p> :
+                            <p>Prefill question values with <strong>{ activeConnection.forms__Salesforce_Object__c }</strong> record field values.</p>
 
                         }
 
@@ -106,9 +106,9 @@ export const MappingState = () => {
                             <View className="col-xs-8">
                                 <Box padding='0em'>
 
-                                    <h1>Record Id stored as { `{Connection_${activeConnection.Salesforce_Object__c}}` }</h1>
+                                    <h1>Record Id stored as { `{Connection_${activeConnection.forms__Salesforce_Object__c}}` }</h1>
 
-                                    <p>Record Id can be used in subsequent Connections, by selecting 'Custom' and adding the variable Record Id: { `{Connection_${activeConnection.Salesforce_Object__c}}` }. &#128526;</p>
+                                    <p>Record Id can be used in subsequent Connections, by selecting 'Custom' and adding the variable Record Id: { `{Connection_${activeConnection.forms__Salesforce_Object__c}}` }. &#128526;</p>
 
                                 </Box>
                             </View>
