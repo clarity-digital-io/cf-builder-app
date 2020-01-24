@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-// import { Form, DatePicker } from 'antd';
-// import moment from 'moment';
+import { Input as AntInput, InputNumber as AntInputNumber} from 'antd';
 
 import { call } from '../../../RemoteActions'; 
 import View from '../../../Elements/View';
@@ -11,7 +10,6 @@ import {Button} from '../../../Elements/Button';
 import { BuilderContext } from '../../../Context';
 import { StatusHandler } from '../../../Elements/Notification';
 
-// const FormItem = Form.Item;
 
 export const SettingsState = () => {
 
@@ -44,23 +42,11 @@ export const SettingsState = () => {
         })
     }
 
-    const updateLimit = (e) => {
-
-        let value = e.target.value; 
-        
+    const updateLimit = (value) => {
         setForm(form => {
             return { ...form, forms__Limit__c: value }
         })
     }
-
-    // const updateEndDate = (e) => {
-
-    //     let value = e.format('YYYY-MM-DD');
-        
-    //     setForm(form => {
-    //         return { ...form, End_Date__c: value }
-    //     })
-    // }
 
     return [
 
@@ -86,13 +72,8 @@ export const SettingsState = () => {
                             <View className="row" >
                             <View className="col-xs-12">
                                 <Box padding='1em 0 0 0'>
-                                    
-                                    <div className="slds-form-element">
-                                        <label className="slds-form-element__label" for="text-input-id-1">Form Title</label>
-                                        <div className="slds-form-element__control">
-                                            <input type="text" value={ form.Name } onChange={(e) => updateName(e)} id="text-input-id-1" placeholder="Form Title" className="slds-input" />
-                                        </div>
-                                    </div>
+
+																		<AntInput type="text" id={ form.Name } value={ form.Name } onChange={(e) => updateName(e)} />
 
                                 </Box>
                             </View>
@@ -111,31 +92,11 @@ export const SettingsState = () => {
                             <View className="col-xs-12">
                                 <Box padding='1em 0 0 0'>
 
-                                    <div className="slds-form-element">
-                                        <label className="slds-form-element__label" for="text-input-id-1">Form Response Submission Limit</label>
-                                        <div className="slds-form-element__control">
-                                            <input min="0" type="number" value={ form.forms__Limit__c } onChange={(e) => updateLimit(e)} id="text-input-id-1" placeholder="Set Number Limit" className="slds-input" />
-                                        </div>
-                                    </div>
+																		<AntInputNumber min={0} value={ form.forms__Limit__c } onChange={(e) => updateLimit(e)} />
 
                                 </Box>
                             </View>
                         </View>
-{/* 
-                        <View className="row">
-                            <View className="col-xs-12">
-                                <Box padding='1em 0 0 0'>
-                                    
-                                    <FormItem label={'Set a Form End Date'} required={false}>
-                                        <DatePicker 
-                                            value={ moment(form.End_Date__c) }
-                                            disabledDate={disabledDate}
-                                            onChange={(e) => updateEndDate(e)} /> 
-                                    </FormItem> 
-
-                                </Box>
-                            </View>
-                        </View> */}
 
                     </ViewStyle>
 
@@ -156,22 +117,9 @@ export const SettingsState = () => {
     ]
 }
 
-// const disabledDate = (current) => {
-    
-//     return current && current < moment().endOf('day');
-
-// }
-
 const resultHandler = (result, e, setForm, setUpdate) => {
     
     setUpdate(false);
-
-    // let convertedDate = new Date(result.End_Date__c);
-    // let year = convertedDate.getFullYear();
-    // let dateMonth = convertedDate.getMonth()
-    // let month = dateMonth < 10 ? '0' + (dateMonth + 1) : dateMonth;
-    // let day = convertedDate.getDate() + 1; 
-    // let stringDate = year + '-' + month + '-' + day;
     
     setForm(form => {
         return { ...form, Name: result.Name, forms__Limit__c: result.forms__Limit__c }

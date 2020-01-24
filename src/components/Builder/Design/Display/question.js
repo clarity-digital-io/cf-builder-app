@@ -33,19 +33,7 @@ export const Question = ({ question }) => {
             <div>
                 <li onClick={() => edit('EDIT')}><Icon style={{ fontSize: '1.25em', color: Main.color.body }} type="edit" /></li>
 
-                {
-                    question.forms__Type__c != 'FreeText' ?
-                    <li onClick={() => edit('AUTOMATE')}><Icon style={{ fontSize: '1.25em', color: Main.color.body }} type="api" /></li> :
-                    null
-                }
-
                 <li onClick={() => edit('LOGIC')} ><Icon style={{ fontSize: '1.25em', color: Main.color.body }} type="interaction" /></li>
-
-                {
-                    question.forms__Type__c == 'Number' ? 
-                    <li onClick={() => edit('CALCULATOR')}><Icon style={{ fontSize: '1.25em', color: Main.color.body }} type="calculator" /></li> : 
-                        null 
-                }
 
                 {
                     (question.forms__Type__c == 'RecordGroup' && question.forms__Salesforce_Object__c != null) ? 

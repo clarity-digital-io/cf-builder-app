@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
+import { Input as AntInput, Radio as AntRadio} from 'antd';
+import { call } from '../../RemoteActions';
+
 import View from '../View';
 import Box from '../Box';
 
 import CloseIcon from '../Icons/close';
 import {Button} from '../Button';
-import { call } from '../../RemoteActions';
 import ViewStyle from '../View/style';
 import { Select } from '../Select'; 
+
 
 export const ControlGroup = ({ type, relatedId, value, rows, setRows, setCondition, questions, filter }) => {
 
@@ -20,29 +23,25 @@ export const ControlGroup = ({ type, relatedId, value, rows, setRows, setConditi
 
 const ControlCondition = ({value, setCondition}) => {
 
+		const radioStyle = {
+			display: 'block',
+			height: '30px',
+			lineHeight: '30px',
+		};
+
     return (
         <ViewStyle space>
             <View className="row middle-xs">
                 <View className="col-xs-12">
 
-                <fieldset className="slds-form-element">
-                    <div className="slds-form-element__control">
-                        <span className="slds-radio">
-                        <input onChange={(e) => setCondition(e)} type="radio" className="radio" id="AND" checked={value == 'AND'} name="options" disabled="" />
-                        <label className="slds-radio__label" htmlFor="AND">
-                            <span className="slds-radio_faux"></span>
-                            <span className="slds-form-element__label">All of the Conditions are met (AND)</span>
-                        </label>
-                        </span>
-                        <span className="slds-radio">
-                        <input onChange={(e) => setCondition(e)} type="radio" className="radio" id="OR" checked={value == 'OR'} name="options" disabled="" />
-                        <label className="slds-radio__label" htmlFor="OR">
-                            <span className="slds-radio_faux"></span>
-                            <span className="slds-form-element__label">Any of the Conditions are met (OR)</span>
-                        </label>
-                        </span>
-                    </div>
-                </fieldset>
+									<AntRadio.Group onChange={(e) => setCondition(e)} value={value}>
+										<AntRadio style={radioStyle} value={'AND'}>
+											All of the Conditions are met (AND)
+										</AntRadio>
+										<AntRadio style={radioStyle} value={'OR'}>
+											Any of the Conditions are met (OR)
+										</AntRadio>
+									</AntRadio.Group>
 
                 </View>
             </View>
@@ -87,7 +86,8 @@ const ControlRow = ({ order, row, setRows, questions, filter }) => {
     }, [valueField])
 
     const setQuestionSelection = (value, order) => {
-        let question = questions.find(question => question.Id == value); 
+
+			let question = questions.find(question => question.Id == value); 
 
         setOperators(getCorrectOperators(question.forms__Type__c));
 
@@ -128,7 +128,8 @@ const ControlRow = ({ order, row, setRows, questions, filter }) => {
         setValueField(value); 
     }
 
-    const setValueSelection = (value, order) => {
+    const setValueSelection = (e, order) => {		
+				let value = e.target.value;  
         setRows((rows) => {
             return rows.map((row, i) => {
                 if(i == order) {
@@ -154,7 +155,12 @@ const ControlRow = ({ order, row, setRows, questions, filter }) => {
 
         })
 
-    }
+		}
+		
+		const closeStyle = {
+			height: '60%',
+			width: '60%',
+		};
 
     return (
         <View className="row middle-xs">
@@ -167,7 +173,7 @@ const ControlRow = ({ order, row, setRows, questions, filter }) => {
                 <Box padding='.5em'> 
                     {
                         filter ? 
-                        <ControlFieldSF order={order} record={row.forms__Field__c} values={questions} setSelection={setQuestionSelection} /> :
+                        <ControlFieldQuestion order={order} record={row.forms__Field__c} values={questions} setSelection={setQuestionSelection} /> :
                         <ControlFieldQuestion order={order} record={row} values={questions} setSelection={setQuestionSelection} />
                     }
                 </Box>
@@ -190,10 +196,10 @@ const ControlRow = ({ order, row, setRows, questions, filter }) => {
             <View className="col-xs-1">
                 <Box padding='.5em'>
                     
-                    <div onClick={() => removeRow(order)}>
-                        <svg className="slds-button__icon" aria-hidden="true">
-                            <CloseIcon />
-                        </svg>
+                    <div style={closeStyle} onClick={() => removeRow(order)}>
+
+                        <CloseIcon />
+
                     </div>
                     
                 </Box>
@@ -234,27 +240,6 @@ const ControlAddRow = ({ type, setRows, relatedId }) => {
     
 }
 
-const ControlFieldSF = ({ order, record, values, setSelection }) => {
-
-    return (
-        <div className="slds-form-element">
-            <div className="slds-form-element__control">
-                <div className="slds-select_container">
-                <select className="slds-select" id="select-02" value={record} onChange={(e) => setSelection(e, order)} >
-                    <option value="">Please select</option>
-                    {
-                        values.map(value => {
-                            return <option value={value}>{value}</option>
-                        })
-                    }
-                </select>
-                </div>
-            </div>
-        </div>
-    )
-
-}
-
 const ControlFieldQuestion = ({ order, record, values, setSelection }) => {
 
     return <Select key={record.Id} value={record.forms__Field__c} options={values} onChange={(e) => setSelection(e, order)} valueField={'Id'} labelField={'forms__Title__c'} />
@@ -267,14 +252,7 @@ const ControlField = ({ order, record, values, setSelection }) => {
 }
 
 const ControlFieldInput = ({ type, order, record, setSelection }) => {
-
-    return (
-        <div className="slds-form-element">
-            <div className="slds-form-element__control">
-                <input type={type} onChange={(e) => setSelection(e, order)} value={ record } id="text-input-id-1" placeholder="" className="slds-input" />
-            </div>
-        </div>
-    )
+    return <AntInput type="text" id={order} value={record} onChange={(e) => setSelection(e, order)} />
 }
 
 const getOptionsHandler = (result, e, setOptions) => {
@@ -282,7 +260,6 @@ const getOptionsHandler = (result, e, setOptions) => {
 }
 
 const ControlValueField = ({ options, order, record, setSelection }) => {
-
     switch (record.forms__Type__c) {
         case 'String':
             return <ControlFieldInput type={'text'} order={order} record={record.forms__Value__c} setSelection={setSelection} />

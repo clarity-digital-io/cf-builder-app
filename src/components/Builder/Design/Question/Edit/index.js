@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { DesignContext, EditContext } from '../../../../Context';
+import { Switch as AntSwitch, Input as AntInput } from 'antd';
 
 import View from '../../../../Elements/View';
 import ViewStyle from '../../../../Elements/View/style';
@@ -105,15 +106,8 @@ export const EditQuestion = () => {
                             showRequiredInput(activeQuestion.forms__Type__c) ?
                             <ViewStyle>
 
-                                <div className="slds-form-element">
-                                    <label className="slds-checkbox_toggle slds-grid">
-                                        <span className="slds-form-element__label slds-m-bottom_none">Required</span>
-                                        <input checked={activeQuestion.forms__Required__c} onClick={(e) => updateRequiredStatus(e)} type="checkbox" name="checkbox-toggle-14" value="checkbox-toggle-14" aria-describedby="checkbox-toggle-14" />
-                                        <span id="checkbox-toggle-14" className="slds-checkbox_faux_container" aria-live="assertive">
-                                        <span className="slds-checkbox_faux"></span>
-                                        </span>
-                                    </label>
-                                </div>
+                                <h2>Required</h2>
+																<AntSwitch defaultChecked={activeQuestion.forms__Required__c} onChange={(e) => updateRequiredStatus(e)} />
 
                             </ViewStyle> : 
                             null
@@ -124,16 +118,11 @@ export const EditQuestion = () => {
 
                     <ViewStyle space border>
 
-                        <h1>Question</h1>
+                        <h2>Question Label</h2>
 
                         <ViewStyle>
-                            
-                            <div className="slds-form-element">
-                                <label className="slds-form-element__label" htmlFor="text-input-id-1">Label</label>
-                                <div className="slds-form-element__control">
-                                    <input onChange={(e) => updateActiveQuestion(e)} value={ activeQuestion.forms__Title__c || activeQuestion.forms__Salesforce_Field__c } type="text" id="text-input-id-1" placeholder="Placeholder Text" className="slds-input" />
-                                </div>
-                            </div>
+
+														<AntInput type="text" id={ activeQuestion.Id } value={ activeQuestion.forms__Title__c || activeQuestion.forms__Salesforce_Field__c } onChange={(e) => updateActiveQuestion(e)} />
 
                         </ViewStyle>
                         

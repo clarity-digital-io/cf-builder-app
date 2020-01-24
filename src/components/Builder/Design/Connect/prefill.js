@@ -1,11 +1,10 @@
 import React, { useContext, useState } from 'react';
-import { call } from '../../../RemoteActions'; 
 
 import View from '../../../Elements/View';
 import ViewStyle from '../../../Elements/View/style';
 import Box from '../../../Elements/Box';
-import {Button, ButtonInput} from '../../../Elements/Button';
-import { SmallSpinner } from '../../../Elements/Spinner';
+import {Button} from '../../../Elements/Button';
+import { Select } from '../../../Elements/Select'; 
 
 import { BuilderContext, DesignContext } from '../../../Context';
 
@@ -142,22 +141,7 @@ export const PreFillState = () => {
 
 const FieldSelect = ({ order, options, value, onChange }) => {
 
-    return (
-        <div className="slds-form-element">
-            <div className="slds-form-element__control">
-                <div className="slds-select_container">
-                <select className="slds-select" id="select-02" value={value} onChange={(e) => onChange(e, order)} >
-                    <option value="">Please select</option>
-                    {
-                        options.map(option => {
-                            return <option key={option} value={option}>{option}</option>
-                        })
-                    }
-                </select>
-                </div>
-            </div>
-        </div>
-    )
+		return <Select key={order} value={value} options={options} onChange={(e) => onChange(e, order)} />
 
 }
 
@@ -167,28 +151,18 @@ const QuestionFieldSelect = ({ order, options, value, onChange }) => {
     return (
         <View key={'Select'} className="col-xs-5">
             <Box padding='.5em'>
-                <div className="slds-form-element">
-                    <div className="slds-form-element__control">
-                        <div className="slds-select_container">
-                        <select className="slds-select" id="select-02" value={value.forms__Clarity_Form_Question__c ? value.forms__Clarity_Form_Question__c : value.forms__Custom_Value__c} onChange={(e) => onChange(e, order)} >
-                            <option value="">Please select</option>
-                            {
-                                options.map(option => {
 
-                                    return <option key={option.Id} value={option.Id}>
-                                        {
-                                            option.forms__Record_Group__c != null ? 
-                                            'Record Group: ' + option.forms__Title__c + ' (' + option.forms__Salesforce_Field__c + ')' :
-                                            option.forms__Title__c
-                                        }
-                                    </option>
-                                
-                                })
-                            }
-                        </select>
-                        </div>
-                    </div>
-                </div> 
+								<Select 
+									placeholder={'Please Select'}
+									valueField={'Id'} 
+									labelField={'forms__Title__c'}
+									key={order} 
+									value={value.forms__Clarity_Form_Question__c ? value.forms__Clarity_Form_Question__c : value.forms__Custom_Value__c} 
+									options={options} 
+									onChange={(e) => onChange(e, order)} 
+									setLabel={true} 
+								/>
+
             </Box>
         </View>
     )

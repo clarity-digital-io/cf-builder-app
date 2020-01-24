@@ -137,7 +137,12 @@ const ControlSelect = ({ order, row }) => {
 
         })
 
-    }
+		}
+		
+		const closeStyle = {
+			height: '60%',
+			width: '60%',
+		};
 
     return (
         <View className="row center-xs middle-xs">
@@ -169,18 +174,6 @@ const ControlSelect = ({ order, row }) => {
 
                     {
                         row.Id != null && !row.forms__RG_Required__c? 
-                        <Button add onClick={() => edit('AUTOMATE')}>Automate</Button>
-                        :
-                        <Button disabled>Automate</Button>
-                    }
-
-                </Box>
-            </View>
-            <View className="col-xs-2">
-                <Box padding='.5em'> 
-
-                    {
-                        row.Id != null && !row.forms__RG_Required__c? 
                         <Button add onClick={() => edit('LOGIC')}>Logic</Button> :
                         <Button disabled>Logic</Button>
                     }
@@ -193,10 +186,8 @@ const ControlSelect = ({ order, row }) => {
 
                     {
                         !row.forms__RG_Required__c ? 
-                        <div disabled={true} onClick={() => removeRow(order)}>
-                            <svg className="slds-button__icon" aria-hidden="true">
-                                <CloseIcon />
-                            </svg>
+                        <div style={closeStyle} disabled={true} onClick={() => removeRow(order)}>
+                          <CloseIcon />
                         </div> :
                         null
                     }

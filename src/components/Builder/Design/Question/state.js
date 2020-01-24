@@ -11,7 +11,6 @@ import { EditProvider } from './index';
 import { NewQuestion } from './new';
 import { EditQuestion } from './edit';
 import { SalesforceFields } from './SF';
-import { AutomateQuestion } from './Automate';
 import { LogicQuestion } from './Logic';
 
 import { DesignContext, EditContext, BuilderContext } from '../../../Context';
@@ -33,9 +32,6 @@ export const QuestionState = () => {
             case 'SF': 
                 return <EditProvider><Save><SalesforceFields /></Save></EditProvider>
                 break; 
-            case 'AUTOMATE': 
-                return <EditProvider><Save><AutomateQuestion type={activeQuestion.forms__Type__c} /></Save></EditProvider>
-                break;
             case 'LOGIC': 
                 return <EditProvider><Save><LogicQuestion type={activeQuestion.forms__Type__c} /></Save></EditProvider>
                 break;
@@ -116,18 +112,6 @@ const Save = ({ children }) => {
                     "ClarityFormBuilder.saveQuestionWithPictureOptions", 
                     [JSON.stringify(activeQuestion), JSON.stringify(activeQuestionOptions)], 
                     (result, e) => resultOptionHandler(result, e, setQuestionUpdate, setQuestions, setPageQuestions, activeQuestion, setActiveQuestionOptions),
-                )
-            )
-        }
-
-        if(questionUpdate && questionState == 'AUTOMATE') {
-            StatusHandler(
-                form.forms__Status__c,
-                () => setQuestionUpdate(false),
-                () => call(
-                    "ClarityFormBuilder.saveFlowDesign", 
-                    [JSON.stringify(activeFlowDesign), JSON.stringify(activeQuestionOptions)], 
-                    (result, e) => resultFlowHandler(result, e,setQuestionUpdate, setActiveQuestionOptions, setActiveFlowDesign),
                 )
             )
         }

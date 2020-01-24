@@ -20,12 +20,8 @@ export const LogicQuestion = () => {
     )
 
     const updateCondition = (e) => {
-
-        let checked = e.target.checked;
-        let id = e.target.id; 
-
         setActiveQuestion(q => {
-            return { ...q, forms__Logic__c: checked ? id : q.forms__Logic__c }
+            return { ...q, forms__Logic__c: e.target.value }
         })
     }
 

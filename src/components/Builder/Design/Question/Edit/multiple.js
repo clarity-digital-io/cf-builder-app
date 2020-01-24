@@ -1,4 +1,6 @@
 import React, { useState, useContext } from 'react';
+import { Input as AntInput } from 'antd';
+
 import View from '../../../../Elements/View';
 import Box from '../../../../Elements/Box';
 import { Button } from '../../../../Elements/Button';
@@ -73,6 +75,11 @@ export const Multiple = () => {
 
     }
 
+		const closeStyle = {
+			height: '60%',
+			width: '60%',
+		};
+
     return (
         <ViewStyle>
             <h1>Options</h1>
@@ -83,9 +90,7 @@ export const Multiple = () => {
                     <View className="col-xs-11">
                         <Box padding={'.5em'}>
 
-                            <div className="slds-form-element__control">
-                                <input onChange={(e) => setNewValue(e.target.value)} onKeyDown={(e) => handleKeyDown(e)} value={newValue} type="text" id="New" className="slds-input" />
-                            </div>
+														<AntInput onPressEnter={(e) => handleKeyDown(e)} value={newValue} id="New" onChange={(e) => setNewValue(e.target.value)}  />
 
                         </Box>
                     </View>
@@ -109,17 +114,17 @@ export const Multiple = () => {
                             <View className="row middle-xs center-xs">
                                 <View className="col-xs-11">
                                     <Box padding={'.5em'}>
-                                        <div className="slds-form-element__control">
-                                            <input onChange={(e) => updateOption(e, order)} onKeyDown={(e) => handleKeyDown(e)} value={option.forms__Label__c} type="text" id={option.Id} placeholder="Option" className="slds-input" />
-                                        </div>
+
+																				<AntInput  value={option.forms__Label__c} id={option.Id} placeholder="Option" onChange={(e) => updateOption(e, order)}  />
+
                                     </Box>
                                 </View>
                                 <View className="col-xs-1">
                                     <Box padding={'.5em'}>
-                                        <div onClick={() => removeRow(order)}>
-                                            <svg className="slds-button__icon" aria-hidden="true">
-                                                <CloseIcon />
-                                            </svg>
+                                        <div style={closeStyle} onClick={() => removeRow(order)}>
+
+                                            <CloseIcon />
+
                                         </div>
                                     </Box>
                                 </View>

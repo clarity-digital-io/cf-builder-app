@@ -1,9 +1,7 @@
 import React, { useEffect, useContext, useState } from 'react';
 import ViewStyle from '../../../../Elements/View/style';
-import View from '../../../../Elements/View';
-import Box from '../../../../Elements/Box';
+
 import {Button} from '../../../../Elements/Button';
-import {Checkbox} from '../../../../Elements/Checkbox';
 import { EditContext, BuilderContext } from '../../../../Context';
 
 export const ConnectedObject = () => {

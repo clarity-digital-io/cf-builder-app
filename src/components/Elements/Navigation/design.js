@@ -57,18 +57,9 @@ const DesignNavigation = () => {
                 <li className={ (navState == 'CONNECT' || navState == 'MAPPING') ? 'active' : '' } onClick={() => navigate('CONNECT')}>
                     <span>Connect</span>
                 </li>
-                {/* <li className={ getDesignStates(navState) ? 'active' : '' } onClick={() => navigate('DESIGN')}>
-                    <span>Design</span>
-                </li> */}
-                {/* <li className={ navState == 'ASSIGNMENTS' ? 'active' : '' } onClick={() => navigate('ASSIGNMENTS')}>
-                    <span>Assignments</span>
-                </li> */}
                 <li className={ navState == 'SETTINGS' ? 'active' : '' } onClick={() => navigate('SETTINGS')}>
                     <span>Settings</span>
                 </li>
-                {/* <li className={ getDistributionStates(navState) ? 'active' : '' } onClick={() => navigate('DISTRIBUTE')}>
-                    <span>Distribute</span>
-                </li> */}
             </ul>
 
         </Nav>,
@@ -89,17 +80,6 @@ const DesignNavigation = () => {
         </Modal>
     ];
 
-}
-
-
-const getDistributionStates = (nav) => {
-
-    return nav == 'DISTRIBUTE' || nav == 'EMAIL' || nav == 'SALESFORCECOMMUNITY' || nav == 'LIGHTNING' || nav == 'MOBILE' || nav == 'SALESFORCECHAT' || nav == 'SALESFORCEPARDOT';
-
-}
-
-const getDesignStates = (nav) => {
-    return nav == 'DESIGN' || nav == 'DESIGNEDIT';
 }
 
 const BuildDirtyStateMessage = ({ navState }) => {

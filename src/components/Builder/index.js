@@ -12,7 +12,7 @@ const Builder = () => {
         <BuilderLayout>
 
             {
-                 <Spinner />
+                form.Id ? <DragDrop /> : <Spinner />
             }
             
         </BuilderLayout>  

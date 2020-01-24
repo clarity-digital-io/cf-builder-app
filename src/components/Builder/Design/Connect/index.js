@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { call } from '../../../RemoteActions'; 
+import { Switch as AntSwitch, Input as AntInput } from 'antd';
 
 import View from '../../../Elements/View';
 import ViewStyle from '../../../Elements/View/style';
@@ -38,15 +39,13 @@ export const ConnectState = () => {
         
     }, [update]);
 
-    const activate = (e, order) => {
-
-        let checked = e.target.checked;
-
+    const activate = (value, order) => {
+				
         setConnections((rows) => {
 
             return rows.map((row, i) => {
                 if(i == order) {
-                    return { ...row, forms__New__c: checked }
+                    return { ...row, forms__New__c: value }
                 }
                 return row;
             })
@@ -97,8 +96,12 @@ export const ConnectState = () => {
             return removed.concat([connection]);
         })
 
-    }
-
+		}
+		
+		const closeStyle = {
+			height: '60%',
+			width: '60%',
+		};
 
     return [
         
@@ -166,14 +169,7 @@ export const ConnectState = () => {
                                         <View className="col-xs-2">
                                             <Box padding='.5em'>
 
-                                                <div className="slds-form-element">
-                                                    <label className="slds-checkbox_toggle slds-grid">
-                                                        <input checked={connection.forms__New__c} onChange={(e) => activate(e, order)} type="checkbox" name="checkbox-toggle-14" value="checkbox-toggle-14" aria-describedby="checkbox-toggle-14" />
-                                                        <span id="checkbox-toggle-14" className="slds-checkbox_faux_container" aria-live="assertive">
-                                                        <span className="slds-checkbox_faux"></span>
-                                                        </span>
-                                                    </label>
-                                                </div>
+																								<AntSwitch defaultChecked={connection.forms__New__c} onChange={(e) => activate(e)} />
 
                                             </Box>
                                         </View>
@@ -199,10 +195,8 @@ export const ConnectState = () => {
                                         <View className="col-xs-1">
                                             <Box padding='.5em'>
                                                 
-                                                <div onClick={() => removeRow(order, connection)}>
-                                                    <svg className="slds-button__icon" aria-hidden="true">
-                                                        <CloseIcon />
-                                                    </svg>
+                                                <div style={closeStyle} onClick={() => removeRow(order, connection)}>
+                                                    <CloseIcon />
                                                 </div>
 
                                             </Box>

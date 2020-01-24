@@ -36,17 +36,7 @@ export const Lookup = () => {
                     <Select options={sObjects} value={activeQuestion.forms__Lookup__c} onChange={updateLookupQuestion} />
                 }
         
-        </ViewStyle>,
-
-        // <ViewStyle key="Filter">
-
-
-        //     <h1>Filter on Lookup</h1>
-
-        //     <ControlGroup relatedId={activeQuestion.Id} value={activeQuestion.Filter__c} rows={rows} setRows={setRows} setCondition={updatFilter} questions={Object.keys(additionalFields)} filter={true} /> 
-
-
-        // </ViewStyle>
+        </ViewStyle>
     ]
 
 }

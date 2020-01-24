@@ -13,8 +13,9 @@ const ViewStyle = styled.div`
     }
 
     h2 {
-        font-weight: 900;
-        margin-bottom: 1em;
+        font-weight: 500;
+				margin-bottom: 1em;
+				font-size: 1em;
         color: ${Main.color.body};
     }
 
