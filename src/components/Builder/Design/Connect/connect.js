@@ -25,9 +25,7 @@ export const FieldConnectState = () => {
         })
     }
 
-    const setFieldSelection = (e, order) => {
-
-        let value = e.target.value; 
+    const setFieldSelection = (value, order) => {
 
         setActiveFieldMapping((mappings) => {
 
@@ -43,7 +41,7 @@ export const FieldConnectState = () => {
     
     const setQuestionSelection = (e, order, custom) => {
 
-			 let value = custom ? e.target.value : e.Id; 
+			let value = custom ? e.target.value : e; 
 
         setActiveFieldMapping((mappings) => {
 
@@ -154,7 +152,7 @@ const QuestionFieldSelect = ({ customValue, order, options, value, onChange }) =
                 {
 										custom ?  
 										<AntInput value={value.forms__Clarity_Form_Question__c ? value.forms__Clarity_Form_Question__c : value.forms__Custom_Value__c} add onChange={(e) => onChange(e, order, true)}  /> :										
-										<Select key={order} valueField={'Id'} labelField={'forms__Title__c'} value={value.forms__Clarity_Form_Question__c ? value.forms__Clarity_Form_Question__c : value.forms__Custom_Value__c} options={options} onChange={(e) => onChange(e, order)} />
+										<Select key={order} valueField={'Id'} labelField={'forms__Title__c'} value={value.forms__Clarity_Form_Question__c} options={options} onChange={(e) => onChange(e, order)} />
                 }
             </Box>
         </View>

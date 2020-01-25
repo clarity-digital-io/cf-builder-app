@@ -29,6 +29,7 @@ export const MappingState = () => {
                 delete fieldMapping.Id; 
                 return fieldMapping;
             });
+						console.log('saveActiveFieldConnections', [JSON.stringify(combinedConnections), activeConnection.Id]);
 
             StatusHandler(
                 form.forms__Status__c,

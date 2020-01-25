@@ -25,6 +25,7 @@ export const ConnectState = () => {
 
         if(update) {
 
+						console.log('saveConnections', [JSON.stringify(connections), form.Id, JSON.stringify(removed)]);
             StatusHandler(
                 form.forms__Status__c,
                 () => setUpdate(false),
@@ -169,7 +170,7 @@ export const ConnectState = () => {
                                         <View className="col-xs-2">
                                             <Box padding='.5em'>
 
-																								<AntSwitch defaultChecked={connection.forms__New__c} onChange={(e) => activate(e)} />
+																								<AntSwitch defaultChecked={connection.forms__New__c} onChange={(e) => activate(e, order)} />
 
                                             </Box>
                                         </View>

@@ -206,12 +206,12 @@ const createHandler = (result, e, setForm, setStyle, setAssignment) => {
             ...form, 
             Id: result.Id, 
             Name: result.Name, 
-            Limit__c: result.Limit__c, 
-            End_Date__c: stringDate, 
-            Connected_Object__c: result.Connected_Object__c, 
-            Clarity_Form_Assignment__c: result.Clarity_Form_Assignment__c, 
-            Clarity_Form_Style__c: result.Clarity_Form_Style__c, 
-            Status__c: result.Status__c
+            forms__Limit__c: result.forms__Limit__c, 
+            forms__End_Date__c: stringDate, 
+            forms__Connected_Object__c: result.forms__Connected_Object__c, 
+            forms__Clarity_Form_Assignment__c: result.forms__Clarity_Form_Assignment__c, 
+            forms__Clarity_Form_Style__c: result.forms__Clarity_Form_Style__c, 
+            forms__Status__c: result.forms__Status__c
         }
     });
 
