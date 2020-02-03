@@ -9,7 +9,7 @@ export const call = (func, params, callback, status) => {
 
 const prodCall = (func, params, callback, status) => {
     
-    const managedPackageFunction = 'forms.' + func; 
+  	const managedPackageFunction = 'forms.' + func; 
 
     const handler = (result, e) => {
 
@@ -20,21 +20,25 @@ const prodCall = (func, params, callback, status) => {
             callback(result, e);
         }
 
-    }
+		}
+
+		let extraParams = { buffer: false, escape: true, timeout: 3000 };
+		
+		console.log('managedPackageFunction', managedPackageFunction, params); 
 
     switch (params.length) {
         case 0:
-            LCC.callApex(managedPackageFunction, handler, { escape: true });
+            LCC.callApex(managedPackageFunction, handler, extraParams);
             break;
         case 1:
-            LCC.callApex(managedPackageFunction, params[0], handler, { escape: true });
+            LCC.callApex(managedPackageFunction, params[0], handler, extraParams);
             break;
         case 2:
-            LCC.callApex(managedPackageFunction, params[0], params[1], handler, { escape: true });
+            LCC.callApex(managedPackageFunction, params[0], params[1], handler, extraParams);
             break;
         case 3:
         case 4:
-            LCC.callApex(managedPackageFunction, params, handler, { escape: true });
+            LCC.callApex(managedPackageFunction, params, handler, extraParams);
             break;
         default:
             break;

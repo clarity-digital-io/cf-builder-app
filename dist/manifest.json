@@ -2,7 +2,7 @@
     "landing-pages" : [
         {
             "path": "index.html",
-            "apex-controller": "ClarityFormBuilder"
+            "apex-controller": "forms.ClarityFormBuilder"
         }
     ]
 }
