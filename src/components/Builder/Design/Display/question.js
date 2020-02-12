@@ -2,7 +2,8 @@ import React, { useContext } from 'react';
 import styled, { css } from 'styled-components';
 import { Icon, Form } from 'antd';
 
-import Main from '../../../Elements/Theme'
+import Main from '../../../Elements/Theme';
+import { FormItemStyled } from '../../../Elements/View/fieldstyle';
 import { getType } from './types'; 
 
 import { DesignContext, BuilderContext } from '../../../Context';
@@ -49,9 +50,9 @@ export const Question = ({ question }) => {
 
                 {
                     hasFormLabel(question.forms__Type__c) ? 
-                        <FormItem key={question.Id} label={question.forms__Title__c} required={question.forms__Required__c}>
-                            {getType(question)}
-                        </FormItem> :
+                        <FormItemStyled key={question.Id} label={question.forms__Title__c} required={question.forms__Required__c}>
+                          {getType(question)}
+                        </FormItemStyled> :
                         <div>{getType(question)}</div>
                 }
 

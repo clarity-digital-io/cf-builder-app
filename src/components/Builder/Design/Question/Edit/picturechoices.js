@@ -16,7 +16,7 @@ export const PictureChoices = ({ question }) => {
     const [preview, setPreview] = useState({ image: null, visible: false });
 
     const { activeQuestionOptions, setActiveQuestionOptions } = useContext(EditContext);
-
+		console.log('activeQuestionOptions', activeQuestionOptions); 
     const { activeQuestion } = useContext(DesignContext);
 
     const handlePreview = (file) => {
@@ -31,6 +31,7 @@ export const PictureChoices = ({ question }) => {
 
     const updateImage = (order, file) => {
 
+			console.log('updateImage', order, file); 
         setActiveQuestionOptions((options) => {
             return options.map((option, index) => {
 
@@ -73,11 +74,12 @@ export const PictureChoices = ({ question }) => {
 
     }
 
-    const add = (value, activeQuestionId) => {
-
+    const add = (value, activeQuestionId, file) => {
+			console.log('value, activeQuestionId, file', value, activeQuestionId, file); 
         setActiveQuestionOptions(options => {
-            return options.concat([{ forms__Label__c: value, forms__Clarity_Form_Question__c: activeQuestionId }]);
-        })
+            return options.concat([{ forms__Label__c: value, forms__Clarity_Form_Question__c: activeQuestionId, forms__Choice_Image__c: file[0].thumbUrl }]);
+				})
+				
     }
     
     return (
@@ -102,20 +104,20 @@ export const PictureChoices = ({ question }) => {
             </ViewStyle>
 
             {
-                    activeQuestionOptions.map((option, order) => {
-                        return (
-                            <PictureChoice
-                                isNew={false} 
-                                updateOption={updateOption}
-                                activeQuestionId={activeQuestion.Id} 
-                                option={option} 
-                                order={order} 
-                                handlePreview={handlePreview} 
-                                removeRow={removeRow}
-                                updateImage={updateImage}
-                            />
-                        )
-                    })
+								activeQuestionOptions.map((option, order) => {
+										return (
+												<PictureChoice
+														isNew={false} 
+														updateOption={updateOption}
+														activeQuestionId={activeQuestion.Id} 
+														option={option} 
+														order={order} 
+														handlePreview={handlePreview} 
+														removeRow={removeRow}
+														updateImage={updateImage}
+												/>
+										)
+								})
             }
 
         </ViewStyle>
@@ -132,9 +134,7 @@ const UploadButton = () => {
 }
 
 const UploadStyle = styled(Upload)`
-    
     display: block !important;
-
     .ant-upload, .ant-upload-list-item {
         float: none !important;
         width: 100% !important;
@@ -142,14 +142,26 @@ const UploadStyle = styled(Upload)`
         margin: 0px !important; 
         padding: 1px !important; 
     }
-
 `
 
 const PictureChoice = ({ isNew, activeQuestionId, option, order, handlePreview, updateOption, add, removeRow, updateImage }) => {
-
+		console.log('option', option); 
     const [newValue, setNewValue] = useState('');
 
-    const [file, setFile] = useState([]);
+    const [file, setFile] = useState(
+			option != null ? 
+				[
+					{
+						uid: option.Id || '1',
+						name: option.forms__Label__c,
+						status: 'done',
+						url: option.forms__Choice_Image__c,
+						thumbUrl: option.forms__Choice_Image__c
+					}
+				] : 
+				[]
+			);
+		console.log('file', file); 
 
     const handleKeyDown = (e) => {
 
@@ -159,17 +171,19 @@ const PictureChoice = ({ isNew, activeQuestionId, option, order, handlePreview, 
             
             add(value, activeQuestionId, file);
 
-            setNewValue('');
+						setNewValue('');
+						setFile([])
 
         }
 
     }
 
     const handleAdd = (e) => {
-            
+        console.log('newValue, activeQuestionId, file', newValue, activeQuestionId, file); 
         add(newValue, activeQuestionId, file);
 
         setNewValue('');
+				setFile([])
 
     }
 

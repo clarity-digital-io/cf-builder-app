@@ -18,7 +18,7 @@ import { FreeText } from './freetext';
 import { SmallSpinner } from '../../../../Elements/Spinner';
 
 const getQuestionType = (type) => {
-
+		console.log('type', type); 
     switch (type) {
         case 'Attachments':
             return <Attachments />
