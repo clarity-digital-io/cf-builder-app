@@ -279,7 +279,7 @@ const PictureChoice = ({ isNew, activeQuestionId, option, order, handlePreview, 
                     <View className="col-xs-2">
                         <Box padding={'.5em'}>
             
-                            <Button add onClick={() => handleAdd()}>Upload</Button>
+                            <Button add onClick={() => handleAdd()}>&#43;</Button>
             
                         </Box>
                     </View>
