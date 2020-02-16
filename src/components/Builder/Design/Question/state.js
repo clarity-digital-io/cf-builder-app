@@ -92,7 +92,7 @@ const Save = ({ children }) => {
             )
         }
 
-        if(activeQuestion.Type__c != 'PictureChoice' && questionUpdate && activeQuestionOptions.length && questionState == 'EDIT') {
+        if(activeQuestion.forms__Type__c != 'PictureChoice' && questionUpdate && activeQuestionOptions.length && questionState == 'EDIT') {
             StatusHandler(
                 form.forms__Status__c,
                 () => setQuestionUpdate(false),
@@ -105,13 +105,37 @@ const Save = ({ children }) => {
         }
 
         if(activeQuestion.forms__Type__c == 'PictureChoice' && questionUpdate && activeQuestionOptions.length && questionState == 'EDIT') {
+
+						let activeQuestionOptionImages = activeQuestionOptions.reduce((accum, option, index) => {
+
+							if(option.forms__Choice_Image__c != null && option.forms__Choice_Image__c.length > 18) {
+								let base64result = option.forms__Choice_Image__c.split(',')[1];
+								accum[option.Id || index] = base64result;
+							}
+
+							return accum;
+
+						}, {});
+
+						let updatedOptions = activeQuestionOptions.reduce((accum, option, index) => {
+
+							if(option.forms__Choice_Image__c != null && option.forms__Choice_Image__c.length > 18) {
+								option.forms__Choice_Image__c = '';
+							}
+
+							accum[option.Id || index] = option;
+							return accum;
+
+						}, {});
+
+						console.log(' [JSON.stringify(activeQuestion), JSON.stringify(updatedOptions)] ',  activeQuestion, updatedOptions, activeQuestionOptionImages ); 
             StatusHandler(
                 form.forms__Status__c,
                 () => setQuestionUpdate(false),
                 () => call(
                     "ClarityFormBuilder.saveQuestionWithPictureOptions", 
-                    [JSON.stringify(activeQuestion), JSON.stringify(activeQuestionOptions)], 
-                    (result, e) => resultOptionHandler(result, e, setQuestionUpdate, setQuestions, setPageQuestions, activeQuestion, setActiveQuestionOptions),
+                    [JSON.stringify(activeQuestion), JSON.stringify(updatedOptions), JSON.stringify(activeQuestionOptionImages)], 
+                    (result, e) => resultOptionHandler(result, e, setQuestionUpdate, setQuestions, setPageQuestions, activeQuestion, setActiveQuestionOptions, setQuestionOptions),
                 )
             )
         }

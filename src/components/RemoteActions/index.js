@@ -22,7 +22,9 @@ const prodCall = (func, params, callback, status) => {
 
 		}
 
-		let extraParams = { buffer: false, escape: true, timeout: 3000 };
+		let timeout = func == 'ClarityFormBuilder.saveQuestionWithPictureOptions' ? 12000 : 3000;
+
+		let extraParams = { buffer: false, escape: true, timeout: timeout };
 		
 		console.log('managedPackageFunction', managedPackageFunction, params); 
 
@@ -74,9 +76,9 @@ const mockCall = (func, params, callback, status) => {
             callback([
 								{ Id: 'CF-8.1', forms__Logic__c: 'AND', forms__Type__c: 'PictureChoice', forms__Title__c: 'Which of these describe your current emotion?', forms__Order__c: 0, forms__Max_Length__c: 10, forms__Min_Range__c: 0, forms__Max_Range__c: 100, forms__Step__c: 10, forms__Page__c: 0 , 
 									forms__Clarity_Form_Question_Options__r: [
-											{ Id: 801, forms__Label__c: 'Option 1', forms__Clarity_Form_Question__c: 'CF-8.1', forms__Choice_Image__c: '' },
-											{ Id: 802, forms__Label__c: 'Option 2', forms__Clarity_Form_Question__c: 'CF-8.1', forms__Choice_Image__c: '' },
-											{ Id: 803, forms__Label__c: 'Option 3', forms__Clarity_Form_Question__c: 'CF-8.1', forms__Choice_Image__c: '' }
+											{ Id: 801, forms__Label__c: 'Option 1', forms__Clarity_Form_Question__c: 'CF-8.1', forms__Choice_Image__c: 'https://images.unsplash.com/photo-1562743338-51caec0b0e65?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1955&q=80', forms__Order__c: 0 },
+											{ Id: 802, forms__Label__c: 'Option 2', forms__Clarity_Form_Question__c: 'CF-8.1', forms__Choice_Image__c: 'https://images.unsplash.com/photo-1562743338-51caec0b0e65?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1955&q=80', forms__Order__c: 1 },
+											{ Id: 803, forms__Label__c: 'Option 3', forms__Clarity_Form_Question__c: 'CF-8.1', forms__Choice_Image__c: 'https://images.unsplash.com/photo-1562743338-51caec0b0e65?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1955&q=80', forms__Order__c: 2 }
 									]
 								}, 
                 { Id: 1, forms__Logic__c: 'AND', forms__Type__c: 'Checkbox', forms__Title__c: 'Checkbox', forms__Order__c: 0, forms__Max_Length__c: 10, forms__Min_Range__c: 0, forms__Max_Range__c: 100, forms__Step__c: 10, forms__Page__c: 0 }, 
@@ -90,18 +92,18 @@ const mockCall = (func, params, callback, status) => {
                 },                
                 { Id: 4, forms__Logic__c: 'AND', forms__Type__c: 'Dropdown', forms__Title__c: 'Dropdown', forms__Order__c: 3, forms__Max_Length__c: 10, forms__Min_Range__c: 0, forms__Max_Range__c: 100, forms__Step__c: 10, forms__Page__c: 0, 
                     forms__Clarity_Form_Question_Options__r: [
-                        { Id: 41, forms__Label__c: 'Dropdown 1', forms__Clarity_Form_Question__c: 4 },
-                        { Id: 42, forms__Label__c: 'Dropdown 2', forms__Clarity_Form_Question__c: 4 },
-                        { Id: 43, forms__Label__c: 'Dropdown 3', forms__Clarity_Form_Question__c: 4 }
+                        { Id: 41, forms__Label__c: 'Dropdown 1', forms__Clarity_Form_Question__c: 4, forms__Order__c: 0 },
+                        { Id: 42, forms__Label__c: 'Dropdown 2', forms__Clarity_Form_Question__c: 4, forms__Order__c: 1 },
+                        { Id: 43, forms__Label__c: 'Dropdown 3', forms__Clarity_Form_Question__c: 4, forms__Order__c: 2 }
                     ]
                 }, 
                 { Id: 5, forms__Logic__c: 'AND', forms__Type__c: 'Email', forms__Title__c: 'Email', forms__Order__c: 4, forms__Max_Length__c: 10, forms__Min_Range__c: 0, forms__Max_Range__c: 100, forms__Step__c: 10, forms__Page__c: 0 }, 
                 { Id: 6, forms__Logic__c: 'AND', forms__Type__c: 'Lookup', forms__Title__c: 'Lookup', forms__Lookup__c: 'Case', forms__Order__c: 5, forms__Max_Length__c: 10, forms__Min_Range__c: 0, forms__Max_Range__c: 100, forms__Step__c: 10, forms__Page__c: 0 },
                 { Id: 7, forms__Logic__c: 'AND', forms__Type__c: 'MultipleChoice', forms__Title__c: 'MultipleChoice', forms__Order__c: 6, forms__Max_Length__c: 10, Min_Range__c: 0, forms__Max_Range__c: 100, forms__Step__c: 10, forms__Page__c: 0, 
                 forms__Clarity_Form_Question_Options__r: [
-                        { Id: 71, forms__Label__c: 'MultipleChoice 1', forms__Clarity_Form_Question__c: 7 },
-                        { Id: 72, forms__Label__c: 'MultipleChoice 2', forms__Clarity_Form_Question__c: 7 },
-                        { Id: 73, forms__Label__c: 'MultipleChoice 3', forms__Clarity_Form_Question__c: 7 }
+                        { Id: 71, forms__Label__c: 'MultipleChoice 1', forms__Clarity_Form_Question__c: 7, forms__Order__c: 1 },
+                        { Id: 72, forms__Label__c: 'MultipleChoice 2', forms__Clarity_Form_Question__c: 7, forms__Order__c: 2 },
+                        { Id: 73, forms__Label__c: 'MultipleChoice 3', forms__Clarity_Form_Question__c: 7, forms__Order__c: 0 }
                     ]
                 }, 
                 { Id: 8, forms__Logic__c: 'AND', forms__Type__c: 'NetPromoterScore', forms__Title__c: 'NetPromoterScore', forms__Order__c: 7, forms__Max_Length__c: 10, forms__Min_Range__c: 0, forms__Max_Range__c: 100, forms__Step__c: 10, forms__Page__c: 0 }, 
@@ -130,7 +132,7 @@ const mockCall = (func, params, callback, status) => {
         case 'getQuestionEditDetails':
             callback({
                 'Criteria': [{Id: 31, forms__Clarity_Form_Question__c: 2, forms__Field__c: 2, forms__Field_Type__c: 'Comment', forms__Operator__c: 'Is Not Null', forms__Type__c: 'Boolean', forms__Value__c: 'True' }],
-                'Options' : [{ Id: 31, forms__Label__c: 'Pickture Option 1', forms__Active_Flow__c: true, forms__Clarity_Form_Question__c: 2, forms__Choice_Image__c: 'https://images.unsplash.com/photo-1562743338-51caec0b0e65?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1955&q=80'},{ Id: 32, forms__Label__c: 'Pickture Option 2', forms__Active_Flow__c: false, forms__Clarity_Form_Question__c: 2, forms__Choice_Image__c: 'https://images.unsplash.com/photo-1562743338-51caec0b0e65?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1955&q=80'}],
+                'Options' : [{ Id: 31, forms__Order__c: 0, forms__Label__c: 'Pickture Option 1', forms__Active_Flow__c: true, forms__Clarity_Form_Question__c: 2, forms__Choice_Image__c: 'https://images.unsplash.com/photo-1562743338-51caec0b0e65?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1955&q=80'},{ Id: 32, forms__Order__c: 1, forms__Label__c: 'Pickture Option 2', forms__Active_Flow__c: false, forms__Clarity_Form_Question__c: 2, forms__Choice_Image__c: 'https://images.unsplash.com/photo-1562743338-51caec0b0e65?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1955&q=80'}],
                 'FlowDesign': [{ Id: 31, forms__Clarity_Form_Question__c: 123, forms__Form_Submission__c: true, forms__Active__c: false }]
             });
             break;

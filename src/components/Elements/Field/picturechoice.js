@@ -21,7 +21,7 @@ export const PictureChoice = ({ question, disabled }) => {
 																value={option.Id}
 																checked={false}
 														>
-															<img width="100" src="https://images.unsplash.com/photo-1581278999530-0dc41ad1997d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80" />
+															<img width="100" src={getImage(option)} />
 														</RadioButton>
 												)
 								}) :
@@ -30,4 +30,13 @@ export const PictureChoice = ({ question, disabled }) => {
 			</RadioGroup>
 	)
 
+}
+
+const getImage = (option) => {
+	console.log('option.forms__Choice_Image__c', option.forms__Choice_Image__c); 
+	if(option.forms__Choice_Image__c != '' && option.forms__Choice_Image__c.length <= 18) {
+		return `/sfc/servlet.shepherd/version/download/${option.forms__Choice_Image__c}`;
+	} else {
+		return option.forms__Choice_Image__c; 
+	}
 }
