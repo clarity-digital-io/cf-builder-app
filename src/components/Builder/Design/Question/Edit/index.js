@@ -19,7 +19,7 @@ import { SmallSpinner } from '../../../../Elements/Spinner';
 
 const getQuestionType = (type) => {
 
-    switch (type) {
+	switch (type) {
         case 'Attachments':
             return <Attachments />
             break;

@@ -91,7 +91,7 @@ export const types = [
     }, 
     {   
         id: 15, 
-        active: false, 
+        active: true, 
         name: 'Picture Choice',
         type: 'PictureChoice'
     },

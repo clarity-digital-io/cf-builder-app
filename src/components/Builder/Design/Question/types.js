@@ -4,6 +4,9 @@ import { MessageDetail1DarkIcon, RecordGroup2DarkIcon, Images2DarkIcon, DownArro
 export const getType = (type) => {
 
     switch (type) {
+				case 'PictureChoice':
+						return <SelectMultipleDarkIcon />
+						break;
         case 'MultipleChoice':
             return <SelectMultipleDarkIcon />
             break;

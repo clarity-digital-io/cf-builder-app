@@ -17,7 +17,7 @@ export const PictureChoices = ({ question }) => {
 
     const { activeQuestionOptions, setActiveQuestionOptions } = useContext(EditContext);
 
-    const { activeQuestion } = useContext(DesignContext);
+		const { activeQuestion } = useContext(DesignContext);
 
     const handlePreview = (file) => {
         setPreview({ image: file.thumbUrl, visible: true })
@@ -48,12 +48,11 @@ export const PictureChoices = ({ question }) => {
 
         if(e.key != 'Enter') {
             let value = e.target.value;
-
             setActiveQuestionOptions((options) => {
                 return options.map((option, index) => {
 
                     if(order == index) {
-                        return { ...option, forms__Label__c: value, forms__Choice_Image__c: file }
+                        return { ...option, forms__Label__c: value, forms__Choice_Image__c: file, forms__Order__c: index }
                     }
                     return option; 
                 })
@@ -73,14 +72,14 @@ export const PictureChoices = ({ question }) => {
 
     }
 
-    const add = (value, activeQuestionId) => {
-
+    const add = (value, activeQuestionId, file) => {
         setActiveQuestionOptions(options => {
-            return options.concat([{ forms__Label__c: value, forms__Clarity_Form_Question__c: activeQuestionId }]);
-        })
+            return options.concat([{ forms__Order__c: options.length, forms__Label__c: value, forms__Clarity_Form_Question__c: activeQuestionId, forms__Choice_Image__c: file[0].thumbUrl != null ? file[0].thumbUrl : '' }]);
+				})
+				
     }
-    
-    return (
+
+		return (
         <ViewStyle>
 
             <h1>Picture Choice Options</h1>
@@ -102,20 +101,20 @@ export const PictureChoices = ({ question }) => {
             </ViewStyle>
 
             {
-                    activeQuestionOptions.map((option, order) => {
-                        return (
-                            <PictureChoice
-                                isNew={false} 
-                                updateOption={updateOption}
-                                activeQuestionId={activeQuestion.Id} 
-                                option={option} 
-                                order={order} 
-                                handlePreview={handlePreview} 
-                                removeRow={removeRow}
-                                updateImage={updateImage}
-                            />
-                        )
-                    })
+								activeQuestionOptions.map((option, order) => {
+										return (
+												<PictureChoice
+														isNew={false} 
+														updateOption={updateOption}
+														activeQuestionId={activeQuestion.Id} 
+														option={option} 
+														order={order} 
+														handlePreview={handlePreview} 
+														removeRow={removeRow}
+														updateImage={updateImage}
+												/>
+										)
+								})
             }
 
         </ViewStyle>
@@ -132,9 +131,7 @@ const UploadButton = () => {
 }
 
 const UploadStyle = styled(Upload)`
-    
     display: block !important;
-
     .ant-upload, .ant-upload-list-item {
         float: none !important;
         width: 100% !important;
@@ -142,15 +139,33 @@ const UploadStyle = styled(Upload)`
         margin: 0px !important; 
         padding: 1px !important; 
     }
-
 `
+
+const buildFiles = (option) => {
+
+	let builtOption = {
+			uid: option.Order__c || '1',
+			name: option.forms__Label__c,
+			status: 'done'
+		};
+
+	if(option.forms__Choice_Image__c.length == 18) {
+		builtOption.url = `/sfc/servlet.shepherd/version/download/${option.forms__Choice_Image__c}`;
+	} else {
+		builtOption.thumbUrl = option.forms__Choice_Image__c;
+	}
+
+	return option != null ? [builtOption] : [];
+}
 
 const PictureChoice = ({ isNew, activeQuestionId, option, order, handlePreview, updateOption, add, removeRow, updateImage }) => {
 
-    const [newValue, setNewValue] = useState('');
+		const [newValue, setNewValue] = useState('');
 
-    const [file, setFile] = useState([]);
-
+		const [file, setFile] = useState(file => {
+				return option ? buildFiles(option) : file ? file : [];
+		});
+			
     const handleKeyDown = (e) => {
 
         if (e.key === 'Enter') {
@@ -159,18 +174,18 @@ const PictureChoice = ({ isNew, activeQuestionId, option, order, handlePreview, 
             
             add(value, activeQuestionId, file);
 
-            setNewValue('');
+						setNewValue('');
+						setFile([])
 
         }
 
     }
 
     const handleAdd = (e) => {
-            
         add(newValue, activeQuestionId, file);
 
         setNewValue('');
-
+				setFile([])
     }
 
     const uploadChange = ({ fileList }) => {
@@ -198,11 +213,33 @@ const PictureChoice = ({ isNew, activeQuestionId, option, order, handlePreview, 
             updateImage(order, fileContents)
 
         };
-    }
+		}
+		
+		const beforeUpload = (file) => {
+
+			const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+
+			if (!isJpgOrPng) {
+					
+					message.error('You can only upload JPG/PNG file!');
+			
+			}
+
+			const isLt2M = file.size / 1024 / 1024 < 2;
+
+			if (!isLt2M) {
+
+					message.error('Image must smaller than 2MB!');
+
+			}
+
+			return isJpgOrPng && isLt2M;
+
+		}
 
 		const closeStyle = {
-			height: '60%',
-			width: '60%',
+			height: '20%',
+			width: '20%',
 		};
 
     return (
@@ -216,7 +253,8 @@ const PictureChoice = ({ isNew, activeQuestionId, option, order, handlePreview, 
                         listType="picture-card"
                         fileList={file}
                         onPreview={(f) => handlePreview(f)}
-                        onChange={(e) => uploadChange(e)}
+												onChange={(e) => uploadChange(e)}
+												beforeUpload={(f) => beforeUpload(f)}
                     >
                         {file.length >= 1 ? null : <UploadButton />} 
                     </UploadStyle>
@@ -226,14 +264,14 @@ const PictureChoice = ({ isNew, activeQuestionId, option, order, handlePreview, 
             {
                 isNew ? 
                 [
-                    <View className="col-xs-9">
+                    <View className="col-xs-8">
                         <Box padding={'.5em'}>
                             
 														<AntInput onPressEnter={(e) => handleKeyDown(e)} value={newValue} id="New" onChange={(e) => setNewValue(e.target.value)}  />
 
                         </Box>
                     </View>,
-                    <View className="col-xs-1">
+                    <View className="col-xs-2">
                         <Box padding={'.5em'}>
             
                             <Button add onClick={() => handleAdd()}>&#43;</Button>
@@ -242,14 +280,14 @@ const PictureChoice = ({ isNew, activeQuestionId, option, order, handlePreview, 
                     </View>
                 ] : 
                 [
-                    <View className="col-xs-9">
+                    <View className="col-xs-8">
                     <Box padding={'.5em'}>
 
 												<AntInput  value={option.forms__Label__c} id={option.Id} placeholder="Option" onChange={(e) => updateOption(e, order)}  />
                         
                     </Box>
                     </View>,
-                    <View className="col-xs-1">
+                    <View className="col-xs-2">
                         <Box padding={'.5em'}>
 														<div style={closeStyle} onClick={() => removeRow(order)}>
 
