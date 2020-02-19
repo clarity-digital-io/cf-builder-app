@@ -16,7 +16,7 @@ export const PictureChoices = ({ question }) => {
     const [preview, setPreview] = useState({ image: null, visible: false });
 
     const { activeQuestionOptions, setActiveQuestionOptions } = useContext(EditContext);
-	console.log('activeQuestionOptions', activeQuestionOptions); 
+
 		const { activeQuestion } = useContext(DesignContext);
 
     const handlePreview = (file) => {
@@ -48,13 +48,10 @@ export const PictureChoices = ({ question }) => {
 
         if(e.key != 'Enter') {
             let value = e.target.value;
-						console.log('value', value); 
             setActiveQuestionOptions((options) => {
                 return options.map((option, index) => {
 
                     if(order == index) {
-											console.log('order', order); 
-
                         return { ...option, forms__Label__c: value, forms__Choice_Image__c: file, forms__Order__c: index }
                     }
                     return option; 
@@ -81,8 +78,8 @@ export const PictureChoices = ({ question }) => {
 				})
 				
     }
-    console.log('activeQuestionOptions', activeQuestionOptions); 
-    return (
+
+		return (
         <ViewStyle>
 
             <h1>Picture Choice Options</h1>
@@ -163,12 +160,12 @@ const buildFiles = (option) => {
 
 const PictureChoice = ({ isNew, activeQuestionId, option, order, handlePreview, updateOption, add, removeRow, updateImage }) => {
 
-	const [newValue, setNewValue] = useState('');
-		console.log('option', option); 
+		const [newValue, setNewValue] = useState('');
+
 		const [file, setFile] = useState(file => {
-			return option ? buildFiles(option) : file ? file : [];
+				return option ? buildFiles(option) : file ? file : [];
 		});
-		
+			
     const handleKeyDown = (e) => {
 
         if (e.key === 'Enter') {
@@ -185,12 +182,10 @@ const PictureChoice = ({ isNew, activeQuestionId, option, order, handlePreview, 
     }
 
     const handleAdd = (e) => {
-        console.log('newValue, activeQuestionId, file', newValue, activeQuestionId, file); 
         add(newValue, activeQuestionId, file);
 
         setNewValue('');
 				setFile([])
-
     }
 
     const uploadChange = ({ fileList }) => {
