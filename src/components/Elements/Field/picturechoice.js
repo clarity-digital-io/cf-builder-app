@@ -34,9 +34,9 @@ export const PictureChoice = ({ question, disabled }) => {
 
 const getImage = (option) => {
 	console.log('option.forms__Choice_Image__c', option.forms__Choice_Image__c); 
-	if(option.forms__Choice_Image__c != '' && option.forms__Choice_Image__c.length <= 18) {
+	if(option.forms__Choice_Image__c != null && option.forms__Choice_Image__c.length <= 18) {
 		return `/sfc/servlet.shepherd/version/download/${option.forms__Choice_Image__c}`;
 	} else {
-		return option.forms__Choice_Image__c; 
+		return option.forms__Choice_Image__c || ''; 
 	}
 }

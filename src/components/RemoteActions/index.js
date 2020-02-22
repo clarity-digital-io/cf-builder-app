@@ -22,9 +22,7 @@ const prodCall = (func, params, callback, status) => {
 
 		}
 
-		let timeout = func == 'ClarityFormBuilder.saveQuestionWithPictureOptions' ? 12000 : 3000;
-
-		let extraParams = { buffer: false, escape: true, timeout: timeout };
+		let extraParams = { buffer: false, escape: true, timeout: 12000 };
 		
 		console.log('managedPackageFunction', managedPackageFunction, params); 
 

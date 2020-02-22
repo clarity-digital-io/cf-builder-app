@@ -74,7 +74,14 @@ export const PictureChoices = ({ question }) => {
 
     const add = (value, activeQuestionId, file) => {
         setActiveQuestionOptions(options => {
-            return options.concat([{ forms__Order__c: options.length, forms__Label__c: value, forms__Clarity_Form_Question__c: activeQuestionId, forms__Choice_Image__c: file[0].thumbUrl != null ? file[0].thumbUrl : '' }]);
+            return options.concat([
+							{ 
+								forms__Order__c: options.length, 
+								forms__Label__c: value, 
+								forms__Clarity_Form_Question__c: activeQuestionId, 
+								forms__Choice_Image__c: (file[0] != null && file[0].thumbUrl != null) ? file[0].thumbUrl : ''
+							}
+						]);
 				})
 				
     }
