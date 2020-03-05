@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled, { css } from 'styled-components';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import Main from '../../../Elements/Theme';
@@ -10,9 +10,12 @@ import Box from '../../../Elements/Box';
 import { sortedTypes } from '../types';
 
 import { getType } from './types'; 
+import { BuilderContext } from '../../../Context';
 
 export const NewQuestion = () => {
 
+		const { form } = useContext(BuilderContext);
+	console.log('form.form__Status__c', form); 
     return (
         <View silver full className="row" key={'Body'}>
             <View className="col-xs-12">
@@ -39,6 +42,7 @@ export const NewQuestion = () => {
                                             return (
                                                     <View  className="col-xs-6">
                                                         <Draggable
+																														isDragDisabled={ form.forms__Status__c == 'Published' ? true : false }
                                                             key={type.id}
                                                             draggableId={`item-${type.id}`}
                                                             index={index}>
@@ -47,7 +51,8 @@ export const NewQuestion = () => {
                                                                     key={type.id}
                                                                     ref={provided.innerRef}
                                                                     {...provided.draggableProps}
-                                                                    {...provided.dragHandleProps}
+																																		{...provided.dragHandleProps}
+																																		disabled={ form.forms__Status__c == 'Published' ? true : false }
                                                                     isDragging={snapshot.isDragging}>
                                                                     {getType(type.type)}
                                                                     <span>
@@ -95,7 +100,11 @@ const SelectableNew = styled.div`
     ${props => props.isDragging == true && css`
         box-shadow: 1px 1px 5px ${Main.color.grey};
         background: ${Main.color.white};
-    `}
+		`}
+		
+		${props => props.disabled == true && css`
+			background: ${Main.color.light};
+	`}
 
     :active {
         box-shadow: none;

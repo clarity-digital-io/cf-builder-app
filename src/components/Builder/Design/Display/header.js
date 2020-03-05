@@ -17,8 +17,8 @@ export const Header = () => {
     const [type, setType] = useState(null);
 
     const { form, style, setForm, setLoading } = useContext(BuilderContext); 
-		console.log('form', form); 
-    const { setAddPageUpdate, update, questions } = useContext(DesignContext); 
+
+		const { setAddPageUpdate, update, questions } = useContext(DesignContext); 
 
     const preview = () => {
         LCC.sendMessage({name: "Preview", value: form.Id });
