@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled, { css } from 'styled-components';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import Main from '../../../Elements/Theme';
@@ -10,8 +10,11 @@ import Box from '../../../Elements/Box';
 import { sortedTypes } from '../types';
 
 import { getType } from './types'; 
+import { BuilderContext } from '../../../Context';
 
 export const NewQuestion = () => {
+
+		const { form } = useContext(BuilderContext);
 
     return (
         <View silver full className="row" key={'Body'}>
@@ -39,6 +42,7 @@ export const NewQuestion = () => {
                                             return (
                                                     <View  className="col-xs-6">
                                                         <Draggable
+																														isDragDisabled={ form.form__Status__c == 'Published' ? true : false }
                                                             key={type.id}
                                                             draggableId={`item-${type.id}`}
                                                             index={index}>
