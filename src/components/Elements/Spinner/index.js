@@ -20,6 +20,21 @@ export const SmallSpinner = () => {
 
 
 const SpinHolder = styled.div`
+	position: relative;
+	left: 50%;
+	top: 50%;
+`
+
+
+export const CenterSpinner = () => {
+	return (
+		<CenterHolder>
+				<Spin size="large" />
+		</CenterHolder>
+	)
+}
+
+const CenterHolder = styled.div`
 	position: absolute;
 	left: 50%;
 	top: 50%;

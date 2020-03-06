@@ -60,7 +60,7 @@ const mockCall = (func, params, callback, status) => {
                 forms__End_Date__c: '2019-12-31',
                 forms__Connected_Object__c: 'Account',
                 forms__Clarity_Form_Style__c: 15, 
-                forms__Status__c: 'Published', 
+                forms__Status__c: 'Draft', 
                 forms__Clarity_Form_Assignment__c: 1,
                 forms__Clarity_Form_Style__r: { Id: 15, Name:'Greens', forms__Background_Image__c: '', forms__Background_Color__c: '#FFF', forms__Color__c: '#333', forms__Button_Color__c: '', forms__Multi_Page__c: false }, 
                 //Clarity_Form_Style__r: { Id: 15, Name:'Greens', Background_Image__c: 'https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2565&q=80', Background_Color__c: '#333333', Color__c: '#FFFFFF', Button_Color__c: '', Multi_Page__c: false }, 
