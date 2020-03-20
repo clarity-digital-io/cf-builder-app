@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Input as AntInput, InputNumber as AntInputNumber} from 'antd';
+import { Input as AntInput, InputNumber as AntInputNumber, Switch as AntSwitch} from 'antd';
 
 import { call } from '../../../RemoteActions'; 
 import View from '../../../Elements/View';
@@ -46,7 +46,16 @@ export const SettingsState = () => {
         setForm(form => {
             return { ...form, forms__Limit__c: value }
         })
-    }
+		}
+		
+		const updateFlowStatus = (value) => {
+
+			let checked = e.target.checked;
+
+			setForm(form => {
+					return { ...form, forms__Is_Flow__c: checked }
+			})
+		}
 
     return [
 
@@ -93,6 +102,23 @@ export const SettingsState = () => {
                                 <Box padding='1em 0 0 0'>
 
 																		<AntInputNumber min={0} value={ form.forms__Limit__c } onChange={(e) => updateLimit(e)} />
+
+                                </Box>
+                            </View>
+                        </View>
+
+                    </ViewStyle>
+
+
+                    <ViewStyle space border>
+
+                        <h1>Use in a Lightning Flow</h1>
+
+                        <View className="row">
+                            <View className="col-xs-12">
+                                <Box padding='1em 0 0 0'>
+
+																	<AntSwitch defaultChecked={form.forms__Is_Flow__c} onChange={(e) => updateFlowStatus(e)} />
 
                                 </Box>
                             </View>
