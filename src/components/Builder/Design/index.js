@@ -7,6 +7,7 @@ import Design from './design';
 
 import { BuilderContext, DragDropUpdateContext, DesignContext } from '../../Context';
 import { StatusHandler } from '../../Elements/Notification';
+import DesignNavigation from '../../Elements/Navigation/design';
 
 /**
  * This provider can be split up into a DragDrop Provider and an Edit Provider
@@ -15,13 +16,14 @@ import { StatusHandler } from '../../Elements/Notification';
 export const DragDrop = () => { 
     
     return (
-        <DesignLayout>
-            <DragDropUpdateProvider>
-                <DesignProvider>
-                    <Design />
-                </DesignProvider>
-            </DragDropUpdateProvider>
-        </DesignLayout> 
+
+					<DragDropUpdateProvider>
+							<DesignProvider>
+									<DesignNavigation />
+									<Design />
+							</DesignProvider>
+					</DragDropUpdateProvider>
+
     )
 
 }
@@ -60,7 +62,7 @@ const DragDropUpdateProvider = ({ children }) => {
 
 const DesignProvider = ({ children }) => {
 
-    const { form, sObjects, navState } = useContext(BuilderContext);
+    const { form, sObjects, navState, setError } = useContext(BuilderContext);
 
     const [navQuestion, setNavQuestion] = useState(null); 
 
@@ -97,7 +99,7 @@ const DesignProvider = ({ children }) => {
 
     useEffect(() => {
 
-        call("ClarityFormBuilder.getQuestions", [form.Id], (result, e) => fetchHandler(result, e, setQuestions, setRecordGroup, setPageQuestions, setQuestionOptions))
+        call(setError, "ClarityFormBuilder.getQuestions", [form.Id], (result, e) => fetchHandler(result, e, setQuestions, setRecordGroup, setPageQuestions, setQuestionOptions))
 
     }, [])
 
@@ -117,6 +119,7 @@ const DesignProvider = ({ children }) => {
                 form.forms__Status__c,
                 () => setUpdate(false),
                 () => call(
+										setError,
                     "ClarityFormBuilder.save", 
                     [JSON.stringify(questions)], 
                     (result, e) => resultHandler(result, e, setUpdate, setUpdateSingle, setQuestions, setPageQuestions),
@@ -136,6 +139,7 @@ const DesignProvider = ({ children }) => {
                 form.forms__Status__c,
                 () => setUpdate(false),
                 () => call(
+										setError,
                     "ClarityFormBuilder.save", 
                     [JSON.stringify(multiQuestions)], 
                     (result, e) => resultHandler(result, e, setUpdate, setUpdateMulti, setQuestions, setPageQuestions),
@@ -174,6 +178,7 @@ const DesignProvider = ({ children }) => {
                 form.forms__Status__c,
                 () => setUpdate(false),
                 () => call(
+										setError,
                     "ClarityFormBuilder.pageDelete", 
                     [JSON.stringify(questionsWithPageUpdate), JSON.stringify([deletePage, form.Id])], 
                     (result, e) => deleteResultHandler(result, e, setQuestions, setPageQuestions, setRecordGroup, setUpdate),
@@ -198,6 +203,7 @@ const DesignProvider = ({ children }) => {
                 form.forms__Status__c,
                 () => setUpdate(false),
                 () => call(
+										setError,
                     "ClarityFormBuilder.deleteQuestion", 
                     [JSON.stringify(updatedOnDelete), questionToDelete], 
                     (result, e) => deleteResultHandler(result, e, setQuestions, setPageQuestions, setRecordGroup, setUpdate),

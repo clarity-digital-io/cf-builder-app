@@ -1,8 +1,7 @@
 import React from 'react';
-import { InputField, FreeText, Attachments, Checkbox, Comment, ConnectedObject, Date, Dropdown, Email, Image, Lookup, MultipleChoice, NetPromoterScore, Number, Ranking, RecordGroup, Slider, PictureChoice } from '../../../Elements/Field';
+import { InputField, FreeText, Attachments, Checkbox, Comment, ConnectedObject, Date, Dropdown, Email, Image, Lookup, MultipleChoice, NetPromoterScore, Number, RecordGroup, Slider, PictureChoice } from '../../../Elements/Field';
 
 export const getType = (question) => {
-		console.log('question.forms__Type__c', question.forms__Type__c); 
     switch (question.forms__Type__c) {
         case 'ConnectedObject':
             return <ConnectedObject question={question} />
@@ -19,9 +18,6 @@ export const getType = (question) => {
         case 'Dropdown':
         case 'PICKLIST':
             return <Dropdown question={question} />
-            break;
-        case 'Ranking':
-            return <Ranking question={question} />
             break;
         case 'NetPromoterScore':
             return <NetPromoterScore question={question} />

@@ -15,8 +15,8 @@ import { BuilderContext } from '../../../Context';
 export const NewQuestion = () => {
 
 		const { form } = useContext(BuilderContext);
-	console.log('form.form__Status__c', form); 
-    return (
+
+		return (
         <View silver full className="row" key={'Body'}>
             <View className="col-xs-12">
                 <Box padding='0'>
@@ -86,7 +86,7 @@ const SelectableNew = styled.div`
     margin: .75em;
     font-weight: 500;
     background: ${Main.color.white};
-    box-shadow: 2px 0 2px ${Main.color.silver}
+
     color: ${Main.color.dark}
 
     span {

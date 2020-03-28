@@ -154,7 +154,7 @@ const ControlSelect = ({ order, row }) => {
 
             <View className="col-xs-4">
                 <Box padding='.5em'> 
-                    <Select disabled={row.forms__RG_Required__c} key={row.forms__Order__c} value={row.forms__Salesforce_Field__c} options={Object.keys(additionalFields)} onChange={(e) => setSelection(e, row.forms__Order__c)}/>
+                    <Select disabled={row.forms__RG_Required__c} key={row.forms__Order__c} value={row.forms__Salesforce_Field__c} options={Object.keys(additionalFields)} onChange={(e, data) => setSelection(data.selection, row.forms__Order__c)}/>
                 </Box>
             </View>
             <View className="col-xs-2">

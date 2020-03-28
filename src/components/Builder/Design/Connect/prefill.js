@@ -35,36 +35,35 @@ export const PreFillState = () => {
         })
     }
 
-    const setFieldSelection = (e, order) => {
+    const setFieldSelection = (selection, order) => {
+			let value = selection[0].value;
 
-        let value = e.target.value; 
+			setActiveFieldPrefills((mappings) => {
+					//same field as used record group fields must replace to be able to prefill record group fields
+					return mappings.map((mapping, i) => {
+							if(i == order) {
+									return { ...mapping, forms__Salesforce_Field__c: value }
+							}
+							return mapping
+					})
 
-        setActiveFieldPrefills((mappings) => {
-            //same field as used record group fields must replace to be able to prefill record group fields
-            return mappings.map((mapping, i) => {
-                if(i == order) {
-                    return { ...mapping, forms__Salesforce_Field__c: value }
-                }
-                return mapping
-            })
-
-        });
+			});
     }
     
-    const setQuestionSelection = (e, order, custom) => {
+    const setQuestionSelection = (selection, order, custom) => {
 
-        let value = e.target.value; 
+			let value = custom ? e.target.value : selection[0].value;
 
-        setActiveFieldPrefills((mappings) => {
+			setActiveFieldPrefills((mappings) => {
 
-            return mappings.map((mapping, i) => {
-                if(i == order) {
-                    return { ...mapping, forms__Clarity_Form_Question__c: value }
-                }
-                return mapping
-            })
+					return mappings.map((mapping, i) => {
+							if(i == order) {
+									return { ...mapping, forms__Clarity_Form_Question__c: value }
+							}
+							return mapping
+					})
 
-        });
+			});
 
     }
 

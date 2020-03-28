@@ -53,12 +53,6 @@ export const getType = (type) => {
         case 'PictureChoice':
             return <Images2DarkIcon/>
             break;
-        case 'Rating':
-            return <StarDarkIcon/>
-            break;
-        case 'Input':
-            return <InputDarkIcon/>
-            break;
     }
 
 }

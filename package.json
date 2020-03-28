@@ -11,7 +11,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "antd": "^3.21.2",
+    "@salesforce-ux/design-system": "^2.11.6",
+    "@salesforce/design-system-react": "^0.10.18",
     "lightning-container": "^1.0.0",
     "react": "^16.8.6",
     "moment": "^2.24.0",

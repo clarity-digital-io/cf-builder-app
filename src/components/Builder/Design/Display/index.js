@@ -1,8 +1,6 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 
-import { Header } from './header'; 
-
 import { useDrag } from './useDrag';
 import { useMultiDrag } from './useMultiDrag';
 
@@ -14,14 +12,7 @@ export const Display = () => {
 
     const { style } = useContext(BuilderContext);
 
-    const { questionUpdate } = useContext(DesignContext);
-
-    const { update } = useDrag(); 
-
-    const { multiUpdate } = useMultiDrag(); 
-
     return [
-        <Header key={'Header'} update={questionUpdate || multiUpdate || update} />,
         <FormDesign key={'Display'}>
 
             {
@@ -36,6 +27,6 @@ export const Display = () => {
 }
 
 const FormDesign = styled.div`
-    height: 94vh;
+    height: 92.5vh;
     overflow-y: auto;
 `;

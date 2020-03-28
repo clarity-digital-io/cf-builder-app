@@ -1,19 +1,16 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
-import { Spin } from 'antd';
+
+import { Spinner as SalesforceSpinner } from '@salesforce/design-system-react';
 
 export const Spinner = () => {
     return (
 			<SpinHolder>
-					<Spin size="large" />
-			</SpinHolder>
-    )
-}
-
-export const SmallSpinner = () => {
-    return (
-			<SpinHolder>
-					<Spin size="small" />
+				<SalesforceSpinner
+					size="small"
+					variant="base"
+					assistiveText={{ label: 'Main Frame Loading...' }}
+				/>
 			</SpinHolder>
     )
 }
@@ -25,13 +22,19 @@ const SpinHolder = styled.div`
 	top: 50%;
 `
 
-
 export const CenterSpinner = () => {
+
 	return (
-		<CenterHolder>
-				<Spin size="large" />
-		</CenterHolder>
-	)
+
+			<CenterHolder>
+				<SalesforceSpinner
+					size="small"
+					variant="base"
+					assistiveText={{ label: 'Main Frame Loading...' }}
+				/>
+			</CenterHolder>
+
+	);
 }
 
 const CenterHolder = styled.div`

@@ -51,7 +51,7 @@ export const QuestionState = () => {
 
 const Save = ({ children }) => {
 
-    const { form } = useContext(BuilderContext);
+    const { form, setError } = useContext(BuilderContext);
 
     const { 
         activeRecordGroup, 
@@ -85,6 +85,7 @@ const Save = ({ children }) => {
                 form.forms__Status__c,
                 () => setQuestionUpdate(false),
                 () => call(
+										setError,
                     "ClarityFormBuilder.saveQuestion", 
                     [JSON.stringify(activeQuestion)], 
                     (result, e) => resultHandler(result, e, setQuestionUpdate, setQuestions, setPageQuestions, activeQuestion),
@@ -97,6 +98,7 @@ const Save = ({ children }) => {
                 form.forms__Status__c,
                 () => setQuestionUpdate(false),
                 () => call(
+										setError,
                     "ClarityFormBuilder.saveQuestionWithOptions", 
                     [JSON.stringify(activeQuestion), JSON.stringify(activeQuestionOptions)], 
                     (result, e) => resultOptionHandler(result, e, setQuestionUpdate, setQuestions, setPageQuestions, activeQuestion, setActiveQuestionOptions, setQuestionOptions),
@@ -128,11 +130,11 @@ const Save = ({ children }) => {
 
 						}, {});
 
-						console.log(' [JSON.stringify(activeQuestion), JSON.stringify(updatedOptions)] ',  activeQuestion, updatedOptions, activeQuestionOptionImages ); 
             StatusHandler(
                 form.forms__Status__c,
                 () => setQuestionUpdate(false),
                 () => call(
+										setError,
                     "ClarityFormBuilder.saveQuestionWithPictureOptions", 
                     [JSON.stringify(activeQuestion), JSON.stringify(updatedOptions), JSON.stringify(activeQuestionOptionImages)], 
                     (result, e) => resultOptionHandler(result, e, setQuestionUpdate, setQuestions, setPageQuestions, activeQuestion, setActiveQuestionOptions, setQuestionOptions),
@@ -148,6 +150,7 @@ const Save = ({ children }) => {
                 form.forms__Status__c,
                 () => setQuestionUpdate(false),
                 () => call(
+										setError,
                     "ClarityFormBuilder.saveQuestionWithCriteria", 
                     [JSON.stringify(activeQuestion), JSON.stringify(updatedCriteria)], 
                     (result, e) => resultCriteriaHandler(result, e,setQuestionUpdate, setQuestions, setCriteria, activeQuestion),
@@ -167,6 +170,7 @@ const Save = ({ children }) => {
                 form.forms__Status__c,
                 () => setQuestionUpdate(false),
                 () => call(
+										setError,
                     "ClarityFormBuilder.saveRecordGroupFields", 
                     [JSON.stringify(updatedActiveRecords), activeQuestion.Id], 
                     (result, e) => resultRecordGroupFieldsHandler(result, e, setQuestionUpdate, setRecordGroup, setActiveRecordGroup, activeQuestion),
@@ -182,12 +186,7 @@ const Save = ({ children }) => {
     }
 
     return [
-        
-        <View silver body key={'QuestionEdit'} className="row">
-            <View className="col-xs-12">
-                <View className="Box">{ children }</View>
-            </View>
-        </View>, 
+      
         <View footer key={'Save'} className="row middle-xs end-xs">
             <View className="col-xs-12">
                 <ViewStyle middle>
@@ -200,11 +199,11 @@ const Save = ({ children }) => {
 
                     {
                         questionState != 'SF' ? 
-                            <Button neutral onClick={() => setQuestionState('NEW')}>Add New Field</Button> : 
+                            <Button neutral onClick={() => setQuestionState('NEW')} variant="success">Add New Field</Button> : 
                             <Button neutral onClick={() => setQuestionState('EDIT')}>Back</Button>
                     }
 
-                    <Button cta onClick={() => setQuestionUpdate(true)}>
+                    <Button cta onClick={() => setQuestionUpdate(true)} variant="brand">
 
                         {
                             questionUpdate ? 'Saving...' : 'Save Changes'
@@ -214,7 +213,12 @@ const Save = ({ children }) => {
                     
                 </ViewStyle>
             </View>
-        </View>
+				</View>,
+				<View silver body key={'QuestionEdit'} className="row">
+						<View className="col-xs-12">
+								<View className="Box">{ children }</View>
+						</View>
+				</View>
 
     ]
 }

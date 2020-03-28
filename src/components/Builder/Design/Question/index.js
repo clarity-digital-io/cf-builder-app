@@ -2,9 +2,11 @@ import React, { useState, useEffect, useContext } from 'react';
 
 import { call } from '../../../RemoteActions'; 
 
-import { EditContext, DesignContext } from '../../../Context';
+import { EditContext, DesignContext, BuilderContext } from '../../../Context';
 
 export const EditProvider = ({ children }) => {
+
+		const { setError } = useContext(BuilderContext); 
 
     const { navQuestion, activeQuestion } = useContext(DesignContext);
 
@@ -30,7 +32,7 @@ export const EditProvider = ({ children }) => {
             setRequiredFields([])
             setLoading(true);
 
-            call("ClarityFormBuilder.getQuestionEditDetails", [navQuestion], (result, e) => optionFetchHandler(result, e, setLoading, setActiveQuestionOptions, setActiveFlowDesign, setCriteria));
+            call(setError, "ClarityFormBuilder.getQuestionEditDetails", [navQuestion], (result, e) => optionFetchHandler(result, e, setLoading, setActiveQuestionOptions, setActiveFlowDesign, setCriteria));
         
         }
 
@@ -48,13 +50,13 @@ export const EditProvider = ({ children }) => {
 
             if(activeQuestion.forms__Type__c == 'ConnectedObject') {
                 setLoading(true);
-                call("ClarityFormBuilder.getSObjectFields", [sObjectEdit], (result, e) => getSObjectFieldResultHandler(result, e, activeQuestion, setRequiredFields, setAdditionalFields, setSObjectEdit, setActiveRecordGroup, setLoading));
+                call(setError, "ClarityFormBuilder.getSObjectFields", [sObjectEdit], (result, e) => getSObjectFieldResultHandler(result, e, activeQuestion, setRequiredFields, setAdditionalFields, setSObjectEdit, setActiveRecordGroup, setLoading));
 
             }
             
             if(activeQuestion.forms__Type__c == 'RecordGroup') {
                 setLoading(true); 
-                call("ClarityFormBuilder.getSObjectFields", [activeQuestion.forms__Salesforce_Object__c], (result, e) => getSObjectFieldResultHandler(result, e, activeQuestion, setRequiredFields, setAdditionalFields, setSObjectEdit, setActiveRecordGroup, setLoading));
+                call(setError, "ClarityFormBuilder.getSObjectFields", [activeQuestion.forms__Salesforce_Object__c], (result, e) => getSObjectFieldResultHandler(result, e, activeQuestion, setRequiredFields, setAdditionalFields, setSObjectEdit, setActiveRecordGroup, setLoading));
             }
 
         }
@@ -91,7 +93,6 @@ export const EditProvider = ({ children }) => {
 }
 
 const optionFetchHandler = (result, e, setLoading, setActiveQuestionOptions, setActiveFlowDesign, setCriteria) => {
-		console.log('result.Options', result.Options); 
     setActiveQuestionOptions(result.Options);
     setCriteria(result.Criteria);
     setActiveFlowDesign(result.FlowDesign[0]);

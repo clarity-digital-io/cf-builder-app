@@ -1,21 +1,22 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { DesignContext, EditContext } from '../../../../Context';
-import { Switch as AntSwitch, Input as AntInput } from 'antd';
 
-import View from '../../../../Elements/View';
-import ViewStyle from '../../../../Elements/View/style';
+import {Checkbox} from '@salesforce/design-system-react';
+import { Input as SalesforceInput } from '@salesforce/design-system-react';
 
-import Box from '../../../../Elements/Box';
 import { Attachments } from './Attachments'; 
 import { Multiple } from './multiple'; 
 import { Comment } from './comment'; 
-import { Slider } from './slider'; 
+import { Number } from './number'; 
 import { Lookup } from './lookup'; 
 import { RecordGroup } from './recordgroup'; 
 import { ConnectedObject } from './connectedobject'; 
 import { PictureChoices } from './picturechoices'; 
 import { FreeText } from './freetext'; 
-import { SmallSpinner } from '../../../../Elements/Spinner';
+import { Spinner } from '../../../../Elements/Spinner';
+
+import View from '../../../../Elements/View';
+import ViewStyle from '../../../../Elements/View/style';
 
 const getQuestionType = (type) => {
 
@@ -25,7 +26,6 @@ const getQuestionType = (type) => {
             break;
         case 'MultipleChoice':
         case 'Dropdown':
-        case 'Ranking':
         case 'Checkbox':
             return <Multiple />
             break;
@@ -36,13 +36,11 @@ const getQuestionType = (type) => {
             return <div>NetPromoterScore</div>
             break;
         case 'Slider':
-            return <Slider />
+				case 'Number':
+            return <Number type={type} />
             break;
         case 'Email':
             return <Email />
-            break;
-        case 'Number':
-            return <div>Number</div>
             break;
         case 'Lookup':
         case 'REFERENCE':
@@ -92,59 +90,50 @@ export const EditQuestion = () => {
         })
 
     }
+		return (			
+			<View className="row middle-xs">
+				<View className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					<ViewStyle space border>
 
-    return (
-        <View className="row middle-xs">
-            <View className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <Box>
+					<h1>Settings</h1>
+					{
+						showRequiredInput(activeQuestion.forms__Type__c) ?
+							<Checkbox
+								labels={{
+									label: 'Required Field',
+								}}
+								id="checkbox-toggle-example"
+								variant="toggle"
+								defaultChecked={activeQuestion.forms__Required__c} 
+								onChange={(e, {checked}) => updateRequiredStatus(e)}
+							/> : 
+							null
+					}
+					</ViewStyle>
+					
+					<ViewStyle space border>
 
-                    <ViewStyle space border>
+							<SalesforceInput
+								aria-describedby={activeQuestion.Id}
+								value={activeQuestion.forms__Title__c || activeQuestion.forms__Salesforce_Field__c}
+								id={activeQuestion.Id}
+								label={'Question Label'}
+								onChange={(e) => updateActiveQuestion(e)}
+							/>
 
-                        <h1>Settings</h1>
+					</ViewStyle>
+					
+					<ViewStyle space scroll>
+					{
+							hasExtraEditSettings(activeQuestion.forms__Type__c) ?
+							loading ? <Spinner /> : getQuestionType(activeQuestion.forms__Type__c)  :
+							null	
+					}
+					</ViewStyle>
 
-                        {
-                            showRequiredInput(activeQuestion.forms__Type__c) ?
-                            <ViewStyle>
-
-                                <h2>Required</h2>
-																<AntSwitch defaultChecked={activeQuestion.forms__Required__c} onChange={(e) => updateRequiredStatus(e)} />
-
-                            </ViewStyle> : 
-                            null
-                        }
-
-
-                    </ViewStyle>
-
-                    <ViewStyle space border>
-
-                        <h2>Question Label</h2>
-
-                        <ViewStyle>
-
-														<AntInput type="text" id={ activeQuestion.Id } value={ activeQuestion.forms__Title__c || activeQuestion.forms__Salesforce_Field__c } onChange={(e) => updateActiveQuestion(e)} />
-
-                        </ViewStyle>
-                        
-                    </ViewStyle>
-
-                    {
-                        hasExtraEditSettings(activeQuestion.forms__Type__c) ?
-                            <ViewStyle space scroll>
-                            
-                                {
-                                    loading ? <SmallSpinner /> : getQuestionType(activeQuestion.forms__Type__c) 
-                                }
-
-                            </ViewStyle> :
-                            null
-                    }
-
-
-                </Box>  
-            </View>
-        </View>
-    )
+				</View>
+			</View>					
+		)
 }
 
 const hasExtraEditSettings = (type) => {

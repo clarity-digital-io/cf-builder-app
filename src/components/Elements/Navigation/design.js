@@ -1,149 +1,264 @@
 import React, { useState, useContext } from 'react';
-import styled from 'styled-components';
-import Main from '../Theme'; 
-import { BuilderContext } from '../../Context';
-import { Modal, Button } from 'antd';
+import LCC from 'lightning-container';
+
+import { BuilderContext, DesignContext } from '../../Context';
+
+import {ToastContainer, Toast, Modal, Icon as SalesforceIcon, BuilderHeader, BuilderHeaderNav, BuilderHeaderNavDropdown, BuilderHeaderNavLink, BuilderHeaderToolbar, ButtonGroup, Button } from '@salesforce/design-system-react'; 
+import { useDrag } from '../../Builder/Design/Display/useDrag';
+import { call } from '../../RemoteActions';
+
+const Icon = ({ type, label, background }) => (
+	<SalesforceIcon
+		assistiveText={{ label: label }}
+		category="standard"
+		name={type}
+		size="medium"
+	/>
+)
 
 const DesignNavigation = () => {
 
-    const { navState, setNavState, dirtyState, setDirtyState, setNewQuestionNav } = useContext(BuilderContext);
+	const { navState, setNavState, form, setForm, setLoading, setError, error } = useContext(BuilderContext);
 
-    const [locSelected, setLocSelected] = useState(null); 
+	const { update, questions } = useContext(DesignContext); 
 
-    const navigate = (loc) => {
+	const [type, setType] = useState(null);
 
-        if(dirtyState.edited) {
+	const { update : dragUpdate } = useDrag();
 
-            setDirtyState(dirty => {
-                return { ...dirty, navigated: true  }
-            });
+	const [publishCheck, setPublishCheck] = useState(false);
 
-            setLocSelected(loc);
+	const preview = () => {
+			LCC.sendMessage({name: "Preview", value: form.Id });
+	}
 
-            return;
-        }
+	//Publish and Draft Handling
+	const publish = () => {
+			if(questions.length > 0) {
 
-        setNavState(loc);
+					setType('Publish');
 
-    }
+					setPublishCheck(true);
 
-    const handleSave = () => {
+			} else {
 
-        dirtyState.save();
-        
-        setDirtyState(dirty => {
-            return { navigated: false, edited: false, save: null }
-        });
+					setType('Publish Error');   
+					
+					setPublishCheck(true); 
 
-        setNavState(locSelected);
+			}
+	}
 
-    }
-
-    const handleCancel = () => {
-        
-        setDirtyState(dirty => {
-            return { ...dirty, navigated: false }
-        });
-
-    }
-
-    return [
-        <Nav>
-
-            <ul>
-                <li className={ navState == 'QUESTIONS' ? 'active' : '' } onClick={() => navigate('QUESTIONS')}>
-                    <span>Questions</span>
-                </li>
-                <li className={ (navState == 'CONNECT' || navState == 'MAPPING') ? 'active' : '' } onClick={() => navigate('CONNECT')}>
-                    <span>Connect</span>
-                </li>
-                <li className={ navState == 'SETTINGS' ? 'active' : '' } onClick={() => navigate('SETTINGS')}>
-                    <span>Settings</span>
-                </li>
-            </ul>
-
-        </Nav>,
-        <Modal
-            visible={dirtyState.navigated}
-            onOk={() => handleOk()}
-            onCancel={() => handleCancel()}
-            footer={[
-                <Button key="back" onClick={() => handleCancel()}>
-                  Cancel
-                </Button>,
-                <Button key="submit" type="primary" onClick={() => handleSave()}>
-                  Save
-                </Button>,
-            ]}
-        >
-            <BuildDirtyStateMessage navState={navState} />
-        </Modal>
-    ];
-
-}
-
-const BuildDirtyStateMessage = ({ navState }) => {
-
-    const buildMessage = (nav) => {
-
-        switch (nav) {
-            case 'DESIGNEDIT':
-                return designEditMessage(); 
-                break;
-            default:
-                return '';
-                break;
-        }
-    }
-
-    return buildMessage(navState);
-
-}
-
-const designEditMessage = () => {
-
-    return <div>
-        <h1>
-            Do you want to save the changes to the theme you just made?
-        </h1>
-        <p>
-            Click Cancel to continue editing your design
-        </p>
-    </div>
-}
-
-const Nav = styled.nav`
-    background: ${Main.color.light};
-    height: 100vh; 
-
-    .active {
-        font-weight: 900;
-        border-left: 3px solid ${Main.color.bright}
-    }
-
-    ul {
-        list-style: none;
-        height: 96.5vh;
-        display: flex;
-        flex-direction: column;
-    }
-
-    li {
+	const handleCancel = () => {
 			
-        color: ${Main.color.bright};
-        cursor: pointer;
-        text-decoration: none !important;
-        display: inline-block;
-        padding: 1em;
-        font-size: 1em;
-        text-align: left;
-    }
-    
-    li:hover {
-				border-left: 3px solid ${Main.color.bright}
-        font-weight: 900;
-    }
+			setPublishCheck(false); 
 
-`;
+	}
+
+	const handlePublish = () => {
+
+			setLoading(true); 
+
+			call(
+					setError,
+					"ClarityFormBuilder.updateStatus", 
+					[form.Id, 'Published'], 
+					(result, e) => publishHandler(result, e, setLoading, setPublishCheck, setForm)
+			);
+
+	}
+
+	const handleDraft = () => {
+        
+		setLoading(true); 
+
+		call(
+				setError,
+				"ClarityFormBuilder.updateStatus", 
+				[form.Id, 'Draft'], 
+				(result, e) => publishHandler(result, e, setLoading, setPublishCheck, setForm)
+		);
+
+}
+	//Navigation Handling
+	const navigate = (loc) => {
+
+			setNavState(loc);
+
+	}
+
+	const back = () => {
+		LCC.sendMessage({name: "Back", value: form.Id });
+	}
+
+	const help = () => {
+		LCC.sendMessage({name: "Help", value: form.Id });
+	}
+
+	return [
+		<BuilderHeader
+			assistiveText={{
+				backIcon: 'Back',
+				helpIcon: 'Help',
+				icon: 'Builder',
+			}}
+			labels={{
+				back: 'Back',
+				help: 'Help',
+				pageType: form.Name,
+				title: 'Clarity Forms',
+			}}
+			events={{
+				onClickBack: back,
+				onClickHelp: help
+			}}
+			style={{ position: 'relative' }}
+		>
+			<BuilderHeaderNav>
+					<BuilderHeaderNavDropdown
+						assistiveText={{ icon: 'Dropdown' }}
+						iconCategory="utility"
+						iconName="page"
+						id="dropdown"
+						label="Options"
+						onSelect={(e) => navigate(e.value)}
+						options={[
+							{ label: 'Add Questions', value: 'QUESTIONS' },
+							{ label: 'Connections', value: 'CONNECT' },
+							{ label: 'Settings', value: 'SETTINGS' },
+						]}
+					/>
+			</BuilderHeaderNav>
+			<BuilderHeaderToolbar
+				assistiveText={{
+					actions: 'Document Actions',
+				}}
+				onRenderActions={() => (
+					<div>
+						<Icon
+							category="utility"
+							className="slds-m-right_x-small"
+							name="check"
+							size="x-small"
+							style={{ fill: '#4BCA81' }}
+						/>
+						<span className="slds-color__text_gray-10 slds-align-middle slds-m-right_small">
+							{ update || dragUpdate ? 'Saving...' : 'Saved' }
+						</span>
+						<Button
+							iconCategory="utility"
+							iconName="right"
+							iconPosition="left"
+							label="Preview"
+							onClick={() => preview()}
+						/>
+						{
+							form.forms__Status__c == 'Published' ?
+							<Button label="Set to Draft" onClick={() => handleDraft()} /> :
+							<Button label="Publish" variant="brand" onClick={() => publish()} />
+						}
+					</div>
+				)}
+			>
+			</BuilderHeaderToolbar>
+		</BuilderHeader>,
+		<Modal
+			onRequestClose={() => handleCancel()}
+			isOpen={publishCheck}
+			footer={<BuildFooter handleCancel={handleCancel} handlePublish={handlePublish} type={type} />}
+		>	
+			<section className="slds-p-around_large">
+				<BuildMessage type={type} />
+			</section>
+		</Modal>,
+
+		error.open ?
+		<ToastContainer>
+			<Toast
+				labels={{
+					heading: error.message
+				}}
+				duration="10000"
+				variant="error"
+				onRequestClose={() => setError({ message: '', open: false})}
+			/> 
+		</ToastContainer> :
+		null
+	]
+}
+
+const BuildFooter = ({ type, handleCancel, handlePublish }) => {
+
+	const getFooter = (type) => {
+
+			switch (type) {
+					case 'Publish':
+							return ([<Button key="back" onClick={() => handleCancel()}>
+													Cancel
+											</Button>,
+											<Button key="submit" variant="brand" onClick={() => handlePublish()}>
+													Publish
+											</Button>])
+							break;
+					default:
+							return (<Button key="back" onClick={() => handleCancel()}>
+													Cancel
+											</Button>)
+							break;
+			}
+
+	}
+
+	return getFooter(type);
+
+}
+
+const BuildMessage = ({ type }) => {
+
+	const getMessage = (type) => {
+
+			switch (type) {
+					case 'Publish':
+							return (<div>
+													<h1>
+															Are you sure you want to publish this form?
+													</h1>
+													<p>
+															Updates to the form are only possible in Draft mode.
+													</p>
+											</div>)
+							break;
+					default:
+							return (<div>
+													<h1>
+															Unable to publish form without questions.
+													</h1>
+													<p>
+															Please add a question before publishing this form.
+													</p>
+											</div>)
+							break;
+			}
+			
+	}
+
+	return getMessage(type);
+
+}
+
+const publishHandler = (result, e, setLoading, setPublishCheck, setForm) => {
+
+	setLoading(false); 
+
+	setPublishCheck(false); 
+
+	if(result.Status == 'Success') {
+
+			setForm(form => {
+					return { ...form, forms__Status__c: result.Form.forms__Status__c }
+			});
+
+	}
+}
 
 export default DesignNavigation;

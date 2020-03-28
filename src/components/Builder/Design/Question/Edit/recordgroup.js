@@ -10,7 +10,7 @@ import { StatusHandler } from '../../../../Elements/Notification';
 
 export const RecordGroup = () => {
     
-    const { form } = useContext(BuilderContext); 
+    const { form, setError } = useContext(BuilderContext); 
 
     const { sObjects, activeQuestion, setActiveQuestion, setQuestions, setQuestionState, setQuestionUpdate } = useContext(DesignContext);
 
@@ -28,6 +28,7 @@ export const RecordGroup = () => {
             form.forms__Status__c,
             () => setQuestionUpdate(false),
             () => call(
+								setError,
                 "ClarityFormBuilder.saveQuestion", 
                 [JSON.stringify(activeQuestion)], 
                 (result, e) => resultHandler(result, e, setQuestionUpdate, setQuestions, activeQuestion, setQuestionState),

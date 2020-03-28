@@ -1,42 +1,56 @@
-import React, { useContext } from 'react';
-import { Radio } from 'antd';
+import React, { useContext, useState } from 'react';
+import { VisualPicker, Radio, Icon } from '@salesforce/design-system-react';
 import { DesignContext } from '../../Context';
 
-const RadioGroup = Radio.Group;
-const RadioButton = Radio.Button;
+export const PictureChoice = ({ question }) => {
 
-export const PictureChoice = ({ question, disabled }) => {
-	
 	const { questionOptions } = useContext(DesignContext); 
 
-	return (
-			<RadioGroup>
-					{
-							questionOptions.get(question.Id) != null ? 
-								questionOptions.get(question.Id).map((option) => {
-										return (
-														<RadioButton
-																name={option.Id}
-																id={option.Id}
-																value={option.Id}
-																checked={false}
-														>
-															<img width="100" src={getImage(option)} />
-														</RadioButton>
-												)
-								}) :
-								null
-					}
-			</RadioGroup>
-	)
+	const [value, setValue] = useState('');
 
+	return <VisualPicker
+			label={question.forms__Title__c}
+			id={question.Id}
+			coverable
+		>
+			{
+				questionOptions.get(question.Id) != null ?
+					questionOptions.get(question.Id).map((option, index) => {
+						return (
+							<Radio
+								key={index}
+								checked={option.Id == value}
+								value={option.Id}
+								onChange={(e) => setValue(option.Id) }
+								labels={{
+									label: option.label
+								}}
+								id={question.id}
+								onRenderVisualPickerSelected={() => (
+									<Icon
+										assistiveText={{ label: option.forms__Label__c }}
+										category="utility"
+										name="check"
+										colorVariant="base"
+										size="large"
+									/>
+								)}
+								onRenderVisualPickerNotSelected={() => (
+									<img width="200" src={getImage(option)} />
+								)}
+							/>
+						)
+					}) :
+					null
+			}
+		</VisualPicker>
 }
 
 const getImage = (option) => {
-	console.log('option.forms__Choice_Image__c', option.forms__Choice_Image__c); 
 	if(option.forms__Choice_Image__c != null && option.forms__Choice_Image__c.length <= 18) {
 		return `/sfc/servlet.shepherd/version/download/${option.forms__Choice_Image__c}`;
 	} else {
-		return option.forms__Choice_Image__c || ''; 
+		console.log('option', option.forms__Choice_Image__c);
+		return option.forms__Choice_Image__c; 
 	}
 }

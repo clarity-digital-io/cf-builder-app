@@ -1,35 +1,37 @@
-import React, { useContext } from 'react';
-import { Select } from 'antd';
+import React, { useContext, useState } from 'react';
 import { DesignContext } from '../../Context';
-
-const Option = Select.Option;
+import { Combobox } from '@salesforce/design-system-react';
 
 export const Dropdown = ({ question }) => {
 
-    const { questionOptions } = useContext(DesignContext); 
+	const { questionOptions } = useContext(DesignContext); 
+	const [selection, setSelection] = useState([]);
+	return (
+			<Combobox
+				id={question.Name}
+				events={{
+					onSelect: (event, data) => setSelection(data.selection)
+				}}
+				labels={{
+					label: question.forms__Title__c,
+					placeholder: question.forms__Placeholder__c,
+				}}
+				options={
+					questionOptions.get(question.Id) != null ? 
+					questionOptions.get(question.Id).map(option => {
+						return {
+							id: option.Id,
+							label: option.forms__Label__c,
+							value: option.Id
+						}
+					}) :
+					null
+				}
+				selection={selection}
+				value={''}
+				variant="readonly"
+			/>
 
-    return (
-
-        <Select
-            showSearch
-            style={{ width: '100%' }}
-            placeholder={question.forms__Placeholder__c}
-            optionFilterProp="children"
-            filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-        >
-                
-            <Option value=''>Select an option</Option>
-
-            {
-                questionOptions.get(question.Id) != null ? 
-                    questionOptions.get(question.Id).map(option => {
-                        return <Option value={option.Id}>{option.forms__Label__c}</Option>
-                    }): 
-                    null
-            }
-
-        </Select>
-
-    )
+	)
 
 }

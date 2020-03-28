@@ -1,14 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { InputNumber } from 'antd';
+import React, { useState } from 'react';
+import { Input } from '@salesforce/design-system-react';
 
-export const Number = ({ question }) => {
+export const Number = ({ question, disabled }) => {
 
-    return (
-        <InputNumber
-            min={question.forms__Min_Range__c} 
-            max={question.forms__Max_Range__c}
-            step={question.forms__Step__c}
-        />
-    )
+	const [value, updateValue] = useState(0); 
+
+	return (
+			<Input
+				id={question.Id}
+				label={question.forms__Title__c}
+				onChange={(e, data) => updateValue(data.number)}
+				value={value || ''}
+				variant="counter"
+			/>
+	)
 
 }

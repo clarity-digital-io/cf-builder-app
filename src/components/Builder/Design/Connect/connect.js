@@ -1,10 +1,10 @@
 import React, { useContext, useState } from 'react';
-import { Input as AntInput } from 'antd';
+import { Input as SalesforceInput } from '@salesforce/design-system-react';
 
 import View from '../../../Elements/View';
 import ViewStyle from '../../../Elements/View/style';
 import Box from '../../../Elements/Box';
-import {Button, ButtonInput} from '../../../Elements/Button';
+import {Button} from '../../../Elements/Button';
 import { Select } from '../../../Elements/Select'; 
 
 import { BuilderContext, DesignContext } from '../../../Context';
@@ -25,34 +25,34 @@ export const FieldConnectState = () => {
         })
     }
 
-    const setFieldSelection = (value, order) => {
+    const setFieldSelection = (selection, order) => {
+			let value = selection[0].value;
+			setActiveFieldMapping((mappings) => {
 
-        setActiveFieldMapping((mappings) => {
+					return mappings.map((mapping, i) => {
+							if(i == order) {
+									return { ...mapping, forms__Salesforce_Field__c: value }
+							}
+							return mapping
+					})
 
-            return mappings.map((mapping, i) => {
-                if(i == order) {
-                    return { ...mapping, forms__Salesforce_Field__c: value }
-                }
-                return mapping
-            })
-
-        });
+			});
     }
     
-    const setQuestionSelection = (e, order, custom) => {
+    const setQuestionSelection = (selection, order, custom) => {
 
-			let value = custom ? e.target.value : e; 
+			let value = custom ? e.target.value : selection[0].value;
 
-        setActiveFieldMapping((mappings) => {
+			setActiveFieldMapping((mappings) => {
 
-            return mappings.map((mapping, i) => {
-                if(i == order) {
-                    return custom ? { ...mapping, forms__Custom_Value__c: value } : { ...mapping, forms__Clarity_Form_Question__c: value }
-                }
-                return mapping
-            })
+					return mappings.map((mapping, i) => {
+							if(i == order) {
+									return custom ? { ...mapping, forms__Custom_Value__c: value } : { ...mapping, forms__Clarity_Form_Question__c: value }
+							}
+							return mapping
+					})
 
-        });
+			});
 
     }
 
@@ -128,10 +128,9 @@ export const FieldConnectState = () => {
 
 const FieldSelect = ({ order, options, value, onChange }) => {
 
-    return <Select key={order} value={value} options={options} onChange={(e) => onChange(e, order)} />
+	return <Select key={order} value={value} options={options} onChange={(e) => onChange(e, order)} />
 
 }
-
 
 const QuestionFieldSelect = ({ customValue, order, options, value, onChange }) => {
 
@@ -151,7 +150,11 @@ const QuestionFieldSelect = ({ customValue, order, options, value, onChange }) =
             <Box padding='.5em'>
                 {
 										custom ?  
-										<AntInput value={value.forms__Clarity_Form_Question__c ? value.forms__Clarity_Form_Question__c : value.forms__Custom_Value__c} add onChange={(e) => onChange(e, order, true)}  /> :										
+										<SalesforceInput
+											value={value.forms__Clarity_Form_Question__c ? value.forms__Clarity_Form_Question__c : value.forms__Custom_Value__c} 
+											onChange={(e) => onChange(e, order, true)}
+										/>
+										:										
 										<Select key={order} valueField={'Id'} labelField={'forms__Title__c'} value={value.forms__Clarity_Form_Question__c} options={options} onChange={(e) => onChange(e, order)} />
                 }
             </Box>
