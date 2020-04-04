@@ -8,6 +8,7 @@ export const Dropdown = ({ question }) => {
 	const [selection, setSelection] = useState([]);
 	return (
 			<Combobox
+				required={question.forms__Required__c} 
 				id={question.Name}
 				events={{
 					onSelect: (event, data) => setSelection(data.selection)

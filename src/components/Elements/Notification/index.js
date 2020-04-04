@@ -4,7 +4,6 @@ export const openNotificationWithIcon = (type, method, setError) => {
 
     const message = StatusMessage[type][method];
     if(message == null) return;
-		console.log('seterror', setError);
 		setError({ message: message[1], open: true })
 
 };
@@ -48,15 +47,13 @@ const StatusMessage = {
 }
 
 export const StatusHandler = (status, setUpdate, cb, setUpdateSecond, setError) => {
-		console.log('scb', cb, status); 
+
     if(status != null && status == 'Published') {
 
-				console.log('openNotificationWithIcon', openNotificationWithIcon); 
-
 				openNotificationWithIcon('error', 'FormPublished', setError);
-				console.log('gets here 1')
+
 				setUpdate();
-				console.log('gets here 2')
+
         if(setUpdateSecond != null) {
             setUpdateSecond();
         }

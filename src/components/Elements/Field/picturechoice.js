@@ -11,6 +11,7 @@ export const PictureChoice = ({ question }) => {
 	return <VisualPicker
 			label={question.forms__Title__c}
 			id={question.Id}
+			required={question.forms__Required__c} 
 			coverable
 		>
 			{
@@ -50,7 +51,6 @@ const getImage = (option) => {
 	if(option.forms__Choice_Image__c != null && option.forms__Choice_Image__c.length <= 18) {
 		return `/sfc/servlet.shepherd/version/download/${option.forms__Choice_Image__c}`;
 	} else {
-		console.log('option', option.forms__Choice_Image__c);
 		return option.forms__Choice_Image__c; 
 	}
 }

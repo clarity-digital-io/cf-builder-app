@@ -8,16 +8,12 @@ export const Lookup = ({ question }) => {
 				id="combobox-inline-single"
 				events={{
 					onChange: (event, { value }) => {
-						console.log('onChange value', value);
 					},
 					onRequestRemoveSelectedOption: (event, data) => {
-						console.log('onRequestRemoveSelectedOption value');
 					},
 					onSubmit: (event, { value }) => {
-						console.log('onSubmit value', value);
 					},
 					onSelect: (event, data) => {
-						console.log('onSelect value', data);
 					},
 				}}
 				labels={{

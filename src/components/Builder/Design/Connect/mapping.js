@@ -39,7 +39,9 @@ export const MappingState = () => {
                     [JSON.stringify(combinedConnections), activeConnection.Id], 
                     (result, e) => fieldConnectionsResultHandler(result, e, setActiveFieldPrefills, setActiveFieldMapping, setUpdate),
                     form.forms__Status__c
-                )
+								),
+								null,
+								setError
             )
 
         }

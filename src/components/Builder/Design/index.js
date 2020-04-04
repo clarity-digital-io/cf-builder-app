@@ -124,7 +124,8 @@ const DesignProvider = ({ children }) => {
                     [JSON.stringify(questions)], 
                     (result, e) => resultHandler(result, e, setUpdate, setUpdateSingle, setQuestions, setPageQuestions),
                 ),
-                () => setUpdateSingle(false)
+								() => setUpdateSingle(false),
+								setError
             )
         
         }
@@ -144,7 +145,8 @@ const DesignProvider = ({ children }) => {
                     [JSON.stringify(multiQuestions)], 
                     (result, e) => resultHandler(result, e, setUpdate, setUpdateMulti, setQuestions, setPageQuestions),
                 ),
-                () => setUpdateMulti(false)
+								() => setUpdateMulti(false),
+								setError
             )
         
         }
@@ -182,7 +184,9 @@ const DesignProvider = ({ children }) => {
                     "ClarityFormBuilder.pageDelete", 
                     [JSON.stringify(questionsWithPageUpdate), JSON.stringify([deletePage, form.Id])], 
                     (result, e) => deleteResultHandler(result, e, setQuestions, setPageQuestions, setRecordGroup, setUpdate),
-                )
+								),
+								null,
+								setError
             )
 
         }
@@ -207,7 +211,9 @@ const DesignProvider = ({ children }) => {
                     "ClarityFormBuilder.deleteQuestion", 
                     [JSON.stringify(updatedOnDelete), questionToDelete], 
                     (result, e) => deleteResultHandler(result, e, setQuestions, setPageQuestions, setRecordGroup, setUpdate),
-                )
+								),
+								null,
+								setError
             )
         
         }

@@ -71,7 +71,7 @@ export const EditQuestion = () => {
 
     const { activeQuestion, setActiveQuestion } = useContext(DesignContext); 
 
-    const updateRequiredStatus = (e) => {
+		const updateRequiredStatus = (e) => {
 
         let checked = e.target.checked;
 

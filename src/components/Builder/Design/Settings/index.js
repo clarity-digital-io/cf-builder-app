@@ -28,7 +28,9 @@ export const SettingsState = () => {
                     "ClarityFormBuilder.updateForm", 
                     [JSON.stringify(form)], 
                     (result, e) => resultHandler(result, e, setForm, setUpdate),
-                )
+								),
+								null,
+								setError
             )
         }
         

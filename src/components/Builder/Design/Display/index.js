@@ -10,14 +10,14 @@ import { Multi } from './multi';
 
 export const Display = () => {
 
-    const { style } = useContext(BuilderContext);
+    const { style, form } = useContext(BuilderContext);
 
     return [
         <FormDesign key={'Display'}>
 
             {
                 !style.forms__Multi_Page__c ? 
-                <Single style={style} /> :
+                <Single style={style} form={form} /> :
                 <Multi style={style}  />
             }
 

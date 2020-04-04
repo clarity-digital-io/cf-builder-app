@@ -7,7 +7,11 @@ import CloseIcon from '../../../../Elements/Icons/close';
 import { Button } from '../../../../Elements/Button';
 import { EditContext, DesignContext } from '../../../../Context';
 
-import { Input as SalesforceInput, Modal as SalesforceModal } from '@salesforce/design-system-react';
+import { Input as SalesforceInput, Modal as SalesforceModal, Avatar } from '@salesforce/design-system-react';
+
+const getIconPath = () => {
+	return process.env.NODE_ENV == 'development' ? "/assets/" : "/_slds/"
+}
 
 export const PictureChoices = ({ question }) => {
 
@@ -62,9 +66,9 @@ export const PictureChoices = ({ question }) => {
 
     const removeRow = (order) => {
 
-        setActiveQuestionOptions(rows => {
-            let updated = rows.slice();
-            updated.splice(order, 1);
+				setActiveQuestionOptions(rows => {
+						let updated = rows.slice();
+						updated.splice(order, 1);
             return updated;
         })
 
@@ -77,13 +81,13 @@ export const PictureChoices = ({ question }) => {
 								forms__Order__c: options.length, 
 								forms__Label__c: value, 
 								forms__Clarity_Form_Question__c: activeQuestionId, 
-								forms__Choice_Image__c: (file[0] != null && file[0].thumbUrl != null) ? file[0].thumbUrl : ''
+								forms__Choice_Image__c: file
 							}
 						]);
 				})
 				
     }
-
+		console.log('options', activeQuestionOptions);
 		return (
         <ViewStyle>
 
@@ -94,9 +98,7 @@ export const PictureChoices = ({ question }) => {
                 <PictureChoice 
                     isNew={true} 
                     activeQuestionId={activeQuestion.Id} 
-                    handlePreview={handlePreview}
-                    add={add} 
-                    updateImage={updateImage}
+										add={add}
                 />
 
 								<SalesforceModal
@@ -123,9 +125,7 @@ export const PictureChoices = ({ question }) => {
 														activeQuestionId={activeQuestion.Id} 
 														option={option} 
 														order={order} 
-														handlePreview={handlePreview} 
 														removeRow={removeRow}
-														updateImage={updateImage}
 												/>
 										)
 								})
@@ -136,38 +136,32 @@ export const PictureChoices = ({ question }) => {
 
 }
 
-const buildFiles = (option) => {
+const buildFiles = (option, newImage) => {
+	console.log('(option, newImage', option, newImage);
+	let url = '';
 
-	let builtOption = {
-			uid: option.Order__c || '1',
-			name: option.forms__Label__c,
-			status: 'done'
-		};
-
-	if(option.forms__Choice_Image__c.length == 18) {
-		builtOption.url = `/sfc/servlet.shepherd/version/download/${option.forms__Choice_Image__c}`;
+	if(option != null && option.forms__Choice_Image__c.length == 18) {
+		url = `/sfc/servlet.shepherd/version/download/${option.forms__Choice_Image__c}`;
 	} else {
-		builtOption.thumbUrl = option.forms__Choice_Image__c;
+		url = option ? option.forms__Choice_Image__c : newImage;
 	}
 
-	return option != null ? [builtOption] : [];
+	return url;
 }
 
-const PictureChoice = ({ isNew, activeQuestionId, option, order, handlePreview, updateOption, add, removeRow, updateImage }) => {
+const PictureChoice = ({ isNew, activeQuestionId, option, order, updateOption, add, newImage, removeRow }) => {
 
 		const [newValue, setNewValue] = useState('');
 
-		const [file, setFile] = useState(file => {
-				return option ? buildFiles(option) : file ? file : [];
-		});
-			
-    const handleKeyDown = (e) => {
+		const [file, setFile] = useState(buildFiles(option, newImage));
+
+		const handleKeyDown = (e) => {
 
         if (e.key === 'Enter') {
 
             let value = e.target.value;
-            
-            add(value, activeQuestionId, file);
+
+						add(value, activeQuestionId, file);
 
 						setNewValue('');
 						setFile([])
@@ -183,53 +177,23 @@ const PictureChoice = ({ isNew, activeQuestionId, option, order, handlePreview, 
 				setFile([])
     }
 
-    const uploadChange = ({ fileList }) => {
+    const uploadChange = (e) => {
 
-        setFile(files => {
-
-            return fileList;
-
-        })
-
-    }
-
-    const handleUpload = ({ file, onSuccess }) => {
-
-        let reader = new window.FileReader();
-
-        reader.readAsDataURL(file);
-
-        reader.onload = (...args) => {
-    
-            let fileContents = reader.result;
-
-            onSuccess('done', file);
-
-            updateImage(order, fileContents)
-
-        };
-		}
-		
-		const beforeUpload = (file) => {
-
-			const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-
-			if (!isJpgOrPng) {
-					
-					message.error('You can only upload JPG/PNG file!');
+			let fileList = e.target.files;
 			
-			}
+			let file = fileList[0];
 
-			const isLt2M = file.size / 1024 / 1024 < 2;
+			let reader = new window.FileReader();
 
-			if (!isLt2M) {
+			reader.readAsDataURL(file);
 
-					message.error('Image must smaller than 2MB!');
+			reader.onload = (...args) => {
+	
+					let fileContents = reader.result;
 
-			}
+					setFile(buildFiles(option, fileContents));
 
-			return isJpgOrPng && isLt2M;
-
+			};
 		}
 
 		const closeStyle = {
@@ -238,27 +202,27 @@ const PictureChoice = ({ isNew, activeQuestionId, option, order, handlePreview, 
 		};
 
     return (
-        <View className="row middle-xs">
-            <View className="col-xs-3">
+        <View className="row">
+            <View className="col-xs-3 center-xs">
                 <Box padding={'.5em'}>
 
 											{
-												file.length >= 1 ? 
-													<input onChange={(e) => uploadChange(e)} type="file" className="slds-file-selector__input slds-assistive-text" accept="image/png" id="file-upload-input-01" aria-labelledby="file-selector-primary-label file-selector-secondary-label" />
-													: 
-													[
-														<input onChange={(e) => uploadChange(e)} type="file" className="slds-file-selector__input slds-assistive-text" accept="image/png" id="file-upload-input-01" aria-labelledby="file-selector-primary-label file-selector-secondary-label" />,
-														<label className="slds-file-selector__body" htmlFor="file-upload-input-01" id="file-selector-secondary-label">
-			
-															<span className="slds-file-selector__button slds-button slds-button_neutral">
-																<svg className="slds-button__icon slds-button__icon_left" aria-hidden="true">
-																	<use xlinkHref="/assets/icons/utility-sprite/svg/symbols.svg#upload"></use>
-																</svg>
-																Upload Files
-															</span>
-														</label>
-													]		
-											} 
+												file != null && file.length ?
+												<img src={ file } imgAlt={ option != null ? option.forms__Label__c : '' } style={{ width: '60px' }} />
+												: 
+												[
+												<input onChange={(e) => uploadChange(e)} type="file" className="slds-file-selector__input slds-assistive-text" accept="image/png" id="file-upload-input-01" aria-labelledby="file-selector-primary-label file-selector-secondary-label" />,
+												<label className="slds-file-selector__body" htmlFor="file-upload-input-01" id="file-selector-secondary-label">
+	
+													<span className="slds-file-selector__button slds-button slds-button_neutral">
+														<svg className="slds-button__icon slds-button__icon_left" aria-hidden="true">
+															<use xlinkHref={ `${getIconPath()}icons/utility-sprite/svg/symbols.svg#upload` }></use>
+														</svg>
+														Upload File
+													</span>
+												</label>
+												]
+											}
 
                 </Box>
             </View>
@@ -270,7 +234,7 @@ const PictureChoice = ({ isNew, activeQuestionId, option, order, handlePreview, 
                         <Box padding={'.5em'}>
                             
 														<SalesforceInput
-															onPressEnter={(e) => handleKeyDown(e)} 
+															onKeyPress={(e) => handleKeyDown(e)} 
 															value={newValue} 
 															id="New" 
 															onChange={(e) => setNewValue(e.target.value)} 
@@ -314,4 +278,3 @@ const PictureChoice = ({ isNew, activeQuestionId, option, order, handlePreview, 
         </View>
     )
 }
-

@@ -89,7 +89,9 @@ const Save = ({ children }) => {
                     "ClarityFormBuilder.saveQuestion", 
                     [JSON.stringify(activeQuestion)], 
                     (result, e) => resultHandler(result, e, setQuestionUpdate, setQuestions, setPageQuestions, activeQuestion),
-                )
+								),
+								null,
+								setError
             )
         }
 
@@ -102,7 +104,9 @@ const Save = ({ children }) => {
                     "ClarityFormBuilder.saveQuestionWithOptions", 
                     [JSON.stringify(activeQuestion), JSON.stringify(activeQuestionOptions)], 
                     (result, e) => resultOptionHandler(result, e, setQuestionUpdate, setQuestions, setPageQuestions, activeQuestion, setActiveQuestionOptions, setQuestionOptions),
-                )
+								),
+								null,
+								setError
             )
         }
 
@@ -138,7 +142,9 @@ const Save = ({ children }) => {
                     "ClarityFormBuilder.saveQuestionWithPictureOptions", 
                     [JSON.stringify(activeQuestion), JSON.stringify(updatedOptions), JSON.stringify(activeQuestionOptionImages)], 
                     (result, e) => resultOptionHandler(result, e, setQuestionUpdate, setQuestions, setPageQuestions, activeQuestion, setActiveQuestionOptions, setQuestionOptions),
-                )
+								),
+								null,
+								setError
             )
         }
 
@@ -154,7 +160,9 @@ const Save = ({ children }) => {
                     "ClarityFormBuilder.saveQuestionWithCriteria", 
                     [JSON.stringify(activeQuestion), JSON.stringify(updatedCriteria)], 
                     (result, e) => resultCriteriaHandler(result, e,setQuestionUpdate, setQuestions, setCriteria, activeQuestion),
-                )
+								),
+								null,
+								setError
             )
 
         }
@@ -174,7 +182,9 @@ const Save = ({ children }) => {
                     "ClarityFormBuilder.saveRecordGroupFields", 
                     [JSON.stringify(updatedActiveRecords), activeQuestion.Id], 
                     (result, e) => resultRecordGroupFieldsHandler(result, e, setQuestionUpdate, setRecordGroup, setActiveRecordGroup, activeQuestion),
-                )
+								),
+								null,
+								setError
             )
         }
 

@@ -10,11 +10,13 @@ import Box from '../../../Elements/Box';
 import { sortedTypes } from '../types';
 
 import { getType } from './types'; 
-import { BuilderContext } from '../../../Context';
+import { BuilderContext, DesignContext } from '../../../Context';
 
 export const NewQuestion = () => {
 
 		const { form } = useContext(BuilderContext);
+
+		const { update } = useContext(DesignContext); 
 
 		return (
         <View silver full className="row" key={'Body'}>
@@ -52,7 +54,7 @@ export const NewQuestion = () => {
                                                                     ref={provided.innerRef}
                                                                     {...provided.draggableProps}
 																																		{...provided.dragHandleProps}
-																																		disabled={ form.forms__Status__c == 'Published' ? true : false }
+																																		disabled={ form.forms__Status__c == 'Published' || update ? true : false }
                                                                     isDragging={snapshot.isDragging}>
                                                                     {getType(type.type)}
                                                                     <span>

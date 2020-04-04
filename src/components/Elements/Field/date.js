@@ -6,6 +6,7 @@ export const Date = ({ question, disabled }) => {
 
 	return (
 			<Datepicker
+				required={question.forms__Required__c} 
 				labels={{
 					label: question.forms__Title__c,
 				}}

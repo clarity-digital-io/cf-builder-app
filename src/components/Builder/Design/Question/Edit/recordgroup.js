@@ -14,8 +14,8 @@ export const RecordGroup = () => {
 
     const { sObjects, activeQuestion, setActiveQuestion, setQuestions, setQuestionState, setQuestionUpdate } = useContext(DesignContext);
 
-    const updateLookupQuestion = (value) => {
-
+    const updateLookupQuestion = (value, data) => {
+				console.log('value', value, data)
         setActiveQuestion(question => {
             return { ...question, forms__Salesforce_Object__c: value }
         })
@@ -32,7 +32,9 @@ export const RecordGroup = () => {
                 "ClarityFormBuilder.saveQuestion", 
                 [JSON.stringify(activeQuestion)], 
                 (result, e) => resultHandler(result, e, setQuestionUpdate, setQuestions, activeQuestion, setQuestionState),
-            )
+						),
+						null,
+						setError	
         )
 
     }
@@ -46,7 +48,7 @@ export const RecordGroup = () => {
                 Create a new Record for any standard or custom object you chose. (At a minimum Required fields will be displayed).
             </p>
 
-            <Select options={sObjects} value={activeQuestion.forms__Salesforce_Object__c} onChange={(e) => updateLookupQuestion(e)} />
+            <Select options={sObjects} value={activeQuestion.forms__Salesforce_Object__c} onChange={(data) => updateLookupQuestion(data[0].value)} />
 
         </ViewStyle>,
         <ViewStyle key={'add'}>

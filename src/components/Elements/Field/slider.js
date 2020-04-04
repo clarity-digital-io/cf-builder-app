@@ -17,6 +17,7 @@ export const Slider = ({ question }) => {
 				min={question.forms__Min_Range__c}
 				max={question.forms__Max_Range__c}
 				step={question.forms__Step__c}
+				required={question.forms__Required__c} 
 			/>
 
 	)

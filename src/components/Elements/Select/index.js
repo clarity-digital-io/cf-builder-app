@@ -6,10 +6,10 @@ import { Combobox } from '@salesforce/design-system-react';
 export const Select = ({ disabled, key, placeholder, options, value, onChange, order, valueField, labelField, setLabel }) => {
 	
 	let transformedOptions = getOptions(options, valueField, labelField, setLabel); 
-
+	console.log('transformedOptions', transformedOptions, valueField, options)
 	return (
 		<Combobox
-			disabled={disabled}
+			singleInputDisabled={disabled}
 			id={key}
 			events={{
 				onSelect: (event, data) => onChange(data.selection, order)
@@ -28,10 +28,11 @@ export const Select = ({ disabled, key, placeholder, options, value, onChange, o
 
 const getSelection = (options, valueField, value) => {
 
-	return options.filter(option => {
+	let t = options.filter(option => {
 		return value == option.value;
 	})
-
+	console.log('t', options, value, t);
+	return t;
 }
 
 const getOptions = (options, valueField, labelField, setLabel) => {

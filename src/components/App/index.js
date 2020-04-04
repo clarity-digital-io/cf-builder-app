@@ -107,7 +107,9 @@ const BuilderProvider = ({ children }) => {
                         "ClarityFormBuilder.createAssignment", 
                         [`${form.Name} Assignment`, form.Id], 
                         (result, e) => assignmentCreateHandler(result, e, setForm, setAssignment, setAssignmentRules, setLoading)
-                    )
+										),
+										null,
+										setError
                 )
             }
 

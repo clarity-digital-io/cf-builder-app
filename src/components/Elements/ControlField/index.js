@@ -28,12 +28,6 @@ export const ControlGroup = ({ type, relatedId, value, rows, setRows, setConditi
 
 const ControlCondition = ({value, setCondition}) => {
 
-		const radioStyle = {
-			display: 'block',
-			height: '30px',
-			lineHeight: '30px',
-		};
-
     return (
         <ViewStyle space>
             <View className="row middle-xs">

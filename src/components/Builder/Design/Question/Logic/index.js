@@ -19,8 +19,9 @@ export const LogicQuestion = () => {
         questions.filter(question => (question.forms__Title__c != activeQuestion.forms__Title__c) && (question.forms__Type__c != 'RecordGroup' && question.forms__Type__c != 'FreeText' && question.forms__Type__c != 'PageBreak'))
     )
 
-    const updateCondition = (e) => {
+		const updateCondition = (e) => {
 				let value = e.target.value; 
+
         setActiveQuestion(q => {
             return { ...q, forms__Logic__c: value }
         })

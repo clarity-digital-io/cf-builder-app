@@ -5,7 +5,7 @@ import { useDrag } from './useDrag';
 
 import { GenerateQuestion, Card, DropView } from './elements';
 
-export const Single = ({ style }) => {
+export const Single = ({ style, form }) => {
 
     const { questions } = useDrag(); 
 
@@ -21,6 +21,7 @@ export const Single = ({ style }) => {
                         {
                             questions.map((item, index) => (
                                 <Draggable
+																		isDragDisabled={ form.forms__Status__c == 'Published' ? true : false }
                                     key={`question${item.Id}${index}`}
                                     draggableId={`question${item.Id}${index}`}
                                     index={index}>

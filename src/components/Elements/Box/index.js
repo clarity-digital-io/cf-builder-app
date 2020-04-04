@@ -6,7 +6,8 @@ const Box = styled.div`
     span#center {
         text-align: center;
         display: block; 
-    }
+		}
+
 `;
 
 export default Box;

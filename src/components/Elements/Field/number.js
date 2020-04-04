@@ -12,6 +12,7 @@ export const Number = ({ question, disabled }) => {
 				onChange={(e, data) => updateValue(data.number)}
 				value={value || ''}
 				variant="counter"
+				required={question.forms__Required__c} 
 			/>
 	)
 

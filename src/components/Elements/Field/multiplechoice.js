@@ -12,6 +12,7 @@ export const MultipleChoice = ({ question }) => {
 				labels={{ label: question.forms__Title__c }}
 				onChange={(event) => update(event)}
 				name={question.forms__Label__c}
+				required={question.forms__Required__c} 
 			>
 				{
 					questionOptions.get(question.Id) != null ? 

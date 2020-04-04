@@ -24,7 +24,6 @@ export const ConnectState = () => {
     useEffect(() => {
 
         if(update) {
-						console.log('connections', connections, form, setUpdate);
             StatusHandler(
                 form.forms__Status__c,
                 () => setUpdate(false),
