@@ -18,7 +18,7 @@ const Icon = ({ type, label, background }) => (
 
 const DesignNavigation = () => {
 
-	const { navState, setNavState, form, setForm, setLoading, setError, error } = useContext(BuilderContext);
+	const { navState, setNavState, form, setForm, setLoading, setError, previewMode, setPreviewMode, error } = useContext(BuilderContext);
 
 	const { update, questions } = useContext(DesignContext); 
 
@@ -29,7 +29,11 @@ const DesignNavigation = () => {
 	const [publishCheck, setPublishCheck] = useState(false);
 
 	const preview = () => {
-			LCC.sendMessage({name: "Preview", value: form.Id });
+			setPreviewMode({ active: true, desktop: true }); 
+	}
+
+	const editMode = () => {
+		setPreviewMode({ active: false, desktop: true }); 
 	}
 
 	//Publish and Draft Handling
@@ -149,8 +153,12 @@ const DesignNavigation = () => {
 							iconCategory="utility"
 							iconName="right"
 							iconPosition="left"
-							label="Preview"
-							onClick={() => preview()}
+							label={ previewMode.active ? "Edit Mode" : "Preview" }
+							onClick={() => {
+								previewMode.active ? 
+								editMode() : 
+								preview()
+							}}
 						/>
 						{
 							form.forms__Status__c == 'Published' ?
