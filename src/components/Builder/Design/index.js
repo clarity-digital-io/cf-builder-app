@@ -328,7 +328,7 @@ const fetchHandler = (result, e, setQuestions, setRecordGroup, setPageQuestions,
         return accum.set(question.Id, questions.filter(q => q.forms__Record_Group__c == question.Id))
 
     }, new Map());
-
+		console.log('recordGroups', recordGroups); 
     setQuestions(cleanQuestions);
 
     setRecordGroup(recordGroups); 

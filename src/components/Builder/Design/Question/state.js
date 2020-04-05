@@ -58,8 +58,6 @@ const Save = ({ children }) => {
         setActiveRecordGroup,
         activeQuestionOptions, 
         setActiveQuestionOptions, 
-        activeFlowDesign, 
-        setActiveFlowDesign, 
         criteria, 
         setCriteria
     } = useContext(EditContext); 
@@ -173,7 +171,7 @@ const Save = ({ children }) => {
                 delete a.Id;
                 return a;
             });
-
+						
             StatusHandler(
                 form.forms__Status__c,
                 () => setQuestionUpdate(false),
@@ -191,7 +189,8 @@ const Save = ({ children }) => {
     }, [questionUpdate])
 
     const edit = (questionId) => {
-        setActiveQuestion(questions.find(question => question.Id == questionId));
+				setActiveQuestion(questions.find(question => question.Id == questionId));
+				console.log('activeRecordGroup', activeRecordGroup)
         setQuestionState('SF');
     }
 
@@ -345,7 +344,7 @@ const resultCriteriaHandler = (result, e, setQuestionUpdate, setQuestions, setCr
 }
 
 const resultRecordGroupFieldsHandler = (result, e, setQuestionUpdate, setRecordGroup, setActiveRecordGroup, activeQuestion) => {
-
+		console.log('resultRecordGroupFieldsHandler', result); 
     setActiveRecordGroup(result);
 
     setRecordGroup(group => {
@@ -354,15 +353,5 @@ const resultRecordGroupFieldsHandler = (result, e, setQuestionUpdate, setRecordG
     });
 
     setQuestionUpdate(false); 
-
-}
-
-const resultFlowHandler = (result, e, setQuestionUpdate, setActiveQuestionOptions, setActiveFlowDesign) => {
-    let options = result.Options;
-    let flowDesign = result.FlowDesign[0];
-
-    setActiveQuestionOptions(options);    
-    setActiveFlowDesign(flowDesign);
-    setQuestionUpdate(false);
 
 }

@@ -12,13 +12,17 @@ export const Single = ({ style, form }) => {
 
 		const { previewMode } = useContext(BuilderContext);
 
-    const { questions } = useDrag(); 
+		const { questions } = useDrag(); 
+
+		const background = {
+			background: '#fff'
+		};
 
     return (
 
 			previewMode.active ? 
 			<div className="slds-m-around_x-large">
-				  <div className="slds-box">
+				  <div style={background} className="slds-box">
 						<div className="slds-p-around_x-large">
 							{
 									questions.map((item, index) => (
@@ -31,8 +35,8 @@ export const Single = ({ style, form }) => {
 					</div>
 			</div>
 			:
-      <Card style={style} fullHeight={true}>
-
+      <div>
+ 
             <Droppable droppableId="question">
                 {(provided, snapshot) => (
                     <DropView 
@@ -57,7 +61,7 @@ export const Single = ({ style, form }) => {
                 )}
             </Droppable>
             
-				</Card> 
+				</div> 
 				
     );
 

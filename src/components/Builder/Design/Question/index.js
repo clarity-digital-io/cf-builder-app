@@ -55,6 +55,7 @@ export const EditProvider = ({ children }) => {
             }
             
             if(activeQuestion.forms__Type__c == 'RecordGroup') {
+								console.log('getSObjectFields', activeQuestion);
                 setLoading(true); 
                 call(setError, "ClarityFormBuilder.getSObjectFields", [activeQuestion.forms__Salesforce_Object__c], (result, e) => getSObjectFieldResultHandler(result, e, activeQuestion, setRequiredFields, setAdditionalFields, setSObjectEdit, setActiveRecordGroup, setLoading));
             }
@@ -100,13 +101,14 @@ const optionFetchHandler = (result, e, setLoading, setActiveQuestionOptions, set
 }
 
 const getSObjectFieldResultHandler = (result, e, activeQuestion, setRequiredFields, setAdditionalFields, setSObjectEdit, setActiveRecordGroup, setLoading) => {
+		console.log('result', result);
 
     setSObjectEdit('');
     setAdditionalFields(result.NotRequired);
     setRequiredFields(result.Required);
 
     setActiveRecordGroup(records => {   
-
+				console.log('records', records);
         return Object.keys(result.Required).map((field, index) => {
 
             let val = result.Required[field];

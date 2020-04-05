@@ -14,12 +14,14 @@ import { Button } from '../../../../Elements/Button';
 export const SalesforceFields = () => {
 
     const { activeRecordGroup, setActiveRecordGroup, setSObjectEdit, requiredFields } = useContext(EditContext); 
-
     const { recordGroup, activeQuestion } = useContext(DesignContext); 
+		console.log('activeRecordGroup', activeRecordGroup, recordGroup);
 
     useEffect(() => {
-        
-        //setActiveRecordGroup(recordGroup.get(activeQuestion.Id) || []);
+				setActiveRecordGroup(active => {
+					console.log('rcccc', recordGroup.get(activeQuestion.Id))
+					return recordGroup.get(activeQuestion.Id) != null ? recordGroup.get(activeQuestion.Id) : [];
+				})
         setSObjectEdit(activeQuestion.forms__Type__c);
 
     }, []);
@@ -97,7 +99,7 @@ const ControlSelect = ({ order, row }) => {
         setActiveRecordGroup(records => {
 
             let newFields = records.map((record, i) => {
-								console.log('additionalFields', additionalFields);
+
 								let val = additionalFields.hasOwnProperty(value) ? additionalFields[value] : '';
 								
 								if(val == '') return record; 
@@ -119,7 +121,6 @@ const ControlSelect = ({ order, row }) => {
             });
 
 
-						console.log('newFields', newFields);
             return newFields; 
         })
 
@@ -145,8 +146,8 @@ const ControlSelect = ({ order, row }) => {
 			height: '60%',
 			width: '60%',
 		};
-		console.log('Object.keys(additionalFields)', Object.keys(additionalFields));
-    return (
+
+		return (
         <View className="row middle-xs">
             <View className="col-xs-1">
                 <Box padding='.5em'>

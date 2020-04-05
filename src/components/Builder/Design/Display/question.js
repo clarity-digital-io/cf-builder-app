@@ -106,8 +106,9 @@ const FieldBox = styled.div`
     padding: 1em; 
     display: inline-block;
 		width: 100%;
-		border: 1px dashed ${Main.color.light}
+		border: 1px dashed ${Main.color.body}
 		margin-bottom: .2em;
+		background: ${Main.color.white}
 `;
 
 const QuestionStyle = styled.div`
@@ -123,5 +124,4 @@ const QuestionStyle = styled.div`
     width: 100%;
     display: flex;
     flex-direction: row;
-    background: ${Main.color.white};
 `;

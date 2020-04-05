@@ -15,7 +15,6 @@ export const RecordGroup = () => {
     const { sObjects, activeQuestion, setActiveQuestion, setQuestions, setQuestionState, setQuestionUpdate } = useContext(DesignContext);
 
     const updateLookupQuestion = (value, data) => {
-				console.log('value', value, data)
         setActiveQuestion(question => {
             return { ...question, forms__Salesforce_Object__c: value }
         })
