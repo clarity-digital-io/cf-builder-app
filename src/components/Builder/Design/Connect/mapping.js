@@ -5,8 +5,8 @@ import styled, { css } from 'styled-components';
 import View from '../../../Elements/View';
 import ViewStyle from '../../../Elements/View/style';
 import Box from '../../../Elements/Box';
-import {Button, ButtonInput} from '../../../Elements/Button';
-import { SmallSpinner } from '../../../Elements/Spinner';
+import {Button} from '../../../Elements/Button';
+import { Spinner } from '../../../Elements/Spinner';
 import Main from '../../../Elements/Theme';
 
 import { BuilderContext, DesignContext } from '../../../Context';
@@ -18,7 +18,7 @@ export const MappingState = () => {
 
     const [localNavState, setLocalNavState] = useState('CONNECT');
 
-    const { loading, navState, setNavState, activeFieldPrefills, setActiveFieldPrefills, activeFieldMapping, setActiveFieldMapping, activeConnection, form } = useContext(BuilderContext);
+    const { setError, loading, navState, setNavState, activeFieldPrefills, setActiveFieldPrefills, activeFieldMapping, setActiveFieldMapping, activeConnection, form } = useContext(BuilderContext);
 
     const [update, setUpdate] = useState(false);
 
@@ -29,17 +29,19 @@ export const MappingState = () => {
                 delete fieldMapping.Id; 
                 return fieldMapping;
             });
-						console.log('saveActiveFieldConnections', [JSON.stringify(combinedConnections), activeConnection.Id]);
 
             StatusHandler(
                 form.forms__Status__c,
                 () => setUpdate(false),
                 () => call(
+										setError,
                     "ClarityFormBuilder.saveActiveFieldConnections", 
                     [JSON.stringify(combinedConnections), activeConnection.Id], 
                     (result, e) => fieldConnectionsResultHandler(result, e, setActiveFieldPrefills, setActiveFieldMapping, setUpdate),
                     form.forms__Status__c
-                )
+								),
+								null,
+								setError
             )
 
         }
@@ -56,6 +58,22 @@ export const MappingState = () => {
 
     return [
 
+				<View footer className="row middle-xs end-xs" key={'Header'}>
+					<View className="col-xs-12">
+							<ViewStyle middle>
+
+									{
+											navState == 'MAPPING' ? 
+													<Button neutral onClick={() => setNavState('CONNECT')}>Back</Button> : 
+													null
+									}
+
+									<Button cta onClick={() => setUpdate(true)}>
+											Save Changes
+									</Button>
+							</ViewStyle>
+					</View>
+			</View>,
         <View extraspace body className="row" key={'Body'}>
             <View className="col-xs-12">
                 <Box padding='0'>
@@ -98,7 +116,7 @@ export const MappingState = () => {
 
                     {
                         loading ? 
-                        <SmallSpinner /> :
+                        <Spinner /> :
                         getMappingState(localNavState)
                     }
 
@@ -117,23 +135,6 @@ export const MappingState = () => {
                     </ViewStyle>
 
                 </Box>
-            </View>
-        </View>,
-
-        <View footer className="row middle-xs end-xs" key={'Header'}>
-            <View className="col-xs-12">
-                <ViewStyle middle>
-
-                    {
-                        navState == 'MAPPING' ? 
-                            <Button neutral onClick={() => setNavState('CONNECT')}>Back</Button> : 
-                            null
-                    }
-
-                    <Button cta onClick={() => setUpdate(true)}>
-                        Save Changes
-                    </Button>
-                </ViewStyle>
             </View>
         </View>
 

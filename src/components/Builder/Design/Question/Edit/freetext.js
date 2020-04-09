@@ -1,9 +1,9 @@
-import React, { useState, useContext } from 'react';
-import View from '../../../../Elements/View';
-import Box from '../../../../Elements/Box';
-import ViewStyle from '../../../../Elements/View/style';
+import React, { useContext } from 'react';
 import { DesignContext } from '../../../../Context';
-import { Radio } from 'antd';
+import { RadioGroup as SalesforceRadioGroup } from '@salesforce/design-system-react';
+
+import { Radio as SalesforceRadio } from '@salesforce/design-system-react';
+
 
 export const FreeText = () => {
 
@@ -20,29 +20,28 @@ export const FreeText = () => {
     }
 
     return (
-        <ViewStyle>
-            <h1>Free Text Type</h1>
-
-            <p>Display as a header or a paragraph for a short description.</p>
-
-            <ViewStyle>
-
-                <View className="row middle-xs">
-                    <View className="col-xs-12">
-                        <Box padding={'.5em'}>
-
-                        <Radio.Group buttonStyle="solid" onChange={(e) => onChange(e)} defaultValue={activeQuestion.forms__FreeText_Type__c}>
-                            <Radio.Button value="Header">Header</Radio.Button>
-                            <Radio.Button value="Paragraph">Paragraph</Radio.Button>
-                        </Radio.Group> 
-
-                        </Box>
-                    </View>
-                </View>
-
-            </ViewStyle>
-
-        </ViewStyle>
+			<SalesforceRadioGroup
+					labels={{ label: "Free Text Type" }}
+					onChange={(event) => onChange(event)}
+					name={"Free Text Type"}
+				>
+				<SalesforceRadio
+					key={"Header"}
+					id={"Header"}
+					labels={{ label: "Header" }}
+					value={"Header"}
+					checked={activeQuestion.forms__FreeText_Type__c == "Header"}
+					variant="base"
+				/>
+				<SalesforceRadio
+					key={"Paragraph"}
+					id={"Paragraph"}
+					labels={{ label: "Paragraph" }}
+					value={"Paragraph"}
+					checked={activeQuestion.forms__FreeText_Type__c == "Paragraph"}
+					variant="base"
+				/>
+			</SalesforceRadioGroup>
     )
 
 }

@@ -1,22 +1,22 @@
 import LCC from 'lightning-container';
 import { openNotificationWithIcon } from '../Elements/Notification';
 
-export const call = (func, params, callback, status) => {
+export const call = (setError, func, params, callback, status) => {
 
-    process.env.NODE_ENV == 'development' ? mockCall(func.split('.')[1], params, callback, status) : prodCall(func, params, callback, status); 
+    process.env.NODE_ENV == 'development' ? mockCall(setError, func.split('.')[1], params, callback, status) : prodCall(setError, func, params, callback, status); 
     
 }
 
-const prodCall = (func, params, callback, status) => {
+const prodCall = (setError, func, params, callback, status) => {
     
   	const managedPackageFunction = 'forms.' + func; 
 
     const handler = (result, e) => {
 
         if(e.statusCode != 200) {
-            openNotificationWithIcon('error', e.method)
+            openNotificationWithIcon('error', e.method, setError)
         } else {
-            openNotificationWithIcon('success', e.method);
+            openNotificationWithIcon('success', e.method, setError);
             callback(result, e);
         }
 
@@ -24,8 +24,6 @@ const prodCall = (func, params, callback, status) => {
 
 		let extraParams = { buffer: false, escape: true, timeout: 12000 };
 		
-		console.log('managedPackageFunction', managedPackageFunction, params); 
-
     switch (params.length) {
         case 0:
             LCC.callApex(managedPackageFunction, handler, extraParams);
@@ -46,7 +44,7 @@ const prodCall = (func, params, callback, status) => {
 
 }
 
-const mockCall = (func, params, callback, status) => {
+const mockCall = (setError, func, params, callback, status) => {
 
     let date = new Date();
     let timestamp = date.getTime();
@@ -60,7 +58,7 @@ const mockCall = (func, params, callback, status) => {
                 forms__End_Date__c: '2019-12-31',
                 forms__Connected_Object__c: 'Account',
                 forms__Clarity_Form_Style__c: 15, 
-                forms__Status__c: 'Draft', 
+                forms__Status__c: 'Published', 
                 forms__Clarity_Form_Assignment__c: 1,
                 forms__Clarity_Form_Style__r: { Id: 15, Name:'Greens', forms__Background_Image__c: '', forms__Background_Color__c: '#FFF', forms__Color__c: '#333', forms__Button_Color__c: '', forms__Multi_Page__c: false }, 
                 //Clarity_Form_Style__r: { Id: 15, Name:'Greens', Background_Image__c: 'https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2565&q=80', Background_Color__c: '#333333', Color__c: '#FFFFFF', Button_Color__c: '', Multi_Page__c: false }, 
@@ -129,7 +127,7 @@ const mockCall = (func, params, callback, status) => {
             break;
         case 'getQuestionEditDetails':
             callback({
-                'Criteria': [{Id: 31, forms__Clarity_Form_Question__c: 2, forms__Field__c: 2, forms__Field_Type__c: 'Comment', forms__Operator__c: 'Is Not Null', forms__Type__c: 'Boolean', forms__Value__c: 'True' }],
+                'Criteria': [{Id: 326, forms__Clarity_Form_Question__c: 'CF-8.1', forms__Field__c: 2, forms__Field_Type__c: 'Comment', forms__Operator__c: 'Is Not Null', forms__Type__c: 'Boolean', forms__Value__c: 'True' }],
                 'Options' : [{ Id: 31, forms__Order__c: 0, forms__Label__c: 'Pickture Option 1', forms__Active_Flow__c: true, forms__Clarity_Form_Question__c: 2, forms__Choice_Image__c: 'https://images.unsplash.com/photo-1562743338-51caec0b0e65?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1955&q=80'},{ Id: 32, forms__Order__c: 1, forms__Label__c: 'Pickture Option 2', forms__Active_Flow__c: false, forms__Clarity_Form_Question__c: 2, forms__Choice_Image__c: 'https://images.unsplash.com/photo-1562743338-51caec0b0e65?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1955&q=80'}],
                 'FlowDesign': [{ Id: 31, forms__Clarity_Form_Question__c: 123, forms__Form_Submission__c: true, forms__Active__c: false }]
             });

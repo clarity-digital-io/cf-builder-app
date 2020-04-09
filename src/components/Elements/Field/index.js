@@ -12,7 +12,6 @@ export {MultipleChoice} from './multiplechoice';
 export {PictureChoice} from './picturechoice';
 export {NetPromoterScore} from './netpromoterscore';
 export {Number} from './number';
-export {Ranking} from './ranking';
 export {RecordGroup} from './recordgroup';
 export {Slider} from './slider';
 export {InputField} from './input';

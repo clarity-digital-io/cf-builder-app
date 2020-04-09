@@ -1,128 +1,13 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
-import Main from '../Theme'; 
+import { Button as SalesforceButton } from '@salesforce/design-system-react';
 
-export const ButtonInput = styled.input`
-    box-sizing: border-box;
-    outline: none;
-    border: none;
-    border-radius: 4px; 
-    font-weight: 900;
-    color: ${Main.color.white};
-
-    ${props => props.add && css`
-        padding: 0.5em;
-        font-weight: 900; 
-        color: ${Main.color.body};
-        background: ${Main.color.white};
-        border: 1px solid ${Main.color.light}
-        width: 100%;
-    `}
-
-`;
-
-export const Input = styled.input`
-    display: none; 
-`;
-
-export const Image = styled.img`
-    max-height: 22px;
-    border: 1px solid ${Main.color.bright};
-    cursor: pointer;
-`;
-
-export const Emoticon = styled.div`
-    font-size: 2.5em; 
-    cursor: pointer;
-`;
-
-export const Button = styled.button`
-    box-sizing: border-box;
-    cursor: pointer;
-    outline: none;
-    border: none;
-    border-radius: 4px; 
-    font-weight: 900;
-    color: ${Main.color.white};
-
-    ${props => props.neutral && css`
-        padding: 0.5em;
-        margin-left: .5em;
-        border: 1px solid ${Main.color.bright}
-        background: ${Main.color.bright}
-    `}
-
-    ${props => props.cancel && css`
-        padding: 0.5em;
-        font-weight: 900; 
-        color: ${Main.color.body};
-        background: ${Main.color.white};
-        border: 1px solid ${Main.color.light}
-    `}
-
-    ${props => props.add && css`
-        padding: 0.5em;
-        font-weight: 900; 
-        color: ${Main.color.body};
-        background: ${Main.color.white};
-        border: 1px solid ${Main.color.light}
-    `}
-
-    ${props => props.delete && css`
-        padding: 0.5em;
-        font-weight: 900; 
-        color: ${Main.color.alert};
-        background: ${Main.color.white};
-        border: 1px solid ${Main.color.light}
-    `}
-
-    ${props => props.space && css`
-        margin: 0 .5em 0 .5em;
-    `}
-
-    ${props => props.small && css`
-        font-size: .75em; 
-    `}
-
-    ${props => props.update && css`
-        padding: .5em;
-        background: ${Main.color.bright}
-    `}
-
-    ${props => props.status && css`
-        padding: .5em;
-        background: ${Main.color.silver}
-        color: ${Main.color.bright};
-        margin-left: 1em; 
-    `}
-
-    ${props => props.preview && css`
-        padding: .5em;
-        background:none;
-        cursor: pointer;
-        background: ${Main.color.green};
-    `}
-
-    ${props => props.publish && css`
-        padding: .5em;
-        background:none;
-        margin-left: 1em; 
-        cursor: pointer;
-        background: ${Main.color.green};
-    `}
-
-    ${props => props.cta && css`
-        padding: 0.5em;
-        margin-left: .5em;
-        border: 1px solid ${Main.color.green}
-        background: ${Main.color.green}
-    `}
-
-    ${props => props.disabled && css`
-        background: ${Main.color.silver}
-        border: 1px solid ${Main.color.silver};
-        color: ${Main.color.body}
-    `}
-
-
-`;
+export const Button = ({ children, onClick, disabled }) => {
+	return <SalesforceButton
+		disabled={disabled}
+		onClick={() => {
+			onClick()
+		}}
+	>
+		{children}
+	</SalesforceButton>
+}

@@ -1,14 +1,22 @@
 import React, { useContext } from 'react';
 import styled, { css } from 'styled-components';
-import { Icon, Form } from 'antd';
+import {Icon as SalesforceIcon} from '@salesforce/design-system-react'; 
 
 import Main from '../../../Elements/Theme';
-import { FormItemStyled } from '../../../Elements/View/fieldstyle';
 import { getType } from './types'; 
 
 import { DesignContext, BuilderContext } from '../../../Context';
 
-const FormItem = Form.Item;
+const Icon = ({ type, label, background }) => (
+	<SalesforceIcon
+		assistiveText={{ label: label }}
+		category="utility"
+		name={type}
+		size="small"
+		style={{ background: '#fff', fill: background, padding: '.5em', borderRadius: '2px', marginBottom: '2px' }}
+		containerStyle={{ height: '1.5em' }}
+	/>
+)
 
 export const Question = ({ question }) => {
 
@@ -31,29 +39,29 @@ export const Question = ({ question }) => {
         <QuestionStyle key={'Question'}>
 
             <Options active={ question.Id != null && (question.Id == activeQuestion.Id) }>
-            <div>
-                <li onClick={() => edit('EDIT')}><Icon style={{ fontSize: '1.25em', color: Main.color.body }} type="edit" /></li>
+							<div>
+									<li onClick={() => edit('EDIT')}><Icon label="Edit" type="edit" background="#16325c" /></li>
 
-                <li onClick={() => edit('LOGIC')} ><Icon style={{ fontSize: '1.25em', color: Main.color.body }} type="interaction" /></li>
+									<li onClick={() => edit('LOGIC')} ><Icon label="Logic" type="hierarchy" background="#16325c" /></li>
 
-                {
-                    (question.forms__Type__c == 'RecordGroup' && question.forms__Salesforce_Object__c != null) ? 
-                    <li onClick={() => edit('SF')}><Icon style={{ fontSize: '1.25em', color: Main.color.body }} type="folder-add" /></li> : 
-                        null
-                }
+									{
+											(question.forms__Type__c == 'RecordGroup' && question.forms__Salesforce_Object__c != null) ? 
+											<li onClick={() => edit('SF')}><Icon label="Record Group Edit" type="record_update" background="#16325c" /></li> : 
+													null
+									}
 
-                <li onClick={() => setQuestionToDelete((question.Id))}><Icon style={{ fontSize: '1.25em', color: Main.color.alert }} type="delete" /></li>
-            </div>
+									<li onClick={() => setQuestionToDelete((question.Id))}><Icon label="Delete" type="delete" background="#d4504c" /></li>
+							</div>
             </Options>
 
             <FieldBox>
 
                 {
-                    hasFormLabel(question.forms__Type__c) ? 
-                        <FormItemStyled key={question.Id} label={question.forms__Title__c} required={question.forms__Required__c}>
-                          {getType(question)}
-                        </FormItemStyled> :
-                        <div>{getType(question)}</div>
+									hasFormLabel(question.forms__Type__c) ? 
+									<div key={question.Id} className="slds-form-element slds-form-element_stacked">
+										{ getType(question) } 
+									</div> :
+									getType(question)
                 }
 
             </FieldBox>
@@ -74,31 +82,33 @@ const hasFormLabel = (type) => {
 
 const Options = styled.div`
 
-    border-right: 1px dashed ${Main.color.light}
+		margin-right: .5em;
+   
     display: inline-block; 
-    background: ${Main.color.light}45;
-    background: ${props => props.active ? `${Main.color.body}15` : `${Main.color.light}45`} !important;
 
     li {
         list-style-type: none;
-        cursor: pointer;
-        padding: .75em;
-    }
-
-    li:hover {
-        background: ${Main.color.silver};
-    }
-
+				cursor: pointer;
+		}
+		
     i {
-        cursor: pointer; 
-    } 
+				cursor: pointer; 
+				padding: 1em;
+		} 
+		
+		li:hover {
+			opacity: .8;
+		}
 
 `;
 
 const FieldBox = styled.div`
     padding: 1em; 
     display: inline-block;
-    width: 100%;
+		width: 100%;
+		border: 1px dashed ${Main.color.body}
+		margin-bottom: .2em;
+		background: ${Main.color.white}
 `;
 
 const QuestionStyle = styled.div`
@@ -114,5 +124,4 @@ const QuestionStyle = styled.div`
     width: 100%;
     display: flex;
     flex-direction: row;
-    background: ${Main.color.white};
 `;

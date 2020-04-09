@@ -1,5 +1,4 @@
 import React, { useState, useContext } from 'react';
-import { Input as AntInput } from 'antd';
 
 import View from '../../../../Elements/View';
 import Box from '../../../../Elements/Box';
@@ -9,6 +8,8 @@ import CloseIcon from '../../../../Elements/Icons/close';
 
 import ViewStyle from '../../../../Elements/View/style';
 import { DesignContext, EditContext } from '../../../../Context';
+
+import { Input as SalesforceInput } from '@salesforce/design-system-react';
 
 export const Multiple = () => {
 
@@ -90,7 +91,13 @@ export const Multiple = () => {
                     <View className="col-xs-11">
                         <Box padding={'.5em'}>
 
-														<AntInput onPressEnter={(e) => handleKeyDown(e)} value={newValue} id="New" onChange={(e) => setNewValue(e.target.value)}  />
+														<SalesforceInput
+															onKeyPress={(e) => handleKeyDown(e)} 
+															aria-describedby={"New"}
+															value={newValue}
+															id={"New"}
+															onChange={(e) => setNewValue(e.target.value)}
+														/>
 
                         </Box>
                     </View>
@@ -115,7 +122,13 @@ export const Multiple = () => {
                                 <View className="col-xs-11">
                                     <Box padding={'.5em'}>
 
-																				<AntInput  value={option.forms__Label__c} id={option.Id} placeholder="Option" onChange={(e) => updateOption(e, order)}  />
+																				<SalesforceInput
+																					aria-describedby={"Option"}
+																					value={option.forms__Label__c}
+																					id={option.Id}
+																					onChange={(e) => updateOption(e, order)}
+																					placeholder="Option" 
+																				/>
 
                                     </Box>
                                 </View>

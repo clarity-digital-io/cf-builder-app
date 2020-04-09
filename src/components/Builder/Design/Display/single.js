@@ -1,17 +1,42 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 
 import { useDrag } from './useDrag';
 
 import { GenerateQuestion, Card, DropView } from './elements';
+import { QuestionPreview } from './questionPreview';
 
-export const Single = ({ style }) => {
+import { BuilderContext } from '../../../Context';
 
-    const { questions } = useDrag(); 
+export const Single = ({ style, form }) => {
+
+		const { previewMode } = useContext(BuilderContext);
+
+		const { questions } = useDrag(); 
+
+		const background = {
+			background: '#fff'
+		};
 
     return (
-        <Card style={style} fullHeight={true}>
 
+			previewMode.active ? 
+			<div className="slds-m-around_x-large">
+				  <div style={background} className="slds-box">
+						<div className="slds-p-around_x-large">
+							{
+									questions.map((item, index) => (
+
+										<QuestionPreview question={item} />
+
+									))
+							}
+						</div>
+					</div>
+			</div>
+			:
+      <div>
+ 
             <Droppable droppableId="question">
                 {(provided, snapshot) => (
                     <DropView 
@@ -21,6 +46,7 @@ export const Single = ({ style }) => {
                         {
                             questions.map((item, index) => (
                                 <Draggable
+																		isDragDisabled={ form.forms__Status__c == 'Published' ? true : false }
                                     key={`question${item.Id}${index}`}
                                     draggableId={`question${item.Id}${index}`}
                                     index={index}>
@@ -35,7 +61,8 @@ export const Single = ({ style }) => {
                 )}
             </Droppable>
             
-        </Card>
+				</div> 
+				
     );
 
 }

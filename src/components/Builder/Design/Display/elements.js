@@ -6,51 +6,10 @@ import Main from '../../../Elements/Theme';
 
 import { Question } from './question'; 
 
-export const Card = ({ fullHeight, style, children }) => {
-
-    const theme = {
-        background: style.forms__Background_Color__c,
-        questionColor: style.forms__Color__c, 
-        backgroundImage: style.forms__Background_Image__c,
-        backgroundImageCD: (style.forms__Background_Image__c != null && style.forms__Background_Image__c != '') ? (style.forms__Background_Image__c.length > 18 ? false : true ) : false
-    }
-
-    return (    
-        <ThemeProvider theme={theme}>    
-        {
-            fullHeight ?
-            <CardStyling fullHeight>
-
-                    { children }
-
-            </CardStyling> :
-            <CardStyling>
-
-                    { children }
-
-            </CardStyling>
-        }
-        </ThemeProvider>
-    )
-} 
-
-const CardStyling = styled.div`
-
-    background: ${props => props.theme.background} !important;
-    color: ${props => props.theme.questionColor} !important;
-    background-image: ${props => props.theme.backgroundImageCD ? `url(/sfc/servlet.shepherd/document/download/${props.theme.backgroundImage})` : `url(${props.theme.backgroundImage})` } !important;
-    background-size: cover !important;
-
-    ${props => props.fullHeight && css`
-        min-height: 100%; 
-    `}
-
-`;
-
 export const GenerateQuestion = ({ item, provided, snapshot }) => {
     
     return (
-        <SelectableCard 
+        <div 
             isDragging={snapshot.isDragging}
             ref={provided.innerRef}
             {...provided.draggableProps}
@@ -58,18 +17,9 @@ export const GenerateQuestion = ({ item, provided, snapshot }) => {
             
             <Question question={item} />
 
-        </SelectableCard>
+        </div>
     )
 }
-
-export const SelectableCard = styled.div`
-    border: 1px dashed ${Main.color.light}
-
-    ${props => props.isDragging == true && css`
-        background: ${Main.color.white};
-        box-shadow: 1px 1px 5px ${Main.color.light};
-    `}
-`;
 
 export const DropView = styled(View)`
     padding: 2em !important;  

@@ -7,8 +7,9 @@ export const Comment = () => {
 
     const { activeQuestion, setActiveQuestion } = useContext(DesignContext);
 
-    const handleMaxLengthUpdate = (value) => {
+		const handleMaxLengthUpdate = (e, data) => {
 
+			let value = e.target.value;
         setActiveQuestion(question => {
             return { ...question, forms__Max_Length__c: value }
         })
@@ -23,7 +24,7 @@ export const Comment = () => {
 
                 <p>Maximum characters accepted.</p>
 
-                <Slider min={0} max={1000} defaultValue={activeQuestion.forms__Max_Length__c} onChange={(e) => handleMaxLengthUpdate(e)}  />
+                <Slider min={0} max={1000} defaultValue={activeQuestion.forms__Max_Length__c || 1000} onChange={(e) => handleMaxLengthUpdate(e)}  />
 
             </ViewStyle>
 

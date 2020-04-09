@@ -1,40 +1,29 @@
 import React, { useState } from 'react';
-import { Select, Spin } from 'antd';
-
-const Option = Select.Option;
+import { Combobox } from '@salesforce/design-system-react';
 
 export const Lookup = ({ question }) => {
 
-    const [search, setSearch] = useState(false);
-    const [selection, setSelection] = useState('');
-    const [newResults, setNewResults] = useState([]);
-
-    const onChange = () => {
-
-    }
-
-    const onRemoveOption = () => {
-
-    }
-
-    const onSelect = () => {
-
-    }
-
-    return [
-        <Select
-            mode="multiple"
-            labelInValue
-            placeholder={question.forms__Placeholder__c}
-            notFoundContent={search ? <Spin size="small" /> : null}
-            filterOption={false}
-            onChange={(value) => onSelect(value)}
-            onSearch={(value) => onChange(value)}
-            onDeselect={(value) => onRemoveOption(value)}
-            style={{ width: '100%' }}
-        >
-            {newResults.map(d => <Option key={d.id}>{d.label}</Option>)}
-        </Select>
-    ]
+	return (
+			<Combobox
+				id="combobox-inline-single"
+				events={{
+					onChange: (event, { value }) => {
+					},
+					onRequestRemoveSelectedOption: (event, data) => {
+					},
+					onSubmit: (event, { value }) => {
+					},
+					onSelect: (event, data) => {
+					},
+				}}
+				labels={{
+					label: question.forms__Title__c
+				}}
+				options={[]}
+				selection={[]}
+				value={''}
+				variant="inline-listbox"
+			/>
+	)
 
 }

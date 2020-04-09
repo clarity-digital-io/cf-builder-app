@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Input as AntInput, InputNumber as AntInputNumber, Switch as AntSwitch} from 'antd';
 
 import { call } from '../../../RemoteActions'; 
 import View from '../../../Elements/View';
@@ -10,10 +9,11 @@ import {Button} from '../../../Elements/Button';
 import { BuilderContext } from '../../../Context';
 import { StatusHandler } from '../../../Elements/Notification';
 
+import { Input as SalesforceInput, Checkbox} from '@salesforce/design-system-react';
 
 export const SettingsState = () => {
 
-    const { style, form, setForm } = useContext(BuilderContext);
+    const { style, form, setForm, setError } = useContext(BuilderContext);
 
     const [update, setUpdate] = useState(false);
 
@@ -24,10 +24,13 @@ export const SettingsState = () => {
                 form.forms__Status__c,
                 () => setUpdate(false),
                 () => call(
+										setError,
                     "ClarityFormBuilder.updateForm", 
                     [JSON.stringify(form)], 
                     (result, e) => resultHandler(result, e, setForm, setUpdate),
-                )
+								),
+								null,
+								setError
             )
         }
         
@@ -47,18 +50,26 @@ export const SettingsState = () => {
             return { ...form, forms__Limit__c: value }
         })
 		}
-		
-		const updateFlowStatus = (value) => {
+
+		const updateIsFlow = (e) => {
 
 			let checked = e.target.checked;
 
-			setForm(form => {
-					return { ...form, forms__Is_Flow__c: checked }
-			})
+				setForm(form => {
+						return { ...form, forms__Is_Flow__c: checked }
+				})
 		}
-
+			
     return [
-
+				<View footer className="row middle-xs end-xs" key={'Header'}>
+					<View className="col-xs-12">
+							<ViewStyle middle>
+									<Button cta onClick={() => setUpdate(true)}>
+											{ update ? 'Saving...' : 'Save Changes' }
+									</Button>
+							</ViewStyle>
+					</View>
+			</View>,
         <View silver body className="row" key={'Body'}>
             <View className="col-xs-12">
                 <Box padding='0'>
@@ -82,7 +93,12 @@ export const SettingsState = () => {
                             <View className="col-xs-12">
                                 <Box padding='1em 0 0 0'>
 
-																		<AntInput type="text" id={ form.Name } value={ form.Name } onChange={(e) => updateName(e)} />
+																		<SalesforceInput
+																			aria-describedby={form.Name}
+																			defaultValue={form.Name}
+																			id={form.Name}
+																			onChange={(e) => updateName(e)}
+																		/>
 
                                 </Box>
                             </View>
@@ -101,7 +117,14 @@ export const SettingsState = () => {
                             <View className="col-xs-12">
                                 <Box padding='1em 0 0 0'>
 
-																		<AntInputNumber min={0} value={ form.forms__Limit__c } onChange={(e) => updateLimit(e)} />
+																		<SalesforceInput
+																			aria-describedby={form.Name}
+																			min={0}
+																			defaultValue={form.forms__Limit__c}
+																			id={form.Name}
+																			onChange={(e, data) => updateLimit(data.number)}
+																			variant="counter"
+																		/>
 
                                 </Box>
                             </View>
@@ -112,13 +135,18 @@ export const SettingsState = () => {
 
                     <ViewStyle space border>
 
-                        <h1>Use in a Lightning Flow</h1>
+                        <h1>For use Inside Lightning Flows</h1>
 
                         <View className="row">
                             <View className="col-xs-12">
                                 <Box padding='1em 0 0 0'>
 
-																	<AntSwitch defaultChecked={form.forms__Is_Flow__c} onChange={(e) => updateFlowStatus(e)} />
+																	<Checkbox
+																		id={form.Name + 'Flow'}
+																		variant="toggle"
+																		defaultChecked={form.forms__Is_Flow__c} 
+																		onChange={(e, {checked}) => updateIsFlow(e)}
+																	/>
 
                                 </Box>
                             </View>
@@ -128,18 +156,7 @@ export const SettingsState = () => {
 
                 </Box>
             </View>
-        </View>, 
-
-        <View footer className="row middle-xs end-xs" key={'Header'}>
-            <View className="col-xs-12">
-                <ViewStyle middle>
-                    <Button cta onClick={() => setUpdate(true)}>
-                        { update ? 'Saving...' : 'Save Changes' }
-                    </Button>
-                </ViewStyle>
-            </View>
         </View>
-
     ]
 }
 

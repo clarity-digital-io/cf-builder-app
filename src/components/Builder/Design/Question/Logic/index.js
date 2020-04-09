@@ -3,7 +3,7 @@ import { DesignContext, EditContext } from '../../../../Context';
 
 import View from '../../../../Elements/View';
 import ViewStyle from '../../../../Elements/View/style';
-import {SmallSpinner} from '../../../../Elements/Spinner';
+import {Spinner} from '../../../../Elements/Spinner';
 
 import Box from '../../../../Elements/Box';
 
@@ -13,15 +13,17 @@ export const LogicQuestion = () => {
 
     const { loading, criteria, setCriteria } = useContext(EditContext); 
 
-    const { activeQuestion, questions, setActiveQuestion } = useContext(DesignContext); 
+		const { activeQuestion, questions, setActiveQuestion } = useContext(DesignContext); 
 
     const [questionOptions, setQuestionOptions] = useState(
         questions.filter(question => (question.forms__Title__c != activeQuestion.forms__Title__c) && (question.forms__Type__c != 'RecordGroup' && question.forms__Type__c != 'FreeText' && question.forms__Type__c != 'PageBreak'))
     )
 
-    const updateCondition = (e) => {
+		const updateCondition = (e) => {
+				let value = e.target.value; 
+
         setActiveQuestion(q => {
-            return { ...q, forms__Logic__c: e.target.value }
+            return { ...q, forms__Logic__c: value }
         })
     }
 
@@ -42,7 +44,7 @@ export const LogicQuestion = () => {
 
                         loading ? 
                             <ViewStyle space top border>
-                                <SmallSpinner />
+                                <Spinner />
                             </ViewStyle> :
                             <ViewStyle space top border>
 

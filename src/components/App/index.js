@@ -20,7 +20,9 @@ const App = ({ children }) => {
 
 const BuilderProvider = ({ children }) => {
 
-    const [dirtyState, setDirtyState] = useState({ edited: false, navigated: false, save: null }); 
+		const [error, setError] = useState({ error: '', open: false }); 
+
+		const [previewMode, setPreviewMode] = useState({ active: false, desktop: false }); 
 
     const [loading, setLoading] = useState(false); 
 
@@ -33,6 +35,7 @@ const BuilderProvider = ({ children }) => {
             setLoading(true);
 
             call(
+								setError,
                 "ClarityFormBuilder.getConnectionFieldMapping", 
                 [activeConnection.Id, activeConnection.forms__Salesforce_Object__c], 
                 (result, e) => mappingResultHandler(result, e, setActiveFieldMapping, setActiveFieldPrefills, setActiveFields, setLoading)
@@ -64,7 +67,7 @@ const BuilderProvider = ({ children }) => {
 
         let recordId = url.get('recordId');
 
-        call("ClarityFormBuilder.startup", [recordId], (result, e) => createHandler(result, e, setForm, setStyle, setAssignment));
+        call(setError, "ClarityFormBuilder.startup", [recordId], (result, e) => createHandler(result, e, setForm, setStyle, setAssignment));
         
     }, []);
 
@@ -79,6 +82,7 @@ const BuilderProvider = ({ children }) => {
             setLoading(true);
 
             call(
+								setError,
                 "ClarityFormBuilder.getDesigns", 
                 [], 
                 (result, e) => designsResultHandler(result, e, setStyles, setLoading)
@@ -91,6 +95,7 @@ const BuilderProvider = ({ children }) => {
 
             if(assign.Id != null) {
                 call(
+										setError,
                     "ClarityFormBuilder.getAssignmentRules", 
                     [form.forms__Clarity_Form_Assignment__c], 
                     (result, e) => assignmentRulesHandler(result, e, setAssignmentRules, setLoading)
@@ -100,10 +105,13 @@ const BuilderProvider = ({ children }) => {
                     form.forms__Status__c,
                     () => setLoading(false),
                     () => call(
+												setError,
                         "ClarityFormBuilder.createAssignment", 
                         [`${form.Name} Assignment`, form.Id], 
                         (result, e) => assignmentCreateHandler(result, e, setForm, setAssignment, setAssignmentRules, setLoading)
-                    )
+										),
+										null,
+										setError
                 )
             }
 
@@ -114,6 +122,7 @@ const BuilderProvider = ({ children }) => {
             setLoading(true);
 
             call(
+								setError,
                 "ClarityFormBuilder.getConnections", 
                 [form.Id], 
                 (result, e) => connectionsResultHandler(result, e, setConnections, setLoading)
@@ -127,14 +136,16 @@ const BuilderProvider = ({ children }) => {
 
     useEffect(() => {
 
-        call("ClarityFormBuilder.getSObjectsAvailable", [], (result, e) => getSObjectsHandler(result, e, setSObjects));
+        call(setError, "ClarityFormBuilder.getSObjectsAvailable", [], (result, e) => getSObjectsHandler(result, e, setSObjects));
         
     }, [])
 
     return (
         <BuilderContext.Provider value={{ 
-            dirtyState,
-            setDirtyState,
+						error, 
+						setError,
+						previewMode, 
+						setPreviewMode,
             loading,
             setLoading,
             activeFields,
@@ -193,7 +204,6 @@ const assignmentRulesHandler = (result, e, setAssignmentRules, setLoading) => {
 }
 
 const createHandler = (result, e, setForm, setStyle, setAssignment) => {
-    console.log('result', result); 
     let convertedDate = new Date(result.forms__End_Date__c);
     let year = convertedDate.getFullYear();
     let dateMonth = convertedDate.getMonth()
@@ -207,7 +217,6 @@ const createHandler = (result, e, setForm, setStyle, setAssignment) => {
             Id: result.Id, 
             Name: result.Name, 
             forms__Limit__c: result.forms__Limit__c, 
-            forms__End_Date__c: stringDate, 
             forms__Connected_Object__c: result.forms__Connected_Object__c, 
             forms__Clarity_Form_Assignment__c: result.forms__Clarity_Form_Assignment__c, 
             forms__Clarity_Form_Style__c: result.forms__Clarity_Form_Style__c, 

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { call } from '../../../RemoteActions'; 
-import { Switch as AntSwitch, Input as AntInput } from 'antd';
+import {Checkbox} from '@salesforce/design-system-react';
 
 import View from '../../../Elements/View';
 import ViewStyle from '../../../Elements/View/style';
@@ -10,12 +10,12 @@ import CloseIcon from '../../../Elements/Icons/close';
 import { Select } from '../../../Elements/Select';
 
 import { BuilderContext } from '../../../Context';
-import { SmallSpinner } from '../../../Elements/Spinner';
+import { Spinner } from '../../../Elements/Spinner';
 import { StatusHandler } from '../../../Elements/Notification';
 
 export const ConnectState = () => {
 
-    const { form, connections, setConnections, sObjects, setNavState, setActiveConnection } = useContext(BuilderContext);
+    const { form, connections, setConnections, sObjects, setNavState, setActiveConnection, setError } = useContext(BuilderContext);
 
     const [update, setUpdate] = useState(false);
 
@@ -24,17 +24,18 @@ export const ConnectState = () => {
     useEffect(() => {
 
         if(update) {
-
-						console.log('saveConnections', [JSON.stringify(connections), form.Id, JSON.stringify(removed)]);
             StatusHandler(
                 form.forms__Status__c,
                 () => setUpdate(false),
                 () => call(
+										setError,
                     "ClarityFormBuilder.saveConnections", 
                     [JSON.stringify(connections), form.Id, JSON.stringify(removed)], 
                     (result, e) => connectionsResultHandler(result, e, setConnections, setUpdate),
                     form.forms__Status__c
-                )
+								),
+								null,
+								setError
             )
         }
         
@@ -54,17 +55,19 @@ export const ConnectState = () => {
 
     }
 
-    const setObjectSelection = (value, order) => {
+    const setObjectSelection = (selection, order) => {
 
-        setConnections((rows) => {
+			let value = selection[0].value;
 
-            return rows.map((row, i) => {
-                if(i == order) {
-                    return { ...row, forms__Salesforce_Object__c: value }
-                }
-                return row;
-            })
-        }); 
+			setConnections((rows) => {
+
+					return rows.map((row, i) => {
+							if(i == order) {
+									return { ...row, forms__Salesforce_Object__c: value }
+							}
+							return row;
+					})
+			}); 
 
     }
 
@@ -105,7 +108,16 @@ export const ConnectState = () => {
 		};
 
     return [
-        
+				
+				<View footer className="row middle-xs end-xs" key={'Header'}>
+						<View className="col-xs-12">
+								<ViewStyle middle>
+										<Button onClick={() => setUpdate(true)}>
+												Save Changes
+										</Button>
+								</ViewStyle>
+						</View>
+				</View>,
         <View silver body className="row" key={'Body'}>
             <View className="col-xs-12">
                 <Box padding='0'>
@@ -170,7 +182,12 @@ export const ConnectState = () => {
                                         <View className="col-xs-2">
                                             <Box padding='.5em'>
 
-																								<AntSwitch defaultChecked={connection.forms__New__c} onChange={(e) => activate(e, order)} />
+																								<Checkbox
+																									id={connection.Id}
+																									variant="toggle"
+																									defaultChecked={connection.forms__New__c} 
+																									onChange={(e, {checked}) => activate(checked, order)}
+																								/>
 
                                             </Box>
                                         </View>
@@ -212,7 +229,7 @@ export const ConnectState = () => {
                         {
                             update ? 
                             <ViewStyle space top border>
-                                <SmallSpinner />
+                                <Spinner />
                             </ViewStyle> :
                             <View className="row center-xs middle-xs">
                                 <View className="col-xs-3">
@@ -231,16 +248,6 @@ export const ConnectState = () => {
                     </ViewStyle>
 
                 </Box>
-            </View>
-        </View>,
-    
-        <View footer className="row middle-xs end-xs" key={'Header'}>
-            <View className="col-xs-12">
-                <ViewStyle middle>
-                    <Button cta onClick={() => setUpdate(true)}>
-                        Save Changes
-                    </Button>
-                </ViewStyle>
             </View>
         </View>
 

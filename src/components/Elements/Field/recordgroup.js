@@ -1,78 +1,98 @@
 import React, { useState, useContext, useEffect } from 'react';
 
-import { Card, Spin, Icon, Table, Form } from 'antd';
 import { DesignContext } from '../../Context';
 import { getType } from '../../Builder/Design/Display/types';
 
-const FormItem = Form.Item;
+import { Card, DataTable, DataTableColumn, Icon, Button } from '@salesforce/design-system-react';
+
 
 export const RecordGroup = ({ question }) => {
 
     const [newItem, addNewItem] = useState(false);
 
     const [recordQuestion, setRecordQuestion] = useState(question); 
-    
-    return (
-        <Card
-            title={question.forms__Title__c}
-            actions={
-                newItem ?
-                [<Icon type="arrow-left" onClick={() => addNewItem(false)} />, <Icon type="save" />] :
-                [<Icon type="plus" onClick={() => addNewItem(true)} />]
-            }
-            style={{ width: '100%' }}
-        >
-
-            <RecordBody 
-                items={[]} 
-                newItem={newItem} 
-                question={recordQuestion} 
-            />
-
-        </Card>
-    )
+		
+		return (
+				<div className="slds-grid slds-grid_vertical">
+					<Card
+						id="ExampleCard"
+						headerActions={
+							newItem ? 
+							<Button
+								label="Save"
+							/> :							
+							<Button
+								label="Add Items"
+								onClick={() => addNewItem(true)}
+							/> 
+						}
+						heading={question.forms__Title__c}
+						icon={<Icon category="standard" name="document" size="small" />}
+					>
+							<RecordBody 
+									key="body"
+									items={[]} 
+									newItem={newItem} 
+									question={recordQuestion} 
+							/>
+					</Card>
+				</div>
+		)
 
 }
 
 const RecordBody = ({ items, newItem, question }) => {
 
-    const { recordGroup } = useContext(DesignContext);
 
-    const [recordGroupFields, setRecordGroupFields] = useState(recordGroup.get(question.Id) || []);
+	const { recordGroup } = useContext(DesignContext);
 
-    const [columns, setColumns] = useState([]);
+	const [recordGroupFields, setRecordGroupFields] = useState(recordGroup.get(question.Id) || []);
 
-    useEffect(() => {
+	const [columns, setColumns] = useState([]);
 
-        if(recordGroupFields && recordGroupFields != null) {
-            setColumns(getRecordColumns(recordGroupFields));
-        }
+	useEffect(() => {
 
-    }, [recordGroupFields])
+			if(recordGroupFields && recordGroupFields != null) {
+					setColumns(getRecordColumns(recordGroupFields));
+			}
 
-    return newItem ?
-        [
-            recordGroupFields.map(question => {
-                return <FormItem key={question.Id} label={question.forms__Title__c} required={question.forms__Required__c}>
-                    { getType(question) }
-                </FormItem>
-            })
-        ]
-        :
-        <Table dataSource={items} columns={columns} />
+	}, [recordGroupFields])
+
+	return newItem ?  
+			<div className="slds-m-around_medium">
+				{
+					recordGroupFields.map(question => {
+							return getType(question)
+					})
+				}
+			</div>
+			:
+			<DataTable items={items} id="DataTableExample-1">
+				{
+					columns.map((col, i) => {
+						<DataTableColumn
+							key={i}
+							label={col.title}
+							property={i}
+							truncate
+						/>
+					})
+				}
+
+			</DataTable>
 
 }
 
 const getRecordColumns = (recordGroupFields) => {
 
-    return recordGroupFields.map(question => {
+	return recordGroupFields.map(question => {
 
-        return {
-            title: question.forms__Salesforce_Field__c,
-            dataIndex: question.forms__Salesforce_Field__c, 
-            key: question.forms__Salesforce_Field__c
-        }
+			return {
+					title: question.forms__Salesforce_Field__c,
+					dataIndex: question.forms__Salesforce_Field__c, 
+					key: question.forms__Salesforce_Field__c
+			}
 
-    })
-    
+	})
+	
 }

@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { Input as AntInput, Radio as AntRadio} from 'antd';
+import React, { useState, useEffect, useContext } from 'react';
 import { call } from '../../RemoteActions';
 
 import View from '../View';
@@ -10,12 +9,18 @@ import {Button} from '../Button';
 import ViewStyle from '../View/style';
 import { Select } from '../Select'; 
 
+import { RadioGroup as SalesforceRadioGroup, Radio as SalesforceRadio, Input as SalesforceInput } from '@salesforce/design-system-react';
+import { BuilderContext, DesignContext } from '../../Context';
 
 export const ControlGroup = ({ type, relatedId, value, rows, setRows, setCondition, questions, filter }) => {
 
-    return [
+		const { setError } = useContext(BuilderContext); 
+
+		const { questionOptions } = useContext(DesignContext);
+
+		return [
         <ControlHeader key={'Header'} />, 
-        <ControlRows setRows={setRows} rows={rows} key={'Rows'} questions={questions} filter={filter} />,
+        <ControlRows questionOptions={questionOptions} setRows={setRows} rows={rows} key={'Rows'} questions={questions} filter={filter} setError={setError} />,
         <ControlAddRow type={type} setRows={setRows} relatedId={relatedId} key={'Add'} />,
         <ControlCondition value={value} setCondition={setCondition} key={'Condition'} />
     ]
@@ -23,25 +28,32 @@ export const ControlGroup = ({ type, relatedId, value, rows, setRows, setConditi
 
 const ControlCondition = ({value, setCondition}) => {
 
-		const radioStyle = {
-			display: 'block',
-			height: '30px',
-			lineHeight: '30px',
-		};
-
     return (
         <ViewStyle space>
             <View className="row middle-xs">
                 <View className="col-xs-12">
 
-									<AntRadio.Group onChange={(e) => setCondition(e)} value={value}>
-										<AntRadio style={radioStyle} value={'AND'}>
-											All of the Conditions are met (AND)
-										</AntRadio>
-										<AntRadio style={radioStyle} value={'OR'}>
-											Any of the Conditions are met (OR)
-										</AntRadio>
-									</AntRadio.Group>
+									<SalesforceRadioGroup
+										onChange={(event) => setCondition(event)}
+										name={value}
+									>
+										<SalesforceRadio
+											key={'AND'}
+											id={'AND'}
+											labels={{ label: 'All of the Conditions are met (AND)' }}
+											value={'AND'}
+											checked={value == 'AND'}
+											variant="base"
+										/>
+										<SalesforceRadio
+											key={'OR'}
+											id={'OR'}
+											labels={{ label: 'All of the Conditions are met (OR)' }}
+											value={'OR'}
+											checked={value == 'OR'}
+											variant="base"
+										/>
+									</SalesforceRadioGroup>
 
                 </View>
             </View>
@@ -49,43 +61,45 @@ const ControlCondition = ({value, setCondition}) => {
     )
 }
 
-const ControlRows = ({ rows, setRows, questions, filter }) => {
+const ControlRows = ({ questionOptions, rows, setRows, questions, filter, setError }) => {
 
-    return rows.map((row, i) => {
+		return rows.map((row, i) => {
 
-        return <ControlRow key={row.Id} order={i} row={row} setRows={setRows} questions={questions} filter={filter} />
+        return <ControlRow questionOptions={questionOptions} key={row.Id} order={i} row={row} setRows={setRows} questions={questions} filter={filter} setError={setError} />
 
     })
 
 }
 
-const ControlRow = ({ order, row, setRows, questions, filter }) => {
+const getOptions = (row, options) => {
+	let type = row.forms__Type__c;
+	if(type == 'Boolean') {
+			return ['True'];
+	}
 
-    const [operators, setOperators] = useState(getCorrectOperators(row.forms__Field_Type__c));
+	if(type == 'Picklist' && row.forms__Field_Type__c == 'Date') {
+			return ['TODAY', 'YESTERDAY', 'LAST_WEEK', 'LAST_MONTH', 'NEXT_WEEK', 'NEXT_MONTH'];
+	}
+
+	if(type == 'Picklist' && row.forms__Field_Type__c != 'Date') {
+		return options.has(row.forms__Field__c) ? options.get(row.forms__Field__c) : []
+	}
+	
+	return [];
+	
+}
+
+const ControlRow = ({ questionOptions, order, row, setRows, questions, filter, setError }) => {
+
+		const [operators, setOperators] = useState(getCorrectOperators(row.forms__Field_Type__c));
 
     const [types, setTypes] = useState(getCorrectTypes(row));
 
-    const [options, setOptions] = useState([]); 
-    
-    const [valueField, setValueField] = useState(row.forms__forms__Type__c);
+		const options = getOptions(row, questionOptions);
 
-    useEffect(() => {
+		const setQuestionSelection = (selection, order) => {
 
-        if(valueField == 'Boolean') {
-            setOptions(['True'])
-        }
-
-        if(valueField == 'Picklist' && row.forms__Field_Type__c == 'Date') {
-            setOptions(['TODAY', 'YESTERDAY', 'LAST_WEEK', 'LAST_MONTH', 'NEXT_WEEK', 'NEXT_MONTH'])
-        }
-
-        if(valueField == 'Picklist' && row.forms__Field_Type__c != 'Date') {
-            call("ClarityFormBuilder.getQuestionOptions", [row.forms__Field__c], (result, e) => getOptionsHandler(result, e, setOptions));
-        }
-
-    }, [valueField])
-
-    const setQuestionSelection = (value, order) => {
+			let value = selection[0].value;
 
 			let question = questions.find(question => question.Id == value); 
 
@@ -94,7 +108,7 @@ const ControlRow = ({ order, row, setRows, questions, filter }) => {
         setRows((rows) => {
             return rows.map((row, i) => {
                 if(i == order) {
-                    return { ...row, forms__Title__c: question.forms__Title__c, forms__Field__c: question.Id, forms__Field_Type__c: question.forms__Type__c, forms__Operator__c: '' }
+                    return { ...row, forms__Title__c: question.forms__Title__c, forms__Field__c: question.Id, forms__Field_Type__c: question.forms__Type__c, forms__Operator__c: '', forms__Type__c: '', forms__Value__c: '' }
                 }
                 return row;
             })
@@ -102,11 +116,13 @@ const ControlRow = ({ order, row, setRows, questions, filter }) => {
 
     }
 
-    const setOperatorSelection = (value, order) => {
+    const setOperatorSelection = (selection, order) => {
+
+				let value = selection[0].value;
         setRows((rows) => {
             return rows.map((row, i) => {
                 if(i == order) {
-                    return { ...row, forms__Operator__c: value }
+                    return { ...row, forms__Operator__c: value, forms__Type__c: '', forms__Value__c: ''  }
                 }
                 return row;
             })
@@ -115,21 +131,25 @@ const ControlRow = ({ order, row, setRows, questions, filter }) => {
         setTypes(getCorrectTypes({ ...row, forms__Operator__c: value }));
     }
 
-    const setTypeSelection = (value, order) => {
+    const setTypeSelection = (selection, order) => {
+
+				let value = selection[0].value;
+
         setRows((rows) => {
             return rows.map((row, i) => {
                 if(i == order) {
-                    return { ...row, forms__Type__c: value }
+                    return { ...row, forms__Type__c: value, forms__Value__c: '' }
                 }
                 return row;
             })
         }); 
 
-        setValueField(value); 
+        //setValueField(value); 
     }
 
-    const setValueSelection = (e, order) => {		
-				let value = e.target.value;  
+    const setValueSelection = (selection, order) => {		
+
+			let value = selection[0].value;
         setRows((rows) => {
             return rows.map((row, i) => {
                 if(i == order) {
@@ -185,7 +205,7 @@ const ControlRow = ({ order, row, setRows, questions, filter }) => {
             </View>
             <View className="col-xs-2">
                 <Box padding='.5em'>
-                    <ControlField order={order} record={row.Type__c} values={types} setSelection={setTypeSelection} />
+                    <ControlField order={order} record={row.forms__Type__c} values={types} setSelection={setTypeSelection} />
                 </Box>
             </View>
             <View className="col-xs-3">
@@ -242,17 +262,24 @@ const ControlAddRow = ({ type, setRows, relatedId }) => {
 
 const ControlFieldQuestion = ({ order, record, values, setSelection }) => {
 
-    return <Select key={record.Id} value={record.forms__Field__c} options={values} onChange={(e) => setSelection(e, order)} valueField={'Id'} labelField={'forms__Title__c'} />
+	return <Select order={order} key={record.Id} value={record.forms__Field__c} options={values} onChange={setSelection} valueField={'Id'} labelField={'forms__Title__c'} />
 
 }
 
-const ControlField = ({ order, record, values, setSelection }) => {
-
-    return <Select key={record} value={record} options={values} onChange={(e) => setSelection(e, order)} />
+const ControlField = ({ labelField, valueField, order, record, values, setSelection }) => {
+    return <Select order={order} key={record} value={record} options={values} onChange={setSelection} valueField={valueField} labelField={labelField} />
 }
 
 const ControlFieldInput = ({ type, order, record, setSelection }) => {
-    return <AntInput type="text" id={order} value={record} onChange={(e) => setSelection(e, order)} />
+
+		return (
+			<SalesforceInput
+				type="text" 
+				id={order} 
+				value={record}
+				onChange={setSelection} 
+			/>
+		)
 }
 
 const getOptionsHandler = (result, e, setOptions) => {
@@ -272,10 +299,10 @@ const ControlValueField = ({ options, order, record, setSelection }) => {
             return <ControlFieldInput type={'text'} order={order} record={record.forms__Value__c} setSelection={setSelection} />
             break;
         case 'Picklist':
-            return <ControlField order={order} record={record.forms__Value__c} values={options} setSelection={setSelection} />
+            return <ControlField labelField={'forms__Label__c'} valueField={'Id'} order={order} record={record.forms__Value__c} values={options} setSelection={setSelection} />
             break;
         case 'Boolean':
-            return <ControlField order={order} record={record.forms__Value__c} values={options} setSelection={setSelection} />
+            return <ControlField  order={order} record={record.forms__Value__c} values={options} setSelection={setSelection} />
             break; 
         case 'Date':
             return <ControlFieldInput type={'date'} order={order} record={record.forms__Value__c} setSelection={setSelection} />
@@ -332,7 +359,6 @@ const getCorrectOperators = (fieldType) => {
         case 'PictureChoice':
         case 'MultipleChoice':
         case 'Dropdown':
-        case 'Ranking':
         case 'Checkbox':
         case 'Email':
             return ['Equals', 'Not Equal', 'Is Not Null']; 
@@ -384,17 +410,16 @@ const getTypeForGLEqual = (fieldType) => {
     switch (fieldType) {
         case 'MultipleChoice':
         case 'Dropdown':
-        case 'Ranking':
         case 'Checkbox':
         case 'Email':
         case 'Lookup':
         case 'NetPromoterScore':
         case 'Slider':
         case 'Number':
-            return ['Reference', 'Number'];
+            return ['Number'];
             break;
         case 'Date':
-            return ['Reference', 'Date', 'Picklist'];
+            return ['Date'];
             break;
         case 'RecordGroup':
             return ['Number of New Records'];
@@ -407,23 +432,22 @@ const getTypeForEquals = (fieldType) => {
     switch (fieldType) {
         case 'MultipleChoice':
         case 'Dropdown':
-        case 'Ranking':
         case 'Checkbox':
-            return ['Reference', 'Picklist'];
+            return ['Picklist'];
             break;  
         case 'Email':
-            return ['Reference', 'String']; 
+            return ['String']; 
             break;
         case 'NetPromoterScore':
         case 'Slider':
         case 'Number':
-            return ['Reference', 'Number']; 
+            return ['Number']; 
             break;
         case 'RecordGroup':
             return ['Number of New Records'];
             break;
         case 'Date':
-            return ['Reference', 'Date', 'Picklist'];
+            return ['Date'];
             break;
     }
 }

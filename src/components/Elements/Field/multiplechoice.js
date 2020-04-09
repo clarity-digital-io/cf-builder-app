@@ -1,30 +1,35 @@
 import React, { useContext } from 'react';
-import { Radio } from 'antd';
 import { DesignContext } from '../../Context';
-
-const RadioGroup = Radio.Group;
+import { RadioGroup as SalesforceRadioGroup } from '@salesforce/design-system-react';
+import { Radio as SalesforceRadio } from '@salesforce/design-system-react';
 
 export const MultipleChoice = ({ question }) => {
 
-    const { questionOptions } = useContext(DesignContext); 
+		const { questionOptions } = useContext(DesignContext); 
 
-    return (
-        <RadioGroup>
-            {
-                questionOptions.get(question.Id) != null ? 
-                    questionOptions.get(question.Id).map((option) => {
-                        return <Radio
-                                name={question.Id}
-                                id={option.Id}
-                                value={option.Id}
-                                checked={false}
-                            >
-                                {option.forms__Label__c}
-                            </Radio>
-                    }) :
-                    null
-            }
-        </RadioGroup>
-    )
+		return (
+			<SalesforceRadioGroup
+				labels={{ label: question.forms__Title__c }}
+				onChange={(event) => update(event)}
+				name={question.forms__Label__c}
+				required={question.forms__Required__c} 
+			>
+				{
+					questionOptions.get(question.Id) != null ? 
+						questionOptions.get(question.Id).map((option) => {
+							return (
+								<SalesforceRadio
+									key={option.Id}
+									id={option.Id}
+									labels={{ label: option.forms__Label__c }}
+									value={option.Id}
+									variant="base"
+								/>
+							)
+						}) :
+						null
+				}
+			</SalesforceRadioGroup>
+		)
 
 }

@@ -43,23 +43,25 @@ const Design = () => {
         }
     }
 
-    return [
-        <View key={'QuestionState'} className="col-xs-5 col-sm-4 col-md-4 col-lg-4" scroll>
+    return (
+			<View full main>
+        <View key={'QuestionState'} scroll edit>
             <Box padding='0'>
                 
                 { getNavState(navState) }
 
             </Box> 
-        </View>,
+        </View>
 
-        <View key={'QuestionDisplay'} className="col-xs-6 col-sm-7 col-md-7 col-lg-7">
-            <Box padding='0'>
+        <View key={'QuestionDisplay'} form>
+            <Box padding='0' >
 
                 { getDisplayNavState(navState) }
                 
             </Box>                
         </View>
-    ]
+			</View>
+    )
 }
 
 export default Design;

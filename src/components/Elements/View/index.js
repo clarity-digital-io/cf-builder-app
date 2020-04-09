@@ -4,18 +4,19 @@ import Main from '../Theme';
 const View = styled.div`
     margin-right: 0em; 
     margin-left: 0em; 
-    padding: 0; 
+		padding: 0; 
+		margin-top: -2px; 
 
     ${props => props.full && css`
-      height: 100vh;
+			height: 92.5vh;
     `}
 
     ${props => props.body && css`
-      height: 93vh;
+      height: 89.5vh;
     `}
 
     ${props => props.fullBody && css`
-      height: 93vh;
+      height: 89.5vh;
     `}
 
     ${props => props.space && css`
@@ -56,11 +57,12 @@ const View = styled.div`
     `}
 
     ${props => props.footer && css`
-      border-left: 1px solid ${Main.color.greyBorder}
-      border-right: 1px solid ${Main.color.greyBorder}
-      border-top:1px solid ${Main.color.greyBorder};
-      background: ${Main.color.white}
-      height: 7vh;
+      border-left: 1px solid ${Main.color.greyBorder};
+      border-right: 1px solid ${Main.color.greyBorder};
+      border-bottom: 1px solid ${Main.color.greyBorder};
+			background: ${Main.color.white}
+			margin-top: 2px; 
+			padding: .5em 0 .5em 0;
     `}
 
     #connect {
@@ -73,7 +75,25 @@ const View = styled.div`
     #salesforce {
       font-weight: 900; 
       color: ${Main.color.bright};
-    }
+		}
+		
+		${props => props.main && css`
+			display: flex; 
+		`}
+
+		${props => props.nav && css`
+				max-width: 54px; 
+				flex-grow: 1;
+		`}
+
+		${props => props.edit && css`
+			max-width: 600px;
+			flex-grow: 1;
+		`}
+
+		${props => props.form && css`
+			flex-grow: 1;
+		`}
 
 `;
 

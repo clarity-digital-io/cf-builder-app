@@ -14,12 +14,14 @@ import { Button } from '../../../../Elements/Button';
 export const SalesforceFields = () => {
 
     const { activeRecordGroup, setActiveRecordGroup, setSObjectEdit, requiredFields } = useContext(EditContext); 
-
     const { recordGroup, activeQuestion } = useContext(DesignContext); 
+		console.log('activeRecordGroup', activeRecordGroup, recordGroup);
 
     useEffect(() => {
-        
-        //setActiveRecordGroup(recordGroup.get(activeQuestion.Id) || []);
+				setActiveRecordGroup(active => {
+					console.log('rcccc', recordGroup.get(activeQuestion.Id))
+					return recordGroup.get(activeQuestion.Id) != null ? recordGroup.get(activeQuestion.Id) : [];
+				})
         setSObjectEdit(activeQuestion.forms__Type__c);
 
     }, []);
@@ -92,13 +94,15 @@ const ControlSelect = ({ order, row }) => {
 
     }
 
-    const setSelection = (value, order) => {
+		const setSelection = (value, order) => {
 
         setActiveRecordGroup(records => {
 
             let newFields = records.map((record, i) => {
 
-                let val = additionalFields[value];
+								let val = additionalFields.hasOwnProperty(value) ? additionalFields[value] : '';
+								
+								if(val == '') return record; 
                 
                 let fieldType = Object.keys(val)[0];
 
@@ -115,7 +119,6 @@ const ControlSelect = ({ order, row }) => {
                 return record; 
 
             });
-
 
 
             return newFields; 
@@ -144,8 +147,8 @@ const ControlSelect = ({ order, row }) => {
 			width: '60%',
 		};
 
-    return (
-        <View className="row center-xs middle-xs">
+		return (
+        <View className="row middle-xs">
             <View className="col-xs-1">
                 <Box padding='.5em'>
                     <span id="center">{ order + 1 }</span>
@@ -154,17 +157,20 @@ const ControlSelect = ({ order, row }) => {
 
             <View className="col-xs-4">
                 <Box padding='.5em'> 
-                    <Select disabled={row.forms__RG_Required__c} key={row.forms__Order__c} value={row.forms__Salesforce_Field__c} options={Object.keys(additionalFields)} onChange={(e) => setSelection(e, row.forms__Order__c)}/>
+										<Select 
+											disabled={row.forms__RG_Required__c} 
+											key={row.forms__Order__c} 
+											value={row.forms__Salesforce_Field__c} 
+											options={Object.keys(requiredFields).concat(Object.keys(additionalFields))} 
+											onChange={(data) => setSelection(data[0].value, row.forms__Order__c)}
+										/>
                 </Box>
             </View>
             <View className="col-xs-2">
                 <Box padding='.5em'> 
 
                     {
-                        row.Id != null && !row.forms__RG_Required__c? 
-                        <Button add onClick={() => edit('EDIT')}>Edit</Button>
-                        :
-                        <Button disabled>Edit</Button>
+                        <Button disabled={row.forms__RG_Required__c} onClick={() => edit('EDIT')}>Edit</Button>
                     }
 
                 </Box>
@@ -179,8 +185,7 @@ const ControlSelect = ({ order, row }) => {
                     }
 
                 </Box>
-            </View>
-             
+            </View>            
             <View className="col-xs-1">
                 <Box padding='.5em'> 
 
@@ -204,7 +209,18 @@ const ControlAddRow = ({ setActiveRecordGroup, relatedId, formId }) => {
     const add = () => {
  
         setActiveRecordGroup(records => {   
-            return records.concat([{ forms__Clarity_Form__c: formId, forms__Logic__c: 'AND', forms__Type__c: '', forms__Title__c: '', forms__Salesforce_Field__c: '', forms__Record_Group__c: relatedId, forms__Order__c: records.length, forms__Page__c: 0 }]);
+            return records.concat([
+							{ 
+								forms__Clarity_Form__c: formId, 
+								forms__Logic__c: 'AND', 
+								forms__Type__c: '', 
+								forms__Title__c: '', 
+								forms__Salesforce_Field__c: '', 
+								forms__Record_Group__c: relatedId, 
+								forms__Order__c: records.length, 
+								forms__Page__c: 0 
+							}
+						]);
         })
 
     }

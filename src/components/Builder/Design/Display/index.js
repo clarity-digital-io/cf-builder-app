@@ -1,41 +1,43 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
-
-import { Header } from './header'; 
-
-import { useDrag } from './useDrag';
-import { useMultiDrag } from './useMultiDrag';
-
-import { DesignContext, BuilderContext } from '../../../Context';
+import { BuilderContext } from '../../../Context';
 import { Single } from './single';
-import { Multi } from './multi';
 
 export const Display = () => {
 
-    const { style } = useContext(BuilderContext);
+    const { style, form, previewMode } = useContext(BuilderContext);
 
-    const { questionUpdate } = useContext(DesignContext);
+		const background = {
+			backgroundImage: previewMode.active ? 
+				'rgb(22, 50, 92)' : 
+				'linearGradient(to right, grey 1px, transparent 1px), linearGradient(to bottom, grey 1px, transparent 1px);'
+		};
 
-    const { update } = useDrag(); 
+    return (
 
-    const { multiUpdate } = useMultiDrag(); 
+			previewMode.active ? 
+        <PreviewFormDesign style={background} key={'Display'}>
 
-    return [
-        <Header key={'Header'} update={questionUpdate || multiUpdate || update} />,
-        <FormDesign key={'Display'}>
+					<Single style={style} form={form} />
 
-            {
-                !style.forms__Multi_Page__c ? 
-                <Single style={style} /> :
-                <Multi style={style}  />
-            }
+				</PreviewFormDesign> :
+				<FormDesign style={background} key={'Display'}>
 
-        </FormDesign>
-    ];
+					<Single style={style} form={form} />
+
+				</FormDesign> 
+		);
 
 }
 
+const PreviewFormDesign = styled.div`
+    height: 92.5vh;
+		overflow-y: auto;
+		background: rgb(22, 50, 92)
+`;
+
 const FormDesign = styled.div`
-    height: 94vh;
-    overflow-y: auto;
+    height: 92.5vh;
+		overflow-y: auto;
+    background: #b0c4df;
 `;

@@ -10,13 +10,15 @@ import Box from '../../../Elements/Box';
 import { sortedTypes } from '../types';
 
 import { getType } from './types'; 
-import { BuilderContext } from '../../../Context';
+import { BuilderContext, DesignContext } from '../../../Context';
 
 export const NewQuestion = () => {
 
 		const { form } = useContext(BuilderContext);
-	console.log('form.form__Status__c', form); 
-    return (
+
+		const { update } = useContext(DesignContext); 
+
+		return (
         <View silver full className="row" key={'Body'}>
             <View className="col-xs-12">
                 <Box padding='0'>
@@ -52,7 +54,7 @@ export const NewQuestion = () => {
                                                                     ref={provided.innerRef}
                                                                     {...provided.draggableProps}
 																																		{...provided.dragHandleProps}
-																																		disabled={ form.forms__Status__c == 'Published' ? true : false }
+																																		disabled={ form.forms__Status__c == 'Published' || update ? true : false }
                                                                     isDragging={snapshot.isDragging}>
                                                                     {getType(type.type)}
                                                                     <span>
@@ -86,7 +88,7 @@ const SelectableNew = styled.div`
     margin: .75em;
     font-weight: 500;
     background: ${Main.color.white};
-    box-shadow: 2px 0 2px ${Main.color.silver}
+
     color: ${Main.color.dark}
 
     span {

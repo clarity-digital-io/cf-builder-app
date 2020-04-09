@@ -10,12 +10,11 @@ import { StatusHandler } from '../../../../Elements/Notification';
 
 export const RecordGroup = () => {
     
-    const { form } = useContext(BuilderContext); 
+    const { form, setError } = useContext(BuilderContext); 
 
     const { sObjects, activeQuestion, setActiveQuestion, setQuestions, setQuestionState, setQuestionUpdate } = useContext(DesignContext);
 
-    const updateLookupQuestion = (value) => {
-
+    const updateLookupQuestion = (value, data) => {
         setActiveQuestion(question => {
             return { ...question, forms__Salesforce_Object__c: value }
         })
@@ -28,10 +27,13 @@ export const RecordGroup = () => {
             form.forms__Status__c,
             () => setQuestionUpdate(false),
             () => call(
+								setError,
                 "ClarityFormBuilder.saveQuestion", 
                 [JSON.stringify(activeQuestion)], 
                 (result, e) => resultHandler(result, e, setQuestionUpdate, setQuestions, activeQuestion, setQuestionState),
-            )
+						),
+						null,
+						setError	
         )
 
     }
@@ -45,7 +47,7 @@ export const RecordGroup = () => {
                 Create a new Record for any standard or custom object you chose. (At a minimum Required fields will be displayed).
             </p>
 
-            <Select options={sObjects} value={activeQuestion.forms__Salesforce_Object__c} onChange={(e) => updateLookupQuestion(e)} />
+            <Select options={sObjects} value={activeQuestion.forms__Salesforce_Object__c} onChange={(data) => updateLookupQuestion(data[0].value)} />
 
         </ViewStyle>,
         <ViewStyle key={'add'}>
