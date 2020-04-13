@@ -13,7 +13,7 @@ import { Input as SalesforceInput, Checkbox} from '@salesforce/design-system-rea
 
 export const SettingsState = () => {
 
-    const { style, form, setForm, setError } = useContext(BuilderContext);
+    const { form, setForm, setError } = useContext(BuilderContext);
 
     const [update, setUpdate] = useState(false);
 
@@ -51,6 +51,15 @@ export const SettingsState = () => {
         })
 		}
 
+		const updateToMulti = (e) => {
+
+			let checked = e.target.checked;
+
+				setForm(form => {
+						return { ...form, forms__Multi_Page__c: checked }
+				})
+		}
+			
 		const updateIsFlow = (e) => {
 
 			let checked = e.target.checked;
@@ -135,7 +144,29 @@ export const SettingsState = () => {
 
                     <ViewStyle space border>
 
+                        <h1>Multi Page Form</h1>
+
+                        <View className="row">
+                            <View className="col-xs-12">
+                                <Box padding='1em 0 0 0'>
+
+																	<Checkbox
+																		id={form.Name + 'Flow'}
+																		variant="toggle"
+																		defaultChecked={form.forms__Multi_Page__c} 
+																		onChange={(e, {checked}) => updateToMulti(e)}
+																	/>
+
+                                </Box>
+                            </View>
+                        </View>
+
+                    </ViewStyle>
+
+                    <ViewStyle space border>
+
                         <h1>For use Inside Lightning Flows</h1>
+												<p>Forms for Lightning Flows will ignore the multi page setting.</p>
 
                         <View className="row">
                             <View className="col-xs-12">

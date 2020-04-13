@@ -5,7 +5,6 @@ const View = styled.div`
     margin-right: 0em; 
     margin-left: 0em; 
 		padding: 0; 
-		margin-top: -2px; 
 
     ${props => props.full && css`
 			height: 92.5vh;
@@ -61,7 +60,6 @@ const View = styled.div`
       border-right: 1px solid ${Main.color.greyBorder};
       border-bottom: 1px solid ${Main.color.greyBorder};
 			background: ${Main.color.white}
-			margin-top: 2px; 
 			padding: .5em 0 .5em 0;
     `}
 

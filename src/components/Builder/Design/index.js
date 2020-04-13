@@ -2,12 +2,12 @@ import React, { useState, useEffect, useContext } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { call } from '../../RemoteActions';
 
-import DesignLayout from '../../Elements/Layout/design';
 import Design from './design';
 
 import { BuilderContext, DragDropUpdateContext, DesignContext } from '../../Context';
 import { StatusHandler } from '../../Elements/Notification';
 import DesignNavigation from '../../Elements/Navigation/design';
+import styled from 'styled-components';
 
 /**
  * This provider can be split up into a DragDrop Provider and an Edit Provider
@@ -19,8 +19,10 @@ export const DragDrop = () => {
 
 					<DragDropUpdateProvider>
 							<DesignProvider>
+								<LayoutHolder>
 									<DesignNavigation />
 									<Design />
+								</LayoutHolder>
 							</DesignProvider>
 					</DragDropUpdateProvider>
 
@@ -253,6 +255,12 @@ const DesignProvider = ({ children }) => {
         </DesignContext.Provider>
     )
 }
+
+const LayoutHolder = styled.div`
+	>div:nth-of-type(1) {
+		max-height: 98px; 
+	}
+`;
 
 const resultHandler = (result, e, setUpdate, setAdditionalUpdate, setQuestions, setPageQuestions) => {
 
