@@ -85,8 +85,7 @@ const View = styled.div`
 		`}
 
 		${props => props.edit && css`
-			max-width: 600px;
-			flex-grow: 1;
+			width: 600px;
 		`}
 
 		${props => props.form && css`

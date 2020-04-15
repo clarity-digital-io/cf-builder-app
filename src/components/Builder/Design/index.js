@@ -62,19 +62,60 @@ const DragDropUpdateProvider = ({ children }) => {
 
 }
 
+const pageValues = (pageQuestionValues) => {
+
+	let pages = [];
+	
+	if(pageQuestionValues.length) {
+		pages = pageQuestionValues.map((val, i) => {
+			return {
+				label: `Page ${ i + 1 }`,
+				value: i, 
+			}
+		});
+	} else {
+		pages = [{ label: 'Page 1', value: 0 }]
+	}
+
+
+	let pageOptions = pages.concat([{ type: 'divider' }, { label: 'Add New Page', value: 'NEW_PAGE'} ]);
+
+	return pageOptions; 
+}
+
 const DesignProvider = ({ children }) => {
 
     const { form, sObjects, navState, setError } = useContext(BuilderContext);
 
     const [navQuestion, setNavQuestion] = useState(null); 
 
-    const [activeQuestion, setActiveQuestion] = useState({}); 
-
+		const [activeQuestion, setActiveQuestion] = useState({}); 
+		
     const [questionOptions, setQuestionOptions] = useState(new Map()); 
 
     const [recordGroup, setRecordGroup] = useState(new Map()); 
 
     const [pageQuestions, setPageQuestions] = useState(new Map());
+
+		const [pages, setPages] = useState(() => pageValues( Array.from(pageQuestions.values()) ));
+
+		useEffect(() => {
+			
+			setPages(() => pageValues( Array.from(pageQuestions.values()) ));
+
+		}, [pageQuestions]);
+
+		const [activePage, setActivePage] = useState(0);
+
+		const [activePageQuestions, setActivePageQuestions] = useState([]); 
+
+		useEffect(() => {
+
+			if(pageQuestions.has(activePage)) {
+				setActivePageQuestions(pageQuestions.get(activePage));
+			}
+			
+		}, [activePage])
 
     const [addPageUpdate, setAddPageUpdate] = useState(false); 
     
@@ -89,19 +130,29 @@ const DesignProvider = ({ children }) => {
                 pageQuestions.set(pages, []);
         
                 return pageQuestions;
-            });
+						});
+						
+						setPages(pages => {
+							let lastTwo = pages.slice(-2); 
+
+							let realPages = pages.slice(0, pages.length - 2);
+
+							let newPages = realPages.concat([{ label: `Page ${pages.length - 1}`, value: pages.length - 2 }], lastTwo);
+
+							return newPages;
+						})
 
             setAddPageUpdate(false);
 
         }
 
-    }, [addPageUpdate]);
-
+		}, [addPageUpdate]);
+		
     const [questions, setQuestions] = useState([]); 
 
     useEffect(() => {
 
-        call(setError, "ClarityFormBuilder.getQuestions", [form.Id], (result, e) => fetchHandler(result, e, setQuestions, setRecordGroup, setPageQuestions, setQuestionOptions))
+        call(setError, "ClarityFormBuilder.getQuestions", [form.Id], (result, e) => fetchHandler(result, e, setQuestions, setRecordGroup, setPageQuestions, setActivePageQuestions, setQuestionOptions))
 
     }, [])
 
@@ -136,8 +187,8 @@ const DesignProvider = ({ children }) => {
 
             let multiQuestions = Array.from(pageQuestions.values()).reduce((accum, values, key) => {
                 return accum.concat(values); 
-            }, []);
-
+						}, []);
+						
             StatusHandler(
                 form.forms__Status__c,
                 () => setUpdate(false),
@@ -145,7 +196,7 @@ const DesignProvider = ({ children }) => {
 										setError,
                     "ClarityFormBuilder.save", 
                     [JSON.stringify(multiQuestions)], 
-                    (result, e) => resultHandler(result, e, setUpdate, setUpdateMulti, setQuestions, setPageQuestions),
+                    (result, e) => resultHandler(result, e, setUpdate, setUpdateMulti, setQuestions, setPageQuestions, setActivePageQuestions),
                 ),
 								() => setUpdateMulti(false),
 								setError
@@ -154,7 +205,6 @@ const DesignProvider = ({ children }) => {
         }
 
     }, [update]);
-
 
     const [questionUpdate, setQuestionUpdate] = useState(false); 
 
@@ -250,7 +300,13 @@ const DesignProvider = ({ children }) => {
                 questions, 
                 setQuestions,
                 pageQuestions,
-                setPageQuestions }}>
+								setPageQuestions,
+								pages, 
+								setPages, 
+								activePage, 
+								setActivePage,
+								activePageQuestions, 
+								setActivePageQuestions }}>
             { children }
         </DesignContext.Provider>
     )
@@ -262,7 +318,7 @@ const LayoutHolder = styled.div`
 	}
 `;
 
-const resultHandler = (result, e, setUpdate, setAdditionalUpdate, setQuestions, setPageQuestions) => {
+const resultHandler = (result, e, setUpdate, setAdditionalUpdate, setQuestions, setPageQuestions, setActivePageQuestions) => {
 
     setQuestions(questions => {
 
@@ -294,14 +350,31 @@ const resultHandler = (result, e, setUpdate, setAdditionalUpdate, setQuestions, 
 
         }, new Map());
 
-    });
+		});
+		
+		if(setActivePageQuestions != null) {
+			setActivePageQuestions(questions => {
+
+					let updated = questions.map(question => {
+
+							if(!question.Id) {
+									question.Id = result[0]; 
+							} 
+							return question;
+
+					});
+
+					return updated; 
+
+			});
+		}
 
     setUpdate(false);
     setAdditionalUpdate(false);
 
 }
 
-const fetchHandler = (result, e, setQuestions, setRecordGroup, setPageQuestions, setQuestionOptions) => {
+const fetchHandler = (result, e, setQuestions, setRecordGroup, setPageQuestions, setActivePageQuestions, setQuestionOptions) => {
 
     let questionWithOptions = result.filter(q => q.forms__Clarity_Form_Question_Options__r != null);
 
@@ -336,10 +409,12 @@ const fetchHandler = (result, e, setQuestions, setRecordGroup, setPageQuestions,
         return accum.set(question.Id, questions.filter(q => q.forms__Record_Group__c == question.Id))
 
     }, new Map());
-		console.log('recordGroups', recordGroups); 
+
     setQuestions(cleanQuestions);
 
-    setRecordGroup(recordGroups); 
+		setRecordGroup(recordGroups); 
+		
+		setActivePageQuestions(getFirstPageQuestions(cleanQuestions))
 
     setPageQuestions(pageBreaks(cleanQuestions));
 
@@ -419,4 +494,20 @@ const pageBreaks = (questions) => {
         return accum;
 
     }, new Map())
+}
+
+const getFirstPageQuestions = (questions) => {
+
+	let t = questions.reduce((accum, question) => {
+
+		if(question.forms__Page__c == 0) {
+			accum = accum.concat([question]);
+		}
+		
+		return accum; 
+
+	}, []);
+
+	return t;
+
 }

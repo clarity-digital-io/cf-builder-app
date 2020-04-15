@@ -57,7 +57,8 @@ const mockCall = (setError, func, params, callback, status) => {
                 forms__Limit__c: 10, 
                 forms__End_Date__c: '2019-12-31',
                 forms__Connected_Object__c: 'Account',
-                forms__Status__c: 'Published'
+								forms__Status__c: 'Draft',
+								forms__Multi_Page__c: false
             }); 
             break;
         case 'updateForm':

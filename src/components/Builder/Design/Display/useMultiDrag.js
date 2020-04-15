@@ -10,13 +10,13 @@ export const useMultiDrag = () => {
 
     const { form } = useContext(BuilderContext); 
 
-    const { setDeletePage, setUpdateMulti, setUpdate, pageQuestions, setPageQuestions, addPageUpdate } = useContext(DesignContext); 
+    const { setDeletePage, setUpdateMulti, setUpdate, pageQuestions, pages, activePage, setActivePage, activePageQuestions, setActivePageQuestions, setPageQuestions, setAddPageUpdate, addPageUpdate } = useContext(DesignContext); 
 
     useEffect(() => {
 
         pageQuestions.forEach((values, key) => {
 
-            addEvent('' + key, (result) => onDragEndMulti(setPageQuestions, result));
+            addEvent('' + key, (result) => onDragEndMulti(setPageQuestions,  result));
 
         });
 
@@ -25,6 +25,7 @@ export const useMultiDrag = () => {
     const onDragEndMulti = (setPageQuestions, result) => {
 
         const { source, destination } = result;
+				console.log(source, destination )
 
         if (!destination || destination.droppableId == 'new' ) {
             return;
@@ -32,31 +33,23 @@ export const useMultiDrag = () => {
 
         let destinationDropId = parseInt(destination.droppableId); 
 
-        if (source.droppableId === destination.droppableId) {
-        
-            setPageQuestions(pQ => {
+				if (source.droppableId === destination.droppableId) {
+        		
+						setActivePageQuestions(activeQuestions => {
+							
+							const items = reorder(
+									activeQuestions,
+									source.index,
+									destination.index
+							); 
 
-                if(pQ.has(destinationDropId)) {
+							return items;
 
-                    let values = pQ.get(destinationDropId);
-
-                    const items = reorder(
-                        values,
-                        source.index,
-                        destination.index
-                    );
-
-                    pQ.set(destinationDropId, items); 
- 
-                }
-
-                return pQ;
-
-            });
+						});
 
 
         } else if (source.droppableId != 'new') {
-
+						console.log('what the')
             let sourceDropId = parseInt(source.droppableId);
             let sourceIndex = source.index;
 
@@ -88,28 +81,20 @@ export const useMultiDrag = () => {
 
         } else {
 
-            setPageQuestions(pQ => {
-                
-                if(pQ.has(destinationDropId)) {
+						setActivePageQuestions(activeQuestions => {
 
-                    let values = pQ.get(destinationDropId);
+							const items = move(
+									sortedTypes,
+									activeQuestions,
+									source,
+									destination, 
+									form.Id,
+									destinationDropId
+							);  
 
-                    const items = move(
-                        sortedTypes,
-                        values,
-                        source,
-                        destination, 
-                        form.Id,
-                        destinationDropId
-                    );  
+							return items;
 
-                    pQ.set(destinationDropId, items); 
-
-                }
-
-                return pQ;
-
-            });
+						});
 
         }
 
@@ -128,9 +113,9 @@ export const useMultiDrag = () => {
             removeEvent('' + key);
         });
 
-    }, [pageQuestions])
+		}, [pageQuestions])
 
-    return { pageQuestions, setDeletePage };
+    return { pageQuestions, pages, activePage, setActivePage, activePageQuestions, setDeletePage, setAddPageUpdate };
 }
 
 const reorder = (list, startIndex, endIndex) => {

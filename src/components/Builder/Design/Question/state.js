@@ -72,7 +72,8 @@ const Save = ({ children }) => {
         setActiveQuestion,
         setQuestionOptions,
         setQuestions, 
-        setPageQuestions,
+				setPageQuestions,
+				setActivePageQuestions,
         setRecordGroup
     } = useContext(DesignContext);
 
@@ -86,7 +87,7 @@ const Save = ({ children }) => {
 										setError,
                     "ClarityFormBuilder.saveQuestion", 
                     [JSON.stringify(activeQuestion)], 
-                    (result, e) => resultHandler(result, e, setQuestionUpdate, setQuestions, setPageQuestions, activeQuestion),
+                    (result, e) => resultHandler(result, e, setQuestionUpdate, setQuestions, setPageQuestions, setActivePageQuestions, activeQuestion),
 								),
 								null,
 								setError
@@ -190,7 +191,6 @@ const Save = ({ children }) => {
 
     const edit = (questionId) => {
 				setActiveQuestion(questions.find(question => question.Id == questionId));
-				console.log('activeRecordGroup', activeRecordGroup)
         setQuestionState('SF');
     }
 
@@ -202,14 +202,14 @@ const Save = ({ children }) => {
 
                     {
                         activeQuestion.forms__Record_Group__c != null ? 
-                            <Button neutral onClick={() => edit(activeQuestion.forms__Record_Group__c)}>Back</Button> : 
+                            <Button onClick={() => edit(activeQuestion.forms__Record_Group__c)}>Back</Button> : 
                             null
                     }
 
                     {
                         questionState != 'SF' ? 
-                            <Button neutral onClick={() => setQuestionState('NEW')} variant="success">Add New Field</Button> : 
-                            <Button neutral onClick={() => setQuestionState('EDIT')}>Back</Button>
+                            <Button onClick={() => setQuestionState('NEW')} variant="neutral">Add New Field</Button> : 
+                            <Button onClick={() => setQuestionState('EDIT')}>Back</Button>
                     }
 
                     <Button cta onClick={() => setQuestionUpdate(true)} variant="brand">
@@ -232,7 +232,7 @@ const Save = ({ children }) => {
     ]
 }
 
-const resultHandler = (result, e, setQuestionUpdate, setQuestions, setPageQuestions, activeQuestion) => {
+const resultHandler = (result, e, setQuestionUpdate, setQuestions, setPageQuestions, setActivePageQuestions, activeQuestion) => {
 
     setQuestions(questions => {
 
@@ -246,7 +246,6 @@ const resultHandler = (result, e, setQuestionUpdate, setQuestions, setPageQuesti
         })
 
     });
-
 
     setPageQuestions(pQ => {
 
@@ -264,7 +263,20 @@ const resultHandler = (result, e, setQuestionUpdate, setQuestions, setPageQuesti
 
         }, new Map());
 
-    });
+		});
+		
+		setActivePageQuestions(questions => {
+
+			return questions.map(question => {
+					if(question.Id == result) {
+							return activeQuestion; 
+					}
+
+					return question; 
+
+			})
+
+		});
 
 
     setQuestionUpdate(false);
@@ -344,7 +356,7 @@ const resultCriteriaHandler = (result, e, setQuestionUpdate, setQuestions, setCr
 }
 
 const resultRecordGroupFieldsHandler = (result, e, setQuestionUpdate, setRecordGroup, setActiveRecordGroup, activeQuestion) => {
-		console.log('resultRecordGroupFieldsHandler', result); 
+
     setActiveRecordGroup(result);
 
     setRecordGroup(group => {

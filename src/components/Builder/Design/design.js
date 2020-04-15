@@ -47,7 +47,7 @@ const Design = () => {
 			<View full main>
         <View key={'QuestionState'} scroll edit>
             <Box padding='0'>
-                
+
                 { getNavState(navState) }
 
             </Box> 
