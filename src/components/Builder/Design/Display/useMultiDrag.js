@@ -20,21 +20,13 @@ export const useMultiDrag = () => {
 			setActivePage, 
 			activePageQuestions, 
 			setActivePageQuestions, 
-			setPageQuestions, 
 			setAddPageUpdate, 
 			addPageUpdate 
 		} = useContext(DesignContext); 
 
     useEffect(() => {
-				console.log('drag mult', activePage)
-        // pageQuestions.forEach((values, key) => {
-
-        //     addEvent('' + key, (result) => onDragEndMulti(setActivePageQuestions,  result));
-
-				// });
 				
 				addEvent('multi_' + activePage, (result) => onDragEndMulti(setActivePageQuestions, result));
-
 
 		}, [activePage]);
 		
@@ -92,14 +84,6 @@ export const useMultiDrag = () => {
     }
 
     useEffect(() => {
-
-        // pageQuestions.forEach((values, key) => {
-        //     addEvent('' + key, (result) => onDragEndMulti(setPageQuestions, result));
-        // });
-
-        // return () => pageQuestions.forEach((values, key) => {
-        //     removeEvent('' + key);
-				// });
 				
 				addEvent('multi_' + activePage, (result) => onDragEndMulti(setActivePageQuestions, result));
 

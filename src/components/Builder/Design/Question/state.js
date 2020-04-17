@@ -72,7 +72,6 @@ const Save = ({ children }) => {
         setActiveQuestion,
         setQuestionOptions,
         setQuestions, 
-				setPageQuestions,
 				setActivePageQuestions,
         setRecordGroup
     } = useContext(DesignContext);
@@ -87,7 +86,7 @@ const Save = ({ children }) => {
 										setError,
                     "ClarityFormBuilder.saveQuestion", 
                     [JSON.stringify(activeQuestion)], 
-                    (result, e) => resultHandler(result, e, setQuestionUpdate, setQuestions, setPageQuestions, setActivePageQuestions, activeQuestion),
+                    (result, e) => resultHandler(result, e, setQuestionUpdate, setQuestions, setActivePageQuestions, activeQuestion),
 								),
 								null,
 								setError
@@ -102,7 +101,7 @@ const Save = ({ children }) => {
 										setError,
                     "ClarityFormBuilder.saveQuestionWithOptions", 
                     [JSON.stringify(activeQuestion), JSON.stringify(activeQuestionOptions)], 
-                    (result, e) => resultOptionHandler(result, e, setQuestionUpdate, setQuestions, setPageQuestions, activeQuestion, setActiveQuestionOptions, setQuestionOptions),
+                    (result, e) => resultOptionHandler(result, e, setQuestionUpdate, setQuestions, activeQuestion, setActiveQuestionOptions, setQuestionOptions),
 								),
 								null,
 								setError
@@ -140,7 +139,7 @@ const Save = ({ children }) => {
 										setError,
                     "ClarityFormBuilder.saveQuestionWithPictureOptions", 
                     [JSON.stringify(activeQuestion), JSON.stringify(updatedOptions), JSON.stringify(activeQuestionOptionImages)], 
-                    (result, e) => resultOptionHandler(result, e, setQuestionUpdate, setQuestions, setPageQuestions, activeQuestion, setActiveQuestionOptions, setQuestionOptions),
+                    (result, e) => resultOptionHandler(result, e, setQuestionUpdate, setQuestions, activeQuestion, setActiveQuestionOptions, setQuestionOptions),
 								),
 								null,
 								setError
@@ -230,7 +229,7 @@ const Save = ({ children }) => {
     ]
 }
 
-const resultHandler = (result, e, setQuestionUpdate, setQuestions, setPageQuestions, setActivePageQuestions, activeQuestion) => {
+const resultHandler = (result, e, setQuestionUpdate, setQuestions, setActivePageQuestions, activeQuestion) => {
 
     setQuestions(questions => {
 
@@ -244,24 +243,6 @@ const resultHandler = (result, e, setQuestionUpdate, setQuestions, setPageQuesti
         })
 
     });
-
-    setPageQuestions(pQ => {
-
-        return Array.from(pQ.values()).reduce((accum, values, key) => {
-
-            
-            return accum.set(key, values.map((value, i) => {
-
-                if(value.Id == result) {
-                    return activeQuestion;
-                } 
-                return value;
-
-            }));
-
-        }, new Map());
-
-		});
 		
 		setActivePageQuestions(questions => {
 
@@ -281,7 +262,7 @@ const resultHandler = (result, e, setQuestionUpdate, setQuestions, setPageQuesti
 
 }
 
-const resultOptionHandler = (result, e, setQuestionUpdate, setQuestions, setPageQuestions, activeQuestion, setActiveQuestionOptions, setQuestionOptions) => {
+const resultOptionHandler = (result, e, setQuestionUpdate, setQuestions, activeQuestion, setActiveQuestionOptions, setQuestionOptions) => {
     
     let options = result.Options;
     let resultQuestion = result.Question[0];
@@ -306,23 +287,6 @@ const resultOptionHandler = (result, e, setQuestionUpdate, setQuestions, setPage
         return questionOptions; 
 
     })
-
-    setPageQuestions(pQ => {
-
-        return Array.from(pQ.values()).reduce((accum, values, key) => {
-
-            return accum.set(key, values.map((value, i) => {
-
-                if(value.Id == resultQuestion.Id) {
-                    return activeQuestion;
-                } 
-                return value;
-
-            }));
-
-        }, new Map());
-
-    });
 
     setActiveQuestionOptions(options);    
 

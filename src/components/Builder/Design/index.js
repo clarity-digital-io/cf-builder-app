@@ -62,12 +62,12 @@ const DragDropUpdateProvider = ({ children }) => {
 
 }
 
-const pageValues = (pageQuestionValues) => {
+const pageValues = (info) => {
 
 	let pages = [];
 	
-	if(pageQuestionValues.length) {
-		pages = pageQuestionValues.map((val, i) => {
+	if(info.length) {
+		pages = info.map((val, i) => {
 			return {
 				label: `Page ${ i + 1 }`,
 				value: i, 
@@ -92,27 +92,31 @@ const DesignProvider = ({ children }) => {
 
     const [recordGroup, setRecordGroup] = useState(new Map()); 
 
-    const [pageQuestions, setPageQuestions] = useState(new Map());
-
-		const [pages, setPages] = useState(() => pageValues( Array.from(pageQuestions.values()) ));
-
-		useEffect(() => {
-			
-			setPages(() => pageValues( Array.from(pageQuestions.values()) ));
-
-		}, [pageQuestions]);
+		const [pages, setPages] = useState(() => pageValues(form.forms__Multi_Page_Info__c));
 
 		const [activePage, setActivePage] = useState(0);
 
 		const [activePageQuestions, setActivePageQuestions] = useState([]); 
 
-		useEffect(() => {
+		const [pageQuestions, setPageQuestions] = useState(new Map());
 
-			if(pageQuestions.has(activePage)) {
-				setActivePageQuestions(pageQuestions.get(activePage));
-			}
+	// 	useEffect(() => {
+
+	// 			setActivePageQuestions(questions);
 			
-		}, [activePage])
+	// 	}, [activePage]);
+
+  //   const [pageQuestions, setPageQuestions] = useState(new Map());
+
+
+
+
+
+
+
+
+
+
 
     const [addPageUpdate, setAddPageUpdate] = useState(false); 
     
@@ -133,7 +137,7 @@ const DesignProvider = ({ children }) => {
 									setError,
 									"ClarityFormBuilder.updateForm", 
 									[JSON.stringify(form)], 
-									(result, e) => addPageHandler(result, e, setForm, setPageQuestions, setPages, setAddPageUpdate, setActivePageQuestions, () => setActivePage(newPageInfo.length - 1)),
+									(result, e) => addPageHandler(result, e, setForm, setPages, setAddPageUpdate, setActivePageQuestions, () => setActivePage(newPageInfo.length - 1)),
 							),
 							null,
 							setError
@@ -179,11 +183,10 @@ const DesignProvider = ({ children }) => {
         }
 
         if(update && updateMulti) {
-						console.log('pageQuestions', pageQuestions);
 
-            let multiQuestions = Array.from(pageQuestions.values()).reduce((accum, values, key) => {
-                return accum.concat(values); 
-						}, []);
+            // let multiQuestions = Array.from(pageQuestions.values()).reduce((accum, values, key) => {
+            //     return accum.concat(values); 
+						// }, []);
 						
             StatusHandler(
                 form.forms__Status__c,
@@ -191,7 +194,7 @@ const DesignProvider = ({ children }) => {
                 () => call(
 										setError,
                     "ClarityFormBuilder.save", 
-                    [JSON.stringify(multiQuestions)], 
+                    [JSON.stringify(activePageQuestions)], 
                     (result, e) => resultHandler(result, e, setUpdate, setUpdateMulti, setQuestions, setPageQuestions, setActivePageQuestions),
                 ),
 								() => setUpdateMulti(false),
@@ -295,8 +298,6 @@ const DesignProvider = ({ children }) => {
                 setUpdate, 
                 questions, 
                 setQuestions,
-                pageQuestions,
-								setPageQuestions,
 								pages, 
 								setPages, 
 								activePage, 
@@ -314,24 +315,14 @@ const LayoutHolder = styled.div`
 	}
 `;
 
-const addPageHandler = (result, e, setForm, setPageQuestions, setPages, setAddPageUpdate, setActivePageQuestions, setActivePageCallBack) => {
-
+const addPageHandler = (result, e, setForm, setPages, setAddPageUpdate, setActivePageQuestions, setActivePageCallBack) => {
+	console.log('result', result);
 	setForm(form => {
 		return { 
 				...form, 
 				Id: result.Id, 
 				forms__Multi_Page_Info__c:  result.forms__Multi_Page_Info__c != null ? JSON.parse(result.forms__Multi_Page_Info__c) : []
 		}
-	});
-
-	setPageQuestions(pageQuestions => {
-
-		let page = pageQuestions.size;
-		
-		pageQuestions.set(page, []);
-
-		return pageQuestions;
-
 	});
 
 	setPages(pages => {
@@ -351,57 +342,57 @@ const addPageHandler = (result, e, setForm, setPageQuestions, setPages, setAddPa
 
 const resultHandler = (result, e, setUpdate, setAdditionalUpdate, setQuestions, setPageQuestions, setActivePageQuestions) => {
 
-    setQuestions(questions => {
+	setQuestions(questions => {
 
-        let updated = questions.map(question => {
+			let updated = questions.map(question => {
 
-            if(!question.Id) {
-                question.Id = result[0]; 
-            } 
-            return question;
-
-        });
-
-        return updated; 
-
-    });
-
-    setPageQuestions(pageQuestions => {
-
-        return Array.from(pageQuestions.values()).reduce((accum, values, key) => {
-
-            return accum.set(key, (values.map((value, i) => {
-
-                if(!value.Id) {
-                    value.Id = result[0]; 
-                } 
-                return value;
-
-            })));
-
-        }, new Map());
-
-		});
-		
-		if(setActivePageQuestions != null) {
-			setActivePageQuestions(questions => {
-
-					let updated = questions.map(question => {
-
-							if(!question.Id) {
-									question.Id = result[0]; 
-							} 
-							return question;
-
-					});
-
-					return updated; 
+					if(!question.Id) {
+							question.Id = result[0]; 
+					} 
+					return question;
 
 			});
-		}
 
-    setUpdate(false);
-    setAdditionalUpdate(false);
+			return updated; 
+
+	});
+		
+	setPageQuestions(pageQuestions => {
+
+			return Array.from(pageQuestions.values()).reduce((accum, values, key) => {
+
+					return accum.set(key, (values.map((value, i) => {
+
+							if(!value.Id) {
+									value.Id = result[0]; 
+							} 
+							return value;
+
+					})));
+
+			}, new Map());
+
+	});
+	
+	if(setActivePageQuestions != null) {
+		setActivePageQuestions(questions => {
+
+				let updated = questions.map(question => {
+
+						if(!question.Id) {
+								question.Id = result[0]; 
+						} 
+						return question;
+
+				});
+
+				return updated; 
+
+		});
+	}
+
+	setUpdate(false);
+	setAdditionalUpdate(false);
 
 }
 
@@ -444,10 +435,11 @@ const fetchHandler = (result, e, setQuestions, setRecordGroup, setPageQuestions,
     setQuestions(cleanQuestions);
 
 		setRecordGroup(recordGroups); 
+
+		//need to set active page questions here
+		setPageQuestions(pageBreaks(cleanQuestions));
 		
 		setActivePageQuestions(getFirstPageQuestions(cleanQuestions))
-
-    setPageQuestions(pageBreaks(cleanQuestions));
 
 }
 
@@ -469,10 +461,28 @@ const deleteResultHandler = (result, e, setQuestions, setPageQuestions, setRecor
 
     setRecordGroup(recordGroups); 
 
+		//need to set active page questions here
     setPageQuestions(pageBreaks(cleanQuestions));
 
     setUpdate(false);
 
+}
+
+const pageBreaks = (questions) => {
+
+	return questions.reduce((accum, question) => {
+
+			if(accum.has(question.forms__Page__c)) {
+					let pageQuestions = accum.get(question.forms__Page__c); 
+					let updatedPageQuestions = pageQuestions.concat([question]);
+					accum.set(question.forms__Page__c, updatedPageQuestions)
+			} else {
+					accum.set(question.forms__Page__c, [question]);
+			}
+
+			return accum;
+
+	}, new Map())
 }
 
 const sorted = (questions) => {
@@ -508,23 +518,6 @@ const sortDelete = (result) => {
 
     return s; 
 
-}
-
-const pageBreaks = (questions) => {
-
-    return questions.reduce((accum, question) => {
-
-        if(accum.has(question.forms__Page__c)) {
-            let pageQuestions = accum.get(question.forms__Page__c); 
-            let updatedPageQuestions = pageQuestions.concat([question]);
-            accum.set(question.forms__Page__c, updatedPageQuestions)
-        } else {
-            accum.set(question.forms__Page__c, [question]);
-        }
-
-        return accum;
-
-    }, new Map())
 }
 
 const getFirstPageQuestions = (questions) => {

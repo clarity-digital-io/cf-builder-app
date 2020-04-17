@@ -177,7 +177,7 @@ export const EditPageState = () => {
 }
 
 const resultHandler = (result, e, setForm, setUpdate) => {
-    
+		console.log('forms__Multi_Page_Info__c', result); 
     setUpdate(false);
     
     setForm(form => {
