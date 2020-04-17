@@ -77,15 +77,12 @@ const pageValues = (pageQuestionValues) => {
 		pages = [{ label: 'Page 1', value: 0 }]
 	}
 
-
-	let pageOptions = pages.concat([{ type: 'divider' }, { label: 'Add New Page', value: 'NEW_PAGE'} ]);
-
-	return pageOptions; 
+	return pages; 
 }
 
 const DesignProvider = ({ children }) => {
 
-    const { form, sObjects, navState, setError } = useContext(BuilderContext);
+    const { form, setForm, sObjects, setError } = useContext(BuilderContext);
 
     const [navQuestion, setNavQuestion] = useState(null); 
 
@@ -123,27 +120,25 @@ const DesignProvider = ({ children }) => {
 
         if(addPageUpdate) {
 
-            setPageQuestions(pageQuestions => {
+					let currentPageInfo = form.forms__Multi_Page_Info__c;
+					
+					let newPageInfo = currentPageInfo.concat([{ page : currentPageInfo.length, title: `Page ${currentPageInfo.length + 1}`, icon: "standard:announcement" }]);
 
-                let pages = pageQuestions.size;
-                
-                pageQuestions.set(pages, []);
-        
-                return pageQuestions;
-						});
-						
-						setPages(pages => {
-							let lastTwo = pages.slice(-2); 
-
-							let realPages = pages.slice(0, pages.length - 2);
-
-							let newPages = realPages.concat([{ label: `Page ${pages.length - 1}`, value: pages.length - 2 }], lastTwo);
-
-							return newPages;
-						})
-
-            setAddPageUpdate(false);
-
+					form.forms__Multi_Page_Info__c = JSON.stringify(newPageInfo);
+					console.log('currentPageInfo.length', newPageInfo, form, currentPageInfo);
+					StatusHandler(
+							form.forms__Status__c,
+							() => setUpdate(false),
+							() => call(
+									setError,
+									"ClarityFormBuilder.updateForm", 
+									[JSON.stringify(form)], 
+									(result, e) => addPageHandler(result, e, setForm, setPageQuestions, setPages, setAddPageUpdate, setActivePageQuestions, () => setActivePage(newPageInfo.length - 1)),
+							),
+							null,
+							setError
+					)
+					
         }
 
 		}, [addPageUpdate]);
@@ -167,7 +162,7 @@ const DesignProvider = ({ children }) => {
     useEffect(() => {
 
         if(update && updateSingle) {
-
+						console.log('questions', questions);
             StatusHandler(
                 form.forms__Status__c,
                 () => setUpdate(false),
@@ -184,6 +179,7 @@ const DesignProvider = ({ children }) => {
         }
 
         if(update && updateMulti) {
+						console.log('pageQuestions', pageQuestions);
 
             let multiQuestions = Array.from(pageQuestions.values()).reduce((accum, values, key) => {
                 return accum.concat(values); 
@@ -317,6 +313,41 @@ const LayoutHolder = styled.div`
 		max-height: 98px; 
 	}
 `;
+
+const addPageHandler = (result, e, setForm, setPageQuestions, setPages, setAddPageUpdate, setActivePageQuestions, setActivePageCallBack) => {
+
+	setForm(form => {
+		return { 
+				...form, 
+				Id: result.Id, 
+				forms__Multi_Page_Info__c:  result.forms__Multi_Page_Info__c != null ? JSON.parse(result.forms__Multi_Page_Info__c) : []
+		}
+	});
+
+	setPageQuestions(pageQuestions => {
+
+		let page = pageQuestions.size;
+		
+		pageQuestions.set(page, []);
+
+		return pageQuestions;
+
+	});
+
+	setPages(pages => {
+
+		let newPages = pages.concat([{ label: `Page ${pages.length + 1}`, value: pages.length }]);
+
+		return newPages;
+	})
+
+	setActivePageQuestions([]);
+
+	setAddPageUpdate(false);
+
+	setActivePageCallBack()
+
+}
 
 const resultHandler = (result, e, setUpdate, setAdditionalUpdate, setQuestions, setPageQuestions, setActivePageQuestions) => {
 

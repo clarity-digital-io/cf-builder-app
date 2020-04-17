@@ -10,28 +10,47 @@ export const useMultiDrag = () => {
 
     const { form } = useContext(BuilderContext); 
 
-    const { setDeletePage, setUpdateMulti, setUpdate, pageQuestions, pages, activePage, setActivePage, activePageQuestions, setActivePageQuestions, setPageQuestions, setAddPageUpdate, addPageUpdate } = useContext(DesignContext); 
+		const { 
+			setDeletePage, 
+			setUpdateMulti, 
+			setUpdate, 
+			pageQuestions, 
+			pages, 
+			activePage, 
+			setActivePage, 
+			activePageQuestions, 
+			setActivePageQuestions, 
+			setPageQuestions, 
+			setAddPageUpdate, 
+			addPageUpdate 
+		} = useContext(DesignContext); 
 
     useEffect(() => {
+				console.log('drag mult', activePage)
+        // pageQuestions.forEach((values, key) => {
 
-        pageQuestions.forEach((values, key) => {
+        //     addEvent('' + key, (result) => onDragEndMulti(setActivePageQuestions,  result));
 
-            addEvent('' + key, (result) => onDragEndMulti(setPageQuestions,  result));
+				// });
+				
+				addEvent('multi_' + activePage, (result) => onDragEndMulti(setActivePageQuestions, result));
 
-        });
 
-    }, [addPageUpdate]);
-
-    const onDragEndMulti = (setPageQuestions, result) => {
+		}, [activePage]);
+		
+		console.log('usemulti');
+    const onDragEndMulti = (setActivePageQuestions, result) => {
 
         const { source, destination } = result;
 				console.log(source, destination )
 
         if (!destination || destination.droppableId == 'new' ) {
             return;
-        }
+				}
+				
+				let splitDestinationId = destination.droppableId.split('_');
 
-        let destinationDropId = parseInt(destination.droppableId); 
+        let destinationDropId = parseInt(splitDestinationId[1]); 
 
 				if (source.droppableId === destination.droppableId) {
         		
@@ -48,37 +67,6 @@ export const useMultiDrag = () => {
 						});
 
 
-        } else if (source.droppableId != 'new') {
-						console.log('what the')
-            let sourceDropId = parseInt(source.droppableId);
-            let sourceIndex = source.index;
-
-            setPageQuestions(pQ => {
-
-                if(pQ.has(sourceDropId) && pQ.has(destinationDropId)) {
-
-                    let sourceValues = pQ.get(sourceDropId);
-
-                    let detinationValues = pQ.get(destinationDropId);
-
-                    let questionMoved = sourceValues.find((val, i) => sourceIndex == i);
-
-                    questionMoved.forms__Page__c = destinationDropId;
-
-                    let sourceNewQuestions = sourceValues.filter((val, i) => sourceIndex != i);
-
-                    pQ.set(sourceDropId, sourceNewQuestions);
-
-                    detinationValues.splice(destination.index, 0, questionMoved);
-
-                    pQ.set(destinationDropId, detinationValues);
-
-                }
-                
-                return pQ; 
-
-            })
-
         } else {
 
 						setActivePageQuestions(activeQuestions => {
@@ -91,7 +79,7 @@ export const useMultiDrag = () => {
 									form.Id,
 									destinationDropId
 							);  
-
+								console.log('move', items, destinationDropId)
 							return items;
 
 						});
@@ -105,15 +93,19 @@ export const useMultiDrag = () => {
 
     useEffect(() => {
 
-        pageQuestions.forEach((values, key) => {
-            addEvent('' + key, (result) => onDragEndMulti(setPageQuestions, result));
-        });
+        // pageQuestions.forEach((values, key) => {
+        //     addEvent('' + key, (result) => onDragEndMulti(setPageQuestions, result));
+        // });
 
-        return () => pageQuestions.forEach((values, key) => {
-            removeEvent('' + key);
-        });
+        // return () => pageQuestions.forEach((values, key) => {
+        //     removeEvent('' + key);
+				// });
+				
+				addEvent('multi_' + activePage, (result) => onDragEndMulti(setActivePageQuestions, result));
 
-		}, [pageQuestions])
+				return () => removeEvent('multi_' + activePage);
+
+		}, [activePageQuestions])
 
     return { pageQuestions, pages, activePage, setActivePage, activePageQuestions, setDeletePage, setAddPageUpdate };
 }

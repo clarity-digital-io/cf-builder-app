@@ -15,6 +15,7 @@ import { PictureChoices } from './picturechoices';
 import { FreeText } from './freetext'; 
 import { Spinner } from '../../../../Elements/Spinner';
 
+import Box from '../../../../Elements/Box';
 import View from '../../../../Elements/View';
 import ViewStyle from '../../../../Elements/View/style';
 
@@ -93,6 +94,8 @@ export const EditQuestion = () => {
 		return (			
 			<View className="row middle-xs">
 				<View className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+				<Box padding='0'>
 					<ViewStyle space border>
 
 					<h1>Settings</h1>
@@ -130,6 +133,8 @@ export const EditQuestion = () => {
 							null	
 					}
 					</ViewStyle>
+
+					</Box>
 
 				</View>
 			</View>					

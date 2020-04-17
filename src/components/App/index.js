@@ -53,7 +53,7 @@ const BuilderProvider = ({ children }) => {
 
     const [connections, setConnections] = useState([]);
 
-    const [form, setForm] = useState({Id: null, Name: '', forms__Connected_Object__c: '', forms__Status__c: '' });
+    const [form, setForm] = useState({Id: null, Name: '', forms__Connected_Object__c: '', forms__Status__c: '', forms__Multi_Page__c: '', forms__Multi_Page_Info__c: '' });
 
     useEffect(() => {
 
@@ -136,7 +136,8 @@ const createHandler = (result, e, setForm) => {
             forms__Limit__c: result.forms__Limit__c, 
             forms__Connected_Object__c: result.forms__Connected_Object__c, 
 						forms__Status__c: result.forms__Status__c,
-						forms__Multi_Page__c: true
+						forms__Multi_Page__c: result.forms__Multi_Page__c,
+						forms__Multi_Page_Info__c:  result.forms__Multi_Page_Info__c != null ? JSON.parse(result.forms__Multi_Page_Info__c) : []
         }
     });
 

@@ -15,7 +15,7 @@ export const useDrag = () => {
     const onDragEnd = (setQuestions, result) => {
 
         const { source, destination } = result;
-
+				console.log('drag')
         if (!destination || destination.droppableId == 'new' ) {
             return;
         }

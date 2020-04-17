@@ -40,7 +40,7 @@ export const Question = ({ question }) => {
 
             <Options active={ question.Id != null && (question.Id == activeQuestion.Id) }>
 							<div>
-									<li onClick={() => edit('EDIT')}><Icon label="Edit" type="edit" background="#16325c" /></li>
+									<li onClick={() => edit('EDIT')}><Icon label="Edit" type="edit" background="#1589ee" /></li>
 
 									<li onClick={() => edit('LOGIC')} ><Icon label="Logic" type="hierarchy" background="#16325c" /></li>
 

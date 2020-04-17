@@ -19,7 +19,11 @@ export const Display = () => {
 			previewMode.active ? 
         <PreviewFormDesign style={background} key={'Display'}>
 
-					<Single form={form} />
+					{
+						form.forms__Multi_Page__c ? 
+						<Multi form={form} /> :
+						<Single form={form} />
+					}
 
 				</PreviewFormDesign> :
 				<FormDesign key={'Display'}>

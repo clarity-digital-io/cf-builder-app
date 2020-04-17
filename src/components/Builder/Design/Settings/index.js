@@ -6,32 +6,35 @@ import ViewStyle from '../../../Elements/View/style';
 import Box from '../../../Elements/Box';
 import {Button} from '../../../Elements/Button';
 
-import { BuilderContext } from '../../../Context';
+import { BuilderContext, DesignContext } from '../../../Context';
 import { StatusHandler } from '../../../Elements/Notification';
 
 import { Input as SalesforceInput, Checkbox} from '@salesforce/design-system-react';
 
 export const SettingsState = () => {
 
-    const { form, setForm, setError } = useContext(BuilderContext);
-
+		const { form, setForm, setError } = useContext(BuilderContext);
+	
     const [update, setUpdate] = useState(false);
 
     useEffect(() => {
 
         if(update) {
-            StatusHandler(
-                form.forms__Status__c,
-                () => setUpdate(false),
-                () => call(
-										setError,
-                    "ClarityFormBuilder.updateForm", 
-                    [JSON.stringify(form)], 
-                    (result, e) => resultHandler(result, e, setForm, setUpdate),
-								),
-								null,
-								setError
-            )
+
+					form.forms__Multi_Page_Info__c = form.forms__Multi_Page_Info__c != null ? JSON.stringify(form.forms__Multi_Page_Info__c) : '';
+
+					StatusHandler(
+							form.forms__Status__c,
+							() => setUpdate(false),
+							() => call(
+									setError,
+									"ClarityFormBuilder.updateForm", 
+									[JSON.stringify(form)], 
+									(result, e) => resultHandler(result, e, setForm, setUpdate),
+							),
+							null,
+							setError
+					)
         }
         
     }, [update]);
@@ -70,17 +73,18 @@ export const SettingsState = () => {
 		}
 			
     return [
-				<View footer className="row middle-xs end-xs" key={'Header'}>
+				<View borderRight className="row middle-xs end-xs" key={'Header'}>
 					<View className="col-xs-12">
-							<ViewStyle middle>
+							<ViewStyle border>
 									<Button cta onClick={() => setUpdate(true)}>
 											{ update ? 'Saving...' : 'Save Changes' }
 									</Button>
 							</ViewStyle>
 					</View>
-			</View>,
-        <View silver body className="row" key={'Body'}>
-            <View className="col-xs-12">
+				</View>,
+        <View borderRight body  key={'Body'}>
+
+
                 <Box padding='0'>
 
                     <ViewStyle space border>
@@ -186,17 +190,31 @@ export const SettingsState = () => {
                     </ViewStyle>
 
                 </Box>
-            </View>
+
         </View>
     ]
 }
 
 const resultHandler = (result, e, setForm, setUpdate) => {
     
-    setUpdate(false);
+		setUpdate(false);
+		
+		let multiPageInfo = []; 
+		if(result.forms__Multi_Page__c) {
+			multiPageInfo = JSON.parse(result.forms__Multi_Page_Info__c);
+			if(multiPageInfo.length == 0) {
+				multiPageInfo = [{ page: 0, title: 'Page 1', icon: '' }];
+			}
+		}
     
     setForm(form => {
-        return { ...form, Name: result.Name, forms__Limit__c: result.forms__Limit__c }
-    }); 
-
+        return { 
+					...form, 
+					Name: result.Name, 
+					forms__Limit__c: result.forms__Limit__c,
+					forms__Multi_Page__c: result.forms__Multi_Page__c,
+					forms__Multi_Page_Info__c: multiPageInfo
+				}
+		}); 
+			
 }

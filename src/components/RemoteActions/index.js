@@ -58,13 +58,18 @@ const mockCall = (setError, func, params, callback, status) => {
                 forms__End_Date__c: '2019-12-31',
                 forms__Connected_Object__c: 'Account',
 								forms__Status__c: 'Draft',
-								forms__Multi_Page__c: false
+								forms__Multi_Page__c: false,
+								forms__Multi_Page_Info__c: '[]',
+								forms__Multi_Page_Val__c: true
             }); 
             break;
         case 'updateForm':
-            callback({ Id: 1, Name: 'Clarity Form Title', forms__End_Date__c: '2019-12-31', forms__Limit__c: 1000 })
-            break;
-        case 'getQuestions':
+            callback({ Id: 1, Name: 'Clarity Form Title', forms__End_Date__c: '2019-12-31', forms__Limit__c: 1000, forms__Multi_Page__c: true, forms__Multi_Page_Info__c: '[]' })
+						break;
+				case 'getQuestions':
+						callback([]);
+						break; 
+        case 'getQuestions1':
             callback([
 								{ Id: 'CF-8.1', forms__Logic__c: 'AND', forms__Type__c: 'PictureChoice', forms__Title__c: 'Which of these describe your current emotion?', forms__Order__c: 0, forms__Max_Length__c: 10, forms__Min_Range__c: 0, forms__Max_Range__c: 100, forms__Step__c: 10, forms__Page__c: 0 , 
 									forms__Clarity_Form_Question_Options__r: [

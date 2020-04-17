@@ -68,7 +68,7 @@ export const PreFillState = () => {
     }
 
     return [
-        <ViewStyle>
+        <View>
             <View border className="row center-xs middle-xs">
                 <View className="col-xs-5">
                     <Box padding='0em'>
@@ -134,7 +134,7 @@ export const PreFillState = () => {
                 </View>
             </View>
 
-        </ViewStyle> 
+        </View> 
     ]
 }
 

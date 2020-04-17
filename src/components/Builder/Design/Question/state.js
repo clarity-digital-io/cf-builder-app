@@ -35,7 +35,7 @@ export const QuestionState = () => {
             case 'LOGIC': 
                 return <EditProvider><Save><LogicQuestion type={activeQuestion.forms__Type__c} /></Save></EditProvider>
                 break;
-            case 'CALCULATOR': 
+						case 'CALCULATOR': 
                 return <EditProvider><Save><div>calculator</div></Save></EditProvider>
                 break; 
             default:
@@ -196,9 +196,9 @@ const Save = ({ children }) => {
 
     return [
       
-        <View footer key={'Save'} className="row middle-xs end-xs">
+        <View borderRight key={'Save'} className="row middle-xs end-xs">
             <View className="col-xs-12">
-                <ViewStyle middle>
+                <ViewStyle border>
 
                     {
                         activeQuestion.forms__Record_Group__c != null ? 
@@ -223,10 +223,8 @@ const Save = ({ children }) => {
                 </ViewStyle>
             </View>
 				</View>,
-				<View silver body key={'QuestionEdit'} className="row">
-						<View className="col-xs-12">
-								<View className="Box">{ children }</View>
-						</View>
+				<View borderRight body key={'QuestionEdit'}>
+						{ children }
 				</View>
 
     ]
