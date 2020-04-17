@@ -59,7 +59,25 @@ export const SettingsState = () => {
 						return { ...form, forms__Is_Flow__c: checked }
 				})
 		}
-			
+
+		const updateHasThankYou = (e) => {
+
+			let checked = e.target.checked;
+
+				setForm(form => {
+						return { ...form, forms__Has_Thank_You__c: checked }
+				})
+		}
+
+		const updateRedirect = (e) => {
+
+			let value = e.target.value; 
+
+			setForm(form => {
+					return { ...form, forms__Thank_You_Redirect__c: value }
+			})
+		}
+
     return [
 				<View footer className="row middle-xs end-xs" key={'Header'}>
 					<View className="col-xs-12">
@@ -153,6 +171,58 @@ export const SettingsState = () => {
                         </View>
 
                     </ViewStyle>
+
+										<ViewStyle space border>
+
+											<h1>Use a Thank You Page</h1>
+
+											<View className="row">
+													<View className="col-xs-12">
+															<Box padding='1em 0 0 0'>
+
+																<Checkbox
+																	id={form.Name + 'ThankYou'}
+																	variant="toggle"
+																	defaultChecked={form.forms__Has_Thank_You__c} 
+																	onChange={(e, {checked}) => updateHasThankYou(e)}
+																/>
+
+															</Box>
+													</View>
+											</View>
+
+										</ViewStyle>
+
+										{
+											form.forms__Has_Thank_You__c ? 
+											<ViewStyle space border>
+
+												<h1>Redirect URL</h1>
+
+												<ViewStyle>
+
+													<View className="row" >
+														<View className="col-xs-12">
+																<Box padding='1em 0 0 0'>
+
+																		<SalesforceInput
+																			aria-describedby={form.forms__Thank_You_Redirect__c}
+																			defaultValue={form.forms__Thank_You_Redirect__c}
+																			id={form.Name}
+																			onChange={(e) => updateRedirect(e)}
+																		/>
+
+																</Box>
+														</View>
+													</View>
+
+												</ViewStyle>
+
+											</ViewStyle>
+											: 
+											null
+										}
+
 
                 </Box>
             </View>
