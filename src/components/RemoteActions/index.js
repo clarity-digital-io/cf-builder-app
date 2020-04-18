@@ -22,7 +22,7 @@ const prodCall = (setError, func, params, callback, status) => {
 
 		}
 
-		let extraParams = { buffer: false, escape: true, timeout: 12000 };
+		let extraParams = { buffer: false, escape: false, timeout: 12000 };
 		
     switch (params.length) {
         case 0:
@@ -58,8 +58,8 @@ const mockCall = (setError, func, params, callback, status) => {
                 forms__End_Date__c: '2019-12-31',
                 forms__Connected_Object__c: 'Account',
 								forms__Status__c: 'Draft',
-								forms__Multi_Page__c: false,
-								forms__Multi_Page_Info__c: '[]',
+								forms__Multi_Page__c: true,
+								forms__Multi_Page_Info__c: '[{ "page": 0, "icon": "test", "title": "test" }]',
 								forms__Multi_Page_Val__c: true
             }); 
             break;

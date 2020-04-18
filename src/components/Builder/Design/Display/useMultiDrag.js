@@ -14,7 +14,6 @@ export const useMultiDrag = () => {
 			setDeletePage, 
 			setUpdateMulti, 
 			setUpdate, 
-			pageQuestions, 
 			pages, 
 			activePage, 
 			setActivePage, 
@@ -30,11 +29,9 @@ export const useMultiDrag = () => {
 
 		}, [activePage]);
 		
-		console.log('usemulti');
     const onDragEndMulti = (setActivePageQuestions, result) => {
 
         const { source, destination } = result;
-				console.log(source, destination )
 
         if (!destination || destination.droppableId == 'new' ) {
             return;
@@ -58,7 +55,6 @@ export const useMultiDrag = () => {
 
 						});
 
-
         } else {
 
 						setActivePageQuestions(activeQuestions => {
@@ -71,7 +67,7 @@ export const useMultiDrag = () => {
 									form.Id,
 									destinationDropId
 							);  
-								console.log('move', items, destinationDropId)
+
 							return items;
 
 						});
@@ -91,7 +87,7 @@ export const useMultiDrag = () => {
 
 		}, [activePageQuestions])
 
-    return { pageQuestions, pages, activePage, setActivePage, activePageQuestions, setDeletePage, setAddPageUpdate };
+    return { pages, activePage, setActivePage, activePageQuestions, setDeletePage, setAddPageUpdate };
 }
 
 const reorder = (list, startIndex, endIndex) => {

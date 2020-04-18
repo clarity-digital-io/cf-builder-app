@@ -12,10 +12,14 @@ import { StatusHandler } from '../../../Elements/Notification';
 import { Input as SalesforceInput, Dropdown, Checkbox } from '@salesforce/design-system-react';
 
 const getCorrectPage = (info, activePage) => {
-	console.log('info', info, typeof info);
+
 	if(info == null) {
 		return { page: '', title: '', icon: '' }
 	} 
+
+	if(typeof info === 'string') {
+		info = JSON.parse(info); 
+	}
 
 	let correctPage = info.filter(i => {
 		return i.page == activePage;
@@ -66,14 +70,15 @@ export const EditPageState = () => {
 			setForm(form => {
 
 				let multiPageInfo = form.forms__Multi_Page_Info__c;
-				console.log('multiPageInfo', multiPageInfo, activePage); 
+
 				let preppedMultiPageInfo =	multiPageInfo.map((page) => {
-					console.log('page', page); 
+
 					if(page.page == activePage) {
 						page[property] = value
 					}
+					return page;
 				})
-				console.log('form', preppedMultiPageInfo)
+
 				return { ...form, forms__Multi_Page_Info__c: preppedMultiPageInfo }
 			})
 
@@ -177,8 +182,8 @@ export const EditPageState = () => {
 }
 
 const resultHandler = (result, e, setForm, setUpdate) => {
-		console.log('forms__Multi_Page_Info__c', result); 
-    setUpdate(false);
+
+		setUpdate(false);
     
     setForm(form => {
         return { ...form, forms__Multi_Page_Info__c: JSON.parse(result.forms__Multi_Page_Info__c), forms__Limit__c: result.forms__Limit__c }

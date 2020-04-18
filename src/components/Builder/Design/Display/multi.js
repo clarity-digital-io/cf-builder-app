@@ -65,7 +65,7 @@ const Linear = styled.div`
 `;
 
 export const Multi = ({ style }) => {
-		console.log('multiiiiii')
+
 		const background = {
 			background: '#fff'
 		};
@@ -99,7 +99,7 @@ export const Multi = ({ style }) => {
 								<PageTabItems>
 								<Linear></Linear>
 									{
-										pages.slice(0, pages.length - 2).map(page => {
+										pages.map(page => {
 											return <li className={ page.value == activePage ? 'active' : '' } onClick={ () => setActivePage(page.value) }>
 												
 												<Icon
@@ -162,7 +162,7 @@ export const Multi = ({ style }) => {
 								</ViewStyle>
 						</View>
 				</View>
-											<div>{ activePage }</div>
+
 				<Droppable droppableId={'multi_' + activePage}>
 						{(provided, snapshot) => (
 								<DropView 

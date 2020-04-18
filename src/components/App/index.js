@@ -127,7 +127,6 @@ const createHandler = (result, e, setForm) => {
     let month = dateMonth < 10 ? '0' + (dateMonth + 1) : dateMonth;
     let day = convertedDate.getDate() + 1; 
     let stringDate = year + '-' + month + '-' + day;
-		console.log('result', result);
 
     setForm(form => {
         return { 
