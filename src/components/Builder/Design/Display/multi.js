@@ -3,7 +3,6 @@ import { Droppable, Draggable } from 'react-beautiful-dnd';
 
 import View from '../../../Elements/View';
 import ViewStyle from '../../../Elements/View/style';
-import { Button } from '../../../Elements/Button';
 import { GenerateQuestion, DropView } from './elements';
 
 import { useMultiDrag } from './useMultiDrag';
@@ -19,13 +18,14 @@ const PageTabItems = styled.ul`
 	position: relative; 
 
 	li {
+		cursor:pointer;
 		float: left;
 		padding: 1em;
 		border-radius: 50%; 
 		border: 1px solid #f5f5f5;
 		z-index: 999; 
-		height: 70px; 
-		width: 70px; 
+		height: 80px; 
+		width: 80px; 
 		background: #fff; 
 		img {
 			display: block;
@@ -64,7 +64,7 @@ const Linear = styled.div`
 
 `;
 
-export const Multi = ({ style }) => {
+export const Multi = ({ form }) => {
 
 		const background = {
 			background: '#fff'
@@ -73,6 +73,8 @@ export const Multi = ({ style }) => {
 		const { previewMode, setNavState } = useContext(BuilderContext);
 
 		const { pages, activePage, setActivePage, activePageQuestions, setDeletePage, setAddPageUpdate } = useMultiDrag(); 
+
+		const designPages = form.forms__Multi_Page_Info__c != null ? form.forms__Multi_Page_Info__c : pages; 
 
 		const selectPageOption = (e, { option }) => {
 		 	if(option.value != activePage) {
@@ -99,18 +101,21 @@ export const Multi = ({ style }) => {
 								<PageTabItems>
 								<Linear></Linear>
 									{
-										pages.map(page => {
-											return <li className={ page.value == activePage ? 'active' : '' } onClick={ () => setActivePage(page.value) }>
+										designPages.map((page) => {
+											let iconData = page.icon != '' ? page.icon.split(':') : ['standard', 'announcement'];
+											let category = iconData[0];
+											let name = iconData[1];
+											return <li className={ page.page == activePage ? 'active' : '' } onClick={ () => setActivePage(page.page) }>
 												
 												<Icon
-													assistiveText={{ label: 'Account' }}
-													category="standard"
-													name="account"
+													assistiveText={{ label: page.title }}
+													category={category}
+													name={name}
 													size="small"
 												/>
 
 												<span>
-													{ page.label }
+													{ page.title }
 												</span>
 											</li>
 										})

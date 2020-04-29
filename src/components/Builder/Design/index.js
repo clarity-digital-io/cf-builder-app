@@ -205,38 +205,31 @@ const DesignProvider = ({ children }) => {
     const [deletePage, setDeletePage] = useState(null); 
 
     useEffect(() => {
-				console.log('deletePage', deletePage, pageQuestions)
-        if(pageQuestions.has(deletePage)) {
-            
-            setUpdate(true);
+				console.log('deletePage', deletePage, pageQuestions, form, activePageQuestions)
+				setAddPageUpdate(true);
 
-            let pageQuestionsCopy = new Map(pageQuestions)
+				if(activePageQuestions.length > 0) {
 
-            pageQuestionsCopy.delete(deletePage);
+					setActivePageQuestions([]);
 
-            let questionsWithPageUpdate = Array.from(pageQuestionsCopy.values()).reduce((accum, values, key) => {
-								console.log('accum, values, key)', accum, values, key); 
-                return accum.concat(values.map((val) => {
-                    return { ...val, forms__Page__c: key }
-                }));
-
-            }, []);
-
-            StatusHandler(
-                form.forms__Status__c,
-                () => setUpdate(false),
-                () => call(
-										setError,
-                    "ClarityFormBuilder.pageDelete", 
-                    [JSON.stringify(questionsWithPageUpdate), JSON.stringify([deletePage, form.Id])], 
-                    (result, e) => deleteResultHandler(result, e, true, setQuestions, setPageQuestions, setRecordGroup, setActivePageQuestions, setUpdate, setPages, setForm, setActivePage, deletePage),
-								),
-								null,
-								setError
-            )
-
-        }
-
+					let deleteQuestions = activePageQuestions.map(question => question.Id);
+	
+					StatusHandler(
+							form.forms__Status__c,
+							() => setUpdate(false),
+							() => call(
+									setError,
+									"ClarityFormBuilder.pageDelete", 
+									[JSON.stringify(deleteQuestions), form.Id], 
+									(result, e) => deletePageResultHandler(result, e, setPages, setQuestions, setPageQuestions, setRecordGroup, setForm, setActivePage, setAddPageUpdate, deletePage),
+							),
+							null,
+							setError
+					)
+				} else {
+					resetToFirstPage(setPages, setForm, setActivePage, setAddPageUpdate, deletePage);
+				}
+				
     }, [deletePage]);
 
     const [questionToDelete, setQuestionToDelete] = useState(null);
@@ -256,7 +249,7 @@ const DesignProvider = ({ children }) => {
 										setError,
                     "ClarityFormBuilder.deleteQuestion", 
                     [JSON.stringify(updatedOnDelete), questionToDelete], 
-                    (result, e) => deleteResultHandler(result, e, false, setQuestions, setPageQuestions, setRecordGroup, setActivePageQuestions, setUpdate),
+                    (result, e) => deleteResultHandler(result, e, setQuestions, setPageQuestions, setRecordGroup, setUpdate),
 								),
 								null,
 								setError
@@ -454,7 +447,59 @@ const fetchHandler = (result, e, setQuestions, setRecordGroup, setPageQuestions,
 
 }
 
-const deleteResultHandler = (result, e, isMulti, setQuestions, setPageQuestions, setRecordGroup, setActivePageQuestions, setUpdate, setPages, setForm, setActivePage, deletePage) => {
+const deletePageResultHandler =  (result, e, setPages, setQuestions, setPageQuestions, setRecordGroup, setForm, setActivePage, setAddPageUpdate, deletePage) => {
+
+	let questions = sorted(result); 
+
+	let cleanQuestions = questions.filter(question => question.forms__Record_Group__c == null);
+
+	let recordGroupQuestions = questions.filter(question => question.forms__Type__c == 'RecordGroup');
+
+	let recordGroups = recordGroupQuestions.reduce((accum, question) => {
+
+			return accum.set(question.Id, questions.filter(q => q.forms__Record_Group__c == question.Id))
+
+	}, new Map());
+
+	setQuestions(cleanQuestions);
+
+	setRecordGroup(recordGroups); 
+	//need to set active page questions here
+	setPageQuestions(pageBreaks(cleanQuestions));
+
+	resetToFirstPage(setPages, setForm, setActivePage, setAddPageUpdate, deletePage);
+
+}
+
+const resetToFirstPage = (setPages, setForm, setActivePage, setAddPageUpdate, deletePage) => {
+
+	setPages(pages => {
+		console.log('pages', pages);
+		return pages.filter(p => {
+			return p.value != deletePage;
+		})
+	});
+
+	setForm(form => {
+
+		let multiPageInfo = form.forms__Multi_Page_Info__c;
+
+		let preppedMultiPageInfo =	multiPageInfo.filter((page) => {
+
+			return page.page != deletePage;
+
+		})
+
+		return { ...form, forms__Multi_Page_Info__c: preppedMultiPageInfo }
+	})
+
+	setActivePage(0);
+
+	setAddPageUpdate(false);
+
+}
+
+const deleteResultHandler = (result, e, setQuestions, setPageQuestions, setRecordGroup, setUpdate) => {
 
 		let questions = sorted(result); 
 
@@ -475,30 +520,6 @@ const deleteResultHandler = (result, e, isMulti, setQuestions, setPageQuestions,
     setPageQuestions(pageBreaks(cleanQuestions));
 
 		setUpdate(false);
-		if(isMulti) {
-			setActivePageQuestions([])
-
-			setPages(pages => {
-				return pages.filter(p => {
-					return p.value != deletePage;
-				})
-			})
-
-			setForm(form => {
-
-				let multiPageInfo = form.forms__Multi_Page_Info__c;
-
-				let preppedMultiPageInfo =	multiPageInfo.filter((page) => {
-
-					return p.page != deletePage;
-
-				})
-
-				return { ...form, forms__Multi_Page_Info__c: preppedMultiPageInfo }
-			})
-
-			setActivePage(0);
-		}
 
 }
 

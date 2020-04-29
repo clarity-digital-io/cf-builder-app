@@ -19,8 +19,7 @@ export const useMultiDrag = () => {
 			setActivePage, 
 			activePageQuestions, 
 			setActivePageQuestions, 
-			setAddPageUpdate, 
-			addPageUpdate 
+			setAddPageUpdate
 		} = useContext(DesignContext); 
 
     useEffect(() => {
