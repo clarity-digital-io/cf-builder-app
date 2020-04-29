@@ -137,6 +137,8 @@ const createHandler = (result, e, setForm) => {
             forms__Connected_Object__c: result.forms__Connected_Object__c, 
 						forms__Status__c: result.forms__Status__c,
 						forms__Multi_Page__c: result.forms__Multi_Page__c,
+						forms__Thank_You_Redirect__c: result.forms__Thank_You_Redirect__c,
+						forms__Has_Thank_You__c: result.forms__Has_Thank_You__c,
 						forms__Multi_Page_Info__c:  result.forms__Multi_Page_Info__c != null ? JSON.parse(result.forms__Multi_Page_Info__c) : []
         }
     });

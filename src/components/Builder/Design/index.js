@@ -63,8 +63,12 @@ const DragDropUpdateProvider = ({ children }) => {
 }
 
 const pageValues = (info) => {
-
+	
 	let pages = [];
+	console.log('type', info, typeof info); 
+	if(typeof info == 'string') {
+		info = JSON.parse(info); 
+	}
 	
 	if(info.length) {
 		pages = info.map((val, i) => {
@@ -483,6 +487,10 @@ const resetToFirstPage = (setPages, setForm, setActivePage, setAddPageUpdate, de
 	setForm(form => {
 
 		let multiPageInfo = form.forms__Multi_Page_Info__c;
+
+		if(typeof multiPageInfo == 'string') {
+			multiPageInfo = JSON.parse(multiPageInfo); 
+		}
 
 		let preppedMultiPageInfo =	multiPageInfo.filter((page) => {
 
