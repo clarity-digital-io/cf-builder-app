@@ -15,11 +15,9 @@ export const SalesforceFields = () => {
 
     const { activeRecordGroup, setActiveRecordGroup, setSObjectEdit, requiredFields } = useContext(EditContext); 
     const { recordGroup, activeQuestion } = useContext(DesignContext); 
-		console.log('activeRecordGroup', activeRecordGroup, recordGroup);
 
     useEffect(() => {
 				setActiveRecordGroup(active => {
-					console.log('rcccc', recordGroup.get(activeQuestion.Id))
 					return recordGroup.get(activeQuestion.Id) != null ? recordGroup.get(activeQuestion.Id) : [];
 				})
         setSObjectEdit(activeQuestion.forms__Type__c);

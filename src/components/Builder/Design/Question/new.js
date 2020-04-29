@@ -19,11 +19,11 @@ export const NewQuestion = () => {
 		const { update } = useContext(DesignContext); 
 
 		return (
-        <View silver full className="row" key={'Body'}>
+        <View full className="row" key={'Body'}>
             <View className="col-xs-12">
                 <Box padding='0'>
 
-                    <ViewStyle space border>
+                    <ViewStyle space>
 
                         <h1>Form Builder</h1>
 
@@ -85,36 +85,37 @@ const SelectableNew = styled.div`
     font-size: 1em;
     padding: 1em 0 1em 0; 
     cursor: pointer;
-    margin: .75em;
+    margin: .5em;
     font-weight: 500;
     background: ${Main.color.white};
-
-    color: ${Main.color.dark}
+		border: 1px solid ${Main.color.border};
+		border-radius: 4px; 
+    color: ${Main.color.text}
 
     span {
         display: inline-block;
-        padding: 0 .5em 0 .5em;
-        vertical-align: middle;
+				vertical-align: middle;
+				padding: 0 0 0 1em;
         font-weight: 500;
-        color: ${Main.color.body}
+        color: ${Main.color.text}
     }
 
     ${props => props.isDragging == true && css`
-        box-shadow: 1px 1px 5px ${Main.color.grey};
         background: ${Main.color.white};
 		`}
 		
 		${props => props.disabled == true && css`
-			background: ${Main.color.light};
-	`}
+			border: 1px solid ${Main.color.disabled};
+			background: ${Main.color.silver};
+		`}
 
     :active {
         box-shadow: none;
     }
 
     i {
-        color: ${Main.color.dark}
-        padding: 0 .5em 0 .5em;
+				margin-top: -2px; 
+        color: ${Main.color.text}
         vertical-align: middle;
     }
 

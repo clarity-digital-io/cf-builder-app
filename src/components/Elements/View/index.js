@@ -5,18 +5,27 @@ const View = styled.div`
     margin-right: 0em; 
     margin-left: 0em; 
 		padding: 0; 
-		margin-top: -2px; 
 
     ${props => props.full && css`
 			height: 92.5vh;
     `}
 
     ${props => props.body && css`
-      height: 89.5vh;
-    `}
+			height: 89vh;
+			background: ${Main.color.white}
+
+		`}
+		
+		${props => props.editBG && css`
+			background: ${Main.color.edit}
+		`}
+
+		${props => props.whiteBG && css`
+			background: ${Main.color.white}
+		`}
 
     ${props => props.fullBody && css`
-      height: 89.5vh;
+      height: 89vh;
     `}
 
     ${props => props.space && css`
@@ -24,46 +33,30 @@ const View = styled.div`
     `}
 
     ${props => props.border && css`
-      border-bottom: 1px solid ${Main.color.greyBorder}
-  `}
+      border-bottom: 1px solid ${Main.color.border}
+	`}
+	
+		${props => props.borderLeft && css`
+			border-left: 1px solid ${Main.color.border}
+		`}
 
-    ${props => props.silver && css`
-      border-left: 1px solid ${Main.color.greyBorder}
-      border-right: 1px solid ${Main.color.greyBorder}
-      background: ${Main.color.lighter};
-    `}
+		${props => props.borderRight && css`
+			border-right: 1px solid ${Main.color.border}
+		`}
 
     ${props => props.white && css`
       background: ${Main.color.white};
-      border-top: 1px solid ${Main.color.greyBorder}
-      border-bottom: 1px solid ${Main.color.greyBorder}
+      border-top: 1px solid ${Main.color.border};
+      border-bottom: 1px solid ${Main.color.border};
     `}
 
     ${props => props.extraspace && css`
       padding: 3em;
-    `}
-
-    ${props => props.displayFooter && css`
-      border: none; 
-      border-top:1px solid ${Main.color.greyBorder};
-      background: ${Main.color.body};
-    `}
-
-    ${props => props.header && css`
-      box-shadow: 0 0 3px 0 ${Main.color.silver}
-      background: ${Main.color.lighter};
-      font-weight: 900; 
-      height: 6vh; 
-    `}
-
-    ${props => props.footer && css`
-      border-left: 1px solid ${Main.color.greyBorder};
-      border-right: 1px solid ${Main.color.greyBorder};
-      border-bottom: 1px solid ${Main.color.greyBorder};
-			background: ${Main.color.white}
-			margin-top: 2px; 
-			padding: .5em 0 .5em 0;
-    `}
+		`}
+		
+		${props => props.bigspace && css`
+			padding: 2em;
+		`}
 
     #connect {
       font-weight: 900; 
@@ -87,8 +80,7 @@ const View = styled.div`
 		`}
 
 		${props => props.edit && css`
-			max-width: 600px;
-			flex-grow: 1;
+			width: 600px;
 		`}
 
 		${props => props.form && css`

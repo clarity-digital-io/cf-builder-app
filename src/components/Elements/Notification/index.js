@@ -19,7 +19,6 @@ const StatusMessage = {
         saveQuestionWithCriteria: ['Error', 'Something went wrong on startup.'],
         createAssignment: ['Error', 'Something went wrong on startup.'],
         saveAssignmentRules: ['Error', 'Something went wrong on startup.'],
-        updateDesign: ['Error', 'Something went wrong on startup.'],
         saveRecordGroupFields: ['Error', 'Something went wrong on startup.'],
         saveActiveFieldConnections: ['Error', 'Something went wrong on startup.'],
         saveConnections: ['Error', 'Something went wrong on while saving connections, please report and refresh this error.'],
@@ -37,7 +36,6 @@ const StatusMessage = {
         saveQuestionWithCriteria: ['Success', 'Page deleted.'],
         createAssignment: ['Success', 'Assignment created.'],
         saveAssignmentRules: ['Success', 'Assignment rules saved.'],
-        updateDesign: ['Success', 'Design updated.'],
         saveRecordGroupFields: ['Success', 'Record group fields saved.'],
         saveActiveFieldConnections: ['Success', 'Field Connections successfully saved.'],
         saveConnections: ['Success', 'Connections saved.'],
@@ -86,7 +84,6 @@ export const StatusHandler = (status, setUpdate, cb, setUpdateSecond, setError) 
 // createAssignment
 // getAssignmentRules
 // saveAssignmentRules
-// updateDesign
 // saveRecordGroupFields
 // getConnections
 // getConnectionFieldMapping

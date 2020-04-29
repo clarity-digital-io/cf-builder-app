@@ -48,7 +48,7 @@ export const LogicQuestion = () => {
                             </ViewStyle> :
                             <ViewStyle space top border>
 
-                                <h2>Step 1: <span>Select the criteria for this rule</span></h2>
+                                <h1>Step 1: <span>Select the criteria for this rule</span></h1>
 
                                 <ControlGroup relatedId={activeQuestion.Id} value={activeQuestion.forms__Logic__c} rows={criteria} setRows={setCriteria} setCondition={updateCondition} questions={questionOptions} />
 

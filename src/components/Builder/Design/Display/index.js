@@ -2,10 +2,11 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { BuilderContext } from '../../../Context';
 import { Single } from './single';
+import { Multi } from './multi';
 
 export const Display = () => {
 
-    const { style, form, previewMode } = useContext(BuilderContext);
+    const { form, previewMode } = useContext(BuilderContext);
 
 		const background = {
 			backgroundImage: previewMode.active ? 
@@ -18,12 +19,20 @@ export const Display = () => {
 			previewMode.active ? 
         <PreviewFormDesign style={background} key={'Display'}>
 
-					<Single style={style} form={form} />
+					{
+						form.forms__Multi_Page__c ? 
+						<Multi form={form} /> :
+						<Single form={form} />
+					}
 
 				</PreviewFormDesign> :
-				<FormDesign style={background} key={'Display'}>
+				<FormDesign key={'Display'}>
 
-					<Single style={style} form={form} />
+					{
+						form.forms__Multi_Page__c ? 
+						<Multi form={form} /> :
+						<Single form={form} />
+					}
 
 				</FormDesign> 
 		);

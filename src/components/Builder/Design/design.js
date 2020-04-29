@@ -7,6 +7,7 @@ import { QuestionState } from './Question/state';
 import { ConnectState } from './Connect';
 import { MappingState } from './Connect/mapping';
 import { SettingsState } from './Settings'; 
+import { EditPageState } from './EditPage'; 
 import { Display } from './Display';
 import { BuilderContext } from '../../Context';
 
@@ -26,6 +27,9 @@ const Design = () => {
                 break;
             case 'SETTINGS':
                 return <SettingsState />
+								break;
+						case 'EDIT_PAGE': 
+                return <EditPageState />
                 break;
         }
 
@@ -47,7 +51,7 @@ const Design = () => {
 			<View full main>
         <View key={'QuestionState'} scroll edit>
             <Box padding='0'>
-                
+
                 { getNavState(navState) }
 
             </Box> 

@@ -22,7 +22,7 @@ const prodCall = (setError, func, params, callback, status) => {
 
 		}
 
-		let extraParams = { buffer: false, escape: true, timeout: 12000 };
+		let extraParams = { buffer: false, escape: false, timeout: 12000 };
 		
     switch (params.length) {
         case 0:
@@ -57,18 +57,19 @@ const mockCall = (setError, func, params, callback, status) => {
                 forms__Limit__c: 10, 
                 forms__End_Date__c: '2019-12-31',
                 forms__Connected_Object__c: 'Account',
-                forms__Clarity_Form_Style__c: 15, 
-                forms__Status__c: 'Published', 
-                forms__Clarity_Form_Assignment__c: 1,
-                forms__Clarity_Form_Style__r: { Id: 15, Name:'Greens', forms__Background_Image__c: '', forms__Background_Color__c: '#FFF', forms__Color__c: '#333', forms__Button_Color__c: '', forms__Multi_Page__c: false }, 
-                //Clarity_Form_Style__r: { Id: 15, Name:'Greens', Background_Image__c: 'https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2565&q=80', Background_Color__c: '#333333', Color__c: '#FFFFFF', Button_Color__c: '', Multi_Page__c: false }, 
-                forms__Clarity_Form_Assignment__r: { Id: 1, Name: 'Clarity Form Assignment', forms__Assign__c: 1, forms__Default_Assign__c: 2 } 
+								forms__Status__c: 'Draft',
+								forms__Multi_Page__c: true,
+								forms__Multi_Page_Info__c: '[{ "page": 0, "icon": "test", "title": "test" }]',
+								forms__Multi_Page_Val__c: true
             }); 
             break;
         case 'updateForm':
-            callback({ Id: 1, Name: 'Clarity Form Title', forms__End_Date__c: '2019-12-31', forms__Limit__c: 1000 })
-            break;
-        case 'getQuestions':
+            callback({ Id: 1, Name: 'Clarity Form Title', forms__End_Date__c: '2019-12-31', forms__Limit__c: 1000, forms__Multi_Page__c: true, forms__Multi_Page_Info__c: '[]' })
+						break;
+				case 'getQuestions':
+						callback([]);
+						break; 
+        case 'getQuestions1':
             callback([
 								{ Id: 'CF-8.1', forms__Logic__c: 'AND', forms__Type__c: 'PictureChoice', forms__Title__c: 'Which of these describe your current emotion?', forms__Order__c: 0, forms__Max_Length__c: 10, forms__Min_Range__c: 0, forms__Max_Range__c: 100, forms__Step__c: 10, forms__Page__c: 0 , 
 									forms__Clarity_Form_Question_Options__r: [
@@ -172,18 +173,6 @@ const mockCall = (setError, func, params, callback, status) => {
         case 'getUsers':
             callback([{Id: 1, Name: 'Test User1', UserName: 'User1'}, {Id: 2, Name: 'Test User2', UserName: 'User2'}]);
             break; 
-        case 'createAssignment':
-            callback({Id: 1, Name: 'Clarity Form Assignment', Assign__c: 1, Default_Assign__c: 2 });
-            break; 
-        case 'getAssignmentRules': 
-            callback([{ Id: 1, Clarity_Form_Assignment__c: 1, Field__c: 1, Field_Type__c: 'Checkbox', Operator__c: 'Equals', Type__c: 'Picklist', Value__c: 'Option 1' }]);
-            break; 
-        case 'saveAssignmentRules':
-            callback([]);
-            break; 
-        case 'updateDesign':
-            callback([{ Background_Color__c: '#FFF', Color: '#333', Button_Color__c: '#333', Multi_Page__c: false }]);
-            break; 
         case 'saveRecordGroupFields':
             callback([
                 { Id: 8, Logic__c: 'AND', Type__c: 'REFERENCE', Title__c: 'Add an account:', Salesforce_Field__c: 'OpportunityId', Record_Group__c: 7, Order__c: 0, Page__c: 0 },
@@ -214,15 +203,6 @@ const mockCall = (setError, func, params, callback, status) => {
                 { Id: 14, Clarity_Form__c: 1, Salesforce_Object__c: 'Account', Type__c: 'Create', Active__c: true }
             ]);
             break;
-        case 'getDesigns': 
-            callback([
-                { Name: 'Dark', Id: 15, Background_Color__c: '#333333', Color__c: '#FFFFFF', Button_Color__c: '#FFFFFF', Background_Image__c: '', Multi_Page__c: true },
-                { Name: 'Light', Id: 16, Background_Color__c: '#FFFFFF', Color__c: '#333333', Button_Color__c: '#FFFFFF', Background_Image__c: '', Multi_Page__c: true },
-                { Name: 'Forest', Id: 17, Background_Color__c: '#F1F1F1', Color__c: '#FFFFFF', Button_Color__c: '#FFFFFF', Background_Image__c: 'https://images.unsplash.com/photo-1525577288853-c6f0a020a162?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80', Multi_Page__c: true },
-                { Name: 'Palm Trees', Id: 18, Background_Color__c: '#F1F1F1', Color__c: '#FFFFFF', Button_Color__c: '#FFFFFF', Background_Image__c: 'https://images.unsplash.com/photo-1517267075966-848c4c4cd883?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=882&q=80', Multi_Page__c: true },
-                { Name: 'Spring', Id: 19, Background_Color__c: '#F1F1F1', Color__c: '#FFFFFF', Button_Color__c: '#FFFFFF', Background_Image__c: 'https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2565&q=80', Multi_Page__c: true }
-            ])
-            break; 
         case 'updateStatus':
             callback({ Status: 'Success', Form: { Id: 1, Status__c: 'Success' } })
             break;

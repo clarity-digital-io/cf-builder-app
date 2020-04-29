@@ -58,13 +58,13 @@ export const MappingState = () => {
 
     return [
 
-				<View footer className="row middle-xs end-xs" key={'Header'}>
+				<View borderLeft className="row middle-xs end-xs" key={'Header'}>
 					<View className="col-xs-12">
-							<ViewStyle middle>
+							<ViewStyle border>
 
 									{
 											navState == 'MAPPING' ? 
-													<Button neutral onClick={() => setNavState('CONNECT')}>Back</Button> : 
+													<Button neutral onClick={() => setNavState('CONNECT')}>Form</Button> : 
 													null
 									}
 
@@ -73,69 +73,64 @@ export const MappingState = () => {
 									</Button>
 							</ViewStyle>
 					</View>
-			</View>,
-        <View extraspace body className="row" key={'Body'}>
-            <View className="col-xs-12">
-                <Box padding='0'>
+				</View>,
+        <View body borderLeft key={'Body'}>
 
-                    <ViewStyle border>
-                        <View className="row middle-xs">
-                            <View className="col-xs-4">
-                                <Box padding='0'>
+					<ViewStyle extraSpace>
 
-                                    <Navigation>
-                                        <ul>
-                                            <li className={ localNavState == 'CONNECT' ? 'active' : '' } onClick={() => navigateMapping('CONNECT')}>
-                                                <a>Connect</a>
-                                            </li>
+							<ViewStyle border>
 
-                                            <li className={ getClassName(activeConnection.forms__New__c, localNavState) } onClick={() => navigateMapping('PREFILL')}>
-                                                <a>Prefill</a>
-                                            </li>
 
-                                        </ul>
-                                    </Navigation>
+									<Navigation>
+											<ul>
+													<li className={ localNavState == 'CONNECT' ? 'active' : '' } onClick={() => navigateMapping('CONNECT')}>
+															<a>Connect</a>
+													</li>
 
-                                </Box>
-                            </View>
-                        </View>
-                    </ViewStyle>
+													<li className={ getClassName(activeConnection.forms__New__c, localNavState) } onClick={() => navigateMapping('PREFILL')}>
+															<a>Prefill</a>
+													</li>
 
-                    <ViewStyle space>
-                        
-                        <h1>Connection Fields: { activeConnection.forms__Salesforce_Object__c }</h1>
+											</ul>
+									</Navigation>
 
-                        {
-                            localNavState == 'CONNECT' ? 
-                            <p>Map question values from a Clarity Form Response to the <strong>{ activeConnection.forms__Salesforce_Object__c }</strong> type record.</p> :
-                            <p>Prefill question values with <strong>{ activeConnection.forms__Salesforce_Object__c }</strong> record field values.</p>
+							</ViewStyle>
 
-                        }
+							<ViewStyle>
+									
+									<h1>Connection Fields: { activeConnection.forms__Salesforce_Object__c }</h1>
 
-                    </ViewStyle>
+									{
+											localNavState == 'CONNECT' ? 
+											<p>Map question values from a Clarity Form Response to the <strong>{ activeConnection.forms__Salesforce_Object__c }</strong> type record.</p> :
+											<p>Prefill question values with <strong>{ activeConnection.forms__Salesforce_Object__c }</strong> record field values.</p>
 
-                    {
-                        loading ? 
-                        <Spinner /> :
-                        getMappingState(localNavState)
-                    }
+									}
 
-                    <ViewStyle>
-                        <View className="row middle-xs">
-                            <View className="col-xs-8">
-                                <Box padding='0em'>
+							</ViewStyle>
 
-                                    <h1>Record Id stored as { `{Connection_${activeConnection.forms__Salesforce_Object__c}}` }</h1>
+							{
+									loading ? 
+									<Spinner /> :
+									getMappingState(localNavState)
+							}
 
-                                    <p>Record Id can be used in subsequent Connections, by selecting 'Custom' and adding the variable Record Id: { `{Connection_${activeConnection.forms__Salesforce_Object__c}}` }. &#128526;</p>
+							<ViewStyle>
+									<View className="row middle-xs">
+											<View className="col-xs-8">
+													<Box padding='0em'>
 
-                                </Box>
-                            </View>
-                        </View>
-                    </ViewStyle>
+															<h1>Record Id stored as { `{Connection_${activeConnection.forms__Salesforce_Object__c}}` }</h1>
 
-                </Box>
-            </View>
+															<p>Record Id can be used in subsequent Connections, by selecting 'Custom' and adding the variable Record Id: { `{Connection_${activeConnection.forms__Salesforce_Object__c}}` }. &#128526;</p>
+
+													</Box>
+											</View>
+									</View>
+							</ViewStyle>
+
+					</ViewStyle>
+
         </View>
 
     ]

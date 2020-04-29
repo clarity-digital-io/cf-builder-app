@@ -109,18 +109,18 @@ export const ConnectState = () => {
 
     return [
 				
-				<View footer className="row middle-xs end-xs" key={'Header'}>
+				<View className="row middle-xs end-xs" key={'Header'}>
 						<View className="col-xs-12">
-								<ViewStyle middle>
+								<ViewStyle border>
 										<Button onClick={() => setUpdate(true)}>
 												Save Changes
 										</Button>
 								</ViewStyle>
 						</View>
 				</View>,
-        <View silver body className="row" key={'Body'}>
-            <View className="col-xs-12">
-                <Box padding='0'>
+        <View body key={'Body'}>
+
+            <Box padding='0'>
 
                     <ViewStyle space border>
                     
@@ -171,7 +171,7 @@ export const ConnectState = () => {
                             connections.map((connection, order) => {
 
                                 return (
-                                    <View key={connection.Id} space border className="row middle-xs">
+                                    <View key={connection.Id} space className="row middle-xs">
 
                                         <View className="col-xs-2">
                                             <Box padding='.5em'>
@@ -248,7 +248,7 @@ export const ConnectState = () => {
                     </ViewStyle>
 
                 </Box>
-            </View>
+
         </View>
 
     ]

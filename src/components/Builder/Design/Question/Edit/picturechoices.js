@@ -87,7 +87,7 @@ export const PictureChoices = ({ question }) => {
 				})
 				
     }
-		console.log('options', activeQuestionOptions);
+
 		return (
         <ViewStyle>
 
@@ -137,7 +137,7 @@ export const PictureChoices = ({ question }) => {
 }
 
 const buildFiles = (option, newImage) => {
-	console.log('(option, newImage', option, newImage);
+
 	let url = '';
 
 	if(option != null && option.forms__Choice_Image__c.length == 18) {

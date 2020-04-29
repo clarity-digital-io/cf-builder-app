@@ -10,106 +10,66 @@ export const useMultiDrag = () => {
 
     const { form } = useContext(BuilderContext); 
 
-    const { setDeletePage, setUpdateMulti, setUpdate, pageQuestions, setPageQuestions, addPageUpdate } = useContext(DesignContext); 
+		const { 
+			setDeletePage, 
+			setUpdateMulti, 
+			setUpdate, 
+			pages, 
+			activePage, 
+			setActivePage, 
+			activePageQuestions, 
+			setActivePageQuestions, 
+			setAddPageUpdate
+		} = useContext(DesignContext); 
 
     useEffect(() => {
+				
+				addEvent('multi_' + activePage, (result) => onDragEndMulti(setActivePageQuestions, result));
 
-        pageQuestions.forEach((values, key) => {
-
-            addEvent('' + key, (result) => onDragEndMulti(setPageQuestions, result));
-
-        });
-
-    }, [addPageUpdate]);
-
-    const onDragEndMulti = (setPageQuestions, result) => {
+		}, [activePage]);
+		
+    const onDragEndMulti = (setActivePageQuestions, result) => {
 
         const { source, destination } = result;
 
         if (!destination || destination.droppableId == 'new' ) {
             return;
-        }
+				}
+				
+				let splitDestinationId = destination.droppableId.split('_');
 
-        let destinationDropId = parseInt(destination.droppableId); 
+        let destinationDropId = parseInt(splitDestinationId[1]); 
 
-        if (source.droppableId === destination.droppableId) {
-        
-            setPageQuestions(pQ => {
+				if (source.droppableId === destination.droppableId) {
+        		
+						setActivePageQuestions(activeQuestions => {
+							
+							const items = reorder(
+									activeQuestions,
+									source.index,
+									destination.index
+							); 
 
-                if(pQ.has(destinationDropId)) {
+							return items;
 
-                    let values = pQ.get(destinationDropId);
-
-                    const items = reorder(
-                        values,
-                        source.index,
-                        destination.index
-                    );
-
-                    pQ.set(destinationDropId, items); 
- 
-                }
-
-                return pQ;
-
-            });
-
-
-        } else if (source.droppableId != 'new') {
-
-            let sourceDropId = parseInt(source.droppableId);
-            let sourceIndex = source.index;
-
-            setPageQuestions(pQ => {
-
-                if(pQ.has(sourceDropId) && pQ.has(destinationDropId)) {
-
-                    let sourceValues = pQ.get(sourceDropId);
-
-                    let detinationValues = pQ.get(destinationDropId);
-
-                    let questionMoved = sourceValues.find((val, i) => sourceIndex == i);
-
-                    questionMoved.forms__Page__c = destinationDropId;
-
-                    let sourceNewQuestions = sourceValues.filter((val, i) => sourceIndex != i);
-
-                    pQ.set(sourceDropId, sourceNewQuestions);
-
-                    detinationValues.splice(destination.index, 0, questionMoved);
-
-                    pQ.set(destinationDropId, detinationValues);
-
-                }
-                
-                return pQ; 
-
-            })
+						});
 
         } else {
 
-            setPageQuestions(pQ => {
-                
-                if(pQ.has(destinationDropId)) {
+						setActivePageQuestions(activeQuestions => {
 
-                    let values = pQ.get(destinationDropId);
+							const items = move(
+									sortedTypes,
+									activeQuestions,
+									source,
+									destination, 
+									form.Id,
+									destinationDropId
+							);  
 
-                    const items = move(
-                        sortedTypes,
-                        values,
-                        source,
-                        destination, 
-                        form.Id,
-                        destinationDropId
-                    );  
+							return items;
 
-                    pQ.set(destinationDropId, items); 
-
-                }
-
-                return pQ;
-
-            });
+						});
 
         }
 
@@ -119,18 +79,14 @@ export const useMultiDrag = () => {
     }
 
     useEffect(() => {
+				
+				addEvent('multi_' + activePage, (result) => onDragEndMulti(setActivePageQuestions, result));
 
-        pageQuestions.forEach((values, key) => {
-            addEvent('' + key, (result) => onDragEndMulti(setPageQuestions, result));
-        });
+				return () => removeEvent('multi_' + activePage);
 
-        return () => pageQuestions.forEach((values, key) => {
-            removeEvent('' + key);
-        });
+		}, [activePageQuestions])
 
-    }, [pageQuestions])
-
-    return { pageQuestions, setDeletePage };
+    return { pages, activePage, setActivePage, activePageQuestions, setDeletePage, setAddPageUpdate };
 }
 
 const reorder = (list, startIndex, endIndex) => {

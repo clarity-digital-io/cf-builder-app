@@ -35,7 +35,7 @@ export const QuestionState = () => {
             case 'LOGIC': 
                 return <EditProvider><Save><LogicQuestion type={activeQuestion.forms__Type__c} /></Save></EditProvider>
                 break;
-            case 'CALCULATOR': 
+						case 'CALCULATOR': 
                 return <EditProvider><Save><div>calculator</div></Save></EditProvider>
                 break; 
             default:
@@ -72,7 +72,7 @@ const Save = ({ children }) => {
         setActiveQuestion,
         setQuestionOptions,
         setQuestions, 
-        setPageQuestions,
+				setActivePageQuestions,
         setRecordGroup
     } = useContext(DesignContext);
 
@@ -86,7 +86,7 @@ const Save = ({ children }) => {
 										setError,
                     "ClarityFormBuilder.saveQuestion", 
                     [JSON.stringify(activeQuestion)], 
-                    (result, e) => resultHandler(result, e, setQuestionUpdate, setQuestions, setPageQuestions, activeQuestion),
+                    (result, e) => resultHandler(result, e, setQuestionUpdate, setQuestions, setActivePageQuestions, activeQuestion),
 								),
 								null,
 								setError
@@ -101,7 +101,7 @@ const Save = ({ children }) => {
 										setError,
                     "ClarityFormBuilder.saveQuestionWithOptions", 
                     [JSON.stringify(activeQuestion), JSON.stringify(activeQuestionOptions)], 
-                    (result, e) => resultOptionHandler(result, e, setQuestionUpdate, setQuestions, setPageQuestions, activeQuestion, setActiveQuestionOptions, setQuestionOptions),
+                    (result, e) => resultOptionHandler(result, e, setQuestionUpdate, setQuestions, activeQuestion, setActiveQuestionOptions, setQuestionOptions),
 								),
 								null,
 								setError
@@ -139,7 +139,7 @@ const Save = ({ children }) => {
 										setError,
                     "ClarityFormBuilder.saveQuestionWithPictureOptions", 
                     [JSON.stringify(activeQuestion), JSON.stringify(updatedOptions), JSON.stringify(activeQuestionOptionImages)], 
-                    (result, e) => resultOptionHandler(result, e, setQuestionUpdate, setQuestions, setPageQuestions, activeQuestion, setActiveQuestionOptions, setQuestionOptions),
+                    (result, e) => resultOptionHandler(result, e, setQuestionUpdate, setQuestions, activeQuestion, setActiveQuestionOptions, setQuestionOptions),
 								),
 								null,
 								setError
@@ -190,26 +190,25 @@ const Save = ({ children }) => {
 
     const edit = (questionId) => {
 				setActiveQuestion(questions.find(question => question.Id == questionId));
-				console.log('activeRecordGroup', activeRecordGroup)
         setQuestionState('SF');
     }
 
     return [
       
-        <View footer key={'Save'} className="row middle-xs end-xs">
+        <View borderRight key={'Save'} className="row middle-xs end-xs">
             <View className="col-xs-12">
-                <ViewStyle middle>
+                <ViewStyle border>
 
                     {
                         activeQuestion.forms__Record_Group__c != null ? 
-                            <Button neutral onClick={() => edit(activeQuestion.forms__Record_Group__c)}>Back</Button> : 
+                            <Button onClick={() => edit(activeQuestion.forms__Record_Group__c)}>Back</Button> : 
                             null
                     }
 
                     {
                         questionState != 'SF' ? 
-                            <Button neutral onClick={() => setQuestionState('NEW')} variant="success">Add New Field</Button> : 
-                            <Button neutral onClick={() => setQuestionState('EDIT')}>Back</Button>
+                            <Button onClick={() => setQuestionState('NEW')} variant="neutral">Add New Field</Button> : 
+                            <Button onClick={() => setQuestionState('EDIT')}>Back</Button>
                     }
 
                     <Button cta onClick={() => setQuestionUpdate(true)} variant="brand">
@@ -223,16 +222,14 @@ const Save = ({ children }) => {
                 </ViewStyle>
             </View>
 				</View>,
-				<View silver body key={'QuestionEdit'} className="row">
-						<View className="col-xs-12">
-								<View className="Box">{ children }</View>
-						</View>
+				<View borderRight body key={'QuestionEdit'}>
+						{ children }
 				</View>
 
     ]
 }
 
-const resultHandler = (result, e, setQuestionUpdate, setQuestions, setPageQuestions, activeQuestion) => {
+const resultHandler = (result, e, setQuestionUpdate, setQuestions, setActivePageQuestions, activeQuestion) => {
 
     setQuestions(questions => {
 
@@ -246,32 +243,26 @@ const resultHandler = (result, e, setQuestionUpdate, setQuestions, setPageQuesti
         })
 
     });
+		
+		setActivePageQuestions(questions => {
 
+			return questions.map(question => {
+					if(question.Id == result) {
+							return activeQuestion; 
+					}
 
-    setPageQuestions(pQ => {
+					return question; 
 
-        return Array.from(pQ.values()).reduce((accum, values, key) => {
+			})
 
-            
-            return accum.set(key, values.map((value, i) => {
-
-                if(value.Id == result) {
-                    return activeQuestion;
-                } 
-                return value;
-
-            }));
-
-        }, new Map());
-
-    });
+		});
 
 
     setQuestionUpdate(false);
 
 }
 
-const resultOptionHandler = (result, e, setQuestionUpdate, setQuestions, setPageQuestions, activeQuestion, setActiveQuestionOptions, setQuestionOptions) => {
+const resultOptionHandler = (result, e, setQuestionUpdate, setQuestions, activeQuestion, setActiveQuestionOptions, setQuestionOptions) => {
     
     let options = result.Options;
     let resultQuestion = result.Question[0];
@@ -296,23 +287,6 @@ const resultOptionHandler = (result, e, setQuestionUpdate, setQuestions, setPage
         return questionOptions; 
 
     })
-
-    setPageQuestions(pQ => {
-
-        return Array.from(pQ.values()).reduce((accum, values, key) => {
-
-            return accum.set(key, values.map((value, i) => {
-
-                if(value.Id == resultQuestion.Id) {
-                    return activeQuestion;
-                } 
-                return value;
-
-            }));
-
-        }, new Map());
-
-    });
 
     setActiveQuestionOptions(options);    
 
@@ -344,7 +318,7 @@ const resultCriteriaHandler = (result, e, setQuestionUpdate, setQuestions, setCr
 }
 
 const resultRecordGroupFieldsHandler = (result, e, setQuestionUpdate, setRecordGroup, setActiveRecordGroup, activeQuestion) => {
-		console.log('resultRecordGroupFieldsHandler', result); 
+
     setActiveRecordGroup(result);
 
     setRecordGroup(group => {

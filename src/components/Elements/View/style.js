@@ -3,18 +3,16 @@ import Main from '../Theme';
 
 const ViewStyle = styled.div`
 
-    padding: 1em 0em 1em 0;
+    padding: .7em;
 
     h1 {
         font-weight: 900;
-        font-size: 1.25em;
-        margin-bottom: 1em;
+        font-size: 1em;
         color: ${Main.color.body};
     }
 
     h2 {
         font-weight: 500;
-				margin-bottom: 1em;
 				font-size: 1em;
         color: ${Main.color.body};
     }
@@ -31,22 +29,16 @@ const ViewStyle = styled.div`
         font-weight: 500;
     }
 
-    ${props => props.middle && css `
-        margin: 0 auto;
-        margin-right: .5em; 
-        padding: 0; 
-    `}
-
     ${props => props.border && css`
-        border-bottom: 1px solid ${Main.color.greyBorder}
+        border-bottom: 1px solid ${Main.color.border}
     `}
 
     ${props => props.space && css`
-        padding: 2em 1em 2em 1em; 
+        padding: 1em 1em 1em 1.5em; 
     `}
 
     ${props => props.extraSpace && css`
-        padding-right: 2em; 
+				padding: 2em; 
     `}
 
     ${props => props.scroll && css`

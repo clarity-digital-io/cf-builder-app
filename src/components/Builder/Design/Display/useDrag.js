@@ -16,7 +16,7 @@ export const useDrag = () => {
 
         const { source, destination } = result;
 
-        if (!destination || destination.droppableId == 'new' ) {
+				if (!destination || destination.droppableId == 'new' ) {
             return;
         }
 
