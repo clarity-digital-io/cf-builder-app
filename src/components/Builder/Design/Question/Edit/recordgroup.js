@@ -28,7 +28,7 @@ export const RecordGroup = () => {
             () => setQuestionUpdate(false),
             () => call(
 								setError,
-                "ClarityFormBuilder.saveQuestion", 
+                "FormBuilder.saveQuestion", 
                 [JSON.stringify(activeQuestion)], 
                 (result, e) => resultHandler(result, e, setQuestionUpdate, setQuestions, activeQuestion, setQuestionState),
 						),

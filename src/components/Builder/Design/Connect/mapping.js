@@ -35,7 +35,7 @@ export const MappingState = () => {
                 () => setUpdate(false),
                 () => call(
 										setError,
-                    "ClarityFormBuilder.saveActiveFieldConnections", 
+                    "FormBuilder.saveActiveFieldConnections", 
                     [JSON.stringify(combinedConnections), activeConnection.Id], 
                     (result, e) => fieldConnectionsResultHandler(result, e, setActiveFieldPrefills, setActiveFieldMapping, setUpdate),
                     form.forms__Status__c

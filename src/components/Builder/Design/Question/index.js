@@ -32,7 +32,7 @@ export const EditProvider = ({ children }) => {
             setRequiredFields([])
             setLoading(true);
 
-            call(setError, "ClarityFormBuilder.getQuestionEditDetails", [navQuestion], (result, e) => optionFetchHandler(result, e, setLoading, setActiveQuestionOptions, setActiveFlowDesign, setCriteria));
+            call(setError, "FormBuilder.getQuestionEditDetails", [navQuestion], (result, e) => optionFetchHandler(result, e, setLoading, setActiveQuestionOptions, setActiveFlowDesign, setCriteria));
         
         }
 
@@ -50,13 +50,13 @@ export const EditProvider = ({ children }) => {
 
             if(activeQuestion.forms__Type__c == 'ConnectedObject') {
                 setLoading(true);
-                call(setError, "ClarityFormBuilder.getSObjectFields", [sObjectEdit], (result, e) => getSObjectFieldResultHandler(result, e, activeQuestion, setRequiredFields, setAdditionalFields, setSObjectEdit, setActiveRecordGroup, setLoading));
+                call(setError, "FormBuilder.getSObjectFields", [sObjectEdit], (result, e) => getSObjectFieldResultHandler(result, e, activeQuestion, setRequiredFields, setAdditionalFields, setSObjectEdit, setActiveRecordGroup, setLoading));
 
             }
             
             if(activeQuestion.forms__Type__c == 'RecordGroup') {
                 setLoading(true); 
-                call(setError, "ClarityFormBuilder.getSObjectFields", [activeQuestion.forms__Salesforce_Object__c], (result, e) => getSObjectFieldResultHandler(result, e, activeQuestion, setRequiredFields, setAdditionalFields, setSObjectEdit, setActiveRecordGroup, setLoading));
+                call(setError, "FormBuilder.getSObjectFields", [activeQuestion.forms__Salesforce_Object__c], (result, e) => getSObjectFieldResultHandler(result, e, activeQuestion, setRequiredFields, setAdditionalFields, setSObjectEdit, setActiveRecordGroup, setLoading));
             }
 
         }

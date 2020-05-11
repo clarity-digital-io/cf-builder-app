@@ -36,7 +36,7 @@ const BuilderProvider = ({ children }) => {
 
             call(
 								setError,
-                "ClarityFormBuilder.getConnectionFieldMapping", 
+                "FormBuilder.getConnectionFieldMapping", 
                 [activeConnection.Id, activeConnection.forms__Salesforce_Object__c], 
                 (result, e) => mappingResultHandler(result, e, setActiveFieldMapping, setActiveFieldPrefills, setActiveFields, setLoading)
             );
@@ -61,7 +61,7 @@ const BuilderProvider = ({ children }) => {
 
         let recordId = url.get('recordId');
 
-        call(setError, "ClarityFormBuilder.startup", [recordId], (result, e) => createHandler(result, e, setForm));
+        call(setError, "FormBuilder.startup", [recordId], (result, e) => createHandler(result, e, setForm));
         
     }, []);
 
@@ -75,7 +75,7 @@ const BuilderProvider = ({ children }) => {
 
             call(
 								setError,
-                "ClarityFormBuilder.getConnections", 
+                "FormBuilder.getConnections", 
                 [form.Id], 
                 (result, e) => connectionsResultHandler(result, e, setConnections, setLoading)
             );
@@ -88,7 +88,7 @@ const BuilderProvider = ({ children }) => {
 
     useEffect(() => {
 
-        call(setError, "ClarityFormBuilder.getSObjectsAvailable", [], (result, e) => getSObjectsHandler(result, e, setSObjects));
+        call(setError, "FormBuilder.getSObjectsAvailable", [], (result, e) => getSObjectsHandler(result, e, setSObjects));
         
     }, [])
 

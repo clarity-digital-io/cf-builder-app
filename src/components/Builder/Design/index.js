@@ -129,7 +129,7 @@ const DesignProvider = ({ children }) => {
 							() => setUpdate(false),
 							() => call(
 									setError,
-									"ClarityFormBuilder.updateForm", 
+									"FormBuilder.updateForm", 
 									[JSON.stringify(form)], 
 									(result, e) => addPageHandler(result, e, setForm, setPages, setAddPageUpdate, setActivePageQuestions, setPageQuestions, setActivePage, newPageInfo.length - 1, activePageQuestions, activePage),
 							),
@@ -154,7 +154,7 @@ const DesignProvider = ({ children }) => {
 
     useEffect(() => {
 
-        call(setError, "ClarityFormBuilder.getQuestions", [form.Id], (result, e) => fetchHandler(result, e, setQuestions, setRecordGroup, setPageQuestions, setActivePageQuestions, setQuestionOptions))
+        call(setError, "FormBuilder.getQuestions", [form.Id], (result, e) => fetchHandler(result, e, setQuestions, setRecordGroup, setPageQuestions, setActivePageQuestions, setQuestionOptions))
 
 		}, [])
 
@@ -175,7 +175,7 @@ const DesignProvider = ({ children }) => {
                 () => setUpdate(false),
                 () => call(
 										setError,
-                    "ClarityFormBuilder.save", 
+                    "FormBuilder.save", 
                     [JSON.stringify(questions)], 
                     (result, e) => resultHandler(result, e, false, setUpdate, setUpdateSingle, setQuestions, setPageQuestions, setActivePageQuestions, questions),
                 ),
@@ -192,7 +192,7 @@ const DesignProvider = ({ children }) => {
                 () => setUpdate(false),
                 () => call(
 										setError,
-                    "ClarityFormBuilder.save", 
+                    "FormBuilder.save", 
                     [JSON.stringify(activePageQuestions)], 
                     (result, e) => resultHandler(result, e, true, setUpdate, setUpdateMulti, setQuestions, setPageQuestions, setActivePageQuestions, activePageQuestions),
                 ),
@@ -223,7 +223,7 @@ const DesignProvider = ({ children }) => {
 							() => setUpdate(false),
 							() => call(
 									setError,
-									"ClarityFormBuilder.pageDelete", 
+									"FormBuilder.pageDelete", 
 									[JSON.stringify(deleteQuestions), form.Id], 
 									(result, e) => deletePageResultHandler(result, e, setPages, setQuestions, setPageQuestions, setRecordGroup, setForm, setActivePage, setAddPageUpdate, deletePage),
 							),
@@ -251,7 +251,7 @@ const DesignProvider = ({ children }) => {
                 () => setUpdate(false),
                 () => call(
 										setError,
-                    "ClarityFormBuilder.deleteQuestion", 
+                    "FormBuilder.deleteQuestion", 
                     [JSON.stringify(updatedOnDelete), questionToDelete], 
                     (result, e) => deleteResultHandler(result, e, setQuestions, setPageQuestions, setRecordGroup, setUpdate),
 								),

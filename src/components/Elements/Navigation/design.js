@@ -65,7 +65,7 @@ const DesignNavigation = () => {
 
 			call(
 					setError,
-					"ClarityFormBuilder.updateStatus", 
+					"FormBuilder.updateStatus", 
 					[form.Id, 'Published'], 
 					(result, e) => publishHandler(result, e, setLoading, setPublishCheck, setForm)
 			);
@@ -78,7 +78,7 @@ const DesignNavigation = () => {
 
 		call(
 				setError,
-				"ClarityFormBuilder.updateStatus", 
+				"FormBuilder.updateStatus", 
 				[form.Id, 'Draft'], 
 				(result, e) => publishHandler(result, e, setLoading, setPublishCheck, setForm)
 		);
