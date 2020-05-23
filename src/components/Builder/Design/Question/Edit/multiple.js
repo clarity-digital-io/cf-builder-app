@@ -69,7 +69,7 @@ export const Multiple = () => {
     const add = (value) => {
 
         setActiveQuestionOptions(options => {
-            return [{ forms__Label__c: value, forms__Clarity_Form_Question__c: activeQuestion.Id }].concat(activeQuestionOptions);
+            return [{ forms__Label__c: value, forms__Question__c: activeQuestion.Id }].concat(activeQuestionOptions);
         })
 
         setNewValue('');

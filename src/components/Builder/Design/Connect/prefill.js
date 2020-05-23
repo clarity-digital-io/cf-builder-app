@@ -31,7 +31,7 @@ export const PreFillState = () => {
 
     const addConnectionField = () => {
         setActiveFieldPrefills((mappings) => {
-            return mappings.concat([{ forms__Clarity_Form_Connection__c: activeConnection.Id, forms__Salesforce_Field__c: '', forms__Clarity_Form_Question__c: '', forms__PreFill__c: true }])
+            return mappings.concat([{ forms__Form_Connection__c: activeConnection.Id, forms__Salesforce_Field__c: '', forms__Question__c: '', forms__PreFill__c: true }])
         })
     }
 
@@ -58,7 +58,7 @@ export const PreFillState = () => {
 
 					return mappings.map((mapping, i) => {
 							if(i == order) {
-									return { ...mapping, forms__Clarity_Form_Question__c: value }
+									return { ...mapping, forms__Question__c: value }
 							}
 							return mapping
 					})
@@ -156,7 +156,7 @@ const QuestionFieldSelect = ({ order, options, value, onChange }) => {
 									valueField={'Id'} 
 									labelField={'forms__Title__c'}
 									key={order} 
-									value={value.forms__Clarity_Form_Question__c ? value.forms__Clarity_Form_Question__c : value.forms__Custom_Value__c} 
+									value={value.forms__Question__c ? value.forms__Question__c : value.forms__Custom_Value__c} 
 									options={options} 
 									onChange={(e) => onChange(e, order)} 
 									setLabel={true} 

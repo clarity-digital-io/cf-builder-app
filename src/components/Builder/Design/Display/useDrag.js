@@ -120,7 +120,7 @@ const clean = (question, index, formId, page) => {
         forms__Title__c        : question.name, 
         forms__Order__c        : index, 
         forms__Type__c         : question.type,
-        forms__Clarity_Form__c : formId,
+        forms__Form__c : formId,
         forms__Required__c     : false, 
         forms__Max_Length__c   : 10, 
         forms__Min_Range__c    : 0, 

@@ -113,7 +113,7 @@ const getSObjectFieldResultHandler = (result, e, activeQuestion, setRequiredFiel
 
             let fieldType = Object.keys(val)[0];
 
-            return { forms__Clarity_Form__c: activeQuestion.forms__Clarity_Form__c, forms__Logic__c: 'AND', forms__Type__c: fieldType, forms__Title__c: field, forms__Salesforce_Field__c: field, forms__Record_Group__c: activeQuestion.Id, forms__Order__c: index, forms__Page__c: 0, forms__RG_Required__c: true }
+            return { forms__Form__c: activeQuestion.forms__Form__c, forms__Logic__c: 'AND', forms__Type__c: fieldType, forms__Title__c: field, forms__Salesforce_Field__c: field, forms__Record_Group__c: activeQuestion.Id, forms__Order__c: index, forms__Page__c: 0, forms__RG_Required__c: true }
 
         });
 

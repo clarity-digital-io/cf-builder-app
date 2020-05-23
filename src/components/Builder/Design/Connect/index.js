@@ -82,7 +82,7 @@ export const ConnectState = () => {
 
         setConnections(connections => {
 
-            return connections.concat([{ forms__Clarity_Form__c: form.Id, forms__Salesforce_Object__c: '' }])
+            return connections.concat([{ forms__Form__c: form.Id, forms__Salesforce_Object__c: '' }])
 
         })
 

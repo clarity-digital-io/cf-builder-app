@@ -407,13 +407,13 @@ const resultHandler = (result, e, isMulti, setUpdate, setAdditionalUpdate, setQu
 
 const fetchHandler = (result, e, setQuestions, setRecordGroup, setPageQuestions, setActivePageQuestions, setQuestionOptions) => {
 
-    let questionWithOptions = result.filter(q => q.forms__Clarity_Form_Question_Options__r != null);
+    let questionWithOptions = result.filter(q => q.forms__Question_Options__r != null);
 
     setQuestionOptions(questionOptions => {
 
         return questionWithOptions.reduce((accum, cur, i) => {
 
-            return accum.set(cur.Id, cur.forms__Clarity_Form_Question_Options__r);
+            return accum.set(cur.Id, cur.forms__Question_Options__r);
 
         }, new Map())
 
@@ -421,8 +421,8 @@ const fetchHandler = (result, e, setQuestions, setRecordGroup, setPageQuestions,
 
     let cleanResult = result.map(q => {
 
-        if(q.hasOwnProperty('forms__Clarity_Form_Question_Options__r')) {
-            delete q.forms__Clarity_Form_Question_Options__r;
+        if(q.hasOwnProperty('forms__Question_Options__r')) {
+            delete q.forms__Question_Options__r;
         }
 
         return q; 

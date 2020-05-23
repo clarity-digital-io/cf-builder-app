@@ -51,7 +51,7 @@ export const SalesforceFields = () => {
                             records={activeRecordGroup} 
                             setActiveRecordGroup={setActiveRecordGroup} 
                             relatedId={activeQuestion.Id} 
-                            formId={activeQuestion.forms__Clarity_Form__c}
+                            formId={activeQuestion.forms__Form__c}
                         /> 
 
                     </ViewStyle>
@@ -209,7 +209,7 @@ const ControlAddRow = ({ setActiveRecordGroup, relatedId, formId }) => {
         setActiveRecordGroup(records => {   
             return records.concat([
 							{ 
-								forms__Clarity_Form__c: formId, 
+								forms__Form__c: formId, 
 								forms__Logic__c: 'AND', 
 								forms__Type__c: '', 
 								forms__Title__c: '', 

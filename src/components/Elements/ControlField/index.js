@@ -238,7 +238,7 @@ const ControlAddRow = ({ type, setRows, relatedId }) => {
                     return rows.concat([{ forms__Operator__c: '', forms__Type__c: '', forms__Value__c: '', forms__Title__c: '', forms__Field__c: null, forms__Field_Type__c: '', forms__Clarity_Form_Assignment__c: relatedId }])
                     break;  
                 default:
-                    return rows.concat([{ forms__Operator__c: '', forms__Type__c: '', forms__Value__c: '', forms__Title__c: '', forms__Field__c: null, forms__Field_Type__c: '', forms__Clarity_Form_Question__c: relatedId }])
+                    return rows.concat([{ forms__Operator__c: '', forms__Type__c: '', forms__Value__c: '', forms__Title__c: '', forms__Field__c: null, forms__Field_Type__c: '', forms__Question__c: relatedId }])
                     break;
             }
         });

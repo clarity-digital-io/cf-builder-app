@@ -80,7 +80,7 @@ export const PictureChoices = ({ question }) => {
 							{ 
 								forms__Order__c: options.length, 
 								forms__Label__c: value, 
-								forms__Clarity_Form_Question__c: activeQuestionId, 
+								forms__Question__c: activeQuestionId, 
 								forms__Choice_Image__c: file
 							}
 						]);
