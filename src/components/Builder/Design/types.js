@@ -100,7 +100,13 @@ export const types = [
         active: true, 
         name: 'Input Field',
         type: 'InputField'
-    }
+		},
+		{   
+			id: 16, 
+			active: true, 
+			name: 'Mobile Geo Location',
+			type: 'GeoLocation'
+		}
 ];
 
 export const sortedTypes = types.sort((a, b) => {

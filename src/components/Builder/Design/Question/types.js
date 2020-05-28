@@ -1,9 +1,12 @@
 import React from 'react';
-import { MessageDetail1DarkIcon, RecordGroup2DarkIcon, Images2DarkIcon, DownArrowOutlineDarkIcon, CalculatorDarkIcon, PaperClipDarkIcon, NetPromoterScoreDarkIcon, TextDarkIcon, CheckboxCheckedDarkIcon, RecordGroup1DarkIcon, LookupDarkIcon, EmailDarkIcon, CalendarDarkIcon, SliderDarkIcon, SelectMultipleDarkIcon, InputDarkIcon } from '../../../Elements/Icons';
+import { GeoLocationDarkIcon, MessageDetail1DarkIcon, RecordGroup2DarkIcon, Images2DarkIcon, DownArrowOutlineDarkIcon, CalculatorDarkIcon, PaperClipDarkIcon, NetPromoterScoreDarkIcon, TextDarkIcon, CheckboxCheckedDarkIcon, RecordGroup1DarkIcon, LookupDarkIcon, EmailDarkIcon, CalendarDarkIcon, SliderDarkIcon, SelectMultipleDarkIcon, InputDarkIcon } from '../../../Elements/Icons';
 
 export const getType = (type) => {
 
     switch (type) {
+				case 'GeoLocation':
+					return <GeoLocationDarkIcon />
+					break;
 				case 'PictureChoice':
 						return <SelectMultipleDarkIcon />
 						break;

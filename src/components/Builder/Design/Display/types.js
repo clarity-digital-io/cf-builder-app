@@ -55,7 +55,10 @@ export const getType = (question) => {
         case 'InputField':
         case 'STRING':
             return <InputField question={question} />
-            break;
+						break;
+				case 'GeoLocation':
+						return <InputField question={question} />
+						break;
     }
 
 }

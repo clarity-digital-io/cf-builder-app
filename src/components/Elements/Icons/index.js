@@ -150,3 +150,13 @@ export const RecordGroup2DarkIcon = props => (
 		style={{ background: '#fff', fill: '#16325c' }}
 	/>
 )
+
+export const GeoLocationDarkIcon = props => (
+	<SalesforceIcon
+		assistiveText={{ label: 'Record Group' }}
+		category="utility"
+		name="world"
+		size="x-small"
+		style={{ background: '#fff', fill: '#16325c' }}
+	/>
+)
