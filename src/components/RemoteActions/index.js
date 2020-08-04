@@ -50,12 +50,10 @@ const mockCall = (setError, func, params, callback, status) => {
     let timestamp = date.getTime();
 
     switch (func) {
-        case 'startup':
+        case 'getForm':
             callback({
                 Id: 1, 
                 Name: 'Clarity Form', 
-                forms__Limit__c: 10, 
-                forms__End_Date__c: '2019-12-31',
                 forms__Connected_Object__c: 'Account',
 								forms__Status__c: 'Draft',
 								forms__Multi_Page__c: true,
@@ -64,20 +62,10 @@ const mockCall = (setError, func, params, callback, status) => {
             }); 
             break;
         case 'updateForm':
-            callback({ Id: 1, Name: 'Clarity Form Title', forms__End_Date__c: '2019-12-31', forms__Limit__c: 1000, forms__Multi_Page__c: true, forms__Multi_Page_Info__c: '[]' })
+            callback({ Id: 1, Name: 'CF-0001', Title__c: 'QA Inspection', forms__End_Date__c: '2019-12-31', forms__Multi_Page__c: true, forms__Multi_Page_Info__c: '[]' })
 						break;
-				case 'getQuestions':
-						callback([]);
-						break; 
-        case 'getQuestions1':
+        case 'getQuestions':
             callback([
-								{ Id: 'CF-8.1', forms__Logic__c: 'AND', forms__Type__c: 'PictureChoice', forms__Title__c: 'Which of these describe your current emotion?', forms__Order__c: 0, forms__Max_Length__c: 10, forms__Min_Range__c: 0, forms__Max_Range__c: 100, forms__Step__c: 10, forms__Page__c: 0 , 
-									forms__Question_Options__r: [
-											{ Id: 801, forms__Label__c: 'Option 1', forms__Question__c: 'CF-8.1', forms__Choice_Image__c: 'https://images.unsplash.com/photo-1562743338-51caec0b0e65?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1955&q=80', forms__Order__c: 0 },
-											{ Id: 802, forms__Label__c: 'Option 2', forms__Question__c: 'CF-8.1', forms__Choice_Image__c: 'https://images.unsplash.com/photo-1562743338-51caec0b0e65?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1955&q=80', forms__Order__c: 1 },
-											{ Id: 803, forms__Label__c: 'Option 3', forms__Question__c: 'CF-8.1', forms__Choice_Image__c: 'https://images.unsplash.com/photo-1562743338-51caec0b0e65?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1955&q=80', forms__Order__c: 2 }
-									]
-								}, 
                 { Id: 1, forms__Logic__c: 'AND', forms__Type__c: 'Checkbox', forms__Title__c: 'Checkbox', forms__Order__c: 0, forms__Max_Length__c: 10, forms__Min_Range__c: 0, forms__Max_Range__c: 100, forms__Step__c: 10, forms__Page__c: 0 }, 
                 { Id: 2, forms__Logic__c: 'AND', forms__Type__c: 'Comment', forms__Title__c: 'Comment', forms__Order__c: 1, forms__Max_Length__c: 10, forms__Min_Range__c: 0, forms__Max_Range__c: 100, forms__Step__c: 10, forms__Page__c: 0 },
                 { Id: 3, forms__Logic__c: 'OR', forms__Type__c: 'Date', forms__Title__c: 'Date', forms__Order__c: 2, forms__Max_Length__c: 10, forms__Min_Range__c: 0, forms__Max_Range__c: 100, forms__Step__c: 10, forms__Page__c: 0, 
@@ -103,7 +91,6 @@ const mockCall = (setError, func, params, callback, status) => {
                         { Id: 73, forms__Label__c: 'MultipleChoice 3', forms__Question__c: 7, forms__Order__c: 0 }
                     ]
                 }, 
-                { Id: 8, forms__Logic__c: 'AND', forms__Type__c: 'NetPromoterScore', forms__Title__c: 'NetPromoterScore', forms__Order__c: 7, forms__Max_Length__c: 10, forms__Min_Range__c: 0, forms__Max_Range__c: 100, forms__Step__c: 10, forms__Page__c: 0 }, 
                 { Id: 9, forms__Logic__c: 'AND', forms__Type__c: 'Number', forms__Title__c: 'Number', forms__Order__c: 8, forms__Page__c: 0 },
 								{ Id: 11, forms__Logic__c: 'AND', forms__Type__c: 'RecordGroup', forms__Title__c: 'Create Opportunity Line Items', forms__Salesforce_Object__c: 'OpportunityLineItem', forms__Order__c: 10, forms__Page__c: 0 }, 
                 { Id: 12, forms__Logic__c: 'AND', forms__Type__c: 'REFERENCE', forms__Title__c: 'Add an account:', forms__Salesforce_Field__c: 'OpportunityId', forms__Record_Group__c: 11, forms__Order__c: 11, forms__Page__c: 0 },
@@ -152,12 +139,6 @@ const mockCall = (setError, func, params, callback, status) => {
                 { Id: 9, Logic__c: 'AND', Type__c: 'Number', Title__c: 'Add the quantity:', Salesforce_Field__c: 'Quantity', Record_Group__c: 7, Order__c: 1, Page__c: 0 }
             ]); 
             break; 
-        case 'saveFlowDesign':
-            callback({
-                'Options' : [{ Id: 31, Label__c: 'Option 1', Active_Flow__c: true, Question__c: 2},{ Id: 32, Label__c: 'Option 2', Active_Flow__c: true, Question__c: 2}],
-                'FlowDesign': [{ Id: 31, Question__c: 123, Form_Submission__c: true, Active__c: false }]
-            });
-            break;
         case 'saveQuestionWithCriteria':
             callback({
                 'Question' : [{ Id: 1, Type__c: 'RecordGroup', Title__c: 'RecordGroup', Order__c: 0, Logic__c: 'OR'  }],

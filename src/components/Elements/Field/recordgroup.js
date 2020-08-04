@@ -9,9 +9,9 @@ import { Card, DataTable, DataTableColumn, Icon, Button } from '@salesforce/desi
 export const RecordGroup = ({ question }) => {
 
     const [newItem, addNewItem] = useState(false);
-
-    const [recordQuestion, setRecordQuestion] = useState(question); 
 		
+		const { recordGroup } = useContext(DesignContext);
+
 		return (
 				<div className="slds-grid slds-grid_vertical">
 					<Card
@@ -33,7 +33,7 @@ export const RecordGroup = ({ question }) => {
 									key="body"
 									items={[]} 
 									newItem={newItem} 
-									question={recordQuestion} 
+									recordGroupFields={recordGroup.has(question.Id) ? recordGroup.get(question.Id) : []}
 							/>
 					</Card>
 				</div>
@@ -41,22 +41,13 @@ export const RecordGroup = ({ question }) => {
 
 }
 
-const RecordBody = ({ items, newItem, question }) => {
+const getFields = (questionId, recordGroup) => {
+	return recordGroup.has(questionId) ? recordGroup.get(questionId) : []
+}
 
+const RecordBody = ({ items, newItem, recordGroupFields }) => {
 
-	const { recordGroup } = useContext(DesignContext);
-
-	const [recordGroupFields, setRecordGroupFields] = useState(recordGroup.get(question.Id) || []);
-
-	const [columns, setColumns] = useState([]);
-
-	useEffect(() => {
-
-			if(recordGroupFields && recordGroupFields != null) {
-					setColumns(getRecordColumns(recordGroupFields));
-			}
-
-	}, [recordGroupFields])
+	const [columns, setColumns] = useState(getRecordColumns(recordGroupFields));
 
 	return newItem ?  
 			<div className="slds-m-around_medium">

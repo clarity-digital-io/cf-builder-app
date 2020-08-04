@@ -10,7 +10,7 @@ import { BuilderContext, DesignContext } from '../../../Context';
 
 const combineQuestions = (questions, recordGroup) => {
 
-    let filteredQuestions = questions.filter(question => (question.forms__Type__c != 'FreeText' && question.forms__Type__c != 'RecordGroup' && question.forms__Type__c != 'PictureChoice'));
+    let filteredQuestions = questions.filter(question => (question.forms__Type__c != 'FreeText' && question.forms__Type__c != 'RecordGroup'));
 
     let rcQuestions =  Array.from(recordGroup.values()).reduce((accum, qs, index) => {
 

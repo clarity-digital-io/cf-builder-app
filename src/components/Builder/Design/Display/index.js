@@ -15,7 +15,6 @@ export const Display = () => {
 		};
 
     return (
-
 			previewMode.active ? 
         <PreviewFormDesign style={background} key={'Display'}>
 

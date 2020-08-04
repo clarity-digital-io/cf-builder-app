@@ -30,7 +30,7 @@ export const QuestionState = () => {
                 return <EditProvider><Save><EditQuestion type={activeQuestion.forms__Type__c} /></Save></EditProvider>
                 break;
             case 'SF': 
-                return <EditProvider><Save><SalesforceFields /></Save></EditProvider>
+                return <EditProvider><Save><SalesforceFields questionId={activeQuestion.Id} /></Save></EditProvider>
                 break; 
             case 'LOGIC': 
                 return <EditProvider><Save><LogicQuestion type={activeQuestion.forms__Type__c} /></Save></EditProvider>
@@ -84,7 +84,7 @@ const Save = ({ children }) => {
                 () => setQuestionUpdate(false),
                 () => call(
 										setError,
-                    "FormBuilder.saveQuestion", 
+                    "BuilderController.saveQuestion", 
                     [JSON.stringify(activeQuestion)], 
                     (result, e) => resultHandler(result, e, setQuestionUpdate, setQuestions, setActivePageQuestions, activeQuestion),
 								),
@@ -93,52 +93,17 @@ const Save = ({ children }) => {
             )
         }
 
-        if(activeQuestion.forms__Type__c != 'PictureChoice' && questionUpdate && activeQuestionOptions.length && questionState == 'EDIT') {
-            StatusHandler(
+        if(questionUpdate && activeQuestionOptions.length && questionState == 'EDIT') {
+
+					let question = prepare([activeQuestion]);
+
+					StatusHandler(
                 form.forms__Status__c,
                 () => setQuestionUpdate(false),
                 () => call(
 										setError,
-                    "FormBuilder.saveQuestionWithOptions", 
-                    [JSON.stringify(activeQuestion), JSON.stringify(activeQuestionOptions)], 
-                    (result, e) => resultOptionHandler(result, e, setQuestionUpdate, setQuestions, activeQuestion, setActiveQuestionOptions, setQuestionOptions),
-								),
-								null,
-								setError
-            )
-        }
-
-        if(activeQuestion.forms__Type__c == 'PictureChoice' && questionUpdate && activeQuestionOptions.length && questionState == 'EDIT') {
-
-						let activeQuestionOptionImages = activeQuestionOptions.reduce((accum, option, index) => {
-
-							if(option.forms__Choice_Image__c != null && option.forms__Choice_Image__c.length > 18) {
-								let base64result = option.forms__Choice_Image__c.split(',')[1];
-								accum[option.Id || index] = base64result;
-							}
-
-							return accum;
-
-						}, {});
-
-						let updatedOptions = activeQuestionOptions.reduce((accum, option, index) => {
-
-							if(option.forms__Choice_Image__c != null && option.forms__Choice_Image__c.length > 18) {
-								option.forms__Choice_Image__c = '';
-							}
-
-							accum[option.Id || index] = option;
-							return accum;
-
-						}, {});
-
-            StatusHandler(
-                form.forms__Status__c,
-                () => setQuestionUpdate(false),
-                () => call(
-										setError,
-                    "FormBuilder.saveQuestionWithPictureOptions", 
-                    [JSON.stringify(activeQuestion), JSON.stringify(updatedOptions), JSON.stringify(activeQuestionOptionImages)], 
+                    "BuilderController.saveQuestionWithOptions", 
+                    [JSON.stringify(question[0]), JSON.stringify(activeQuestionOptions)], 
                     (result, e) => resultOptionHandler(result, e, setQuestionUpdate, setQuestions, activeQuestion, setActiveQuestionOptions, setQuestionOptions),
 								),
 								null,
@@ -147,16 +112,18 @@ const Save = ({ children }) => {
         }
 
         if(questionUpdate && questionState == 'LOGIC') {
-            
+						
             let updatedCriteria = criteria.map(c => { delete c.Id; return c });
-            
+						
+						let question = prepare([activeQuestion]);
+
             StatusHandler(
                 form.forms__Status__c,
                 () => setQuestionUpdate(false),
                 () => call(
 										setError,
-                    "FormBuilder.saveQuestionWithCriteria", 
-                    [JSON.stringify(activeQuestion), JSON.stringify(updatedCriteria)], 
+                    "BuilderController.saveQuestionWithCriteria", 
+                    [JSON.stringify(question[0]), JSON.stringify(updatedCriteria)], 
                     (result, e) => resultCriteriaHandler(result, e,setQuestionUpdate, setQuestions, setCriteria, activeQuestion),
 								),
 								null,
@@ -169,7 +136,8 @@ const Save = ({ children }) => {
 
             let updatedActiveRecords = activeRecordGroup.map(a => {
                 delete a.Id;
-                return a;
+                delete a.Name;
+								return a;
             });
 						
             StatusHandler(
@@ -177,7 +145,7 @@ const Save = ({ children }) => {
                 () => setQuestionUpdate(false),
                 () => call(
 										setError,
-                    "FormBuilder.saveRecordGroupFields", 
+                    "BuilderController.saveRecordGroupFields", 
                     [JSON.stringify(updatedActiveRecords), activeQuestion.Id], 
                     (result, e) => resultRecordGroupFieldsHandler(result, e, setQuestionUpdate, setRecordGroup, setActiveRecordGroup, activeQuestion),
 								),
@@ -230,10 +198,12 @@ const Save = ({ children }) => {
 }
 
 const resultHandler = (result, e, setQuestionUpdate, setQuestions, setActivePageQuestions, activeQuestion) => {
-
+		console.log('LOOK HERE', result, activeQuestion)
     setQuestions(questions => {
 
         return questions.map(question => {
+					console.log(question.Id == result)
+
             if(question.Id == result) {
                 return activeQuestion; 
             }
@@ -256,7 +226,6 @@ const resultHandler = (result, e, setQuestionUpdate, setQuestions, setActivePage
 			})
 
 		});
-
 
     setQuestionUpdate(false);
 
@@ -317,9 +286,22 @@ const resultCriteriaHandler = (result, e, setQuestionUpdate, setQuestions, setCr
 
 }
 
+const prepare = (questions) => {
+	return questions.map(question => {
+		if(question.hasOwnProperty('forms__Question_Options__r')) {
+			delete question.forms__Question_Options__r;
+		}
+
+		if(question.hasOwnProperty('forms__Question_Criteria__r')) {
+			delete question.forms__Question_Criteria__r;
+		}
+		return question; 
+	})
+}
+
 const resultRecordGroupFieldsHandler = (result, e, setQuestionUpdate, setRecordGroup, setActiveRecordGroup, activeQuestion) => {
 
-    setActiveRecordGroup(result);
+		setActiveRecordGroup(result);
 
     setRecordGroup(group => {
         group.set(activeQuestion.Id, result); 

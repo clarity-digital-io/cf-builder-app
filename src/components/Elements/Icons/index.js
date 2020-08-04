@@ -91,16 +91,6 @@ export const MessageDetail1DarkIcon = props => (
 	/>
 )
 
-export const NetPromoterScoreDarkIcon = props => (
-	<SalesforceIcon
-		assistiveText={{ label: 'Net Promoter Score' }}
-		category="utility"
-		name="smiley_and_people"
-		size="x-small"
-		style={{ background: '#fff', fill: '#16325c' }}
-	/>
-)
-
 export const PaperClipDarkIcon = props => (
 	<SalesforceIcon
 		assistiveText={{ label: 'Attachment' }}

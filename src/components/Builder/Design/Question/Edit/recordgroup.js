@@ -21,22 +21,30 @@ export const RecordGroup = () => {
 
     }
 
-    const saveAndAddFields = () => {
+    const save = () => {
 
-        StatusHandler(
+				//setQuestionUpdate(true);
+
+				StatusHandler(
             form.forms__Status__c,
             () => setQuestionUpdate(false),
             () => call(
 								setError,
-                "FormBuilder.saveQuestion", 
+                "BuilderController.saveQuestion", 
                 [JSON.stringify(activeQuestion)], 
-                (result, e) => resultHandler(result, e, setQuestionUpdate, setQuestions, activeQuestion, setQuestionState),
+                (result, e) => resultHandler(result, e, setQuestionUpdate, setQuestions, activeQuestion),
 						),
 						null,
 						setError	
         )
 
-    }
+		}
+		
+		const addFields = () => {
+
+			setQuestionState('SF');
+
+		}
 
     return [
         <ViewStyle key={'description'}>
@@ -44,36 +52,55 @@ export const RecordGroup = () => {
             <h1>Record Group</h1>
 
             <p>
-                Create a new Record for any standard or custom object you chose. (At a minimum Required fields will be displayed).
+                Create a new Record for any standard or custom object you chose.
             </p>
 
             <Select options={sObjects} value={activeQuestion.forms__Salesforce_Object__c} onChange={(data) => updateLookupQuestion(data[0].value)} />
 
         </ViewStyle>,
-        <ViewStyle key={'add'}>
+        <ViewStyle key={'save'}>
 
             <Button 
-                disabled={(activeQuestion.forms__alesforce_Object__c == '' || activeQuestion.forms__Salesforce_Object__c == null) ? true : false} 
+                disabled={(activeQuestion.forms__Salesforce_Object__c == '' || activeQuestion.forms__Salesforce_Object__c == null) ? true : false} 
                 cta 
-                onClick={() => saveAndAddFields()}>
-                Save &amp; Add Salesforce Fields
+                onClick={() => save()}>
+                Save
             </Button>
 
-        </ViewStyle>
+				</ViewStyle>,
+        <ViewStyle key={'description'}>
+
+						<h1>Record Group Fields</h1>
+
+						<p>
+								Add Custom Fields to your Salesforce Record Group.
+						</p>
+
+				</ViewStyle>,
+				<ViewStyle key={'save'}>
+
+						<Button 
+								disabled={(activeQuestion.forms__Salesforce_Object__c == '' || activeQuestion.forms__Salesforce_Object__c == null) ? true : false} 
+								cta 
+								onClick={() => addFields()}>
+								Update Record Group Fields
+						</Button>
+
+				</ViewStyle>
     ]
 
 }
 
-const resultHandler = (result, e, setQuestionUpdate, setQuestions, activeQuestion, setQuestionState) => {
+const resultHandler = (result, e, setQuestionUpdate, setQuestions, activeQuestion) => {
 
-    setQuestions(questions => {
-        
-        return questions.map(question => {
+	setQuestions(questions => {
 
+			return questions.map(question => {
+						
             if(question.Id == result) {
                 return activeQuestion; 
-            }
-
+						}
+						
             return question; 
 
         })
@@ -81,7 +108,5 @@ const resultHandler = (result, e, setQuestionUpdate, setQuestions, activeQuestio
     });
 
     setQuestionUpdate(false);
-
-    setQuestionState('SF');
 
 }

@@ -16,7 +16,7 @@ export const Multiple = () => {
     const { activeQuestionOptions, setActiveQuestionOptions } = useContext(EditContext);
 
     const { activeQuestion } = useContext(DesignContext);
-
+		
     const [newValue, setNewValue] = useState('');
 
     const handleKeyDown = (e) => {

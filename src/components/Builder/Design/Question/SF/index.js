@@ -11,18 +11,22 @@ import CloseIcon from '../../../../Elements/Icons/close';
 import { Select } from '../../../../Elements/Select';
 import { Button } from '../../../../Elements/Button';
 
-export const SalesforceFields = () => {
+export const SalesforceFields = ({ questionId }) => {
 
     const { activeRecordGroup, setActiveRecordGroup, setSObjectEdit, requiredFields } = useContext(EditContext); 
     const { recordGroup, activeQuestion } = useContext(DesignContext); 
 
     useEffect(() => {
+
 				setActiveRecordGroup(active => {
-					return recordGroup.get(activeQuestion.Id) != null ? recordGroup.get(activeQuestion.Id) : [];
+
+					return recordGroup.has(activeQuestion.Id) ? active.concat(recordGroup.get(activeQuestion.Id)) : [];
+
 				})
+
         setSObjectEdit(activeQuestion.forms__Type__c);
 
-    }, []);
+    }, [questionId]);
 
     return (
         <View className="row middle-xs">
@@ -81,7 +85,7 @@ const ControlSelects = ({ records }) => {
 
 const ControlSelect = ({ order, row }) => {
 
-    const { setActiveRecordGroup, additionalFields, requiredFields } = useContext(EditContext); 
+		const { setActiveRecordGroup, additionalFields, requiredFields } = useContext(EditContext); 
 
     const { setQuestionState, setActiveQuestion } = useContext(DesignContext); 
 
@@ -141,8 +145,8 @@ const ControlSelect = ({ order, row }) => {
 		}
 		
 		const closeStyle = {
-			height: '60%',
-			width: '60%',
+			height: '40%',
+			width: '40%',
 		};
 
 		return (
@@ -152,11 +156,10 @@ const ControlSelect = ({ order, row }) => {
                     <span id="center">{ order + 1 }</span>
                 </Box>                
             </View>
-
-            <View className="col-xs-4">
+            <View className="col-xs-5">
                 <Box padding='.5em'> 
 										<Select 
-											disabled={row.forms__RG_Required__c} 
+											disabled={row.forms__Required__c} 
 											key={row.forms__Order__c} 
 											value={row.forms__Salesforce_Field__c} 
 											options={Object.keys(requiredFields).concat(Object.keys(additionalFields))} 
@@ -168,7 +171,7 @@ const ControlSelect = ({ order, row }) => {
                 <Box padding='.5em'> 
 
                     {
-                        <Button disabled={row.forms__RG_Required__c} onClick={() => edit('EDIT')}>Edit</Button>
+                        <Button disabled={row.forms__Required__c} onClick={() => edit('EDIT')}>Edit</Button>
                     }
 
                 </Box>
@@ -177,18 +180,18 @@ const ControlSelect = ({ order, row }) => {
                 <Box padding='.5em'> 
 
                     {
-                        row.Id != null && !row.forms__RG_Required__c? 
+                        row.Id != null && !row.forms__Required__c? 
                         <Button add onClick={() => edit('LOGIC')}>Logic</Button> :
                         <Button disabled>Logic</Button>
                     }
 
                 </Box>
             </View>            
-            <View className="col-xs-1">
+            <View className="col-xs-2">
                 <Box padding='.5em'> 
 
                     {
-                        !row.forms__RG_Required__c ? 
+                        !row.forms__Required__c ? 
                         <div style={closeStyle} disabled={true} onClick={() => removeRow(order)}>
                           <CloseIcon />
                         </div> :

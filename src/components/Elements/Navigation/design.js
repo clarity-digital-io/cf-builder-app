@@ -63,10 +63,13 @@ const DesignNavigation = () => {
 
 			setLoading(true); 
 
+			let updateForm = { Id: form.Id };
+			updateForm.forms__Status__c = 'Published';
+
 			call(
 					setError,
-					"FormBuilder.updateStatus", 
-					[form.Id, 'Published'], 
+					"BuilderController.updateForm", 
+					[JSON.stringify(updateForm)], 
 					(result, e) => publishHandler(result, e, setLoading, setPublishCheck, setForm)
 			);
 
@@ -76,10 +79,13 @@ const DesignNavigation = () => {
         
 		setLoading(true); 
 
+		let updateForm = { Id: form.Id };
+		updateForm.forms__Status__c = 'Draft';
+
 		call(
 				setError,
-				"FormBuilder.updateStatus", 
-				[form.Id, 'Draft'], 
+				"BuilderController.updateForm", 
+				[JSON.stringify(updateForm)],
 				(result, e) => publishHandler(result, e, setLoading, setPublishCheck, setForm)
 		);
 
@@ -260,13 +266,10 @@ const publishHandler = (result, e, setLoading, setPublishCheck, setForm) => {
 
 	setPublishCheck(false); 
 
-	if(result.Status == 'Success') {
+	setForm(form => {
+		return { ...form, forms__Status__c: result.forms__Status__c }
+	});
 
-			setForm(form => {
-					return { ...form, forms__Status__c: result.Form.forms__Status__c }
-			});
-
-	}
 }
 
 export default DesignNavigation;

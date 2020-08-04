@@ -16,7 +16,7 @@ export const FieldConnectState = () => {
     const { activeFieldMapping, setActiveFieldMapping, activeConnection, activeFields } = useContext(BuilderContext);
 
     const [questionOptions, setQuestionOptions] = useState(
-        questions.filter(question => (question.forms__Type__c != 'Text' && question.forms__Type__c != 'RecordGroup' && question.forms__Type__c != 'PictureChoice'))
+        questions.filter(question => (question.forms__Type__c != 'Text' && question.forms__Type__c != 'RecordGroup'))
     )
 
     const addConnectionField = () => {

@@ -8,7 +8,7 @@ export const EditProvider = ({ children }) => {
 
 		const { setError } = useContext(BuilderContext); 
 
-    const { navQuestion, activeQuestion } = useContext(DesignContext);
+    const { navQuestion, activeQuestion, recordGroup } = useContext(DesignContext);
 
     const [activeRecordGroup, setActiveRecordGroup] = useState([]); 
 
@@ -18,8 +18,6 @@ export const EditProvider = ({ children }) => {
 
     const [activeQuestionConnectedFields, setActiveQuestionConnectedFields] = useState([]); 
 
-    const [activeFlowDesign, setActiveFlowDesign] = useState({}); 
-
     const [criteria, setCriteria] = useState([]); 
 
     const [edit, setEdit] = useState(null); 
@@ -27,12 +25,10 @@ export const EditProvider = ({ children }) => {
     useEffect(() => {
 
         if(navQuestion) {
-            
             setAdditionalFields([])
             setRequiredFields([])
-            setLoading(true);
-
-            call(setError, "FormBuilder.getQuestionEditDetails", [navQuestion], (result, e) => optionFetchHandler(result, e, setLoading, setActiveQuestionOptions, setActiveFlowDesign, setCriteria));
+						setActiveQuestionOptions(activeQuestion.forms__Question_Options__r != null ? activeQuestion.forms__Question_Options__r : []);
+						setCriteria(activeQuestion.forms__Question_Criteria__r != null ? activeQuestion.forms__Question_Criteria__r : []);
         
         }
 
@@ -46,17 +42,11 @@ export const EditProvider = ({ children }) => {
 
     useEffect(() => {
 
-        if(sObjectEdit) {
-
-            if(activeQuestion.forms__Type__c == 'ConnectedObject') {
-                setLoading(true);
-                call(setError, "FormBuilder.getSObjectFields", [sObjectEdit], (result, e) => getSObjectFieldResultHandler(result, e, activeQuestion, setRequiredFields, setAdditionalFields, setSObjectEdit, setActiveRecordGroup, setLoading));
-
-            }
+			if(sObjectEdit) {
             
             if(activeQuestion.forms__Type__c == 'RecordGroup') {
                 setLoading(true); 
-                call(setError, "FormBuilder.getSObjectFields", [activeQuestion.forms__Salesforce_Object__c], (result, e) => getSObjectFieldResultHandler(result, e, activeQuestion, setRequiredFields, setAdditionalFields, setSObjectEdit, setActiveRecordGroup, setLoading));
+                call(setError, "BuilderController.getSObjectFields", [activeQuestion.forms__Salesforce_Object__c], (result, e) => getSObjectFieldResultHandler(result, e, activeQuestion, setRequiredFields, setAdditionalFields, setSObjectEdit, setActiveRecordGroup, setLoading, recordGroup));
             }
 
         }
@@ -73,8 +63,6 @@ export const EditProvider = ({ children }) => {
             setActiveQuestionOptions, 
             activeQuestionConnectedFields, 
             setActiveQuestionConnectedFields, 
-            activeFlowDesign, 
-            setActiveFlowDesign, 
             criteria, 
             setCriteria, 
             edit, 
@@ -92,30 +80,31 @@ export const EditProvider = ({ children }) => {
     
 }
 
-const optionFetchHandler = (result, e, setLoading, setActiveQuestionOptions, setActiveFlowDesign, setCriteria) => {
-    setActiveQuestionOptions(result.Options);
-    setCriteria(result.Criteria);
-    setActiveFlowDesign(result.FlowDesign[0]);
-    setLoading(false);
-}
-
-const getSObjectFieldResultHandler = (result, e, activeQuestion, setRequiredFields, setAdditionalFields, setSObjectEdit, setActiveRecordGroup, setLoading) => {
+const getSObjectFieldResultHandler = (result, e, activeQuestion, setRequiredFields, setAdditionalFields, setSObjectEdit, setActiveRecordGroup, setLoading, recordGroup) => {
 
     setSObjectEdit('');
     setAdditionalFields(result.NotRequired);
     setRequiredFields(result.Required);
 
-    setActiveRecordGroup(records => {   
+		setActiveRecordGroup(active => {   
 
-        return Object.keys(result.Required).map((field, index) => {
+			let existing = recordGroup.has(activeQuestion.Id) ? recordGroup.get(activeQuestion.Id) : [];
+			console.log('existing', existing, recordGroup); 
+			if(existing.length > 0) {
+				return existing;
+			}
 
-            let val = result.Required[field];
+			let newRequired = Object.keys(result.Required).map((field, index) => {
 
-            let fieldType = Object.keys(val)[0];
+					let val = result.Required[field];
 
-            return { forms__Form__c: activeQuestion.forms__Form__c, forms__Logic__c: 'AND', forms__Type__c: fieldType, forms__Title__c: field, forms__Salesforce_Field__c: field, forms__Record_Group__c: activeQuestion.Id, forms__Order__c: index, forms__Page__c: 0, forms__RG_Required__c: true }
+					let fieldType = Object.keys(val)[0];
 
-        });
+					return { forms__Form__c: activeQuestion.forms__Form__c, forms__Logic__c: 'AND', forms__Type__c: fieldType, forms__Title__c: field, forms__Salesforce_Field__c: field, forms__Record_Group__c: activeQuestion.Id, forms__Order__c: index, forms__Page__c: 0, forms__Required__c: true }
+
+			});
+
+			return newRequired; 
 
     })
 

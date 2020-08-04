@@ -9,8 +9,6 @@ export {FreeText} from './freetext';
 export {Image} from './image';
 export {Lookup} from './lookup';
 export {MultipleChoice} from './multiplechoice';
-export {PictureChoice} from './picturechoice';
-export {NetPromoterScore} from './netpromoterscore';
 export {Number} from './number';
 export {RecordGroup} from './recordgroup';
 export {Slider} from './slider';

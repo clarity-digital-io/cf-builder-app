@@ -65,7 +65,7 @@ const DragDropUpdateProvider = ({ children }) => {
 const pageValues = (info) => {
 	
 	let pages = [];
-	console.log('type', info, typeof info); 
+
 	if(typeof info == 'string') {
 		info = JSON.parse(info); 
 	}
@@ -129,7 +129,7 @@ const DesignProvider = ({ children }) => {
 							() => setUpdate(false),
 							() => call(
 									setError,
-									"FormBuilder.updateForm", 
+									"BuilderController.updateForm", 
 									[JSON.stringify(form)], 
 									(result, e) => addPageHandler(result, e, setForm, setPages, setAddPageUpdate, setActivePageQuestions, setPageQuestions, setActivePage, newPageInfo.length - 1, activePageQuestions, activePage),
 							),
@@ -154,7 +154,7 @@ const DesignProvider = ({ children }) => {
 
     useEffect(() => {
 
-        call(setError, "FormBuilder.getQuestions", [form.Id], (result, e) => fetchHandler(result, e, setQuestions, setRecordGroup, setPageQuestions, setActivePageQuestions, setQuestionOptions))
+        call(setError, "BuilderController.getQuestions", [form.Id], (result, e) => fetchHandler(result, e, setQuestions, setRecordGroup, setPageQuestions, setActivePageQuestions, setQuestionOptions))
 
 		}, [])
 
@@ -170,13 +170,16 @@ const DesignProvider = ({ children }) => {
 
         if(update && updateSingle) {
 
+						let clonedQuestions = JSON.parse(JSON.stringify(questions));
+						let preparedQuestions = prepare(clonedQuestions); 
+
 						StatusHandler(
                 form.forms__Status__c,
                 () => setUpdate(false),
                 () => call(
 										setError,
-                    "FormBuilder.save", 
-                    [JSON.stringify(questions)], 
+                    "BuilderController.save", 
+                    [JSON.stringify(preparedQuestions)], 
                     (result, e) => resultHandler(result, e, false, setUpdate, setUpdateSingle, setQuestions, setPageQuestions, setActivePageQuestions, questions),
                 ),
 								() => setUpdateSingle(false),
@@ -192,7 +195,7 @@ const DesignProvider = ({ children }) => {
                 () => setUpdate(false),
                 () => call(
 										setError,
-                    "FormBuilder.save", 
+                    "BuilderController.save", 
                     [JSON.stringify(activePageQuestions)], 
                     (result, e) => resultHandler(result, e, true, setUpdate, setUpdateMulti, setQuestions, setPageQuestions, setActivePageQuestions, activePageQuestions),
                 ),
@@ -209,22 +212,20 @@ const DesignProvider = ({ children }) => {
     const [deletePage, setDeletePage] = useState(null); 
 
     useEffect(() => {
-				console.log('deletePage', deletePage, pageQuestions, form, activePageQuestions)
+
 				setAddPageUpdate(true);
 
 				if(activePageQuestions.length > 0) {
 
 					setActivePageQuestions([]);
-
-					let deleteQuestions = activePageQuestions.map(question => question.Id);
 	
 					StatusHandler(
 							form.forms__Status__c,
 							() => setUpdate(false),
 							() => call(
 									setError,
-									"FormBuilder.pageDelete", 
-									[JSON.stringify(deleteQuestions), form.Id], 
+									"BuilderController.pageQuestionsDelete", 
+									[JSON.stringify(activePageQuestions). form.Id], 
 									(result, e) => deletePageResultHandler(result, e, setPages, setQuestions, setPageQuestions, setRecordGroup, setForm, setActivePage, setAddPageUpdate, deletePage),
 							),
 							null,
@@ -242,16 +243,16 @@ const DesignProvider = ({ children }) => {
 
         if(questionToDelete) {
 
-            let updatedOnDelete = sortDelete(questions.filter(question => question.Id != questionToDelete));
+						setUpdate(true);
+						
+						let updatedOnDelete = sortDelete(questions.filter(question => question.Id != questionToDelete));
 
-            setUpdate(true);
-            
             StatusHandler(
                 form.forms__Status__c,
                 () => setUpdate(false),
                 () => call(
 										setError,
-                    "FormBuilder.deleteQuestion", 
+                    "BuilderController.deleteQuestion", 
                     [JSON.stringify(updatedOnDelete), questionToDelete], 
                     (result, e) => deleteResultHandler(result, e, setQuestions, setPageQuestions, setRecordGroup, setUpdate),
 								),
@@ -333,17 +334,20 @@ const addPageHandler = (result, e, setForm, setPages, setAddPageUpdate, setActiv
 }
 
 const resultHandler = (result, e, isMulti, setUpdate, setAdditionalUpdate, setQuestions, setPageQuestions, setActivePageQuestions, activePageQuestions, activePage) => {
-
+	console.log('result', result); 
 	setQuestions(questions => {
+			console.log('questions', questions);
+			let updated = questions.map((question, index) => {
 
-			let updated = questions.map(question => {
+				console.log('question.Id', question.Id, index);
 
-					if(!question.Id) {
-							question.Id = result[0]; 
-					} 
-					return question;
+				if(question.Id == null) {
+						question.Id = result[index]; 
+				} 
+				return question;
 
 			});
+			console.log('updated', updated);
 
 			return updated; 
 
@@ -417,19 +421,9 @@ const fetchHandler = (result, e, setQuestions, setRecordGroup, setPageQuestions,
 
         }, new Map())
 
-    })
-
-    let cleanResult = result.map(q => {
-
-        if(q.hasOwnProperty('forms__Question_Options__r')) {
-            delete q.forms__Question_Options__r;
-        }
-
-        return q; 
-
-    });
-
-    let questions = sorted(cleanResult); 
+		})
+		
+    let questions = sorted(result); 
 
     let cleanQuestions = questions.filter(question => question.forms__Record_Group__c == null);
 
@@ -478,7 +472,7 @@ const deletePageResultHandler =  (result, e, setPages, setQuestions, setPageQues
 const resetToFirstPage = (setPages, setForm, setActivePage, setAddPageUpdate, deletePage) => {
 
 	setPages(pages => {
-		console.log('pages', pages);
+
 		return pages.filter(p => {
 			return p.value != deletePage;
 		})
@@ -566,6 +560,14 @@ const sorted = (questions) => {
 const sortDelete = (result) => {
 
     let s = result.map((r, i) => {
+        if(r.hasOwnProperty('forms__Question_Options__r')) {
+            delete r.forms__Question_Options__r;
+				}
+				
+				if(r.hasOwnProperty('forms__Question_Criteria__r')) {
+					delete r.forms__Question_Criteria__r;
+				}
+
         r.forms__Order__c = i;
         return r; 
     });
@@ -599,8 +601,23 @@ const getFirstPageQuestions = (questions) => {
 
 }
 
+const prepare = (questionList) => {
+	return questionList.map(question => {
+		if(question.hasOwnProperty('forms__Question_Options__r')) {
+			delete question.forms__Question_Options__r;
+		}
+
+		if(question.hasOwnProperty('forms__Question_Criteria__r')) {
+			delete question.forms__Question_Criteria__r;
+		}
+		return question; 
+	})
+}
+
 const LayoutHolder = styled.div`
 	>div:nth-of-type(1) {
 		max-height: 98px; 
 	}
 `;
+
+

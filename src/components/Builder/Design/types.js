@@ -24,12 +24,6 @@ export const types = [
         type: 'Dropdown'
     },  
     {
-        id: 4, 
-        active: true, 
-        name: 'Net Promoter Score',
-        type: 'NetPromoterScore'
-    }, 
-    {
         id: 5, 
         active: true, 
         name: 'Slider',
@@ -91,12 +85,6 @@ export const types = [
     }, 
     {   
         id: 15, 
-        active: true, 
-        name: 'Picture Choice',
-        type: 'PictureChoice'
-    },
-    {   
-        id: 16, 
         active: true, 
         name: 'Input Field',
         type: 'InputField'

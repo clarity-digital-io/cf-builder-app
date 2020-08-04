@@ -10,7 +10,7 @@ export const openNotificationWithIcon = (type, method, setError) => {
   
 const StatusMessage = {
     error: {
-        startup: ['Error', 'Something went wrong on startup.'],
+        getForm: ['Error', 'Something went wrong on startup.'],
         save: ['Error', 'Something went wrong on startup.'],
         saveQuestion: ['Error', 'Something went wrong on startup.'],
         saveQuestionWithOptions: ['Error', 'Something went wrong on startup.'],
@@ -27,7 +27,7 @@ const StatusMessage = {
         FormPublished: ['Error', 'Changes to form will not be saved because form has been published.']
     },
     success: {
-        startup: ['Success', 'Everything went right on startup.'],
+				getForm: ['Success', 'Everything went right on startup.'],
         save: ['Success', 'New question created, nice.'],
         saveQuestion: ['Success', 'Question successfully updated.'],
         saveQuestionWithOptions: ['Success', 'You\'ve successfully added an option.'],
@@ -65,29 +65,3 @@ export const StatusHandler = (status, setUpdate, cb, setUpdateSecond, setError) 
 		}
 
 }
-
-// startup
-// updateForm
-// getQuestions
-// save
-// saveQuestionWithOptions
-// saveQuestion
-// deleteQuestion
-// getQuestionEditDetails
-// getQuestionOptions
-// pageDelete
-// saveFlowDesign
-// savQuestionWithCriteria
-// getSObjectsAvailable
-// getSObjectFields
-// getUsers
-// createAssignment
-// getAssignmentRules
-// saveAssignmentRules
-// saveRecordGroupFields
-// getConnections
-// getConnectionFieldMapping
-// saveActiveFieldConnections
-// saveConnections
-// getDesigns
-// updateStatus

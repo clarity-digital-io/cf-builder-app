@@ -52,7 +52,7 @@ export const EditPageState = () => {
 							() => setUpdate(false),
 							() => call(
 									setError,
-									"FormBuilder.updateForm", 
+									"BuilderController.updateForm", 
 									[JSON.stringify(form)], 
 									(result, e) => resultHandler(result, e, setForm, setUpdate),
 							),
@@ -186,7 +186,7 @@ const resultHandler = (result, e, setForm, setUpdate) => {
 		setUpdate(false);
     
     setForm(form => {
-        return { ...form, forms__Multi_Page_Info__c: JSON.parse(result.forms__Multi_Page_Info__c), forms__Limit__c: result.forms__Limit__c }
+        return { ...form, forms__Multi_Page_Info__c: JSON.parse(result.forms__Multi_Page_Info__c) }
     }); 
 
 }

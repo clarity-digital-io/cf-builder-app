@@ -6,7 +6,7 @@ import ViewStyle from '../../../Elements/View/style';
 import Box from '../../../Elements/Box';
 import {Button} from '../../../Elements/Button';
 
-import { BuilderContext, DesignContext } from '../../../Context';
+import { BuilderContext } from '../../../Context';
 import { StatusHandler } from '../../../Elements/Notification';
 
 import { Input as SalesforceInput, Checkbox} from '@salesforce/design-system-react';
@@ -28,7 +28,7 @@ export const SettingsState = () => {
 							() => setUpdate(false),
 							() => call(
 									setError,
-									"FormBuilder.updateForm", 
+									"BuilderController.updateForm", 
 									[JSON.stringify(form)], 
 									(result, e) => resultHandler(result, e, setForm, setUpdate),
 							),
@@ -44,14 +44,17 @@ export const SettingsState = () => {
         let value = e.target.value; 
 
         setForm(form => {
-            return { ...form, Name: value }
+            return { ...form, Title__c: value }
         })
     }
 
-    const updateLimit = (value) => {
-        setForm(form => {
-            return { ...form, forms__Limit__c: value }
-        })
+		const updateDescription = (e) => {
+
+			let value = e.target.value; 
+
+			setForm(form => {
+					return { ...form, Description__c: value }
+			})
 		}
 
 		const updateToMulti = (e) => {
@@ -60,15 +63,6 @@ export const SettingsState = () => {
 
 				setForm(form => {
 						return { ...form, forms__Multi_Page__c: checked }
-				})
-		}
-			
-		const updateIsFlow = (e) => {
-
-			let checked = e.target.checked;
-
-				setForm(form => {
-						return { ...form, forms__Is_Flow__c: checked }
 				})
 		}
 
@@ -113,7 +107,6 @@ export const SettingsState = () => {
 
                     </ViewStyle>
 
-
                     <ViewStyle space border>
 
                         <h1>Form Information</h1>
@@ -125,9 +118,9 @@ export const SettingsState = () => {
                                 <Box padding='1em 0 0 0'>
 
 																		<SalesforceInput
-																			aria-describedby={form.Name}
-																			defaultValue={form.Name}
-																			id={form.Name}
+																			aria-describedby={form.Title__c}
+																			defaultValue={form.Title__c}
+																			id={form.Title__c}
 																			onChange={(e) => updateName(e)}
 																		/>
 
@@ -139,30 +132,30 @@ export const SettingsState = () => {
 
                     </ViewStyle>
 
+										<ViewStyle space border>
 
-                    <ViewStyle space border>
+										<h1>Form Description</h1>
 
-                        <h1>Form Response Limits</h1>
+										<ViewStyle>
 
-                        <View className="row">
-                            <View className="col-xs-12">
-                                <Box padding='1em 0 0 0'>
+												<View className="row" >
+												<View className="col-xs-12">
+														<Box padding='1em 0 0 0'>
 
-																		<SalesforceInput
-																			aria-describedby={form.Name}
-																			min={0}
-																			defaultValue={form.forms__Limit__c}
-																			id={form.Name}
-																			onChange={(e, data) => updateLimit(data.number)}
-																			variant="counter"
-																		/>
+																<SalesforceInput
+																	aria-describedby={form.Description__c}
+																	defaultValue={form.Description__c}
+																	id={form.Description__c}
+																	onChange={(e) => updateDescription(e)}
+																/>
 
-                                </Box>
-                            </View>
-                        </View>
+														</Box>
+												</View>
+												</View>
 
-                    </ViewStyle>
+										</ViewStyle>
 
+										</ViewStyle>
 
                     <ViewStyle space border>
 
@@ -177,28 +170,6 @@ export const SettingsState = () => {
 																		variant="toggle"
 																		defaultChecked={form.forms__Multi_Page__c} 
 																		onChange={(e, {checked}) => updateToMulti(e)}
-																	/>
-
-                                </Box>
-                            </View>
-                        </View>
-
-                    </ViewStyle>
-
-                    <ViewStyle space border>
-
-                        <h1>For use Inside Lightning Flows</h1>
-												<p>Forms for Lightning Flows will ignore the multi page setting.</p>
-
-                        <View className="row">
-                            <View className="col-xs-12">
-                                <Box padding='1em 0 0 0'>
-
-																	<Checkbox
-																		id={form.Name + 'Flow'}
-																		variant="toggle"
-																		defaultChecked={form.forms__Is_Flow__c} 
-																		onChange={(e, {checked}) => updateIsFlow(e)}
 																	/>
 
                                 </Box>
@@ -281,7 +252,6 @@ const resultHandler = (result, e, setForm, setUpdate) => {
         return { 
 					...form, 
 					Name: result.Name, 
-					forms__Limit__c: result.forms__Limit__c,
 					forms__Multi_Page__c: result.forms__Multi_Page__c,
 					forms__Multi_Page_Info__c: multiPageInfo
 				}

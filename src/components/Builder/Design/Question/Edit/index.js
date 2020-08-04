@@ -11,7 +11,6 @@ import { Number } from './number';
 import { Lookup } from './lookup'; 
 import { RecordGroup } from './recordgroup'; 
 import { ConnectedObject } from './connectedobject'; 
-import { PictureChoices } from './picturechoices'; 
 import { FreeText } from './freetext'; 
 import { Spinner } from '../../../../Elements/Spinner';
 
@@ -33,9 +32,6 @@ const getQuestionType = (type) => {
         case 'Comment':
             return <Comment />
             break; 
-        case 'NetPromoterScore':
-            return <div>NetPromoterScore</div>
-            break;
         case 'Slider':
 				case 'Number':
             return <Number type={type} />
@@ -52,9 +48,6 @@ const getQuestionType = (type) => {
             break;
         case 'ConnectedObject':
             return <ConnectedObject />
-            break;
-        case 'PictureChoice':
-            return <PictureChoices />
             break;
         case 'FreeText':
             return <FreeText />
@@ -144,7 +137,6 @@ export const EditQuestion = () => {
 const hasExtraEditSettings = (type) => {
 
     switch (type) {
-        case 'NetPromoterScore':
         case 'Email':
             return false
             break;

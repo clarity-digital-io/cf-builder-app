@@ -4,7 +4,6 @@ import { call } from '../RemoteActions';
 import { BuilderContext } from '../Context';
 import styled from 'styled-components';
 import Main from '../Elements/Theme';
-import { StatusHandler } from '../Elements/Notification';
 
 const App = ({ children }) => {
 
@@ -36,7 +35,7 @@ const BuilderProvider = ({ children }) => {
 
             call(
 								setError,
-                "FormBuilder.getConnectionFieldMapping", 
+                "BuilderController.getConnectionFieldMapping", 
                 [activeConnection.Id, activeConnection.forms__Salesforce_Object__c], 
                 (result, e) => mappingResultHandler(result, e, setActiveFieldMapping, setActiveFieldPrefills, setActiveFields, setLoading)
             );
@@ -61,7 +60,7 @@ const BuilderProvider = ({ children }) => {
 
         let recordId = url.get('recordId');
 
-        call(setError, "FormBuilder.startup", [recordId], (result, e) => createHandler(result, e, setForm));
+				call(setError, "BuilderController.getForm", [recordId], (result, e) => createHandler(result, e, setForm));
         
     }, []);
 
@@ -75,7 +74,7 @@ const BuilderProvider = ({ children }) => {
 
             call(
 								setError,
-                "FormBuilder.getConnections", 
+                "BuilderController.getConnections", 
                 [form.Id], 
                 (result, e) => connectionsResultHandler(result, e, setConnections, setLoading)
             );
@@ -88,7 +87,7 @@ const BuilderProvider = ({ children }) => {
 
     useEffect(() => {
 
-        call(setError, "FormBuilder.getSObjectsAvailable", [], (result, e) => getSObjectsHandler(result, e, setSObjects));
+        call(setError, "BuilderController.getSObjectsAvailable", [], (result, e) => getSObjectsHandler(result, e, setSObjects));
         
     }, [])
 
@@ -121,19 +120,12 @@ const BuilderProvider = ({ children }) => {
 }
 
 const createHandler = (result, e, setForm) => {
-    let convertedDate = new Date(result.forms__End_Date__c);
-    let year = convertedDate.getFullYear();
-    let dateMonth = convertedDate.getMonth()
-    let month = dateMonth < 10 ? '0' + (dateMonth + 1) : dateMonth;
-    let day = convertedDate.getDate() + 1; 
-    let stringDate = year + '-' + month + '-' + day;
 
-    setForm(form => {
+	setForm(form => {
         return { 
             ...form, 
             Id: result.Id, 
             Name: result.Name, 
-            forms__Limit__c: result.forms__Limit__c, 
             forms__Connected_Object__c: result.forms__Connected_Object__c, 
 						forms__Status__c: result.forms__Status__c,
 						forms__Multi_Page__c: result.forms__Multi_Page__c,

@@ -8,8 +8,8 @@ import { IconSettings } from '@salesforce/design-system-react';
 const Builder = () => {
 
     const { form } = useContext(BuilderContext);
-    
-    return (
+
+		return (
         <BuilderLayout>
 					<IconSettings iconPath={getIconPath()}>
 

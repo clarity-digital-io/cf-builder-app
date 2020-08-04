@@ -13,6 +13,15 @@ import { BuilderContext } from '../../../Context';
 import { Spinner } from '../../../Elements/Spinner';
 import { StatusHandler } from '../../../Elements/Notification';
 
+const prepare = (connections) => {
+	return connections.map(connection => {
+		if(connection.hasOwnProperty('forms__Form_Connection_Fields__r')) {
+			delete connection.forms__Form_Connection_Fields__r;
+		}
+		return connection; 
+	})
+}
+
 export const ConnectState = () => {
 
     const { form, connections, setConnections, sObjects, setNavState, setActiveConnection, setError } = useContext(BuilderContext);
@@ -23,14 +32,17 @@ export const ConnectState = () => {
 
     useEffect(() => {
 
+				let preppedConnections = prepare(connections); 
+				let preppedRemovedConnections = prepare(removed); 
+
         if(update) {
             StatusHandler(
                 form.forms__Status__c,
                 () => setUpdate(false),
                 () => call(
 										setError,
-                    "FormBuilder.saveConnections", 
-                    [JSON.stringify(connections), form.Id, JSON.stringify(removed)], 
+                    "BuilderController.saveConnections", 
+                    [JSON.stringify(preppedConnections), form.Id, JSON.stringify(preppedRemovedConnections)], 
                     (result, e) => connectionsResultHandler(result, e, setConnections, setUpdate),
                     form.forms__Status__c
 								),

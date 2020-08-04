@@ -356,7 +356,6 @@ const ControlHeader = () => {
 const getCorrectOperators = (fieldType) => {
 
     switch (fieldType) {
-        case 'PictureChoice':
         case 'MultipleChoice':
         case 'Dropdown':
         case 'Checkbox':
@@ -368,7 +367,6 @@ const getCorrectOperators = (fieldType) => {
         case 'Lookup':
             return ['Is Not Null']; 
             break;
-        case 'NetPromoterScore':
         case 'Slider':
         case 'Number':
         case 'Date':
@@ -413,7 +411,6 @@ const getTypeForGLEqual = (fieldType) => {
         case 'Checkbox':
         case 'Email':
         case 'Lookup':
-        case 'NetPromoterScore':
         case 'Slider':
         case 'Number':
             return ['Number'];
@@ -438,7 +435,6 @@ const getTypeForEquals = (fieldType) => {
         case 'Email':
             return ['String']; 
             break;
-        case 'NetPromoterScore':
         case 'Slider':
         case 'Number':
             return ['Number']; 

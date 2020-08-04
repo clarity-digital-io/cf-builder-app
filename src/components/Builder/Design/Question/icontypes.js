@@ -1,5 +1,5 @@
 import React from 'react';
-import { GeoLocationDarkIcon, MessageDetail1DarkIcon, RecordGroup2DarkIcon, Images2DarkIcon, DownArrowOutlineDarkIcon, CalculatorDarkIcon, PaperClipDarkIcon, NetPromoterScoreDarkIcon, TextDarkIcon, CheckboxCheckedDarkIcon, RecordGroup1DarkIcon, LookupDarkIcon, EmailDarkIcon, CalendarDarkIcon, SliderDarkIcon, SelectMultipleDarkIcon, InputDarkIcon } from '../../../Elements/Icons';
+import { GeoLocationDarkIcon, MessageDetail1DarkIcon, RecordGroup2DarkIcon, Images2DarkIcon, DownArrowOutlineDarkIcon, CalculatorDarkIcon, PaperClipDarkIcon, TextDarkIcon, CheckboxCheckedDarkIcon, RecordGroup1DarkIcon, LookupDarkIcon, EmailDarkIcon, CalendarDarkIcon, SliderDarkIcon, SelectMultipleDarkIcon, InputDarkIcon } from '../../../Elements/Icons';
 
 export const getType = (type) => {
 
@@ -7,9 +7,6 @@ export const getType = (type) => {
 				case 'GeoLocation':
 					return <GeoLocationDarkIcon />
 					break;
-				case 'PictureChoice':
-						return <SelectMultipleDarkIcon />
-						break;
         case 'MultipleChoice':
             return <SelectMultipleDarkIcon />
             break;
@@ -19,9 +16,6 @@ export const getType = (type) => {
             break;
         case 'Dropdown':
             return <DownArrowOutlineDarkIcon />
-            break;
-        case 'NetPromoterScore':
-            return <NetPromoterScoreDarkIcon />
             break;
         case 'Slider':
             return <SliderDarkIcon />
@@ -52,9 +46,6 @@ export const getType = (type) => {
             break;
         case 'FreeText':
             return <TextDarkIcon />
-            break;
-        case 'PictureChoice':
-            return <Images2DarkIcon/>
             break;
     }
 

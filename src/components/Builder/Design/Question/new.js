@@ -9,7 +9,7 @@ import Box from '../../../Elements/Box';
 
 import { sortedTypes } from '../types';
 
-import { getType } from './types'; 
+import { getType } from './icontypes'; 
 import { BuilderContext, DesignContext } from '../../../Context';
 
 export const NewQuestion = () => {
