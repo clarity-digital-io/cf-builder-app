@@ -134,19 +134,19 @@ const Save = ({ children }) => {
 
         if(questionUpdate && questionState == 'SF') {
 
-            let updatedActiveRecords = activeRecordGroup.map(a => {
+            let updatedActiveRecordFields = activeRecordGroup.map(a => {
                 delete a.Id;
                 delete a.Name;
 								return a;
             });
-						
-            StatusHandler(
+						console.log('updatedActiveRecordFields', updatedActiveRecordFields)
+						StatusHandler(
                 form.forms__Status__c,
                 () => setQuestionUpdate(false),
                 () => call(
 										setError,
                     "BuilderController.saveRecordGroupFields", 
-                    [JSON.stringify(updatedActiveRecords), activeQuestion.Id], 
+                    [JSON.stringify(updatedActiveRecordFields), activeQuestion.Id], 
                     (result, e) => resultRecordGroupFieldsHandler(result, e, setQuestionUpdate, setRecordGroup, setActiveRecordGroup, activeQuestion),
 								),
 								null,

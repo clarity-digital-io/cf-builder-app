@@ -55,7 +55,8 @@ export const SalesforceFields = ({ questionId }) => {
                             records={activeRecordGroup} 
                             setActiveRecordGroup={setActiveRecordGroup} 
                             relatedId={activeQuestion.Id} 
-                            formId={activeQuestion.forms__Form__c}
+														formId={activeQuestion.forms__Form__c}
+														sObject={activeQuestion.forms__Salesforce_Object__c}
                         /> 
 
                     </ViewStyle>
@@ -66,24 +67,24 @@ export const SalesforceFields = ({ questionId }) => {
     )
 }
 
-const SalesforceSelects = ({ records, setActiveRecordGroup, relatedId, formId }) => {
+const SalesforceSelects = ({ records, setActiveRecordGroup, relatedId, formId, sObject }) => {
  
     return [
-        <ControlSelects key={'Select'} records={records} />,
+        <ControlSelects key={'Select'} records={records} sObject={sObject} />,
         <ControlAddRow key={'Add'} setActiveRecordGroup={setActiveRecordGroup} relatedId={relatedId} formId={formId} />
     ]
 
 }
 
-const ControlSelects = ({ records }) => {
+const ControlSelects = ({ records, sObject }) => {
 
     return records.map((row, i) => {
-        return <ControlSelect key={row.forms__Order__c} order={i} row={row} />
+        return <ControlSelect key={row.forms__Order__c} order={i} row={row} sObject={sObject} />
     });
 
 }
 
-const ControlSelect = ({ order, row }) => {
+const ControlSelect = ({ order, row, sObject }) => {
 
 		const { setActiveRecordGroup, additionalFields, requiredFields } = useContext(EditContext); 
 
@@ -108,20 +109,21 @@ const ControlSelect = ({ order, row }) => {
                 
                 let fieldType = Object.keys(val)[0];
 
-                let sObject = null; 
+                let lookupObject = null; 
 
                 if(val.hasOwnProperty('REFERENCE')) {
-                    sObject = val['REFERENCE']; 
+                    lookupObject = val['REFERENCE']; 
                 }
+								console.log('sObject', value); 
+								if(i == order) {
+                  return { ...record, forms__Title__c: value, forms__Salesforce_Field__c: value, forms__Type__c: fieldType, forms__Lookup__c: lookupObject, forms__Salesforce_Object__c: sObject }
+                } else if (record.forms__Title__c == null) {
+									return { ...record, forms__Title__c: value, forms__Salesforce_Object__c: sObject }; 
+								} 
 
-                if(i == order) {
-                    return { ...record, forms__Salesforce_Field__c: value, forms__Type__c: fieldType, forms__Lookup__c: sObject }
-                }
-
-                return record; 
+								return { ...record, forms__Salesforce_Object__c: sObject }; 
 
             });
-
 
             return newFields; 
         })
