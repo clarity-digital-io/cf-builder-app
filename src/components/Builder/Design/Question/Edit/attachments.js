@@ -17,7 +17,17 @@ export const Attachments = () => {
             return { ...question, forms__Max_Length__c: value }
         })
 
-    }
+		}
+		
+		const onChange = (e) => {
+
+			let value = e.target.value; 
+
+			setActiveQuestion(question => {
+					return { ...question, forms__Attachment_Type__c: value }
+			});
+
+		}
 
     return [
         <ViewStyle>
