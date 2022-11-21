@@ -1,7 +1,5 @@
-import React, { useContext } from 'react';
+import React, { useContext } from "react";
 
 export const ConnectedObject = ({ question }) => {
-
-    return 'ConnectedObject'
-
-}
+  return "ConnectedObject";
+};

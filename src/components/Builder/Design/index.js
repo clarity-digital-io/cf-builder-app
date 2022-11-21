@@ -1,623 +1,722 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { DragDropContext } from 'react-beautiful-dnd';
-import { call } from '../../RemoteActions';
+import React, { useState, useEffect, useContext } from "react";
+import { DragDropContext } from "react-beautiful-dnd";
+import { call } from "../../RemoteActions";
 
-import Design from './design';
+import Design from "./design";
 
-import { BuilderContext, DragDropUpdateContext, DesignContext } from '../../Context';
-import { StatusHandler } from '../../Elements/Notification';
-import DesignNavigation from '../../Elements/Navigation/design';
-import styled from 'styled-components';
+import {
+  BuilderContext,
+  DragDropUpdateContext,
+  DesignContext,
+} from "../../Context";
+import { StatusHandler } from "../../Elements/Notification";
+import DesignNavigation from "../../Elements/Navigation/design";
+import styled from "styled-components";
 
 /**
  * This provider can be split up into a DragDrop Provider and an Edit Provider
  */
 
-export const DragDrop = () => { 
-    
-    return (
-
-					<DragDropUpdateProvider>
-							<DesignProvider>
-								<LayoutHolder>
-									<DesignNavigation />
-									<Design />
-								</LayoutHolder>
-							</DesignProvider>
-					</DragDropUpdateProvider>
-
-    )
-
-}
+export const DragDrop = () => {
+  return (
+    <DragDropUpdateProvider>
+      <DesignProvider>
+        <LayoutHolder>
+          <DesignNavigation />
+          <Design />
+        </LayoutHolder>
+      </DesignProvider>
+    </DragDropUpdateProvider>
+  );
+};
 
 const DragDropUpdateProvider = ({ children }) => {
+  const [eventsMap] = useState(() => new Map());
 
-    const [eventsMap] = useState(() => new Map());
+  const addEvent = (event, callback) => {
+    eventsMap.set(event, callback);
+  };
 
-    const addEvent = (event, callback) => {
-        eventsMap.set(event, callback)
-    }
+  const removeEvent = (event) => {
+    eventsMap.delete(event);
+  };
 
-    const removeEvent = event => {
-        eventsMap.delete(event)
-    }
+  const emitEvent = (event, ...rest) => {
+    if (!eventsMap.has(event)) return;
+    eventsMap.get(event)(...rest);
+  };
 
-    const emitEvent = (event, ...rest) => {
-        if (!eventsMap.has(event)) return
-        eventsMap.get(event)(...rest)
-    }
+  const handleDragEnd = (result) => {
+    if (!result.destination) return;
+    emitEvent(result.destination.droppableId, result);
+  };
 
-    const handleDragEnd = result => {
-        if (!result.destination) return
-        emitEvent(result.destination.droppableId, result)
-    }
-
-    return (
-        <DragDropUpdateContext.Provider value={{ addEvent, removeEvent }}>
-            <DragDropContext onDragEnd={handleDragEnd}>
-                { children }
-            </DragDropContext>
-        </DragDropUpdateContext.Provider>
-    )
-
-}
+  return (
+    <DragDropUpdateContext.Provider value={{ addEvent, removeEvent }}>
+      <DragDropContext onDragEnd={handleDragEnd}>{children}</DragDropContext>
+    </DragDropUpdateContext.Provider>
+  );
+};
 
 const pageValues = (info) => {
-	
-	let pages = [];
+  let pages = [];
 
-	if(typeof info == 'string') {
-		info = JSON.parse(info); 
-	}
-	
-	if(info.length) {
-		pages = info.map((val, i) => {
-			return {
-				label: `Page ${ i + 1 }`,
-				value: i, 
-			}
-		});
-	} else {
-		pages = [{ label: 'Page 1', value: 0 }]
-	}
+  if (typeof info == "string") {
+    info = JSON.parse(info);
+  }
 
-	return pages; 
-}
+  if (info.length) {
+    pages = info.map((val, i) => {
+      return {
+        label: `Page ${i + 1}`,
+        value: i,
+      };
+    });
+  } else {
+    pages = [{ label: "Page 1", value: 0 }];
+  }
+
+  return pages;
+};
 
 const DesignProvider = ({ children }) => {
+  const { form, setForm, sObjects, setError } = useContext(BuilderContext);
 
-    const { form, setForm, sObjects, setError } = useContext(BuilderContext);
+  const [navQuestion, setNavQuestion] = useState(null);
 
-    const [navQuestion, setNavQuestion] = useState(null); 
+  const [activeQuestion, setActiveQuestion] = useState({});
 
-		const [activeQuestion, setActiveQuestion] = useState({}); 
-		
-    const [questionOptions, setQuestionOptions] = useState(new Map()); 
+  const [questionOptions, setQuestionOptions] = useState(new Map());
 
-    const [recordGroup, setRecordGroup] = useState(new Map()); 
+  const [recordGroup, setRecordGroup] = useState(new Map());
 
-		const [pages, setPages] = useState(() => pageValues(form.forms__Multi_Page_Info__c));
+  const [pages, setPages] = useState(() =>
+    pageValues(form.forms__Multi_Page_Info__c)
+  );
 
-		const [activePage, setActivePage] = useState(0);
+  const [activePage, setActivePage] = useState(0);
 
-		const [pageQuestions, setPageQuestions] = useState(new Map());
+  const [pageQuestions, setPageQuestions] = useState(new Map());
 
-		const [activePageQuestions, setActivePageQuestions] = useState([]); 
+  const [activePageQuestions, setActivePageQuestions] = useState([]);
 
-		useEffect(() => {
-				setActivePageQuestions(pageQuestions.has(activePage) ? pageQuestions.get(activePage) : []);
-		}, [activePage]);
+  useEffect(() => {
+    setActivePageQuestions(
+      pageQuestions.has(activePage) ? pageQuestions.get(activePage) : []
+    );
+  }, [activePage]);
 
-    const [addPageUpdate, setAddPageUpdate] = useState(false); 
-    
-    useEffect(() => {
+  const [addPageUpdate, setAddPageUpdate] = useState(false);
 
-        if(addPageUpdate) {
-					
-					let newPq = new Map(); 
+  useEffect(() => {
+    if (addPageUpdate) {
+      let newPq = new Map();
 
-					let currentPageInfo = form.forms__Multi_Page_Info__c;
-					
-					let newPageInfo = currentPageInfo.concat([{ page : currentPageInfo.length, title: `Page ${currentPageInfo.length + 1}`, icon: "standard:announcement" }]);
+      let currentPageInfo = form.forms__Multi_Page_Info__c;
 
-					form.forms__Multi_Page_Info__c = JSON.stringify(newPageInfo);
+      let newPageInfo = currentPageInfo.concat([
+        {
+          page: currentPageInfo.length,
+          title: `Page ${currentPageInfo.length + 1}`,
+          icon: "standard:announcement",
+        },
+      ]);
 
-					newPq.set(newPageInfo.length - 1, []);
+      form.forms__Multi_Page_Info__c = JSON.stringify(newPageInfo);
 
-					StatusHandler(
-							form.forms__Status__c,
-							() => setUpdate(false),
-							() => call(
-									setError,
-									"BuilderController.updateForm", 
-									[JSON.stringify(form)], 
-									(result, e) => addPageHandler(result, e, setForm, setPages, setAddPageUpdate, setActivePageQuestions, setPageQuestions, setActivePage, newPageInfo.length - 1, activePageQuestions, activePage),
-							),
-							null,
-							setError
-					)
-					
-        }
+      newPq.set(newPageInfo.length - 1, []);
 
-		}, [addPageUpdate]);
-		
-    const [questions, setQuestions] = useState([]); 
-
-		useEffect(() => {
-
-			if(!form.forms__Multi_Page_Info__c) {
-				let cleanQuestions = questions.filter(question => question.forms__Record_Group__c == null);
-				setPageQuestions(pageBreaks(cleanQuestions));	
-			}
-
-		}, [questions])
-
-    useEffect(() => {
-
-        call(setError, "BuilderController.getQuestions", [form.Id], (result, e) => fetchHandler(result, e, setQuestions, setRecordGroup, setPageQuestions, setActivePageQuestions, setQuestionOptions))
-
-		}, [])
-
-    const [questionState, setQuestionState] = useState('NEW'); 
-
-    const [updateSingle, setUpdateSingle] = useState(false); 
-
-    const [updateMulti, setUpdateMulti] = useState(false); 
-
-    const [update, setUpdate] = useState(false); 
-
-    useEffect(() => {
-
-        if(update && updateSingle) {
-
-						let clonedQuestions = JSON.parse(JSON.stringify(questions));
-						let preparedQuestions = prepare(clonedQuestions); 
-
-						StatusHandler(
-                form.forms__Status__c,
-                () => setUpdate(false),
-                () => call(
-										setError,
-                    "BuilderController.save", 
-                    [JSON.stringify(preparedQuestions)], 
-                    (result, e) => resultHandler(result, e, false, setUpdate, setUpdateSingle, setQuestions, setPageQuestions, setActivePageQuestions, questions),
-                ),
-								() => setUpdateSingle(false),
-								setError
-            )
-        
-        }
-
-        if(update && updateMulti) {
-						
-            StatusHandler(
-                form.forms__Status__c,
-                () => setUpdate(false),
-                () => call(
-										setError,
-                    "BuilderController.save", 
-                    [JSON.stringify(activePageQuestions)], 
-                    (result, e) => resultHandler(result, e, true, setUpdate, setUpdateMulti, setQuestions, setPageQuestions, setActivePageQuestions, activePageQuestions),
-                ),
-								() => setUpdateMulti(false),
-								setError
-            )
-        
-        }
-
-    }, [update]);
-
-    const [questionUpdate, setQuestionUpdate] = useState(false); 
-
-    const [deletePage, setDeletePage] = useState(null); 
-
-    useEffect(() => {
-
-				setAddPageUpdate(true);
-
-				if(activePageQuestions.length > 0) {
-
-					setActivePageQuestions([]);
-	
-					StatusHandler(
-							form.forms__Status__c,
-							() => setUpdate(false),
-							() => call(
-									setError,
-									"BuilderController.pageQuestionsDelete", 
-									[JSON.stringify(activePageQuestions). form.Id], 
-									(result, e) => deletePageResultHandler(result, e, setPages, setQuestions, setPageQuestions, setRecordGroup, setForm, setActivePage, setAddPageUpdate, deletePage),
-							),
-							null,
-							setError
-					)
-				} else {
-					resetToFirstPage(setPages, setForm, setActivePage, setAddPageUpdate, deletePage);
-				}
-				
-    }, [deletePage]);
-
-    const [questionToDelete, setQuestionToDelete] = useState(null);
-
-    useEffect(() => {
-
-        if(questionToDelete) {
-
-						setUpdate(true);
-						
-						let updatedOnDelete = sortDelete(questions.filter(question => question.Id != questionToDelete));
-
-            StatusHandler(
-                form.forms__Status__c,
-                () => setUpdate(false),
-                () => call(
-										setError,
-                    "BuilderController.deleteQuestion", 
-                    [JSON.stringify(updatedOnDelete), questionToDelete], 
-                    (result, e) => deleteResultHandler(result, e, setQuestions, setPageQuestions, setRecordGroup, setUpdate),
-								),
-								null,
-								setError
-            )
-        
-        }
-
-    }, [questionToDelete]);
-
-    return (
-        <DesignContext.Provider 
-            value={{ 
-                questionOptions, 
-                setQuestionOptions,
-                setDeletePage,
-                setUpdateSingle,
-                setUpdateMulti,
-                addPageUpdate, 
+      StatusHandler(
+        form.forms__Status__c,
+        () => setUpdate(false),
+        () =>
+          call(
+            setError,
+            "BuilderController.updateForm",
+            [JSON.stringify(form)],
+            (result, e) =>
+              addPageHandler(
+                result,
+                e,
+                setForm,
+                setPages,
                 setAddPageUpdate,
-                navQuestion, 
-                setNavQuestion,
-                sObjects,
-                recordGroup, 
-                setRecordGroup, 
-                questionToDelete, 
-                setQuestionToDelete, 
-                questionUpdate, 
-                setQuestionUpdate, 
-                questionState, 
-                setQuestionState, 
-                activeQuestion, 
-                setActiveQuestion, 
-                update, 
-                setUpdate, 
-                questions, 
+                setActivePageQuestions,
+                setPageQuestions,
+                setActivePage,
+                newPageInfo.length - 1,
+                activePageQuestions,
+                activePage
+              )
+          ),
+        null,
+        setError
+      );
+    }
+  }, [addPageUpdate]);
+
+  const [questions, setQuestions] = useState([]);
+
+  useEffect(() => {
+    if (!form.forms__Multi_Page_Info__c) {
+      let cleanQuestions = questions.filter(
+        (question) => question.forms__Record_Group__c == null
+      );
+      setPageQuestions(pageBreaks(cleanQuestions));
+    }
+  }, [questions]);
+
+  useEffect(() => {
+    call(setError, "BuilderController.getQuestions", [form.Id], (result, e) =>
+      fetchHandler(
+        result,
+        e,
+        setQuestions,
+        setRecordGroup,
+        setPageQuestions,
+        setActivePageQuestions,
+        setQuestionOptions
+      )
+    );
+  }, []);
+
+  const [questionState, setQuestionState] = useState("NEW");
+
+  const [updateSingle, setUpdateSingle] = useState(false);
+
+  const [updateMulti, setUpdateMulti] = useState(false);
+
+  const [update, setUpdate] = useState(false);
+
+  useEffect(() => {
+    if (update && updateSingle) {
+      let clonedQuestions = JSON.parse(JSON.stringify(questions));
+      let preparedQuestions = prepare(clonedQuestions);
+
+      StatusHandler(
+        form.forms__Status__c,
+        () => setUpdate(false),
+        () =>
+          call(
+            setError,
+            "BuilderController.save",
+            [JSON.stringify(preparedQuestions)],
+            (result, e) =>
+              resultHandler(
+                result,
+                e,
+                false,
+                setUpdate,
+                setUpdateSingle,
                 setQuestions,
-								pages, 
-								setPages, 
-								activePage, 
-								setActivePage,
-								activePageQuestions, 
-								setActivePageQuestions }}>
-            { children }
-        </DesignContext.Provider>
-    )
-}
+                setPageQuestions,
+                setActivePageQuestions,
+                questions
+              )
+          ),
+        () => setUpdateSingle(false),
+        setError
+      );
+    }
 
-const addPageHandler = (result, e, setForm, setPages, setAddPageUpdate, setActivePageQuestions, setPageQuestions, setActivePage, len, activePageQuestions, activePage) => {
+    if (update && updateMulti) {
+      StatusHandler(
+        form.forms__Status__c,
+        () => setUpdate(false),
+        () =>
+          call(
+            setError,
+            "BuilderController.save",
+            [JSON.stringify(activePageQuestions)],
+            (result, e) =>
+              resultHandler(
+                result,
+                e,
+                true,
+                setUpdate,
+                setUpdateMulti,
+                setQuestions,
+                setPageQuestions,
+                setActivePageQuestions,
+                activePageQuestions
+              )
+          ),
+        () => setUpdateMulti(false),
+        setError
+      );
+    }
+  }, [update]);
 
-	setForm(form => {
-		return { 
-				...form, 
-				Id: result.Id, 
-				forms__Multi_Page_Info__c:  result.forms__Multi_Page_Info__c != null ? JSON.parse(result.forms__Multi_Page_Info__c) : []
-		}
-	});
+  const [questionUpdate, setQuestionUpdate] = useState(false);
 
-	setPages(pages => {
+  const [deletePage, setDeletePage] = useState(null);
 
-		let newPages = pages.concat([{ label: `Page ${pages.length + 1}`, value: pages.length }]);
+  useEffect(() => {
+    setAddPageUpdate(true);
 
-		return newPages;
-	})
+    if (activePageQuestions.length > 0) {
+      setActivePageQuestions([]);
 
-	setPageQuestions(pQ => {
-		pQ.set(activePage, activePageQuestions); 
-		pQ.set(len, []);
-		return pQ; 
-	});
+      StatusHandler(
+        form.forms__Status__c,
+        () => setUpdate(false),
+        () =>
+          call(
+            setError,
+            "BuilderController.pageQuestionsDelete",
+            [JSON.stringify(activePageQuestions).form.Id],
+            (result, e) =>
+              deletePageResultHandler(
+                result,
+                e,
+                setPages,
+                setQuestions,
+                setPageQuestions,
+                setRecordGroup,
+                setForm,
+                setActivePage,
+                setAddPageUpdate,
+                deletePage
+              )
+          ),
+        null,
+        setError
+      );
+    } else {
+      resetToFirstPage(
+        setPages,
+        setForm,
+        setActivePage,
+        setAddPageUpdate,
+        deletePage
+      );
+    }
+  }, [deletePage]);
 
-	setActivePageQuestions([]);
+  const [questionToDelete, setQuestionToDelete] = useState(null);
 
-	setAddPageUpdate(false);
+  useEffect(() => {
+    if (questionToDelete) {
+      setUpdate(true);
 
-	setActivePage(len)
+      let updatedOnDelete = sortDelete(
+        questions.filter((question) => question.Id != questionToDelete)
+      );
 
-}
+      StatusHandler(
+        form.forms__Status__c,
+        () => setUpdate(false),
+        () =>
+          call(
+            setError,
+            "BuilderController.deleteQuestion",
+            [JSON.stringify(updatedOnDelete), questionToDelete],
+            (result, e) =>
+              deleteResultHandler(
+                result,
+                e,
+                setQuestions,
+                setPageQuestions,
+                setRecordGroup,
+                setUpdate
+              )
+          ),
+        null,
+        setError
+      );
+    }
+  }, [questionToDelete]);
 
-const resultHandler = (result, e, isMulti, setUpdate, setAdditionalUpdate, setQuestions, setPageQuestions, setActivePageQuestions, activePageQuestions, activePage) => {
-	console.log('result', result); 
-	setQuestions(questions => {
-			console.log('questions', questions);
-			let updated = questions.map((question, index) => {
+  return (
+    <DesignContext.Provider
+      value={{
+        questionOptions,
+        setQuestionOptions,
+        setDeletePage,
+        setUpdateSingle,
+        setUpdateMulti,
+        addPageUpdate,
+        setAddPageUpdate,
+        navQuestion,
+        setNavQuestion,
+        sObjects,
+        recordGroup,
+        setRecordGroup,
+        questionToDelete,
+        setQuestionToDelete,
+        questionUpdate,
+        setQuestionUpdate,
+        questionState,
+        setQuestionState,
+        activeQuestion,
+        setActiveQuestion,
+        update,
+        setUpdate,
+        questions,
+        setQuestions,
+        pages,
+        setPages,
+        activePage,
+        setActivePage,
+        activePageQuestions,
+        setActivePageQuestions,
+      }}
+    >
+      {children}
+    </DesignContext.Provider>
+  );
+};
 
-				console.log('question.Id', question.Id, index);
+const addPageHandler = (
+  result,
+  e,
+  setForm,
+  setPages,
+  setAddPageUpdate,
+  setActivePageQuestions,
+  setPageQuestions,
+  setActivePage,
+  len,
+  activePageQuestions,
+  activePage
+) => {
+  setForm((form) => {
+    return {
+      ...form,
+      Id: result.Id,
+      forms__Multi_Page_Info__c:
+        result.forms__Multi_Page_Info__c != null
+          ? JSON.parse(result.forms__Multi_Page_Info__c)
+          : [],
+    };
+  });
 
-				if(question.Id == null) {
-						question.Id = result[index]; 
-				} 
-				return question;
+  setPages((pages) => {
+    let newPages = pages.concat([
+      { label: `Page ${pages.length + 1}`, value: pages.length },
+    ]);
 
-			});
-			console.log('updated', updated);
+    return newPages;
+  });
 
-			return updated; 
+  setPageQuestions((pQ) => {
+    pQ.set(activePage, activePageQuestions);
+    pQ.set(len, []);
+    return pQ;
+  });
 
-	});
-		
-	setPageQuestions(pageQuestions => {
+  setActivePageQuestions([]);
 
-			let actualActivePage = activePage || 0;
-			let newActivePages = activePageQuestions.map((value, key) => {
+  setAddPageUpdate(false);
 
-				if(!value.Id) {
-						value.Id = result[0]; 
-						actualActivePage = value.forms__Page__c;
-				} 
-				return value;
+  setActivePage(len);
+};
 
-			});
-			let t = pageQuestions.set(actualActivePage, newActivePages); 
+const resultHandler = (
+  result,
+  e,
+  isMulti,
+  setUpdate,
+  setAdditionalUpdate,
+  setQuestions,
+  setPageQuestions,
+  setActivePageQuestions,
+  activePageQuestions,
+  activePage
+) => {
+  console.log("result", result);
+  setQuestions((questions) => {
+    console.log("questions", questions);
+    let updated = questions.map((question, index) => {
+      console.log("question.Id", question.Id, index);
 
-			return t; 
-	});
-	
-	if(isMulti) {
+      if (question.Id == null) {
+        question.Id = result[index];
+      }
+      return question;
+    });
+    console.log("updated", updated);
 
-		setActivePageQuestions(questions => {
+    return updated;
+  });
 
-			let updated = questions.map(question => {
+  setPageQuestions((pageQuestions) => {
+    let actualActivePage = activePage || 0;
+    let newActivePages = activePageQuestions.map((value, key) => {
+      if (!value.Id) {
+        value.Id = result[0];
+        actualActivePage = value.forms__Page__c;
+      }
+      return value;
+    });
+    let t = pageQuestions.set(actualActivePage, newActivePages);
 
-					if(!question.Id) {
-							question.Id = result[0]; 
-					} 
-					return question;
+    return t;
+  });
 
-			});
+  if (isMulti) {
+    setActivePageQuestions((questions) => {
+      let updated = questions.map((question) => {
+        if (!question.Id) {
+          question.Id = result[0];
+        }
+        return question;
+      });
 
-			return updated; 
+      return updated;
+    });
+  } else {
+    setActivePageQuestions((questions) => {
+      let updated = activePageQuestions.map((question) => {
+        if (!question.Id) {
+          question.Id = result[0];
+        }
+        return question;
+      });
 
-		});
+      return updated;
+    });
+  }
 
-	} else {
-		setActivePageQuestions(questions => {
+  setUpdate(false);
+  setAdditionalUpdate(false);
+};
 
-				let updated = activePageQuestions.map(question => {
+const fetchHandler = (
+  result,
+  e,
+  setQuestions,
+  setRecordGroup,
+  setPageQuestions,
+  setActivePageQuestions,
+  setQuestionOptions
+) => {
+  let questionWithOptions = result.filter(
+    (q) => q.forms__Question_Options__r != null
+  );
 
-						if(!question.Id) {
-								question.Id = result[0]; 
-						} 
-						return question;
-
-				});
-
-				return updated; 
-
-		});
-	}
-
-	setUpdate(false);
-	setAdditionalUpdate(false);
-
-}
-
-const fetchHandler = (result, e, setQuestions, setRecordGroup, setPageQuestions, setActivePageQuestions, setQuestionOptions) => {
-
-    let questionWithOptions = result.filter(q => q.forms__Question_Options__r != null);
-
-    setQuestionOptions(questionOptions => {
-
-        return questionWithOptions.reduce((accum, cur, i) => {
-
-            return accum.set(cur.Id, cur.forms__Question_Options__r);
-
-        }, new Map())
-
-		})
-		
-    let questions = sorted(result); 
-
-    let cleanQuestions = questions.filter(question => question.forms__Record_Group__c == null);
-
-    let recordGroupQuestions = questions.filter(question => question.forms__Type__c == 'RecordGroup');
-
-    let recordGroups = recordGroupQuestions.reduce((accum, question) => {
-
-        return accum.set(question.Id, questions.filter(q => q.forms__Record_Group__c == question.Id))
-
+  setQuestionOptions((questionOptions) => {
+    return questionWithOptions.reduce((accum, cur, i) => {
+      return accum.set(cur.Id, cur.forms__Question_Options__r);
     }, new Map());
+  });
 
-    setQuestions(cleanQuestions);
+  let questions = sorted(result);
 
-		setRecordGroup(recordGroups); 
+  let cleanQuestions = questions.filter(
+    (question) => question.forms__Record_Group__c == null
+  );
 
-		setPageQuestions(pageBreaks(cleanQuestions));
-		
-		setActivePageQuestions(getFirstPageQuestions(cleanQuestions))
+  let recordGroupQuestions = questions.filter(
+    (question) => question.forms__Type__c == "RecordGroup"
+  );
 
-}
+  let recordGroups = recordGroupQuestions.reduce((accum, question) => {
+    return accum.set(
+      question.Id,
+      questions.filter((q) => q.forms__Record_Group__c == question.Id)
+    );
+  }, new Map());
 
-const deletePageResultHandler =  (result, e, setPages, setQuestions, setPageQuestions, setRecordGroup, setForm, setActivePage, setAddPageUpdate, deletePage) => {
+  setQuestions(cleanQuestions);
 
-	let questions = sorted(result); 
+  setRecordGroup(recordGroups);
 
-	let cleanQuestions = questions.filter(question => question.forms__Record_Group__c == null);
+  setPageQuestions(pageBreaks(cleanQuestions));
 
-	let recordGroupQuestions = questions.filter(question => question.forms__Type__c == 'RecordGroup');
+  setActivePageQuestions(getFirstPageQuestions(cleanQuestions));
+};
 
-	let recordGroups = recordGroupQuestions.reduce((accum, question) => {
+const deletePageResultHandler = (
+  result,
+  e,
+  setPages,
+  setQuestions,
+  setPageQuestions,
+  setRecordGroup,
+  setForm,
+  setActivePage,
+  setAddPageUpdate,
+  deletePage
+) => {
+  let questions = sorted(result);
 
-			return accum.set(question.Id, questions.filter(q => q.forms__Record_Group__c == question.Id))
+  let cleanQuestions = questions.filter(
+    (question) => question.forms__Record_Group__c == null
+  );
 
-	}, new Map());
+  let recordGroupQuestions = questions.filter(
+    (question) => question.forms__Type__c == "RecordGroup"
+  );
 
-	setQuestions(cleanQuestions);
+  let recordGroups = recordGroupQuestions.reduce((accum, question) => {
+    return accum.set(
+      question.Id,
+      questions.filter((q) => q.forms__Record_Group__c == question.Id)
+    );
+  }, new Map());
 
-	setRecordGroup(recordGroups); 
-	//need to set active page questions here
-	setPageQuestions(pageBreaks(cleanQuestions));
+  setQuestions(cleanQuestions);
 
-	resetToFirstPage(setPages, setForm, setActivePage, setAddPageUpdate, deletePage);
+  setRecordGroup(recordGroups);
+  //need to set active page questions here
+  setPageQuestions(pageBreaks(cleanQuestions));
 
-}
+  resetToFirstPage(
+    setPages,
+    setForm,
+    setActivePage,
+    setAddPageUpdate,
+    deletePage
+  );
+};
 
-const resetToFirstPage = (setPages, setForm, setActivePage, setAddPageUpdate, deletePage) => {
+const resetToFirstPage = (
+  setPages,
+  setForm,
+  setActivePage,
+  setAddPageUpdate,
+  deletePage
+) => {
+  setPages((pages) => {
+    return pages.filter((p) => {
+      return p.value != deletePage;
+    });
+  });
 
-	setPages(pages => {
+  setForm((form) => {
+    let multiPageInfo = form.forms__Multi_Page_Info__c;
 
-		return pages.filter(p => {
-			return p.value != deletePage;
-		})
-	});
+    if (typeof multiPageInfo == "string") {
+      multiPageInfo = JSON.parse(multiPageInfo);
+    }
 
-	setForm(form => {
+    let preppedMultiPageInfo = multiPageInfo.filter((page) => {
+      return page.page != deletePage;
+    });
 
-		let multiPageInfo = form.forms__Multi_Page_Info__c;
+    return { ...form, forms__Multi_Page_Info__c: preppedMultiPageInfo };
+  });
 
-		if(typeof multiPageInfo == 'string') {
-			multiPageInfo = JSON.parse(multiPageInfo); 
-		}
+  setActivePage(0);
 
-		let preppedMultiPageInfo =	multiPageInfo.filter((page) => {
+  setAddPageUpdate(false);
+};
 
-			return page.page != deletePage;
+const deleteResultHandler = (
+  result,
+  e,
+  setQuestions,
+  setPageQuestions,
+  setRecordGroup,
+  setUpdate
+) => {
+  let questions = sorted(result);
 
-		})
+  let cleanQuestions = questions.filter(
+    (question) => question.forms__Record_Group__c == null
+  );
 
-		return { ...form, forms__Multi_Page_Info__c: preppedMultiPageInfo }
-	})
+  let recordGroupQuestions = questions.filter(
+    (question) => question.forms__Type__c == "RecordGroup"
+  );
 
-	setActivePage(0);
+  let recordGroups = recordGroupQuestions.reduce((accum, question) => {
+    return accum.set(
+      question.Id,
+      questions.filter((q) => q.forms__Record_Group__c == question.Id)
+    );
+  }, new Map());
 
-	setAddPageUpdate(false);
+  setQuestions(cleanQuestions);
 
-}
+  setRecordGroup(recordGroups);
+  //need to set active page questions here
+  setPageQuestions(pageBreaks(cleanQuestions));
 
-const deleteResultHandler = (result, e, setQuestions, setPageQuestions, setRecordGroup, setUpdate) => {
-
-		let questions = sorted(result); 
-
-    let cleanQuestions = questions.filter(question => question.forms__Record_Group__c == null);
-
-    let recordGroupQuestions = questions.filter(question => question.forms__Type__c == 'RecordGroup');
-
-    let recordGroups = recordGroupQuestions.reduce((accum, question) => {
-
-        return accum.set(question.Id, questions.filter(q => q.forms__Record_Group__c == question.Id))
-
-    }, new Map());
-
-    setQuestions(cleanQuestions);
-
-    setRecordGroup(recordGroups); 
-		//need to set active page questions here
-    setPageQuestions(pageBreaks(cleanQuestions));
-
-		setUpdate(false);
-
-}
+  setUpdate(false);
+};
 
 const pageBreaks = (questions) => {
+  return questions.reduce((accum, question) => {
+    if (accum.has(question.forms__Page__c)) {
+      let pageQuestions = accum.get(question.forms__Page__c);
+      let updatedPageQuestions = pageQuestions.concat([question]);
+      accum.set(question.forms__Page__c, updatedPageQuestions);
+    } else {
+      accum.set(question.forms__Page__c, [question]);
+    }
 
-	return questions.reduce((accum, question) => {
-
-			if(accum.has(question.forms__Page__c)) {
-					let pageQuestions = accum.get(question.forms__Page__c); 
-					let updatedPageQuestions = pageQuestions.concat([question]);
-					accum.set(question.forms__Page__c, updatedPageQuestions)
-			} else {
-					accum.set(question.forms__Page__c, [question]);
-			}
-
-			return accum;
-
-	}, new Map())
-}
+    return accum;
+  }, new Map());
+};
 
 const sorted = (questions) => {
+  let result = questions.sort((a, b) => {
+    if (a.forms__Order__c < b.forms__Order__c) {
+      return -1;
+    }
+    if (a.forms__Order__c > b.forms__Order__c) {
+      return 1;
+    }
+  });
 
-    let result = questions.sort((a, b) => {
-        if(a.forms__Order__c < b.forms__Order__c) {
-            return -1; 
-        }
-        if(a.forms__Order__c > b.forms__Order__c) {
-            return 1; 
-        }
-    });
-
-    return result; 
-
-}
+  return result;
+};
 
 const sortDelete = (result) => {
+  let s = result.map((r, i) => {
+    if (r.hasOwnProperty("forms__Question_Options__r")) {
+      delete r.forms__Question_Options__r;
+    }
 
-    let s = result.map((r, i) => {
-        if(r.hasOwnProperty('forms__Question_Options__r')) {
-            delete r.forms__Question_Options__r;
-				}
-				
-				if(r.hasOwnProperty('forms__Question_Criteria__r')) {
-					delete r.forms__Question_Criteria__r;
-				}
+    if (r.hasOwnProperty("forms__Question_Criteria__r")) {
+      delete r.forms__Question_Criteria__r;
+    }
 
-        r.forms__Order__c = i;
-        return r; 
-    });
+    r.forms__Order__c = i;
+    return r;
+  });
 
-    s = s.sort((a, b) => {
-        if(a.forms__Order__c < b.forms__Order__c) {
-            return -1; 
-        }
-        if(a.forms__Order__c > b.forms__Order__c) {
-            return 1; 
-        }
-    });
+  s = s.sort((a, b) => {
+    if (a.forms__Order__c < b.forms__Order__c) {
+      return -1;
+    }
+    if (a.forms__Order__c > b.forms__Order__c) {
+      return 1;
+    }
+  });
 
-    return s; 
-
-}
+  return s;
+};
 
 const getFirstPageQuestions = (questions) => {
+  let t = questions.reduce((accum, question) => {
+    if (question.forms__Page__c == 0) {
+      accum = accum.concat([question]);
+    }
 
-	let t = questions.reduce((accum, question) => {
+    return accum;
+  }, []);
 
-		if(question.forms__Page__c == 0) {
-			accum = accum.concat([question]);
-		}
-		
-		return accum; 
-
-	}, []);
-
-	return t;
-
-}
+  return t;
+};
 
 const prepare = (questionList) => {
-	return questionList.map(question => {
-		if(question.hasOwnProperty('forms__Question_Options__r')) {
-			delete question.forms__Question_Options__r;
-		}
+  return questionList.map((question) => {
+    if (question.hasOwnProperty("forms__Question_Options__r")) {
+      delete question.forms__Question_Options__r;
+    }
 
-		if(question.hasOwnProperty('forms__Question_Criteria__r')) {
-			delete question.forms__Question_Criteria__r;
-		}
-		return question; 
-	})
-}
+    if (question.hasOwnProperty("forms__Question_Criteria__r")) {
+      delete question.forms__Question_Criteria__r;
+    }
+    return question;
+  });
+};
 
 const LayoutHolder = styled.div`
-	>div:nth-of-type(1) {
-		max-height: 98px; 
-	}
+  > div:nth-of-type(1) {
+    max-height: 98px;
+  }
 `;
-
-

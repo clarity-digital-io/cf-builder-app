@@ -1,260 +1,219 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from "react";
 
-import { call } from '../../../RemoteActions'; 
-import View from '../../../Elements/View';
-import ViewStyle from '../../../Elements/View/style';
-import Box from '../../../Elements/Box';
-import {Button} from '../../../Elements/Button';
+import { call } from "../../../RemoteActions";
+import View from "../../../Elements/View";
+import ViewStyle from "../../../Elements/View/style";
+import Box from "../../../Elements/Box";
+import { Button } from "../../../Elements/Button";
 
-import { BuilderContext } from '../../../Context';
-import { StatusHandler } from '../../../Elements/Notification';
+import { BuilderContext } from "../../../Context";
+import { StatusHandler } from "../../../Elements/Notification";
 
-import { Input as SalesforceInput, Checkbox} from '@salesforce/design-system-react';
+import {
+  Input as SalesforceInput,
+  Checkbox,
+} from "@salesforce/design-system-react";
 
 export const SettingsState = () => {
+  const { form, setForm, setError } = useContext(BuilderContext);
 
-		const { form, setForm, setError } = useContext(BuilderContext);
-	
-    const [update, setUpdate] = useState(false);
+  const [update, setUpdate] = useState(false);
 
-    useEffect(() => {
+  useEffect(() => {
+    if (update) {
+      form.forms__Multi_Page_Info__c =
+        form.forms__Multi_Page_Info__c != null
+          ? JSON.stringify(form.forms__Multi_Page_Info__c)
+          : "";
 
-        if(update) {
-
-					form.forms__Multi_Page_Info__c = form.forms__Multi_Page_Info__c != null ? JSON.stringify(form.forms__Multi_Page_Info__c) : '';
-
-					StatusHandler(
-							form.forms__Status__c,
-							() => setUpdate(false),
-							() => call(
-									setError,
-									"BuilderController.updateForm", 
-									[JSON.stringify(form)], 
-									(result, e) => resultHandler(result, e, setForm, setUpdate),
-							),
-							null,
-							setError
-					)
-        }
-        
-    }, [update]);
-
-    const updateName = (e) => {
-
-        let value = e.target.value; 
-
-        setForm(form => {
-            return { ...form, Title__c: value }
-        })
+      StatusHandler(
+        form.forms__Status__c,
+        () => setUpdate(false),
+        () =>
+          call(
+            setError,
+            "BuilderController.updateForm",
+            [JSON.stringify(form)],
+            (result, e) => resultHandler(result, e, setForm, setUpdate)
+          ),
+        null,
+        setError
+      );
     }
+  }, [update]);
 
-		const updateDescription = (e) => {
+  const updateName = (e) => {
+    let value = e.target.value;
 
-			let value = e.target.value; 
+    setForm((form) => {
+      return { ...form, Title__c: value };
+    });
+  };
 
-			setForm(form => {
-					return { ...form, Description__c: value }
-			})
-		}
+  const updateDescription = (e) => {
+    let value = e.target.value;
 
-		const updateToMulti = (e) => {
+    setForm((form) => {
+      return { ...form, Description__c: value };
+    });
+  };
 
-			let checked = e.target.checked;
+  const updateToMulti = (e) => {
+    let checked = e.target.checked;
 
-				setForm(form => {
-						return { ...form, forms__Multi_Page__c: checked }
-				})
-		}
+    setForm((form) => {
+      return { ...form, forms__Multi_Page__c: checked };
+    });
+  };
 
-		const updateHasThankYou = (e) => {
+  const updateHasThankYou = (e) => {
+    let checked = e.target.checked;
 
-			let checked = e.target.checked;
+    setForm((form) => {
+      return { ...form, forms__Has_Thank_You__c: checked };
+    });
+  };
 
-				setForm(form => {
-						return { ...form, forms__Has_Thank_You__c: checked }
-				})
-		}
+  const updateRedirect = (e) => {
+    let value = e.target.value;
 
-		const updateRedirect = (e) => {
+    setForm((form) => {
+      return { ...form, forms__Thank_You_Redirect__c: value };
+    });
+  };
 
-			let value = e.target.value; 
+  return [
+    <View borderRight className="row middle-xs end-xs" key={"Header"}>
+      <View className="col-xs-12">
+        <ViewStyle border>
+          <Button cta onClick={() => setUpdate(true)}>
+            {update ? "Saving..." : "Save Changes"}
+          </Button>
+        </ViewStyle>
+      </View>
+    </View>,
+    <View borderRight body key={"Body"}>
+      <Box padding="0">
+        <ViewStyle space border>
+          <h1>Form Settings</h1>
 
-			setForm(form => {
-					return { ...form, forms__Thank_You_Redirect__c: value }
-			})
-		}
+          <p>Update Form information and set limits on responses.</p>
+        </ViewStyle>
 
-    return [
-				<View borderRight className="row middle-xs end-xs" key={'Header'}>
-					<View className="col-xs-12">
-							<ViewStyle border>
-									<Button cta onClick={() => setUpdate(true)}>
-											{ update ? 'Saving...' : 'Save Changes' }
-									</Button>
-							</ViewStyle>
-					</View>
-				</View>,
-        <View borderRight body  key={'Body'}>
+        <ViewStyle space border>
+          <h1>Form Information</h1>
 
-
-                <Box padding='0'>
-
-                    <ViewStyle space border>
-                    
-                        <h1>Form Settings</h1>
-
-                        <p>Update Form information and set limits on responses.</p>
-
-                    </ViewStyle>
-
-                    <ViewStyle space border>
-
-                        <h1>Form Information</h1>
-
-                        <ViewStyle>
-
-                            <View className="row" >
-                            <View className="col-xs-12">
-                                <Box padding='1em 0 0 0'>
-
-																		<SalesforceInput
-																			aria-describedby={form.Title__c}
-																			defaultValue={form.Title__c}
-																			id={form.Title__c}
-																			onChange={(e) => updateName(e)}
-																		/>
-
-                                </Box>
-                            </View>
-                            </View>
-
-                        </ViewStyle>
-
-                    </ViewStyle>
-
-										<ViewStyle space border>
-
-										<h1>Form Description</h1>
-
-										<ViewStyle>
-
-												<View className="row" >
-												<View className="col-xs-12">
-														<Box padding='1em 0 0 0'>
-
-																<SalesforceInput
-																	aria-describedby={form.Description__c}
-																	defaultValue={form.Description__c}
-																	id={form.Description__c}
-																	onChange={(e) => updateDescription(e)}
-																/>
-
-														</Box>
-												</View>
-												</View>
-
-										</ViewStyle>
-
-										</ViewStyle>
-
-                    <ViewStyle space border>
-
-                        <h1>Multi Page Form</h1>
-
-                        <View className="row">
-                            <View className="col-xs-12">
-                                <Box padding='1em 0 0 0'>
-
-																	<Checkbox
-																		id={form.Name + 'Flow'}
-																		variant="toggle"
-																		defaultChecked={form.forms__Multi_Page__c} 
-																		onChange={(e, {checked}) => updateToMulti(e)}
-																	/>
-
-                                </Box>
-                            </View>
-                        </View>
-
-                    </ViewStyle>
-
-										<ViewStyle space border>
-
-											<h1>Use a Thank You Page</h1>
-
-											<View className="row">
-													<View className="col-xs-12">
-															<Box padding='1em 0 0 0'>
-
-																<Checkbox
-																	id={form.Name + 'ThankYou'}
-																	variant="toggle"
-																	defaultChecked={form.forms__Has_Thank_You__c} 
-																	onChange={(e, {checked}) => updateHasThankYou(e)}
-																/>
-
-															</Box>
-													</View>
-											</View>
-
-										</ViewStyle>
-
-										{
-											form.forms__Has_Thank_You__c ? 
-											<ViewStyle space border>
-
-												<h1>Redirect URL</h1>
-
-												<ViewStyle>
-
-													<View className="row" >
-														<View className="col-xs-12">
-																<Box padding='1em 0 0 0'>
-
-																		<SalesforceInput
-																			aria-describedby={form.forms__Thank_You_Redirect__c}
-																			defaultValue={form.forms__Thank_You_Redirect__c}
-																			id={form.Name}
-																			onChange={(e) => updateRedirect(e)}
-																		/>
-
-																</Box>
-														</View>
-													</View>
-
-												</ViewStyle>
-
-											</ViewStyle>
-											: 
-											null
-										}
-
-
+          <ViewStyle>
+            <View className="row">
+              <View className="col-xs-12">
+                <Box padding="1em 0 0 0">
+                  <SalesforceInput
+                    aria-describedby={form.Title__c}
+                    defaultValue={form.Title__c}
+                    id={form.Title__c}
+                    onChange={(e) => updateName(e)}
+                  />
                 </Box>
+              </View>
+            </View>
+          </ViewStyle>
+        </ViewStyle>
 
-        </View>
-    ]
-}
+        <ViewStyle space border>
+          <h1>Form Description</h1>
+
+          <ViewStyle>
+            <View className="row">
+              <View className="col-xs-12">
+                <Box padding="1em 0 0 0">
+                  <SalesforceInput
+                    aria-describedby={form.Description__c}
+                    defaultValue={form.Description__c}
+                    id={form.Description__c}
+                    onChange={(e) => updateDescription(e)}
+                  />
+                </Box>
+              </View>
+            </View>
+          </ViewStyle>
+        </ViewStyle>
+
+        <ViewStyle space border>
+          <h1>Multi Page Form</h1>
+
+          <View className="row">
+            <View className="col-xs-12">
+              <Box padding="1em 0 0 0">
+                <Checkbox
+                  id={form.Name + "Flow"}
+                  variant="toggle"
+                  defaultChecked={form.forms__Multi_Page__c}
+                  onChange={(e, { checked }) => updateToMulti(e)}
+                />
+              </Box>
+            </View>
+          </View>
+        </ViewStyle>
+
+        <ViewStyle space border>
+          <h1>Use a Thank You Page</h1>
+
+          <View className="row">
+            <View className="col-xs-12">
+              <Box padding="1em 0 0 0">
+                <Checkbox
+                  id={form.Name + "ThankYou"}
+                  variant="toggle"
+                  defaultChecked={form.forms__Has_Thank_You__c}
+                  onChange={(e, { checked }) => updateHasThankYou(e)}
+                />
+              </Box>
+            </View>
+          </View>
+        </ViewStyle>
+
+        {form.forms__Has_Thank_You__c ? (
+          <ViewStyle space border>
+            <h1>Redirect URL</h1>
+
+            <ViewStyle>
+              <View className="row">
+                <View className="col-xs-12">
+                  <Box padding="1em 0 0 0">
+                    <SalesforceInput
+                      aria-describedby={form.forms__Thank_You_Redirect__c}
+                      defaultValue={form.forms__Thank_You_Redirect__c}
+                      id={form.Name}
+                      onChange={(e) => updateRedirect(e)}
+                    />
+                  </Box>
+                </View>
+              </View>
+            </ViewStyle>
+          </ViewStyle>
+        ) : null}
+      </Box>
+    </View>,
+  ];
+};
 
 const resultHandler = (result, e, setForm, setUpdate) => {
-    
-		setUpdate(false);
-		
-		let multiPageInfo = []; 
-		if(result.forms__Multi_Page__c) {
-			multiPageInfo = JSON.parse(result.forms__Multi_Page_Info__c);
-			if(multiPageInfo.length == 0) {
-				multiPageInfo = [{ page: 0, title: 'Page 1', icon: '' }];
-			}
-		}
-    
-    setForm(form => {
-        return { 
-					...form, 
-					Name: result.Name, 
-					forms__Multi_Page__c: result.forms__Multi_Page__c,
-					forms__Multi_Page_Info__c: multiPageInfo
-				}
-		}); 
-			
-}
+  setUpdate(false);
+
+  let multiPageInfo = [];
+  if (result.forms__Multi_Page__c) {
+    multiPageInfo = JSON.parse(result.forms__Multi_Page_Info__c);
+    if (multiPageInfo.length == 0) {
+      multiPageInfo = [{ page: 0, title: "Page 1", icon: "" }];
+    }
+  }
+
+  setForm((form) => {
+    return {
+      ...form,
+      Name: result.Name,
+      forms__Multi_Page__c: result.forms__Multi_Page__c,
+      forms__Multi_Page_Info__c: multiPageInfo,
+    };
+  });
+};
