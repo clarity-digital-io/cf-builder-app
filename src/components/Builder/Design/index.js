@@ -58,27 +58,6 @@ const DragDropUpdateProvider = ({ children }) => {
   );
 };
 
-const pageValues = (info) => {
-  let pages = [];
-
-  if (typeof info == "string") {
-    info = JSON.parse(info);
-  }
-
-  if (info.length) {
-    pages = info.map((val, i) => {
-      return {
-        label: `Page ${i + 1}`,
-        value: i,
-      };
-    });
-  } else {
-    pages = [{ label: "Page 1", value: 0 }];
-  }
-
-  return pages;
-};
-
 const DesignProvider = ({ children }) => {
   const { form, setForm, sObjects, setError } = useContext(BuilderContext);
 
@@ -365,6 +344,27 @@ const DesignProvider = ({ children }) => {
       {children}
     </DesignContext.Provider>
   );
+};
+
+const pageValues = (info) => {
+  let pages = [];
+
+  if (typeof info == "string") {
+    info = JSON.parse(info);
+  }
+
+  if (info.length) {
+    pages = info.map((val, i) => {
+      return {
+        label: `Page ${i + 1}`,
+        value: i,
+      };
+    });
+  } else {
+    pages = [{ label: "Page 1", value: 0 }];
+  }
+
+  return pages;
 };
 
 const addPageHandler = (

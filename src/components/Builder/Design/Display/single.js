@@ -4,30 +4,15 @@ import { Droppable, Draggable } from "react-beautiful-dnd";
 import { useDrag } from "./useDrag";
 
 import { GenerateQuestion, Card, DropView } from "./elements";
-import { QuestionPreview } from "./questionPreview";
-
-import { BuilderContext } from "../../../Context";
 
 export const Single = ({ style, form }) => {
-  const { previewMode } = useContext(BuilderContext);
-
   const { questions } = useDrag();
 
   const background = {
     background: "#fff",
   };
 
-  return previewMode.active ? (
-    <div className="slds-m-around_x-large">
-      <div style={background} className="slds-box">
-        <div className="slds-p-around_x-large">
-          {questions.map((item, index) => (
-            <QuestionPreview question={item} />
-          ))}
-        </div>
-      </div>
-    </div>
-  ) : (
+  return (
     <div>
       <Droppable droppableId="question">
         {(provided, snapshot) => (

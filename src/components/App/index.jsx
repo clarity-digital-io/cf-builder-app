@@ -16,11 +16,6 @@ const App = ({ children }) => {
 const BuilderProvider = ({ children }) => {
   const [error, setError] = useState({ error: "", open: false });
 
-  const [previewMode, setPreviewMode] = useState({
-    active: false,
-    desktop: false,
-  });
-
   const [loading, setLoading] = useState(false);
 
   const [activeConnection, setActiveConnection] = useState([]);
@@ -102,8 +97,6 @@ const BuilderProvider = ({ children }) => {
       value={{
         error,
         setError,
-        previewMode,
-        setPreviewMode,
         loading,
         setLoading,
         activeFields,

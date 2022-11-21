@@ -18,17 +18,13 @@ const Design = () => {
     switch (nav) {
       case "QUESTIONS":
         return <QuestionState />;
-        break;
       case "CONNECT":
       case "MAPPING":
         return <ConnectState />;
-        break;
       case "SETTINGS":
         return <SettingsState />;
-        break;
       case "EDIT_PAGE":
         return <EditPageState />;
-        break;
     }
   };
 
@@ -36,10 +32,8 @@ const Design = () => {
     switch (nav) {
       case "MAPPING":
         return <MappingState key={"MappingState"} />;
-        break;
       default:
         return <Display key={"DisplayState"} />;
-        break;
     }
   };
 

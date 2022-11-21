@@ -4,7 +4,7 @@ const fs = require("fs");
 const lessToJs = require("less-vars-to-js");
 
 module.exports = {
-  entry: "./src/index.js",
+  entry: "./src/index.tsx",
   module: {
     rules: [
       {
@@ -13,6 +13,11 @@ module.exports = {
         use: {
           loader: "babel-loader",
         },
+      },
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
       },
       {
         test: /\.less$/,

@@ -1,8 +1,6 @@
 import React, { useState, useContext } from "react";
 import LCC from "lightning-container";
-
 import { BuilderContext, DesignContext } from "../../Context";
-
 import {
   ToastContainer,
   Toast,
@@ -36,8 +34,6 @@ const DesignNavigation = () => {
     setForm,
     setLoading,
     setError,
-    previewMode,
-    setPreviewMode,
     error,
   } = useContext(BuilderContext);
 
@@ -49,23 +45,13 @@ const DesignNavigation = () => {
 
   const [publishCheck, setPublishCheck] = useState(false);
 
-  const preview = () => {
-    setPreviewMode({ active: true, desktop: true });
-  };
-
-  const editMode = () => {
-    setPreviewMode({ active: false, desktop: true });
-  };
-
   //Publish and Draft Handling
   const publish = () => {
     if (questions.length > 0) {
       setType("Publish");
-
       setPublishCheck(true);
     } else {
       setType("Publish Error");
-
       setPublishCheck(true);
     }
   };
@@ -166,15 +152,6 @@ const DesignNavigation = () => {
             <span className="slds-color__text_gray-10 slds-align-middle slds-m-right_small">
               {update || dragUpdate ? "Saving..." : "Saved"}
             </span>
-            <Button
-              iconCategory="utility"
-              iconName="right"
-              iconPosition="left"
-              label={previewMode.active ? "Edit Mode" : "Preview"}
-              onClick={() => {
-                previewMode.active ? editMode() : preview();
-              }}
-            />
             {form.forms__Status__c == "Published" ? (
               <Button label="Set to Draft" onClick={() => handleDraft()} />
             ) : (

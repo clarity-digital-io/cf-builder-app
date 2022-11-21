@@ -1,15 +1,20 @@
 const webpack = require("webpack");
 
 module.exports = {
-  entry: "./src/index.js",
+  entry: "./src/index.tsx",
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,
+        test: /\.(ts|tsx)$/,
         exclude: /node_modules/,
-        use: {
-          loader: "babel-loader",
-        },
+        use: [
+          {
+            loader: 'ts-loader'
+          },
+          {
+            loader: 'babel-loader'
+          }
+        ],
       },
       {
         test: /\.less$/,
@@ -22,7 +27,7 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: ["*", ".js", ".jsx", ".less"],
+    extensions: ["*", ".ts", ".tsx", ".js", ".jsx", ".less"],
   },
   output: {
     path: __dirname + "/dist",
@@ -31,7 +36,9 @@ module.exports = {
   },
   plugins: [new webpack.HotModuleReplacementPlugin()],
   devServer: {
-    contentBase: "./dist",
+    static: {
+      directory: 'dist',
+    },
     hot: true,
   },
 };

@@ -67,7 +67,7 @@ export const Multi = ({ form }) => {
     background: "#fff",
   };
 
-  const { previewMode, setNavState } = useContext(BuilderContext);
+  const { setNavState } = useContext(BuilderContext);
 
   const {
     pages,
@@ -99,45 +99,7 @@ export const Multi = ({ form }) => {
     }
   };
 
-  return previewMode.active ? (
-    <div className="slds-m-around_x-large">
-      <div style={background}>
-        <View border bigspace>
-          <PageTabItems>
-            <Linear></Linear>
-            {designPages.map((page) => {
-              let iconData =
-                page.icon != ""
-                  ? page.icon.split(":")
-                  : ["standard", "announcement"];
-              let category = iconData[0];
-              let name = iconData[1];
-              return (
-                <li
-                  className={page.page == activePage ? "active" : ""}
-                  onClick={() => setActivePage(page.page)}
-                >
-                  <Icon
-                    assistiveText={{ label: page.title }}
-                    category={category}
-                    name={name}
-                    size="small"
-                  />
-
-                  <span>{page.title}</span>
-                </li>
-              );
-            })}
-          </PageTabItems>
-        </View>
-        <View bigspace>
-          {activePageQuestions.map((item, index) => (
-            <QuestionPreview question={item} />
-          ))}
-        </View>
-      </div>
-    </div>
-  ) : (
+  return (
     <div key={activePage}>
       <View borderLeft whiteBG className="row middle-xs end-xs" key={"Header"}>
         <View className="col-xs-12">
