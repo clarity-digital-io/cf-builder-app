@@ -1,21 +1,19 @@
 {
-  "$schema": "https://json.schemastore.org/tsconfig",
-  "display": "Node 16",
   "compilerOptions": {
-    "jsx": "preserve",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "module": "commonjs",
-    "target": "es2020",
-    "strict": false,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
+    "target": "ESNext",
+    "module": "umd",
+    "lib": ["ESNext", "dom"],
+    "jsx": "react",
+    "noEmit": true,
+    "sourceMap": true /* Strict Type-Checking Options */,
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+
+    /* Module Resolution Options */
+    "moduleResolution": "node",
     "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true
+    "esModuleInterop": true
   },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.js"
-, "src/components/App/index.jsx"  ],
-  "exclude": ["node_modules"]
+  "include": ["srctest", "src"]
 }
