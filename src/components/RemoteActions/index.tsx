@@ -19,7 +19,7 @@ const prodCall = (setError, func, params, callback) => {
     }
   };
 
-  let extraParams = { buffer: false, escape: false, timeout: 12000 };
+  const extraParams = { buffer: false, escape: false, timeout: 12000 };
 
   switch (params.length) {
     case 0:
@@ -47,8 +47,8 @@ const prodCall = (setError, func, params, callback) => {
 };
 
 const mockCall = (setError, func, params, callback) => {
-  let date = new Date();
-  let timestamp = date.getTime();
+  const date = new Date();
+  const timestamp = date.getTime();
 
   switch (func) {
     case "getForm":

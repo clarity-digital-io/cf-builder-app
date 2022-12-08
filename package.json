@@ -36,6 +36,7 @@
     "webpack-dev-server": "^4.11.1"
   },
   "dependencies": {
+    "@dnd-kit/core": "^6.0.6",
     "@salesforce-ux/design-system": "^2.19.0",
     "@salesforce/design-system-react": "^0.10.50",
     "lightning-container": "^1.0.0",
