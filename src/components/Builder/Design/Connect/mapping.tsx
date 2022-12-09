@@ -9,10 +9,11 @@ import { Button } from "../../../Elements/Button";
 import { Spinner } from "../../../Elements/Spinner";
 import Main from "../../../Elements/Theme";
 
-import { BuilderContext, DesignContext } from "../../../Context";
+import { BuilderContext, DesignContext } from "../../../../context";
 import { FieldConnectState } from "./connect";
 import { PreFillState } from "./prefill";
 import { StatusHandler } from "../../../Elements/Notification";
+import { BuilderController } from "../../../../utils/constants/methods";
 
 export const MappingState = () => {
   const [localNavState, setLocalNavState] = useState("CONNECT");
@@ -47,7 +48,7 @@ export const MappingState = () => {
         () =>
           call(
             setError,
-            "BuilderController.saveActiveFieldConnections",
+            BuilderController.saveActiveFieldConnections,
             [JSON.stringify(combinedConnections), activeConnection.Id],
             (result, e) =>
               fieldConnectionsResultHandler(

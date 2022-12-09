@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Checkbox as SalesforceCheckbox } from "@salesforce/design-system-react";
-import { DesignContext } from "../../Context";
+import { DesignContext } from "../../../context";
 
 export const Checkbox = ({ question }) => {
   const { questionOptions } = useContext(DesignContext);
@@ -12,21 +12,21 @@ export const Checkbox = ({ question }) => {
       </legend>
       {questionOptions.get(question.Id) != null
         ? questionOptions.get(question.Id).map((option, index) => {
-            return (
-              <SalesforceCheckbox
-                key={index}
-                assistiveText={{
-                  label: option.forms__Label__c,
-                }}
-                id={option.Id}
-                labels={{
-                  label: option.forms__Label__c,
-                }}
-                onChange={(e, status) => {}}
-                checked={false}
-              />
-            );
-          })
+          return (
+            <SalesforceCheckbox
+              key={index}
+              assistiveText={{
+                label: option.forms__Label__c,
+              }}
+              id={option.Id}
+              labels={{
+                label: option.forms__Label__c,
+              }}
+              onChange={(e, status) => { }}
+              checked={false}
+            />
+          );
+        })
         : []}
     </fieldset>
   );

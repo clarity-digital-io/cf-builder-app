@@ -4,10 +4,11 @@ import { call } from "../../../RemoteActions";
 import {
   BuilderContext,
   DesignContext,
-} from "../../../Context";
+} from "../../../../context";
 import { StatusHandler } from "../../../Elements/Notification";
 import styled from "styled-components";
 import { Props } from "../../../../utils/types";
+import { BuilderController } from "../../../../utils/constants/methods";
 
 export const DesignProvider: React.FC<Props> = ({ children }) => {
   const { form, setForm, sObjects, setError } = useContext(BuilderContext);
@@ -40,11 +41,11 @@ export const DesignProvider: React.FC<Props> = ({ children }) => {
 
   useEffect(() => {
     if (addPageUpdate) {
-      let newPq = new Map();
+      const newPq = new Map();
 
-      let currentPageInfo = form.forms__Multi_Page_Info__c;
+      const currentPageInfo = form.forms__Multi_Page_Info__c;
 
-      let newPageInfo = currentPageInfo.concat([
+      const newPageInfo = currentPageInfo.concat([
         {
           page: currentPageInfo.length,
           title: `Page ${currentPageInfo.length + 1}`,
@@ -62,7 +63,7 @@ export const DesignProvider: React.FC<Props> = ({ children }) => {
         () =>
           call(
             setError,
-            "BuilderController.updateForm",
+            BuilderController.updateForm,
             [JSON.stringify(form)],
             (result, e) =>
               addPageHandler(
@@ -89,7 +90,7 @@ export const DesignProvider: React.FC<Props> = ({ children }) => {
 
   useEffect(() => {
     if (!form.forms__Multi_Page_Info__c) {
-      let cleanQuestions = questions.filter(
+      const cleanQuestions = questions.filter(
         (question) => question.forms__Record_Group__c == null
       );
       setPageQuestions(pageBreaks(cleanQuestions));
@@ -97,7 +98,7 @@ export const DesignProvider: React.FC<Props> = ({ children }) => {
   }, [questions]);
 
   useEffect(() => {
-    call(setError, "BuilderController.getQuestions", [form.Id], (result, e) =>
+    call(setError, BuilderController.getQuestions, [form.Id], (result, e) =>
       fetchHandler(
         result,
         e,
@@ -120,8 +121,8 @@ export const DesignProvider: React.FC<Props> = ({ children }) => {
 
   useEffect(() => {
     if (update && updateSingle) {
-      let clonedQuestions = JSON.parse(JSON.stringify(questions));
-      let preparedQuestions = prepare(clonedQuestions);
+      const clonedQuestions = JSON.parse(JSON.stringify(questions));
+      const preparedQuestions = prepare(clonedQuestions);
 
       StatusHandler(
         form.forms__Status__c,
@@ -129,7 +130,7 @@ export const DesignProvider: React.FC<Props> = ({ children }) => {
         () =>
           call(
             setError,
-            "BuilderController.save",
+            BuilderController.save,
             [JSON.stringify(preparedQuestions)],
             (result, e) =>
               resultHandler(
@@ -156,7 +157,7 @@ export const DesignProvider: React.FC<Props> = ({ children }) => {
         () =>
           call(
             setError,
-            "BuilderController.save",
+            BuilderController.save,
             [JSON.stringify(activePageQuestions)],
             (result, e) =>
               resultHandler(
@@ -193,7 +194,7 @@ export const DesignProvider: React.FC<Props> = ({ children }) => {
         () =>
           call(
             setError,
-            "BuilderController.pageQuestionsDelete",
+            BuilderController.pageQuestionsDelete,
             [JSON.stringify(activePageQuestions), form.Id],
             (result, e) =>
               deletePageResultHandler(
@@ -229,7 +230,7 @@ export const DesignProvider: React.FC<Props> = ({ children }) => {
     if (questionToDelete) {
       setUpdate(true);
 
-      let updatedOnDelete = sortDelete(
+      const updatedOnDelete = sortDelete(
         questions.filter((question) => question.Id != questionToDelete)
       );
 
@@ -239,7 +240,7 @@ export const DesignProvider: React.FC<Props> = ({ children }) => {
         () =>
           call(
             setError,
-            "BuilderController.deleteQuestion",
+            BuilderController.deleteQuestion,
             [JSON.stringify(updatedOnDelete), questionToDelete],
             (result, e) =>
               deleteResultHandler(
@@ -343,7 +344,7 @@ const addPageHandler = (
   });
 
   setPages((pages) => {
-    let newPages = pages.concat([
+    const newPages = pages.concat([
       { label: `Page ${pages.length + 1}`, value: pages.length },
     ]);
 
@@ -378,7 +379,7 @@ const resultHandler = (
   console.log("result", result);
   setQuestions((questions) => {
     console.log("questions", questions);
-    let updated = questions.map((question, index) => {
+    const updated = questions.map((question, index) => {
       console.log("question.Id", question.Id, index);
 
       if (question.Id == null) {
@@ -393,21 +394,21 @@ const resultHandler = (
 
   setPageQuestions((pageQuestions) => {
     let actualActivePage = activePage || 0;
-    let newActivePages = activePageQuestions.map((value, key) => {
+    const newActivePages = activePageQuestions.map((value, key) => {
       if (!value.Id) {
         value.Id = result[0];
         actualActivePage = value.forms__Page__c;
       }
       return value;
     });
-    let t = pageQuestions.set(actualActivePage, newActivePages);
+    const t = pageQuestions.set(actualActivePage, newActivePages);
 
     return t;
   });
 
   if (isMulti) {
     setActivePageQuestions((questions) => {
-      let updated = questions.map((question) => {
+      const updated = questions.map((question) => {
         if (!question.Id) {
           question.Id = result[0];
         }
@@ -418,7 +419,7 @@ const resultHandler = (
     });
   } else {
     setActivePageQuestions((questions) => {
-      let updated = activePageQuestions.map((question) => {
+      const updated = activePageQuestions.map((question) => {
         if (!question.Id) {
           question.Id = result[0];
         }
@@ -442,7 +443,7 @@ const fetchHandler = (
   setActivePageQuestions,
   setQuestionOptions
 ) => {
-  let questionWithOptions = result.filter(
+  const questionWithOptions = result.filter(
     (q) => q.forms__Question_Options__r != null
   );
 
@@ -452,17 +453,17 @@ const fetchHandler = (
     }, new Map());
   });
 
-  let questions = sorted(result);
+  const questions = sorted(result);
 
-  let cleanQuestions = questions.filter(
+  const cleanQuestions = questions.filter(
     (question) => question.forms__Record_Group__c == null
   );
 
-  let recordGroupQuestions = questions.filter(
+  const recordGroupQuestions = questions.filter(
     (question) => question.forms__Type__c == "RecordGroup"
   );
 
-  let recordGroups = recordGroupQuestions.reduce((accum, question) => {
+  const recordGroups = recordGroupQuestions.reduce((accum, question) => {
     return accum.set(
       question.Id,
       questions.filter((q) => q.forms__Record_Group__c == question.Id)
@@ -490,17 +491,17 @@ const deletePageResultHandler = (
   setAddPageUpdate,
   deletePage
 ) => {
-  let questions = sorted(result);
+  const questions = sorted(result);
 
-  let cleanQuestions = questions.filter(
+  const cleanQuestions = questions.filter(
     (question) => question.forms__Record_Group__c == null
   );
 
-  let recordGroupQuestions = questions.filter(
+  const recordGroupQuestions = questions.filter(
     (question) => question.forms__Type__c == "RecordGroup"
   );
 
-  let recordGroups = recordGroupQuestions.reduce((accum, question) => {
+  const recordGroups = recordGroupQuestions.reduce((accum, question) => {
     return accum.set(
       question.Id,
       questions.filter((q) => q.forms__Record_Group__c == question.Id)
@@ -542,7 +543,7 @@ const resetToFirstPage = (
       multiPageInfo = JSON.parse(multiPageInfo);
     }
 
-    let preppedMultiPageInfo = multiPageInfo.filter((page) => {
+    const preppedMultiPageInfo = multiPageInfo.filter((page) => {
       return page.page != deletePage;
     });
 
@@ -562,17 +563,17 @@ const deleteResultHandler = (
   setRecordGroup,
   setUpdate
 ) => {
-  let questions = sorted(result);
+  const questions = sorted(result);
 
-  let cleanQuestions = questions.filter(
+  const cleanQuestions = questions.filter(
     (question) => question.forms__Record_Group__c == null
   );
 
-  let recordGroupQuestions = questions.filter(
+  const recordGroupQuestions = questions.filter(
     (question) => question.forms__Type__c == "RecordGroup"
   );
 
-  let recordGroups = recordGroupQuestions.reduce((accum, question) => {
+  const recordGroups = recordGroupQuestions.reduce((accum, question) => {
     return accum.set(
       question.Id,
       questions.filter((q) => q.forms__Record_Group__c == question.Id)
@@ -591,8 +592,8 @@ const deleteResultHandler = (
 const pageBreaks = (questions) => {
   return questions.reduce((accum, question) => {
     if (accum.has(question.forms__Page__c)) {
-      let pageQuestions = accum.get(question.forms__Page__c);
-      let updatedPageQuestions = pageQuestions.concat([question]);
+      const pageQuestions = accum.get(question.forms__Page__c);
+      const updatedPageQuestions = pageQuestions.concat([question]);
       accum.set(question.forms__Page__c, updatedPageQuestions);
     } else {
       accum.set(question.forms__Page__c, [question]);
@@ -603,7 +604,7 @@ const pageBreaks = (questions) => {
 };
 
 const sorted = (questions) => {
-  let result = questions.sort((a, b) => {
+  const result = questions.sort((a, b) => {
     if (a.forms__Order__c < b.forms__Order__c) {
       return -1;
     }
@@ -642,7 +643,7 @@ const sortDelete = (result) => {
 };
 
 const getFirstPageQuestions = (questions) => {
-  let t = questions.reduce((accum, question) => {
+  const t = questions.reduce((accum, question) => {
     if (question.forms__Page__c == 0) {
       accum = accum.concat([question]);
     }
@@ -665,9 +666,3 @@ const prepare = (questionList) => {
     return question;
   });
 };
-
-const LayoutHolder = styled.div`
-  > div:nth-of-type(1) {
-    max-height: 98px;
-  }
-`;

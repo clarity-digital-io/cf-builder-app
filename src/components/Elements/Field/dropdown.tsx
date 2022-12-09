@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { DesignContext } from "../../Context";
+import { DesignContext } from "../../../context";
 import { Combobox } from "@salesforce/design-system-react";
 
 export const Dropdown = ({ question }) => {
@@ -19,12 +19,12 @@ export const Dropdown = ({ question }) => {
       options={
         questionOptions.get(question.Id) != null
           ? questionOptions.get(question.Id).map((option) => {
-              return {
-                id: option.Id,
-                label: option.forms__Label__c,
-                value: option.Id,
-              };
-            })
+            return {
+              id: option.Id,
+              label: option.forms__Label__c,
+              value: option.Id,
+            };
+          })
           : null
       }
       selection={selection}

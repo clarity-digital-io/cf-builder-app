@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import ViewStyle from "../../../../Elements/View/style";
-import { DesignContext } from "../../../../Context";
+import { DesignContext } from "../../../../../context";
 import { Slider } from "../../../../Elements/Slider";
 
 export const Comment = () => {

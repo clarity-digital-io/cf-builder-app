@@ -1,33 +1,61 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import styled, { css } from "styled-components";
-import { Droppable, Draggable } from "react-beautiful-dnd";
+// import { Droppable, Draggable } from "react-beautiful-dnd";
 import Main from "../../../Elements/Theme";
 import View from "../../../Elements/View";
 import ViewStyle from "../../../Elements/View/style";
 
 import Box from "../../../Elements/Box";
 
-import { sortedTypes } from "../types";
+import { sortedTypes } from "../../../../utils/constants/fields";
 
 import { getType } from "./icontypes";
-import { BuilderContext, DesignContext } from "../../../Context";
+import { DesignContext } from "../../../../context";
+import { useBuilderContext } from "../../../../context/BuilderContext";
+
+import { DndContext, useDraggable, useDroppable, DragOverlay } from '@dnd-kit/core';
+import { DndContextProvider } from "../../../../context/DndContext";
+
+const Draggable = (props) => {
+  const { attributes, listeners, setNodeRef } = useDraggable({
+    id: props.id,
+  });
+
+  return (
+    <li ref={setNodeRef} {...listeners} {...attributes}>
+      {props.children}
+    </li>
+  );
+}
+
+const Item = ({ value }) => {
+  return <div>
+    {value}
+  </div>
+}
 
 export const NewQuestion = () => {
-  const { form } = useContext(BuilderContext);
+  // const { update } = useContext(DesignContext);
 
-  const { update } = useContext(DesignContext);
+  const { form } = useBuilderContext();
+  const [items] = useState(['1', '2', '3', '4', '5']);
+  const [activeId, setActiveId] = useState(null);
 
   return (
     <View full className="row" key={"Body"}>
       <View className="col-xs-12">
         <Box padding="0">
           <ViewStyle space>
-            <h1>Form Builder</h1>
+            <h1>Form Builder test</h1>
 
             <p>Drag and Drop any Question type to your Form on the right.</p>
           </ViewStyle>
 
-          <View space>
+          <DndContextProvider>
+            test
+          </DndContextProvider>
+
+          {/* <View space>
             <Droppable isDropDisabled={true} droppableId="new">
               {(provided, snapshot) => (
                 <View
@@ -71,7 +99,7 @@ export const NewQuestion = () => {
                 </View>
               )}
             </Droppable>
-          </View>
+          </View> */}
         </Box>
       </View>
     </View>
@@ -99,14 +127,14 @@ const SelectableNew = styled.div`
     }
 
     ${(props) =>
-      props.isDragging == true &&
-      css`
+    props.isDragging == true &&
+    css`
         background: ${Main.color.white};
       `}
 		
 		${(props) =>
-      props.disabled == true &&
-      css`
+    props.disabled == true &&
+    css`
         border: 1px solid ${Main.color.disabled};
         background: ${Main.color.silver};
       `}

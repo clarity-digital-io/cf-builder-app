@@ -9,10 +9,11 @@ import { Button } from "../../../Elements/Button";
 import CloseIcon from "../../../Elements/Icons/close";
 import { Select } from "../../../Elements/Select";
 
-import { BuilderContext } from "../../../Context";
+import { BuilderContext } from "../../../../context";
 import { Spinner } from "../../../Elements/Spinner";
 import { StatusHandler } from "../../../Elements/Notification";
 import { BuilderController } from "../../../../utils/constants/methods";
+import { Form_Connection__c } from "../../../../utils/types/sObjects";
 
 const prepare = (connections) => {
   return connections.map((connection) => {
@@ -39,8 +40,8 @@ export const ConnectState = () => {
   const [removed, setRemoved] = useState([]);
 
   useEffect(() => {
-    let preppedConnections = prepare(connections);
-    let preppedRemovedConnections = prepare(removed);
+    const preppedConnections = prepare(connections);
+    const preppedRemovedConnections = prepare(removed);
 
     if (update) {
       StatusHandler(
@@ -76,7 +77,7 @@ export const ConnectState = () => {
   };
 
   const setObjectSelection = (selection, order) => {
-    let value = selection[0].value;
+    const value = selection[0].value;
 
     setConnections((rows) => {
       return rows.map((row, i) => {
@@ -88,7 +89,7 @@ export const ConnectState = () => {
     });
   };
 
-  const edit = (connection) => {
+  const edit = (connection: Form_Connection__c) => {
     setActiveConnection(connection);
     setNavState("MAPPING");
   };
@@ -103,7 +104,7 @@ export const ConnectState = () => {
 
   const removeRow = (order, connection) => {
     setConnections((rows) => {
-      let updated = rows.slice();
+      const updated = rows.slice();
       updated.splice(order, 1);
       return updated;
     });

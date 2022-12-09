@@ -4,7 +4,7 @@ import { DragDropContext } from "react-beautiful-dnd";
 
 import {
   DragDropUpdateContext
-} from "../../../Context";
+} from "../../../../context";
 import { Props } from "../../../../utils/types";
 
 export const DragDropUpdateProvider: React.FC<Props> = ({ children }) => {

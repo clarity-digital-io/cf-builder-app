@@ -1,16 +1,14 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Droppable, Draggable } from "react-beautiful-dnd";
-
 import { useDrag } from "./useDrag";
 
 import { GenerateQuestion, DropView } from "./elements";
+import { useBuilderContext } from "../../../../context/BuilderContext";
 
-export const Single = ({ form }) => {
+export const Single = () => {
+  const { form } = useBuilderContext();
+
   const { questions } = useDrag();
-
-  const background = {
-    background: "#fff",
-  };
 
   return (
     <div>

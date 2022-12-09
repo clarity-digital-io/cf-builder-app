@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from "react";
-import { DesignContext, EditContext } from "../../../../Context";
+import { DesignContext, EditContext } from "../../../../../context";
 
 import View from "../../../../Elements/View";
 import ViewStyle from "../../../../Elements/View/style";

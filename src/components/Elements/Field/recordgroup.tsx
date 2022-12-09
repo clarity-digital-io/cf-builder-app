@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 
-import { DesignContext } from "../../Context";
+import { DesignContext } from "../../../context";
 import { getType } from "../../Builder/Design/Display/types";
 
 import {

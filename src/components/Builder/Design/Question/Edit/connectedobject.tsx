@@ -2,7 +2,7 @@ import React, { useEffect, useContext, useState } from "react";
 import ViewStyle from "../../../../Elements/View/style";
 
 import { Button } from "../../../../Elements/Button";
-import { EditContext, BuilderContext } from "../../../../Context";
+import { EditContext, BuilderContext } from "../../../../../context";
 
 export const ConnectedObject = () => {
   const { form, setNavState } = useContext(BuilderContext);

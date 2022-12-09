@@ -4,9 +4,10 @@ import View from "../../../../Elements/View";
 import { Button } from "../../../../Elements/Button";
 import { call } from "../../../../RemoteActions";
 
-import { DesignContext, BuilderContext } from "../../../../Context";
+import { DesignContext, BuilderContext } from "../../../../../context";
 import { Select } from "../../../../Elements/Select";
 import { StatusHandler } from "../../../../Elements/Notification";
+import { BuilderController } from "../../../../../utils/constants/methods";
 
 export const RecordGroup = () => {
   const { form, setError } = useContext(BuilderContext);
@@ -35,7 +36,7 @@ export const RecordGroup = () => {
       () =>
         call(
           setError,
-          "BuilderController.saveQuestion",
+          BuilderController.saveQuestion,
           [JSON.stringify(activeQuestion)],
           (result, e) =>
             resultHandler(

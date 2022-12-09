@@ -6,13 +6,14 @@ import ViewStyle from "../../../Elements/View/style";
 import Box from "../../../Elements/Box";
 import { Button } from "../../../Elements/Button";
 
-import { BuilderContext } from "../../../Context";
+import { BuilderContext } from "../../../../context";
 import { StatusHandler } from "../../../Elements/Notification";
 
 import {
   Input as SalesforceInput,
   Checkbox,
 } from "@salesforce/design-system-react";
+import { BuilderController } from "../../../../utils/constants/methods";
 
 export const SettingsState = () => {
   const { form, setForm, setError } = useContext(BuilderContext);
@@ -32,7 +33,7 @@ export const SettingsState = () => {
         () =>
           call(
             setError,
-            "BuilderController.updateForm",
+            BuilderController.updateForm,
             [JSON.stringify(form)],
             (result, e) => resultHandler(result, e, setForm, setUpdate)
           ),
@@ -43,7 +44,7 @@ export const SettingsState = () => {
   }, [update]);
 
   const updateName = (e) => {
-    let value = e.target.value;
+    const value = e.target.value;
 
     setForm((form) => {
       return { ...form, Title__c: value };
@@ -51,7 +52,7 @@ export const SettingsState = () => {
   };
 
   const updateDescription = (e) => {
-    let value = e.target.value;
+    const value = e.target.value;
 
     setForm((form) => {
       return { ...form, Description__c: value };
@@ -59,7 +60,7 @@ export const SettingsState = () => {
   };
 
   const updateToMulti = (e) => {
-    let checked = e.target.checked;
+    const checked = e.target.checked;
 
     setForm((form) => {
       return { ...form, forms__Multi_Page__c: checked };
@@ -67,7 +68,7 @@ export const SettingsState = () => {
   };
 
   const updateHasThankYou = (e) => {
-    let checked = e.target.checked;
+    const checked = e.target.checked;
 
     setForm((form) => {
       return { ...form, forms__Has_Thank_You__c: checked };
@@ -75,7 +76,7 @@ export const SettingsState = () => {
   };
 
   const updateRedirect = (e) => {
-    let value = e.target.value;
+    const value = e.target.value;
 
     setForm((form) => {
       return { ...form, forms__Thank_You_Redirect__c: value };

@@ -1,12 +1,12 @@
 import { useEffect, useContext } from "react";
 
-import { sortedTypes } from "../types";
+import { sortedTypes } from "../../../../utils/constants/fields";
 
 import {
   BuilderContext,
   DragDropUpdateContext,
   DesignContext,
-} from "../../../Context";
+} from "../../../../context";
 
 export const useDrag = () => {
   const { addEvent, removeEvent } = useContext(DragDropUpdateContext);
@@ -94,9 +94,9 @@ const move = (
 ) => {
   const typesClone = Array.from(source);
 
-  let [create] = typesClone.splice(droppableSource.index, 1);
+  const [create] = typesClone.splice(droppableSource.index, 1);
 
-  let orderedQuestion = clean(create, droppableDestination.index, formId, page);
+  const orderedQuestion = clean(create, droppableDestination.index, formId, page);
 
   destination.splice(droppableDestination.index, 0, orderedQuestion);
 

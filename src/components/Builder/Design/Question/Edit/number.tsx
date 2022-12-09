@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import View from "../../../../Elements/View";
 import Box from "../../../../Elements/Box";
 import ViewStyle from "../../../../Elements/View/style";
-import { DesignContext } from "../../../../Context";
+import { DesignContext } from "../../../../../context";
 import { InputNumber } from "../../../../Elements/Input";
 
 export const Number = ({ type }) => {

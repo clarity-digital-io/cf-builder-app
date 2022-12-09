@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
 import { call } from "../../../RemoteActions";
-import { EditContext, DesignContext, BuilderContext } from "../../../Context";
+import { EditContext, DesignContext, BuilderContext } from "../../../../context";
 import { Props } from "../../../../utils/types";
+import { BuilderController } from "../../../../utils/constants/methods";
 
 export const EditProvider: React.FC<Props> = ({ children }) => {
   const { setError } = useContext(BuilderContext);
@@ -51,7 +52,7 @@ export const EditProvider: React.FC<Props> = ({ children }) => {
         setLoading(true);
         call(
           setError,
-          "BuilderController.getSObjectFields",
+          BuilderController.getSObjectFields,
           [activeQuestion.forms__Salesforce_Object__c],
           (result, e) =>
             getSObjectFieldResultHandler(
@@ -114,7 +115,7 @@ const getSObjectFieldResultHandler = (
   setRequiredFields(result.Required);
 
   setActiveRecordGroup((active) => {
-    let existing = recordGroup.has(activeQuestion.Id)
+    const existing = recordGroup.has(activeQuestion.Id)
       ? recordGroup.get(activeQuestion.Id)
       : [];
     console.log("existing", existing, recordGroup);
@@ -122,10 +123,10 @@ const getSObjectFieldResultHandler = (
       return existing;
     }
 
-    let newRequired = Object.keys(result.Required).map((field, index) => {
-      let val = result.Required[field];
+    const newRequired = Object.keys(result.Required).map((field, index) => {
+      const val = result.Required[field];
 
-      let fieldType = Object.keys(val)[0];
+      const fieldType = Object.keys(val)[0];
 
       return {
         forms__Form__c: activeQuestion.forms__Form__c,

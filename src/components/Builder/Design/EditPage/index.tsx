@@ -6,7 +6,7 @@ import ViewStyle from "../../../Elements/View/style";
 import Box from "../../../Elements/Box";
 import { Button } from "../../../Elements/Button";
 
-import { BuilderContext, DesignContext } from "../../../Context";
+import { BuilderContext, DesignContext } from "../../../../context";
 import { StatusHandler } from "../../../Elements/Notification";
 
 import {

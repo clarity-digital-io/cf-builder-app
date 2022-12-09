@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { DesignContext, EditContext } from "../../../../Context";
+import { DesignContext, EditContext } from "../../../../../context";
 
 import { Checkbox } from "@salesforce/design-system-react";
 import { Input as SalesforceInput } from "@salesforce/design-system-react";

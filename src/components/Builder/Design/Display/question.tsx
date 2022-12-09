@@ -5,7 +5,7 @@ import { Icon as SalesforceIcon } from "@salesforce/design-system-react";
 import Main from "../../../Elements/Theme";
 import { getType } from "./types";
 
-import { DesignContext, BuilderContext } from "../../../Context";
+import { DesignContext, BuilderContext } from "../../../../context";
 
 const Icon = ({ type, label, background }) => (
   <SalesforceIcon
@@ -58,7 +58,7 @@ export const Question = ({ question }) => {
           </li>
 
           {question.forms__Type__c == "RecordGroup" &&
-          question.forms__Salesforce_Object__c != null ? (
+            question.forms__Salesforce_Object__c != null ? (
             <li onClick={() => edit("SF")}>
               <Icon
                 label="Record Group Edit"

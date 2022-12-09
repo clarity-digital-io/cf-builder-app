@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { DesignContext } from "../../../../Context";
+import { DesignContext } from "../../../../../context";
 import { RadioGroup as SalesforceRadioGroup } from "@salesforce/design-system-react";
 
 import { Radio as SalesforceRadio } from "@salesforce/design-system-react";

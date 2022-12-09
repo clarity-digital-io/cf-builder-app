@@ -7,7 +7,7 @@ import { GenerateQuestion, DropView } from "./elements";
 
 import { useMultiDrag } from "./useMultiDrag";
 import { Dropdown, Icon, Input } from "@salesforce/design-system-react";
-import { BuilderContext } from "../../../Context";
+import { BuilderContext } from "../../../../context";
 import { QuestionPreview } from "./questionPreview";
 
 import styled from "styled-components";

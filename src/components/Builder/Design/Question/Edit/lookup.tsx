@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import ViewStyle from "../../../../Elements/View/style";
 import { Select } from "../../../../Elements/Select";
 
-import { DesignContext, EditContext } from "../../../../Context";
+import { DesignContext, EditContext } from "../../../../../context";
 
 export const Lookup = () => {
   const { additionalFields } = useContext(EditContext);
@@ -17,7 +17,7 @@ export const Lookup = () => {
     });
   };
 
-  const updatFilter = (e) => {};
+  const updatFilter = (e) => { };
 
   return [
     <ViewStyle key="header">

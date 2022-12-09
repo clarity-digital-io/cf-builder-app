@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import ViewStyle from "../../../../Elements/View/style";
-import { DesignContext } from "../../../../Context";
+import { DesignContext } from "../../../../../context";
 import { Slider } from "../../../../Elements/Slider";
 
 import { RadioGroup as SalesforceRadioGroup } from "@salesforce/design-system-react";

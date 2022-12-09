@@ -7,7 +7,7 @@ import Box from "../../../Elements/Box";
 import { Button } from "../../../Elements/Button";
 import { Select } from "../../../Elements/Select";
 
-import { BuilderContext, DesignContext } from "../../../Context";
+import { BuilderContext, DesignContext } from "../../../../context";
 
 export const FieldConnectState = () => {
   const { questions } = useContext(DesignContext);

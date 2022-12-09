@@ -9,28 +9,31 @@ import { MappingState } from "./Connect/mapping";
 import { SettingsState } from "./Settings";
 import { EditPageState } from "./EditPage";
 import { Display } from "./Display";
-import { BuilderContext } from "../../Context";
+import { useBuilderContext } from "../../../context/BuilderContext";
+import { NavStates } from "../../../reducers/BuilderProvider";
 
 const Design = () => {
-  const { navState } = useContext(BuilderContext);
 
-  const getNavState = (nav) => {
+  const { navState } = useBuilderContext();
+
+  const getNavState = (nav: NavStates) => {
+    console.log({ nav, q: NavStates.QUESTIONS })
     switch (nav) {
-      case "QUESTIONS":
+      case NavStates.QUESTIONS:
         return <QuestionState />;
-      case "CONNECT":
-      case "MAPPING":
+      case NavStates.CONNECT:
+      case NavStates.MAPPING:
         return <ConnectState />;
-      case "SETTINGS":
+      case NavStates.SETTINGS:
         return <SettingsState />;
-      case "EDIT_PAGE":
+      case NavStates.EDIT:
         return <EditPageState />;
     }
   };
 
-  const getDisplayNavState = (nav) => {
+  const getDisplayNavState = (nav: NavStates) => {
     switch (nav) {
-      case "MAPPING":
+      case NavStates.MAPPING:
         return <MappingState key={"MappingState"} />;
       default:
         return <Display key={"DisplayState"} />;

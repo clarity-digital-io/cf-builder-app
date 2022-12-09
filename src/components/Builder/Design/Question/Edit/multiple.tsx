@@ -7,7 +7,7 @@ import { Button } from "../../../../Elements/Button";
 import CloseIcon from "../../../../Elements/Icons/close";
 
 import ViewStyle from "../../../../Elements/View/style";
-import { DesignContext, EditContext } from "../../../../Context";
+import { DesignContext, EditContext } from "../../../../../context";
 
 import { Input as SalesforceInput } from "@salesforce/design-system-react";
 

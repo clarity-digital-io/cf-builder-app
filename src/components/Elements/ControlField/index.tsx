@@ -14,7 +14,7 @@ import {
   Radio as SalesforceRadio,
   Input as SalesforceInput,
 } from "@salesforce/design-system-react";
-import { BuilderContext, DesignContext } from "../../Context";
+import { BuilderContext, DesignContext } from "../../../context";
 
 export const ControlGroup = ({
   type,
