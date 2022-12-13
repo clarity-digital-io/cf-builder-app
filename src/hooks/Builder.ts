@@ -78,7 +78,7 @@ export const useBuilder = () => {
 
   // update on navstate
   const updateConnectNavState = useCallback(async () => {
-    if (navState == 'CONNECT') {
+    if (navState == NavStates.CONNECT) {
       try {
         const _connections = await call(BuilderController.getConnections, [formId]);
         dispatch({
@@ -95,7 +95,7 @@ export const useBuilder = () => {
   }, [formId, navState])
 
   const updateMappingNavState = useCallback(async () => {
-    if (navState == 'MAPPING') {
+    if (navState == NavStates.MAPPING) {
       try {
         const { Mapping, Prefills, Fields } = await call(BuilderController.getConnectionFieldMapping, [formId]);
         dispatch({
@@ -114,10 +114,10 @@ export const useBuilder = () => {
   }, [formId, navState])
 
   useEffect(() => {
-    if (navState == 'CONNECT' && formId) {
+    if (navState == NavStates.CONNECT && formId) {
       updateConnectNavState();
     }
-    if (navState == 'MAPPING' && formId) {
+    if (navState == NavStates.MAPPING && formId) {
       updateMappingNavState();
     }
   }, [formId, navState])

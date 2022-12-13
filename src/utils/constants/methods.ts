@@ -18,6 +18,7 @@ export const BuilderController: ApexMethod = {
   saveQuestionWithOptions: 'forms.BuilderController.saveQuestionWithOptions',
   saveQuestionWithCriteria: 'forms.BuilderController.saveQuestionWithCriteria',
   saveRecordGroupFields: 'forms.BuilderController.saveRecordGroupFields',
-  saveQuestion: 'forms.BuilderController.saveQuestion'
+  saveQuestion: 'forms.BuilderController.saveQuestion',
+  getAvailableFields: 'forms.BuilderController.getAvailableFields'
 }
 

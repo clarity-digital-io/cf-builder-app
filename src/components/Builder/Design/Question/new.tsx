@@ -14,32 +14,34 @@ import { DesignContext } from "../../../../context";
 import { useBuilderContext } from "../../../../context/BuilderContext";
 
 import { DndContext, useDraggable, useDroppable, DragOverlay } from '@dnd-kit/core';
-import { DndContextProvider } from "../../../../context/DndContext";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import { useDnd } from "../../../../hooks/BuilderDnd";
+import { useBuilderDndContext } from "../../../../context/BuilderDndContext";
 
 const Draggable = (props) => {
   const { attributes, listeners, setNodeRef } = useDraggable({
     id: props.id,
+    data: props.data
   });
 
   return (
-    <li ref={setNodeRef} {...listeners} {...attributes}>
+    <div ref={setNodeRef} {...listeners} {...attributes}>
       {props.children}
-    </li>
+    </div>
   );
-}
-
-const Item = ({ value }) => {
-  return <div>
-    {value}
-  </div>
 }
 
 export const NewQuestion = () => {
   // const { update } = useContext(DesignContext);
+  // const { items } = useSortable();
 
   const { form } = useBuilderContext();
-  const [items] = useState(['1', '2', '3', '4', '5']);
+  // const [items] = useState(['1', '2', '3', '4', '5']);
   const [activeId, setActiveId] = useState(null);
+  const [questions, setQuestions] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])
+
+  const { activeAvailableFieldId, availableFields } = useBuilderDndContext();
 
   return (
     <View full className="row" key={"Body"}>
@@ -49,11 +51,31 @@ export const NewQuestion = () => {
             <h1>Form Builder test</h1>
 
             <p>Drag and Drop any Question type to your Form on the right.</p>
-          </ViewStyle>
 
-          <DndContextProvider>
-            test
-          </DndContextProvider>
+            <div>
+              {
+                availableFields.map((field) => {
+                  const { id, active, name, type } = field;
+                  return <Draggable key={id} id={id} data={field}>
+                    <div
+                      key={id}
+                    >
+                      <span>{name}</span>
+                    </div>
+                  </Draggable>
+                })
+              }
+            </div>
+
+            <DragOverlay>
+              {
+                activeAvailableFieldId ?
+                  <div><span>{activeAvailableFieldId}</span></div> :
+                  null
+              }
+            </DragOverlay>
+
+          </ViewStyle>
 
           {/* <View space>
             <Droppable isDropDisabled={true} droppableId="new">
@@ -125,28 +147,50 @@ const SelectableNew = styled.div`
         font-weight: 500;
         color: ${Main.color.text}
     }
-
-    ${(props) =>
-    props.isDragging == true &&
-    css`
-        background: ${Main.color.white};
-      `}
-		
-		${(props) =>
-    props.disabled == true &&
-    css`
-        border: 1px solid ${Main.color.disabled};
-        background: ${Main.color.silver};
-      `}
-
-    :active {
-        box-shadow: none;
-    }
-
-    i {
-				margin-top: -2px; 
-        color: ${Main.color.text}
-        vertical-align: middle;
-    }
-
 `;
+
+
+// const SelectableNew = styled.div`
+//     user-select: 'none';
+//     font-size: 1em;
+//     padding: 1em 0 1em 0; 
+//     cursor: pointer;
+//     margin: .5em;
+//     font-weight: 500;
+//     background: ${Main.color.white};
+// 		border: 1px solid ${Main.color.border};
+// 		border-radius: 4px; 
+//     color: ${Main.color.text}
+
+//     span {
+//         display: inline-block;
+// 				vertical-align: middle;
+// 				padding: 0 0 0 1em;
+//         font-weight: 500;
+//         color: ${Main.color.text}
+//     }
+
+//     ${(props) =>
+//     props.isDragging == true &&
+//     css`
+//         background: ${Main.color.white};
+//       `}
+		
+// 		${(props) =>
+//     props.disabled == true &&
+//     css`
+//         border: 1px solid ${Main.color.disabled};
+//         background: ${Main.color.silver};
+//       `}
+
+//     :active {
+//         box-shadow: none;
+//     }
+
+//     i {
+// 				margin-top: -2px; 
+//         color: ${Main.color.text}
+//         vertical-align: middle;
+//     }
+
+// `;

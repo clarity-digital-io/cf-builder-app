@@ -11,6 +11,7 @@ import { EditPageState } from "./EditPage";
 import { Display } from "./Display";
 import { useBuilderContext } from "../../../context/BuilderContext";
 import { NavStates } from "../../../reducers/BuilderProvider";
+import { BuilderDndContextProvider } from "../../../context/BuilderDndContext";
 
 const Design = () => {
 
@@ -41,15 +42,17 @@ const Design = () => {
   };
 
   return (
-    <View full main>
-      <View key={"QuestionState"} scroll edit>
-        <Box padding="0">{getNavState(navState)}</Box>
-      </View>
+    <BuilderDndContextProvider>
+      <View full main>
+        <View key={"QuestionState"} scroll edit>
+          <Box padding="0">{getNavState(navState)}</Box>
+        </View>
 
-      <View key={"QuestionDisplay"} form>
-        <Box padding="0">{getDisplayNavState(navState)}</Box>
+        <View key={"QuestionDisplay"} form>
+          <Box padding="0">{getDisplayNavState(navState)}</Box>
+        </View>
       </View>
-    </View>
+    </BuilderDndContextProvider>
   );
 };
 

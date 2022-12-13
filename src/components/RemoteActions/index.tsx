@@ -1,4 +1,5 @@
 import LCC from "lightning-container";
+import { types } from "../../utils/constants/fields";
 import { BuilderController } from "../../utils/constants/methods";
 const extraParams = { buffer: false, escape: false, timeout: 12000 };
 
@@ -68,6 +69,12 @@ const mockCall = (func: string, params: any[], callback: (response: any) => void
         ],
         event: { statusCode: 200 }
       })
+      break;
+    case BuilderController.getAvailableFields:
+      cb = callback({
+        result: types,
+        event: { statusCode: 200 }
+      });
       break;
     default:
       break;

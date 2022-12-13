@@ -14,6 +14,7 @@ import {
 import { useBuilderContext } from "../../../context/BuilderContext";
 import { FORMSTATUS } from "../../../hooks/Builder";
 import { useDesignContext } from "../../../context/DesignContext";
+import { NavStates } from "../../../reducers/BuilderProvider";
 
 enum PUBLISHMODAL {
   VALID,
@@ -77,7 +78,7 @@ const DesignNavigation = () => {
           label="Options"
           onSelect={(e: any) => handleNavigate(e.value)}
           options={[
-            { label: "Add Questions", value: "QUESTIONS", key: 0 },
+            { label: "Add Questions", value: NavStates.QUESTIONS, key: 0 },
             { label: "Connections", value: "CONNECT", key: 1 },
             { label: "Settings", value: "SETTINGS", key: 2 },
           ]}
