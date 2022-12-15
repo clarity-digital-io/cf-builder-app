@@ -3,31 +3,48 @@ import { types } from "../../utils/constants/fields";
 import { BuilderController } from "../../utils/constants/methods";
 const extraParams = { buffer: false, escape: false, timeout: 12000 };
 
-export const call = async (func: any, params: any[]): Promise<any> => {
+export const call = async (func: any, params: any[] | null): Promise<any> => {
+  console.log('process.env.NODE_ENV', process.env.NODE_ENV);
   return process.env.NODE_ENV == "development" ?
     await devCall(func, params) :
     await prodCall(func, params);
 };
 
-const prodCall = async (func: string, params: any[]): Promise<any> => {
-  const [result, event]: any[] = await new Promise(resolve => {
-    LCC.callApex(func, params, response => resolve(response), extraParams);
+const prodCall = async (func: string, params: any[] | null): Promise<any> => {
+  console.log('prodCall', { params })
+  const result = await new Promise((resolve, reject) => {
+    try {
+      if (params == null || params.length == 0) {
+        // @ts-expect-error: Unreachable code error
+        LCC.callApex(func, (r: any, e: any) => [resolve(r), e], extraParams, undefined);
+      } else {
+        LCC.callApex(func, params, (response, event) =>
+          [resolve(response), event]
+          , extraParams);
+      }
+
+    } catch (error) {
+      console.log({ error })
+      reject(error);
+    }
   })
 
-  if (result && event && event.statusCode == 200) {
-    return result;
-  } else {
-    throw event.method;
-  }
+  console.log({ result })
+
+  return result;
+  // if (result && event && event.statusCode == 200) {
+  //   return result;
+  // } else {
+  //   throw event.method;
+  // }
 };
 
-const devCall = async (func: string, params: any[]): Promise<any> => {
+const devCall = async (func: string, params: any[] | null): Promise<any> => {
   const { result, event }: any = await new Promise(resolve => {
     return mockCall(func, params, response => {
       return resolve(response);
     });
   })
-  console.log({ result, event })
 
   if (result && event && event.statusCode == 200) {
     return result;
@@ -36,7 +53,7 @@ const devCall = async (func: string, params: any[]): Promise<any> => {
   }
 }
 
-const mockCall = (func: string, params: any[], callback: (response: any) => void) => {
+const mockCall = (func: string, params: any[] | null | undefined, callback: (response: any) => void) => {
 
   let cb: any;
 

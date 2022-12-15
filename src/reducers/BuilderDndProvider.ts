@@ -6,7 +6,7 @@ type Error = {
 export type BuilderDndProviderState = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   availableFields: Array<any>
-  activeAvailableFieldId: any | null | undefined
+  activeAvailableField: any | null | undefined
   formFields: Array<any>
   activeFormFieldId: any | null | undefined
   error: Error
@@ -19,7 +19,7 @@ export type BuilderDndProviderState = {
 
 export const builderDndInitialState: BuilderDndProviderState = {
   availableFields: [],
-  activeAvailableFieldId: null,
+  activeAvailableField: null,
   formFields: [],
   activeFormFieldId: null,
   error: { message: '', display: false },
@@ -31,13 +31,18 @@ export const builderDndInitialState: BuilderDndProviderState = {
 
 export type BuilderDndAction =
   | {
-    type: 'SET_ACTIVE_FIELD_ID'
-    activeAvailableFieldId?: BuilderDndProviderState['activeAvailableFieldId']
+    type: 'ADD_FORM_FIELD',
+    formFields: BuilderDndProviderState['formFields'],
+    activeFormFieldId?: BuilderDndProviderState['activeFormFieldId']
+  }
+  | {
+    type: 'SET_ACTIVE_FIELD'
+    activeAvailableField?: BuilderDndProviderState['activeAvailableField']
   }
   | {
     type: 'SET_AVAILABLE_FIELDS'
     availableFields: BuilderDndProviderState['availableFields']
-    activeAvailableFieldId?: BuilderDndProviderState['activeAvailableFieldId']
+    activeAvailableField?: BuilderDndProviderState['activeAvailableField']
   }
   | {
     type: 'SET_FORM_FIELDS'
@@ -61,10 +66,12 @@ export function builderDndReducer(
   action: BuilderDndAction
 ): BuilderDndProviderState {
   switch (action.type) {
-    case 'SET_ACTIVE_FIELD_ID':
-      return { ...state, activeAvailableFieldId: action.activeAvailableFieldId }
+    case 'ADD_FORM_FIELD':
+      return { ...state, formFields: action.formFields, activeFormFieldId: action.activeFormFieldId }
+    case 'SET_ACTIVE_FIELD':
+      return { ...state, activeAvailableField: action.activeAvailableField }
     case 'SET_AVAILABLE_FIELDS':
-      return { ...state, availableFields: action.availableFields, activeAvailableFieldId: action.activeAvailableFieldId }
+      return { ...state, availableFields: action.availableFields, activeAvailableField: action.activeAvailableField }
     case 'SET_FORM_FIELDS':
       return { ...state, formFields: action.formFields, activeFormFieldId: action.activeFormFieldId }
     case 'SET_LOADING':

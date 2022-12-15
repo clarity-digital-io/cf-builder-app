@@ -22,25 +22,28 @@ export const Display = () => {
 
   const { formFields } = useBuilderDndContext();
   console.log({ formFields })
-  const { setNodeRef: setFirstDroppableRef } = useDroppable({
-    id: 'droppable-1'
+  const { setNodeRef: setFirstDroppableRef, isOver } = useDroppable({
+    id: 'droppable-1',
+    data: {
+      type: 'type1',
+    },
   });
-
+  console.log({ isOver })
   return (
     <FormDesign key={"Display"}>
       {/* <Single /> */}
 
       <section>
         <div ref={setFirstDroppableRef}>
-          {
+          {/* {
             formFields.map((field) => {
               const { id, active, name, type } = field;
 
-              return <Draggable key={id} id={id} data={field}>
+              return <div key={id} id={id}>
                 {name}
-              </Draggable>
+              </div>
             })
-          }
+          } */}
           <div>Drop Fields here</div>
         </div>
       </section>

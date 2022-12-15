@@ -3,22 +3,22 @@ type ApexMethod = {
 }
 
 export const BuilderController: ApexMethod = {
-  getConnectionFieldMapping: 'forms.BuilderController.getConnectionFieldMapping',
-  saveConnections: 'forms.BuilderController.saveConnections',
-  getSObjectsAvailable: 'forms.BuilderController.getSObjectsAvailable',
-  getConnections: 'forms.BuilderController.getConnections',
-  getForm: 'forms.BuilderController.getForm',
-  saveActiveFieldConnections: 'forms.BuilderController.saveActiveFieldConnections',
-  updateForm: 'forms.BuilderController.updateForm',
-  getQuestions: 'forms.BuilderController.getQuestions',
-  save: 'forms.BuilderController.save',
-  pageQuestionsDelete: 'forms.BuilderController.pageQuestionsDelete',
-  deleteQuestion: 'forms.BuilderController.deleteQuestion',
-  getSObjectFields: 'forms.BuilderController.getSObjectFields',
-  saveQuestionWithOptions: 'forms.BuilderController.saveQuestionWithOptions',
-  saveQuestionWithCriteria: 'forms.BuilderController.saveQuestionWithCriteria',
-  saveRecordGroupFields: 'forms.BuilderController.saveRecordGroupFields',
-  saveQuestion: 'forms.BuilderController.saveQuestion',
-  getAvailableFields: 'forms.BuilderController.getAvailableFields'
+  getConnectionFieldMapping: 'cforms.BuilderController.getConnectionFieldMapping',
+  saveConnections: 'cforms.BuilderController.saveConnections',
+  getSObjectsAvailable: 'cforms.BuilderController.getSObjectsAvailable',
+  getConnections: 'cforms.BuilderController.getConnections',
+  getForm: 'cforms.BuilderController.getForm',
+  saveActiveFieldConnections: 'cforms.BuilderController.saveActiveFieldConnections',
+  updateForm: 'cforms.BuilderController.updateForm',
+  getQuestions: 'cforms.BuilderController.getQuestions',
+  save: 'cforms.BuilderController.save',
+  pageQuestionsDelete: 'cforms.BuilderController.pageQuestionsDelete',
+  deleteQuestion: 'cforms.BuilderController.deleteQuestion',
+  getSObjectFields: 'cforms.BuilderController.getSObjectFields',
+  saveQuestionWithOptions: 'cforms.BuilderController.saveQuestionWithOptions',
+  saveQuestionWithCriteria: 'cforms.BuilderController.saveQuestionWithCriteria',
+  saveRecordGroupFields: 'cforms.BuilderController.saveRecordGroupFields',
+  saveQuestion: 'cforms.BuilderController.saveQuestion',
+  getAvailableFields: 'cforms.BuilderController.getAvailableFields'
 }
 

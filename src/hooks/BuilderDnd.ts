@@ -23,7 +23,7 @@ export const useBuilderDnd = () => {
   );
 
   const {
-    activeAvailableFieldId,
+    activeAvailableField,
     availableFields,
     formFields
   } = state;
@@ -32,7 +32,9 @@ export const useBuilderDnd = () => {
   const loadAvailableFields = useCallback(async () => {
     if (formId) {
       try {
-        const _availableOrgFields = await call(BuilderController.getAvailableFields, []);
+        console.log('loadAvailableFields')
+
+        const _availableOrgFields = await call(BuilderController.getAvailableFields, null);
         console.log({ _availableOrgFields })
         dispatch({
           type: 'SET_AVAILABLE_FIELDS',
@@ -58,10 +60,10 @@ export const useBuilderDnd = () => {
 
   // handle drag end
   const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
+    const { activatorEvent, active, over, collisions } = event;
     // need to handle different start positions here 
-    console.log('handleDragEnd', { active, over })
-    const { data: { current } } = active;
+    console.log('handleDragEnd', { activatorEvent, active, over, formFields, collisions })
+    const { data: { current }, id } = active;
     // const oldIndex = availableFields.indexOf(active.id);
     // const newIndex = availableFields.indexOf(over?.id);
     // const newQuestions = arrayMove(availableFields, oldIndex, newIndex);
@@ -70,28 +72,33 @@ export const useBuilderDnd = () => {
     //   over,
     //   newQuestions
     // })
-    const updatedFields = formFields.concat([current])
-    dispatch({
-      type: 'SET_FORM_FIELDS',
-      formFields: updatedFields,
-      activeFormFieldId: null
-    } as BuilderDndAction)
+
+    const updatedFields = formFields.concat([{ ...current, id: `${id}-${formFields.length}` }])
+    if (over && current?.supports.includes(over?.data?.current?.type)) {
+      dispatch({
+        type: 'SET_FORM_FIELDS',
+        formFields: updatedFields,
+        activeFormFieldId: null
+      } as BuilderDndAction)
+    }
+
+
   }
 
   // handle drag start 
   const handleDragStart = (event: DragEndEvent) => {
-    const { active } = event;
-    console.log({ active })
+    const { active: { data: { current } } } = event;
+    console.log({ current })
     dispatch({
-      type: 'SET_ACTIVE_FIELD_ID',
-      activeAvailableFieldId: active.id
+      type: 'SET_ACTIVE_FIELD',
+      activeAvailableField: current
     } as BuilderDndAction)
   }
 
   // handle error 
 
   return {
-    activeAvailableFieldId,
+    activeAvailableField,
     availableFields,
     formFields,
     handleDragEnd,

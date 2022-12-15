@@ -6,11 +6,10 @@
   "type": "module",
   "scripts": {
     "dev": "webpack serve --mode development ",
-    "build": "webpack --mode production --progress --hide-modules",
     "tscheck": "tsc",
     "lint": "eslint --ext .js,.ts,.jsx,.tsx src",
     "format": "yarn run lint --fix & yarn prettier --write 'src/**/*.{js,jsx,ts,tsx}'",
-    "build-test": "webpack --config ./webpack.config.prod.js --mode production && cp dist/bundle.js ../clarity-scratch-org/force-app/main/default/staticresources/ClarityFormsBuilder && cd .. && cd clarity-scratch-org && sfdx force:source:push && cd .. && cd clarity-builder-native"
+    "build": "webpack --config ./webpack.config.cjs --mode production && cp dist/bundle.js ../cf-scratch-org/force-app/main/default/staticresources/ClarityFormsBuilder && cd .. && cd cf-scratch-org && sfdx force:source:push && cd .. && cd cf-builder-app"
   },
   "devDependencies": {
     "@babel/core": "^7.20.2",
@@ -37,6 +36,7 @@
   },
   "dependencies": {
     "@dnd-kit/core": "^6.0.6",
+    "@dnd-kit/modifiers": "^6.0.1",
     "@dnd-kit/sortable": "^7.0.1",
     "@dnd-kit/utilities": "^3.2.1",
     "@salesforce-ux/design-system": "^2.19.0",

@@ -39,6 +39,6 @@ export const DragDrop = () => {
 
 const Layout = styled.div`
   > div:nth-of-type(1) {
-    max-height: 98px;
+    max-height: 72px;
   }
 `;

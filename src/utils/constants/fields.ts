@@ -1,24 +1,24 @@
 export const types = [
   {
-    id: 0,
+    id: 1,
     active: false,
     name: "Connected Object",
     type: "ConnectedObject",
   },
   {
-    id: 1,
+    id: 2,
     active: true,
     name: "Multiple Choice",
     type: "MultipleChoice",
   },
   {
-    id: 2,
+    id: 3,
     active: true,
     name: "Comment",
     type: "Comment",
   },
   {
-    id: 3,
+    id: 4,
     active: true,
     name: "Dropdown",
     type: "Dropdown",

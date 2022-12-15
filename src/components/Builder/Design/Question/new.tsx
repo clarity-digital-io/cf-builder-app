@@ -22,7 +22,10 @@ import { useBuilderDndContext } from "../../../../context/BuilderDndContext";
 const Draggable = (props) => {
   const { attributes, listeners, setNodeRef } = useDraggable({
     id: props.id,
-    data: props.data
+    data: { 
+      ...props.data,
+      supports: ['type1'],
+    },
   });
 
   return (
@@ -33,15 +36,8 @@ const Draggable = (props) => {
 }
 
 export const NewQuestion = () => {
-  // const { update } = useContext(DesignContext);
-  // const { items } = useSortable();
 
-  const { form } = useBuilderContext();
-  // const [items] = useState(['1', '2', '3', '4', '5']);
-  const [activeId, setActiveId] = useState(null);
-  const [questions, setQuestions] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])
-
-  const { activeAvailableFieldId, availableFields } = useBuilderDndContext();
+  const { activeAvailableField, availableFields } = useBuilderDndContext();
 
   return (
     <View full className="row" key={"Body"}>
@@ -56,24 +52,23 @@ export const NewQuestion = () => {
               {
                 availableFields.map((field) => {
                   const { id, active, name, type } = field;
-                  return <Draggable key={id} id={id} data={field}>
-                    <div
-                      key={id}
-                    >
-                      <span>{name}</span>
-                    </div>
+                  return <Draggable key={id} id={id}>
+
+                    <button key={id} className="slds-button slds-button_outline-brand">{name}</button>
+
                   </Draggable>
                 })
               }
             </div>
 
-            <DragOverlay>
+            {/* <DragOverlay>
               {
-                activeAvailableFieldId ?
-                  <div><span>{activeAvailableFieldId}</span></div> :
+                activeAvailableField ?
+
+                  <button key={activeAvailableField.id} className="slds-button slds-button_outline-brand">{activeAvailableField.name}</button> :
                   null
               }
-            </DragOverlay>
+            </DragOverlay> */}
 
           </ViewStyle>
 
