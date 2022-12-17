@@ -5,6 +5,11 @@ export enum QuestionStates {
   SF
 }
 
+type Error = {
+  message: string
+  display: boolean
+}
+
 export type DesignProviderState = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   questionOptions: any | null | undefined
@@ -17,18 +22,17 @@ export type DesignProviderState = {
   questionState: QuestionStates
   activeQuestion: any | null | undefined
   update: any | null | undefined
-  questions: any | null | undefined
   pages: any | null | undefined
   activePage: any | null | undefined
   activePageQuestions: any | null | undefined
+  error: Error
+  handleError: (message: any) => void
 }
 
 
 export const designInitialState: DesignProviderState = {
-  questions: null,
   questionToDelete: null,
   questionState: QuestionStates.NEW,
-
   questionOptions: null,
   addPageUpdate: null,
   navQuestion: null,
@@ -39,17 +43,19 @@ export const designInitialState: DesignProviderState = {
   update: null,
   pages: null,
   activePage: null,
-  activePageQuestions: null
+  activePageQuestions: null,
+  error: { message: '', display: false },
+  handleError: (any) => void any
 }
 
 export type DesignAction =
   | {
-    type: 'SET_QUESTIONS'
-    questions?: DesignProviderState['questions']
-  }
-  | {
     type: 'SET_DELETE_QUESTIONS'
     questionToDelete?: DesignProviderState['questionToDelete']
+  }
+  | {
+    type: 'SET_ERROR'
+    error: DesignProviderState['error']
   }
   | {
     type: 'RESET_DESIGN_PROVIDER'
@@ -60,10 +66,10 @@ export function designReducer(
   action: DesignAction
 ): DesignProviderState {
   switch (action.type) {
-    case 'SET_QUESTIONS':
-      return { ...state, questions: action.questions }
     case 'SET_DELETE_QUESTIONS':
       return { ...state, questionToDelete: action.questionToDelete }
+    case 'SET_ERROR':
+      return { ...state, error: action.error }
     case 'RESET_DESIGN_PROVIDER':
       return designInitialState
     default:

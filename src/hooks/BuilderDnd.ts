@@ -1,7 +1,7 @@
 import { DragEndEvent } from '@dnd-kit/core';
 import { arrayMove } from '@dnd-kit/sortable';
 import { useCallback, useEffect, useReducer } from 'react'
-import { call } from '../components/RemoteActions';
+import { call } from '../query';
 import { useBuilderContext } from '../context/BuilderContext';
 import { Error } from '../utils/messages/error';
 

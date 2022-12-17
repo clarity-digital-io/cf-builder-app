@@ -1,24 +1,35 @@
 import React from "react";
-import { DragDrop } from "./Design";
 import { CenterSpinner } from "../Elements/Spinner";
 import { IconSettings } from "@salesforce/design-system-react";
 import { useBuilderContext } from "../../context/BuilderContext";
+import Navigation from "./Navigation";
+
+import { DesignContextProvider } from "../../context/DesignContext";
+import Design from "./Design"
+
 import styled from "styled-components";
 
 const Builder = () => {
 
   const { form, isLoading } = useBuilderContext();
-  console.log({ form, isLoading })
+
   return (
     <Layout>
       <IconSettings iconPath={getIconPath()}>
-        {form ? <DragDrop /> : <CenterSpinner />}
+        {
+          form && !isLoading ?
+            <>
+              <Navigation />
+              <Design />
+            </> :
+            <CenterSpinner />
+        }
       </IconSettings>
     </Layout>
   );
 };
 
-const Layout = styled.div`
+const Layout = styled.section`
   min-height: 100vh;
 `;
 

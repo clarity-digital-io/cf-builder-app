@@ -1,18 +1,15 @@
-import React, { ReactChild, createContext, useContext } from 'react'
+import React, { createContext, useContext } from 'react'
 import { useBuilder } from '../hooks'
 import {
   BuilderProviderState,
   builderInitialState,
 } from '../reducers'
+import { Props } from '../utils/types'
 
 // ready
 const BuilderContext = createContext<BuilderProviderState>(
   builderInitialState
 )
-
-interface Props {
-  children: ReactChild[]
-}
 
 // not ready
 export const BuilderContextProvider = ({ children }: Props) => {

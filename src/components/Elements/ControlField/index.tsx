@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { call } from "../../RemoteActions";
+import { call } from "../../../query";
 
 import View from "../View";
 import Box from "../Box";

@@ -9,6 +9,7 @@ const View = styled.div`
   ${(props) =>
     props.full &&
     css`
+      flex: 1;
       height: 92.5vh;
     `}
 
@@ -97,6 +98,9 @@ const View = styled.div`
     props.main &&
     css`
       display: flex;
+      flex-direction: row;
+      justify-content:  space-between;
+      margin-top: -1px; 
     `}
 
   ${(props) =>
@@ -109,7 +113,7 @@ const View = styled.div`
 		${(props) =>
     props.edit &&
     css`
-      width: 600px;
+      width: 400px;
     `}
 
 		${(props) =>

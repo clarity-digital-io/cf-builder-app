@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useReducer } from 'react'
-import { call } from '../components/RemoteActions';
+import { call } from '../query';
 
 import {
   BuilderProviderState,
@@ -7,9 +7,10 @@ import {
   builderInitialState,
   builderReducer,
 } from '../reducers'
-import { NavStates } from '../reducers/BuilderProvider';
+import { NavStates, Questions } from '../reducers/BuilderProvider';
 import { BuilderController } from '../utils/constants/methods';
 import { Error } from '../utils/messages/error';
+import { Question__c } from '../utils/types/sObjects';
 
 export const useBuilder = () => {
   const [state, dispatch] = useReducer(
@@ -19,6 +20,9 @@ export const useBuilder = () => {
 
   const {
     formId,
+    availableFields,
+    questions,
+    pages,
     error,
     isLoading,
     activeConnection,
@@ -46,6 +50,14 @@ export const useBuilder = () => {
   const getForm = useCallback(async () => {
     if (formId) {
       try {
+
+        const _availableOrgFields = await call(BuilderController.getAvailableFields, null);
+        console.log({ _availableOrgFields })
+        dispatch({
+          type: 'SET_AVAILABLE_FIELDS',
+          availableFields: _availableOrgFields
+        })
+
         const _form = await call(BuilderController.getForm, [formId]);
         dispatch({
           type: 'SET_FORM',
@@ -56,6 +68,24 @@ export const useBuilder = () => {
           type: 'SET_SOBJECTS',
           sObjects: _sObjects
         } as BuilderAction)
+
+        const _questions = await call(BuilderController.getQuestions, [formId]);
+
+        // needed for sortable context to work properly
+        const _questionsWithId = _questions.map((_question: Question__c) => ({ ..._question, id: _question.Id }));
+
+        const questionsInPages = _questionsWithId.reduce((accum: Questions, question: Question__c) => {
+          const { cforms__Page__c: key } = question;
+          const existing = accum[key] != null ?
+            [question].concat(accum[key]) : [question];
+          return { ...accum, [key]: existing }
+        }, {})
+        console.log({ questionsInPages })
+        dispatch({
+          type: 'SET_QUESTIONS',
+          questions: questionsInPages,
+          pages: Object.keys(questionsInPages)
+        })
       } catch (error: any) {
         dispatch({
           type: 'SET_ERROR',
@@ -122,8 +152,32 @@ export const useBuilder = () => {
     }
   }, [formId, navState])
 
+  // set state updates 
+  const setFormUpdate = (updatedForm: any) => {
+    dispatch({
+      type: 'SET_FORM',
+      form: updatedForm
+    })
+  }
+
+  // api requests
   // handleFormStatusUpdate
-  const handleFormUpdate = async (status: FORMSTATUS) => {
+  const handleFormUpdate = async (updatedForm: any) => {
+    try {
+      const _form = await call(BuilderController.updateForm, [updatedForm]);
+      dispatch({
+        type: 'SET_FORM',
+        form: _form
+      } as BuilderAction)
+    } catch (error) {
+      dispatch({
+        type: 'SET_ERROR',
+        error: error
+      } as BuilderAction)
+    }
+  }
+
+  const handleFormStatusUpdate = async (status: FORMSTATUS) => {
     try {
       const _form = await call(BuilderController.updateForm, [{ Id: form.Id, forms__Status__c: status }]);
       dispatch({
@@ -153,8 +207,20 @@ export const useBuilder = () => {
     })
   }
 
+  // handle questions update 
+  const handleQuestionsUpdate = (questions: Questions) => {
+    console.log({ questions })
+    dispatch({
+      type: 'UPDATE_QUESTIONS',
+      questions: questions
+    })
+  }
+
   return {
     formId,
+    availableFields,
+    questions,
+    pages,
     error,
     isLoading,
     activeConnection,
@@ -165,6 +231,9 @@ export const useBuilder = () => {
     form,
     navState,
     sObjects,
+    setFormUpdate,
+    handleQuestionsUpdate,
+    handleFormStatusUpdate,
     handleFormUpdate,
     handleNavigate,
     handleError

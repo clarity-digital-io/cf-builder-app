@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 
 export interface Props {
-  children?: React.Node
+  children?: ReactElement
 }
 
 export interface ButtonProps extends Props {

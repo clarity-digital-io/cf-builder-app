@@ -6,7 +6,7 @@ export const CalculatorDarkIcon = (props) => (
     assistiveText={{ label: "Number" }}
     category="utility"
     name="number_input"
-    size="x-small"
+    size="xx-small"
     style={{ background: "#fff", fill: "#16325c" }}
   />
 );
@@ -16,7 +16,7 @@ export const CalendarDarkIcon = (props) => (
     assistiveText={{ label: "Calendar" }}
     category="utility"
     name="date_input"
-    size="x-small"
+    size="xx-small"
     style={{ background: "#fff", fill: "#16325c" }}
   />
 );
@@ -26,7 +26,7 @@ export const CheckboxCheckedDarkIcon = (props) => (
     assistiveText={{ label: "Checkbox" }}
     category="utility"
     name="multi_select_checkbox"
-    size="x-small"
+    size="xx-small"
     style={{ background: "#fff", fill: "#16325c" }}
   />
 );
@@ -36,7 +36,7 @@ export const DownArrowOutlineDarkIcon = (props) => (
     assistiveText={{ label: "Dropdown" }}
     category="utility"
     name="picklist_type"
-    size="x-small"
+    size="xx-small"
     style={{ background: "#fff", fill: "#16325c" }}
   />
 );
@@ -46,7 +46,7 @@ export const EmailDarkIcon = (props) => (
     assistiveText={{ label: "Email" }}
     category="utility"
     name="email"
-    size="x-small"
+    size="xx-small"
     style={{ background: "#fff", fill: "#16325c" }}
   />
 );
@@ -56,7 +56,7 @@ export const ImageAlt1DarkIcon = (props) => (
     assistiveText={{ label: "Photo" }}
     category="utility"
     name="photo"
-    size="x-small"
+    size="xx-small"
     style={{ background: "#fff", fill: "#16325c" }}
   />
 );
@@ -66,7 +66,7 @@ export const Images2DarkIcon = (props) => (
     assistiveText={{ label: "Photo" }}
     category="utility"
     name="photo"
-    size="x-small"
+    size="xx-small"
     style={{ background: "#fff", fill: "#16325c" }}
   />
 );
@@ -76,7 +76,7 @@ export const LookupDarkIcon = (props) => (
     assistiveText={{ label: "Lookup" }}
     category="utility"
     name="record_lookup"
-    size="x-small"
+    size="xx-small"
     style={{ background: "#fff", fill: "#16325c" }}
   />
 );
@@ -86,7 +86,7 @@ export const MessageDetail1DarkIcon = (props) => (
     assistiveText={{ label: "Input" }}
     category="utility"
     name="answer"
-    size="x-small"
+    size="xx-small"
     style={{ background: "#fff", fill: "#16325c" }}
   />
 );
@@ -96,7 +96,7 @@ export const PaperClipDarkIcon = (props) => (
     assistiveText={{ label: "Attachment" }}
     category="utility"
     name="file"
-    size="x-small"
+    size="xx-small"
     style={{ background: "#fff", fill: "#16325c" }}
   />
 );
@@ -106,7 +106,7 @@ export const SelectMultipleDarkIcon = (props) => (
     assistiveText={{ label: "Multi Select" }}
     category="utility"
     name="picklist_type"
-    size="x-small"
+    size="xx-small"
     style={{ background: "#fff", fill: "#16325c" }}
   />
 );
@@ -116,7 +116,7 @@ export const SliderDarkIcon = (props) => (
     assistiveText={{ label: "Slider" }}
     category="utility"
     name="stage_collection"
-    size="x-small"
+    size="xx-small"
     style={{ background: "#fff", fill: "#16325c" }}
   />
 );
@@ -126,7 +126,7 @@ export const TextDarkIcon = (props) => (
     assistiveText={{ label: "Text" }}
     category="utility"
     name="display_text"
-    size="x-small"
+    size="xx-small"
     style={{ background: "#fff", fill: "#16325c" }}
   />
 );
@@ -136,7 +136,7 @@ export const RecordGroup2DarkIcon = (props) => (
     assistiveText={{ label: "Record Group" }}
     category="utility"
     name="record_create"
-    size="x-small"
+    size="xx-small"
     style={{ background: "#fff", fill: "#16325c" }}
   />
 );
@@ -146,7 +146,7 @@ export const GeoLocationDarkIcon = (props) => (
     assistiveText={{ label: "Record Group" }}
     category="utility"
     name="world"
-    size="x-small"
+    size="xx-small"
     style={{ background: "#fff", fill: "#16325c" }}
   />
 );
