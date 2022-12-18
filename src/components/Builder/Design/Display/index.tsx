@@ -104,7 +104,7 @@ export const Display = () => {
   return (
     <FormDesign key={"Display"}>
       <DndContext sensors={sensors} onDragEnd={handleDragEnd} onDragOver={handleDragOver}>
-        {/* <Single /> */}
+
         {
           pages != null ? pages.map((pageId, index) =>
             <Section key={index}>

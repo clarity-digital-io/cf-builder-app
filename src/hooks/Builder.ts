@@ -10,6 +10,7 @@ import {
 import { NavStates, Questions } from '../reducers/BuilderProvider';
 import { BuilderController } from '../utils/constants/methods';
 import { Error } from '../utils/messages/error';
+import { QuestionTypes } from '../utils/types/fields';
 import { Question__c } from '../utils/types/sObjects';
 
 export const useBuilder = () => {
@@ -72,7 +73,7 @@ export const useBuilder = () => {
         const _questions = await call(BuilderController.getQuestions, [formId]);
 
         // needed for sortable context to work properly
-        const _questionsWithId = _questions.map((_question: Question__c) => ({ ..._question, id: _question.Id }));
+        const _questionsWithId = _questions.map((_question: Question__c) => ({ ..._question, id: _question.Id, cforms__Type__c: QuestionTypes[_question.cforms__Type__c] }));
 
         const questionsInPages = _questionsWithId.reduce((accum: Questions, question: Question__c) => {
           const { cforms__Page__c: key } = question;

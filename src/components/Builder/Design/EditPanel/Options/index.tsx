@@ -1,6 +1,6 @@
 import React from "react";
 import { useEditFormContext } from "../../../../../context/EditContext";
-import { QuestionOptionTypes, Question__c } from "../../../../../utils/types/sObjects";
+import { QuestionOptionTypes } from "../../../../../utils/options";
 
 export const OptionsEdit = () => {
   const { question, options } = useEditFormContext();

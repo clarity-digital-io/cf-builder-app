@@ -12,6 +12,7 @@ export type EditFormProviderState = {
   criteria: Array<any> | null
   error: Error
   setNewCriterion: (criterion: Question_Criteria__c) => void
+  initQuestionEdit: (question: Question__c | null) => void
   setQuestionUpdate: (question: Question__c | null) => void
   handleSaveQuestion: (message: any) => void
   handleSaveQuestionWithOptions: (message: any) => void
@@ -26,6 +27,7 @@ export const editFormInitialState: EditFormProviderState = {
   criteria: null,
   error: { message: '', display: false },
   setNewCriterion: (any) => void any,
+  initQuestionEdit: (any) => void any,
   setQuestionUpdate: (any) => void any,
   handleSaveQuestion: (any) => void any,
   handleSaveQuestionWithOptions: (any) => void any,
@@ -35,10 +37,14 @@ export const editFormInitialState: EditFormProviderState = {
 
 export type EditFormAction =
   | {
-    type: 'SET_QUESTION',
+    type: 'INIT_QUESTION',
     question: EditFormProviderState['question']
     options: EditFormProviderState['options']
     criteria: EditFormProviderState['criteria']
+  }
+  | {
+    type: 'SET_QUESTION',
+    question: EditFormProviderState['question']
   }
   | {
     type: 'SET_NEW_CRITERION',
@@ -57,8 +63,10 @@ export function editFormReducer(
   action: EditFormAction
 ): EditFormProviderState {
   switch (action.type) {
-    case 'SET_QUESTION':
+    case 'INIT_QUESTION':
       return { ...state, question: action.question, criteria: action.criteria, options: action.options }
+    case 'SET_QUESTION':
+      return { ...state, question: action.question }
     case 'SET_NEW_CRITERION':
       return { ...state, criteria: action.criteria }
     case 'SET_ERROR':

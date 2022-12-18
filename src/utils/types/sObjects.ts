@@ -1,3 +1,6 @@
+import { FilterLogicTypes, OperatorTypes } from "../criteria";
+import { QuestionTypes } from "./fields";
+
 export const namespace = 'cforms__';
 
 export type sObject = {
@@ -72,69 +75,11 @@ export type Form_Connection_Process__c = {
   cforms__Status__c: string
 } & sObject;
 
-// question criteria operator
-enum OperatorTypes {
-  EQUALS,
-  GREATER_THAN,
-  LESS_THAN,
-  GREATER_THAN_OR_EQUAL,
-  LESS_THAN_OR_EQUAL,
-  IS_NOT,
-  IS_NOT_NULL,
-  NOT_EQUAL
-}
-
-enum QuestionTypes {
-  MultipleChoice,
-  Comment,
-  Dropdown,
-  Slider,
-  Date,
-  Email,
-  Number,
-  Lookup,
-  RecordGroup,
-  Image,
-  Checkbox,
-  FreeText,
-  PictureChoice,
-  InputField,
-  GeoLocation,
-  Attachments,
-  BOOLEAN,
-  DATETIME,
-  CURRENCY,
-  COMBOBOX,
-  ADDRESS,
-  ANYTTYPE,
-  BASE64,
-  DOUBLE,
-  ENCRYPTEDSTRING,
-  INTEGER,
-  LONG,
-  MULTIPICKLIST,
-  PERCENT,
-  PHONE,
-  PICKLIST,
-  TEXTAREA,
-  TIME,
-  URL,
-  REFERENCE,
-  STRING
-}
-
-export const QuestionOptionTypes: QuestionTypes[] = [
-  QuestionTypes.MultipleChoice,
-  QuestionTypes.Dropdown,
-  QuestionTypes.PictureChoice
-]
-
 export type Question__c = {
   cforms__Attachment_Type__c?: string
   cforms__Connected_Object__c?: string
   cforms__Form__c?: string
   cforms__FreeText_Type__c?: string
-  cforms__Logic__c?: string
   cforms__Lookup__c?: string
   cforms__Max_Length__c?: string
   cforms__Max_Range__c?: string
@@ -143,12 +88,14 @@ export type Question__c = {
   cforms__Page__c?: number
   cforms__Prefill_Type__c?: boolean
   cforms__Record_Group__c?: string
-  cforms__Required__c: boolean
+  cforms__Required__c?: boolean
   cforms__Salesforce_Field__c?: string
   cforms__Salesforce_Object__c?: string
   cforms__Step__c?: string
   cforms__Title__c: string
   cforms__Type__c: QuestionTypes
+  cforms__Logic__c?: string // picklist
+  cforms__Custom_Logic__c?: FilterLogicTypes
   cforms__Question_Criteria__r?: Question_Criteria__c[]
   cforms__Question_Options__r?: Question_Option__c[]
 } & sObject;

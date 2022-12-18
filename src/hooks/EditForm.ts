@@ -30,24 +30,31 @@ export const useEditForm = () => {
   // BuilderController.updateForm
 
   // set init selected question (non record group type)
-
-  // set question 
-  const setQuestionUpdate = (_question: Question__c) => {
+  const initQuestionEdit = (_question: Question__c) => {
+    console.log({ _question })
     if (_question != null) {
       dispatch({
-        type: 'SET_QUESTION',
+        type: 'INIT_QUESTION',
         question: _question,
         criteria: _question.cforms__Question_Criteria__r != null ? _question.cforms__Question_Criteria__r : null,
         options: _question.cforms__Question_Options__r != null ? _question.cforms__Question_Options__r : null
       })
     } else {
       dispatch({
-        type: 'SET_QUESTION',
+        type: 'INIT_QUESTION',
         question: null,
         criteria: null,
         options: null
       })
     }
+  }
+
+  // update fields on question sobject
+  const setQuestionUpdate = (_question: Question__c) => {
+    dispatch({
+      type: 'SET_QUESTION',
+      question: _question,
+    })
   }
 
   // when new criteria is added
@@ -105,6 +112,7 @@ export const useEditForm = () => {
     error,
     setNewCriterion,
     setQuestionUpdate,
+    initQuestionEdit,
     handleSaveQuestion,
     handleSaveQuestionWithOptions,
     handleSaveQuestionWithCriteria,

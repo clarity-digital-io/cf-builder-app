@@ -59,7 +59,7 @@ export const Edit = () => {
 
 const Panel = ({ header, children }: { header: string, children: ReactElement[] | ReactElement }) => {
 
-  const { question, setQuestionUpdate } = useEditFormContext();
+  const { question, initQuestionEdit } = useEditFormContext();
 
   const [trail, setTrail] = useState<Array<JSX.Element>>([
     <a key={'parent'} id="parent-entity">{header}</a>
@@ -69,7 +69,7 @@ const Panel = ({ header, children }: { header: string, children: ReactElement[] 
     if (question) {
       setTrail(
         [
-          <a key={'parent'} id="parent-entity" onClick={() => setQuestionUpdate(null)}>{header}</a>,
+          <a key={'parent'} id="parent-entity" onClick={() => initQuestionEdit(null)}>{header}</a>,
           <a key={'child'} id="parent-entity">{question.cforms__Title__c}</a>
         ]
       )

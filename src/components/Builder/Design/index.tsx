@@ -7,7 +7,7 @@ import { QuestionState } from "./FieldsPanel/Question/state";
 // import { ConnectState } from "./Connect";
 // import { MappingState } from "./Connect/mapping";
 // import { SettingsState } from "./Settings";
-import { EditPageState } from "./EditPanel/EditPage";
+import { EditPageState } from "./EditPanel/EditPage-Old";
 import { Display } from "./Display";
 import { useBuilderContext } from "../../../context/BuilderContext";
 import { NavStates } from "../../../reducers/BuilderProvider";
