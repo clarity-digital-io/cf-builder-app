@@ -118,16 +118,18 @@ const FilterLogic = () => {
           id="base-id"
           label="Filter Logic"
           placeholder=""
-          onChange={(e) => {
+          onBlur={(e) => {
             // regex check first 
-            if (e.target.value.match("[^A-Za-z0-9)s]+") == null) {
-              const { valid, message } = validateCustomLogic(e.target.value);
-              if (valid) {
-                console.log('update custom logic field on question', message)
-              } else {
-                console.log('display error message ')
+            setTimeout(() => {
+              if (e.target.value.match("[^A-Za-z0-9)s]+") != null) {
+                const { valid, message } = validateCustomLogic(e.target.value);
+                if (valid) {
+                  console.log('update custom logic field on question', message)
+                } else {
+                  console.log('display error message ')
+                }
               }
-            }
+            }, 100)
           }}
           value={question?.cforms__Custom_Logic__c}
           fieldLevelHelpTooltip={
@@ -150,25 +152,13 @@ type CustomLogicValidation = {
 }
 
 const validateCustomLogic = (value: string): CustomLogicValidation => {
-  // need to reference all criteria
-  // need to reference criteria that exists (not undefined)
-  // check spelling (Not part of AND NOT OR can be lower case when is a string not number)
-  // if starts with a logic operator (logic operator can be parentheses too ) (should start with a number (criteria))
-  // -- also if there is no number between logic operator 
 
   const logicValues: string[] = value.split(' ');
 
-  // this can be 
-  // 1 / 2 / OR / AND / 234 / ai233432 / x123 / NOt / 1 OR 2 / 1 And 2 / 1 or 2 / 1 or 3 
-
-  // first check should be
-  // is it a number or text 
-  // if text is part of logicoperators (lowercase it)
-  // if number does it include all criteria
   let isValidInitialCheck = true;
 
   logicValues.forEach((value: string) => {
-    const isNumber = Number.isFinite(value);
+    const isNumber = isNumeric(value);
     if (!isNumber) {// is it part of logic operators (parents / not / or / and)
       isValidInitialCheck = ['not', 'or', 'and'].includes(value.toLowerCase());
     } else {  // is it part of criteria
@@ -181,25 +171,20 @@ const validateCustomLogic = (value: string): CustomLogicValidation => {
   if (!isValidInitialCheck) return { valid: false, message: '' }
 
   const isValidIncludesAllCriteria = logicValues
-    .filter((value: string) => Number.isFinite(value))
+    .filter((value: string) => isNumeric(value))
     .map((value: string) => (Number(value)))
     .some((value: number) => [1, 2, 3].indexOf(value) !== -1);
 
   // exit if second check is invalid
-  if (!isValidIncludesAllCriteria) return { valid: false, message: '' };
-
-  const validValueBeforeNot = (value: string) => {
-    if (Number.isFinite(value)) return false;
-    return ['not', 'or', 'and'].includes(value.toLowerCase());
-  }
+  if (!isValidIncludesAllCriteria) return { valid: false, message: 'not all criteria included' };
 
   let isValidValuesUsingNot = true;
 
   logicValues.forEach((value: string, index: number, arr: string[]) => {
-    if (index === 0 && !Number.isFinite(value) && value == 'not') {
+    if (index === 0 && !isNumeric(value) && value == 'not') {
       isValidValuesUsingNot = false;
     }
-    if (!Number.isFinite(value) && value == 'not' && !validValueBeforeNot(arr[index - 1])) {
+    if (!isNumeric(value) && value == 'not' && !validValueBeforeNot(arr[index - 1])) {
       isValidValuesUsingNot = false;
     }
     if (!isValidValuesUsingNot) return;
@@ -207,12 +192,6 @@ const validateCustomLogic = (value: string): CustomLogicValidation => {
 
   // exit if third check is invalid
   if (!isValidValuesUsingNot) return { valid: false, message: '' }
-
-  // check if there are any parentheses only 
-
-  // open parentheses must have a closing
-  // 2 open parentheses must equal 2 closing
-  // check inside parentheses is valid grouping (1 and parenthesesGroupType /** (1 and 2) (1 and (2 or 3)) */ )
 
   const { leftSide, rightSide } = logicValues.filter((value: string) => {
     if (value === '(' || value === ')') {
@@ -228,84 +207,44 @@ const validateCustomLogic = (value: string): CustomLogicValidation => {
 
   if (leftSide != rightSide) return { valid: false, message: '' }
 
-  // check that each opening is valid group 
-  // (1 AND 2) is valid
-  // (1 AND (1 OR 2)) is valid
-
-  // start from parent level down to each level 
-  // how do i know 
-  // (1 AND (1 OR 2)) OR (3 AND 5)
-  // parent level is first parentheses group
-  // child level is second parentheses group
-  // grand child level is third parentheses group 
-
-  // loop through each logic value
-  // if leftSide find it's rightSide
-  // continue to next index 
-  // if another leftSide is found
-  // continue to next index + 1 on the rightside 
-  // once completed
-
-  // (1 AND (1 OR 2)) OR (3 AND 5)
-
   const isValidParenthesesGrouping: CustomLogicValidation = validParenthesesGrouping(logicValues);
+
   return isValidParenthesesGrouping;
-
-  // const validValueBeforeParentheses = (value: string) => {
-  //   if (Number.isFinite(value)) return false;
-  //   return ['not', 'or', 'and'].includes(value.toLowerCase());
-  // }
-
-  // let isValidUsingParentheses = false;
-  // logicValues.forEach((value: string, index: number, arr: string[]) => {
-  //   if (index === 0 && !Number.isFinite(value) && value == ')') {
-  //     isValidUsingParentheses = false;
-  //   }
-  //   if (!Number.isFinite(value) && value == 'not' && !validValueBeforeParentheses(arr[index - 1])) {
-  //     isValidUsingParentheses = false;
-  //   }
-  //   if (!isValidUsingParentheses) return;
-  // });
-
-
-  // not needs to have an or / and before 
-  // check closing parentheses 
-
 
 }
 
 const validParenthesesGrouping = (logicValues: string[]): CustomLogicValidation => {
 
+  let validation: CustomLogicValidation;
+  // (1 AND (1 OR 2)) OR (3 AND 5)
   logicValues.forEach((value, index) => {
     if (value === '(') {
       // find it's rightSide starting at current Index
-      let lastLeftSideIndex = 0;
+      let lastLeftSideIndex: number[] = [];
       let nextRightSide = 0;
       let hasInnerGroups = false;
+
       logicValues.slice(index + 1, logicValues.length).forEach((valueJ, indexJ) => {
         if (valueJ === ')' && nextRightSide == 0) {
 
           // check if group is valid 
           const parenthesesGroup = logicValues.slice(index + 1, indexJ - 1);
           if (!hasInnerGroups) { // no need to check more has been checked
-
-            if (!validInnerParenthesesGroup(parenthesesGroup)) {
-              return;
-            }
-
+            return validInnerParenthesesGroup(parenthesesGroup)
           }
 
         } else if (valueJ === ')' && nextRightSide > 0) {
-          // nested parentheses group should check this 
-          const innerParenthesesGroup = logicValues.slice(lastLeftSideIndex, indexJ);
-          if (!validInnerParenthesesGroup(innerParenthesesGroup)) {
-            return;
+          const innerParenthesesGroup = logicValues.slice(lastLeftSideIndex[lastLeftSideIndex.length], indexJ);
+          const validation = validInnerParenthesesGroup(innerParenthesesGroup);
+          if (!validation.valid) {
+            return validation;
           }
           nextRightSide--;
+          lastLeftSideIndex = lastLeftSideIndex.splice(0, lastLeftSideIndex.length - 1)
           hasInnerGroups = true;
         } else if (valueJ === '(') {
           // increase count of rightside + 1
-          lastLeftSideIndex = indexJ;
+          lastLeftSideIndex = lastLeftSideIndex.concat([indexJ]); // maybe keep list here 
           nextRightSide++;
         }
       });
@@ -313,22 +252,17 @@ const validParenthesesGrouping = (logicValues: string[]): CustomLogicValidation 
     }
   })
 
-  // logicValues.forEach((value, index) => {
-  //   if (value === '(') {
-  //     validParenthesesGrouping()
-  //   } 
-  // })
-
+  return validation;
 }
 
-const validInnerParenthesesGroup = (group: string[]): boolean => {
-  if (group.length < 2) return false;
+const validInnerParenthesesGroup = (group: string[]): CustomLogicValidation => {
+  if (group.length < 2) return { valid: false, message: 'successive' };
 
   // no numbers 
-  if (!group.some((value: string) => Number.isFinite(value))) return false;
+  if (!group.some((value: string) => isNumeric(value))) return { valid: false, message: 'successive' };
 
   // no text 
-  if (group.some((value: string) => Number.isFinite(value))) return false;
+  if (group.some((value: string) => isNumeric(value))) return { valid: false, message: 'successive' };
 
   // not has no "AND or OR"
   const indexOfNot = group.indexOf("NOT");
@@ -337,11 +271,11 @@ const validInnerParenthesesGroup = (group: string[]): boolean => {
     const andExpression = group[indexOfNot - 1] === 'AND';
 
     if (orExpression == false || andExpression == false) {
-      return false;
+      return { valid: false, message: 'successive' }
     }
 
   } else {
-    return false;
+    return { valid: false, message: 'successive' }
   }
 
   // success and or without a split
@@ -352,7 +286,7 @@ const validInnerParenthesesGroup = (group: string[]): boolean => {
       hasOr = true;
     }
 
-    if (havaluesAnd === 'AND') {
+    if (value === 'AND') {
       hasAnd = true;
     }
   })
@@ -361,5 +295,16 @@ const validInnerParenthesesGroup = (group: string[]): boolean => {
     return { valid: false, message: 'successive' }
   }
 
-  return true;
+  return { valid: true, message: '' };
+}
+
+const validValueBeforeNot = (value: string) => {
+  if (isNumeric(value)) return false;
+  return ['not', 'or', 'and'].includes(value.toLowerCase());
+}
+
+const isNumeric = (str: string) => {
+  if (typeof str != "string") return false // we only process strings!  
+  return !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
+    !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
 }
