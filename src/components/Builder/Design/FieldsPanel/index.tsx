@@ -28,7 +28,6 @@ export const Fields = () => {
             >
               <div className="slds-grid slds-grid_vertical-align-center slds-p-left_large">
                 <div className="slds-col slds-col_bump-left">
-                  {/* <FormQuestionIcon type={field.} > */}
                   <span className="slds-p-right_xx-small slds-m-bottom_xx-small">
                     <Icon
                       assistiveText={{ label: field.type }}
@@ -50,7 +49,7 @@ export const Fields = () => {
 }
 
 const FieldListItem = styled.li`
-cursor: pointer
+cursor: grab
 `
 
 const FieldListName = styled.span`

@@ -18,15 +18,15 @@ import styled from "styled-components";
 import { useBuilderContext } from "../../../../../context/BuilderContext";
 
 export const Test = () => {
-  const [itemGroups, setItemGroups] = useState({
-    group1: ["1", "2", "3"],
-    group2: ["4", "5", "6"],
-    group3: ["7", "8", "9"],
-  });
+  // const [itemGroups, setItemGroups] = useState({
+  //   group1: ["1", "2", "3"],
+  //   group2: ["4", "5", "6"],
+  //   group3: ["7", "8", "9"],
+  // });
 
 
-  const { questions, handleQuestionsUpdate } = useBuilderContext();
-  console.log({ questions })
+  const { questions, dndQuestions, setDndQuestion, handleQuestionsUpdate } = useBuilderContext();
+  console.log({ dndQuestions })
 
   const [activeId, setActiveId] = useState(null);
 
@@ -57,25 +57,26 @@ export const Test = () => {
     const overContainer = over.data.current?.sortable.containerId || over.id;
 
     if (activeContainer !== overContainer) {
-      setItemGroups((itemGroups) => {
-        const activeIndex = active.data.current.sortable.index;
-        console.log({ over });
-        const overIndex =
-          over.id in itemGroups
-            ? itemGroups[overContainer].length + 1
-            : over.data.current.sortable.index;
+      const activeIndex = active.data.current.sortable.index;
+      console.log({ over });
+      const overIndex =
+        over.id in dndQuestions
+          ? dndQuestions[overContainer].length + 1
+          : over.data.current.sortable.index;
 
-        return moveBetweenContainers(
-          itemGroups,
+      setDndQuestion(
+        moveBetweenContainers(
+          dndQuestions,
           activeContainer,
           activeIndex,
           overContainer,
           overIndex,
           active.id
-        );
-      });
+        )
+      )
     }
   };
+
   // const handleDragOver = ({ active, over }) => {
   //   const overId = over?.id;
 
@@ -91,32 +92,17 @@ export const Test = () => {
   //     const overIndex = over.id in questions ? questions[overContainer].length + 1 : over.data.current.sortable.index;
   //     console.log('drag over', { over, activeIndex, overIndex })
 
-  //     // const updatedQuestions = moveBetweenContainers(
-  //     //   questions,
-  //     //   activeContainer,
-  //     //   activeIndex,
-  //     //   overContainer,
-  //     //   overIndex,
-  //     //   active.id
-  //     // )
-  //     // console.log('updatedQuestions drag over', { updatedQuestions })
-  //     // handleQuestionsUpdate(updatedQuestions)
-  //     setItemGroups((itemGroups) => {
-  //       const activeIndex = active.data.current.sortable.index;
-  //       const overIndex =
-  //         over.id in itemGroups
-  //           ? itemGroups[overContainer].length + 1
-  //           : over.data.current.sortable.index;
+  //     const updatedQuestions = moveBetweenContainers(
+  //       questions,
+  //       activeContainer,
+  //       activeIndex,
+  //       overContainer,
+  //       overIndex,
+  //       active.id
+  //     )
+  //     console.log('updatedQuestions drag over', { updatedQuestions })
+  //     handleQuestionsUpdate(updatedQuestions)
 
-  //       return moveBetweenContainers(
-  //         itemGroups,
-  //         activeContainer,
-  //         activeIndex,
-  //         overContainer,
-  //         overIndex,
-  //         active.id
-  //       );
-  //     });
   //   }
   // };
 
@@ -134,36 +120,38 @@ export const Test = () => {
       const overContainer = over.data.current?.sortable.containerId || over.id;
       const activeIndex = active.data.current.sortable.index;
       const overIndex =
-        over.id in itemGroups
-          ? itemGroups[overContainer].length + 1
+        over.id in dndQuestions
+          ? dndQuestions[overContainer].length + 1
           : over.data.current.sortable.index;
 
-      setItemGroups((itemGroups) => {
-        let newItems;
-        if (activeContainer === overContainer) {
-          newItems = {
-            ...itemGroups,
-            [overContainer]: arrayMove(
-              itemGroups[overContainer],
-              activeIndex,
-              overIndex
-            )
-          };
-        } else {
-          console.log({ over });
+      // setItemGroups((itemGroups) => {
 
-          newItems = moveBetweenContainers(
-            itemGroups,
-            activeContainer,
+      //   return newItems;
+      // });
+
+      let newItems;
+      if (activeContainer === overContainer) {
+        newItems = {
+          ...dndQuestions,
+          [overContainer]: arrayMove(
+            dndQuestions[overContainer],
             activeIndex,
-            overContainer,
-            overIndex,
-            active.id
-          );
-        }
+            overIndex
+          )
+        };
+      } else {
+        console.log({ over });
 
-        return newItems;
-      });
+        newItems = moveBetweenContainers(
+          dndQuestions,
+          activeContainer,
+          activeIndex,
+          overContainer,
+          overIndex,
+          active.id
+        );
+      }
+      setDndQuestion(newItems);
     }
 
     setActiveId(null);
@@ -187,57 +175,28 @@ export const Test = () => {
   //     const overIndex = over.id in questions ? questions[overContainer].length + 1 : over.data.current.sortable.index;
   //     let updatedQuestions = {};
   //     if (activeContainer === overContainer) {
-  //     //   console.log('overcontainer', { overContainer, questions: questions[overContainer] })
-  //     //   updatedQuestions = {
-  //     //     ...questions,
-  //     //     [overContainer]: arrayMove(
-  //     //       questions[overContainer],
-  //     //       activeIndex,
-  //     //       overIndex
-  //     //     ),
-  //     //   };
-  //     // } else {
-  //     //   console.log({ active })
-  //     //   updatedQuestions = moveBetweenContainers(
-  //     //     questions,
-  //     //     activeContainer,
-  //     //     activeIndex,
-  //     //     overContainer,
-  //     //     overIndex,
-  //     //     active.id
-  //     //   )
-  //     // }
-  //     // console.log('updatedQuestions', { updatedQuestions })
-  //     // handleQuestionsUpdate(updatedQuestions)
-  //     const overIndex =
-  //       over.id in itemGroups
-  //         ? itemGroups[overContainer].length + 1
-  //         : over.data.current.sortable.index;
-
-  //     setItemGroups((itemGroups) => {
-  //       let newItems;
-  //       if (activeContainer === overContainer) {
-  //         newItems = {
-  //           ...itemGroups,
-  //           [overContainer]: arrayMove(
-  //             itemGroups[overContainer],
-  //             activeIndex,
-  //             overIndex
-  //           ),
-  //         };
-  //       } else {
-  //         newItems = moveBetweenContainers(
-  //           itemGroups,
-  //           activeContainer,
+  //       console.log('overcontainer', { overContainer, questions: questions[overContainer] })
+  //       updatedQuestions = {
+  //         ...questions,
+  //         [overContainer]: arrayMove(
+  //           questions[overContainer],
   //           activeIndex,
-  //           overContainer,
-  //           overIndex,
-  //           active.id
-  //         );
-  //       }
-
-  //       return newItems;
-  //     });
+  //           overIndex
+  //         ),
+  //       };
+  //     } else {
+  //       console.log({ active })
+  //       updatedQuestions = moveBetweenContainers(
+  //         questions,
+  //         activeContainer,
+  //         activeIndex,
+  //         overContainer,
+  //         overIndex,
+  //         active.id
+  //       )
+  //     }
+  //     console.log('updatedQuestions', { updatedQuestions })
+  //     handleQuestionsUpdate(updatedQuestions)
   //   }
 
   //   setActiveId(null);
@@ -267,11 +226,11 @@ export const Test = () => {
       onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}
     >
-      <Container>
-        {Object.keys(itemGroups).map((group) => (
+      <Container className="slds-grid slds-wrap">
+        {Object.keys(dndQuestions).map((group: any) => (
           <Droppable
             id={group}
-            items={itemGroups[group]}
+            items={dndQuestions[group]}
             activeId={activeId}
             key={group}
           />
@@ -283,8 +242,5 @@ export const Test = () => {
 }
 
 const Container = styled.div`
-  display: flex;
-  > * {
-    margin: 5px; 
-  }
+  overflow: auto; 
 `

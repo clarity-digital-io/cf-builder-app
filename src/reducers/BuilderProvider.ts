@@ -23,6 +23,7 @@ export type BuilderProviderState = {
   availableFields: Array<any>
   form: any | null | undefined
   questions: Questions
+  dndQuestions: Record<number, number[]>
   pages: Array<any>
   sObjects: any | null | undefined
   connections: any | null | undefined
@@ -34,6 +35,7 @@ export type BuilderProviderState = {
   activeFieldPrefills: any | null | undefined // may move
   activeFields: any | null | undefined // may move
   setFormUpdate: (form: any) => void
+  setDndQuestion: (questions: any) => void
   handleQuestionsUpdate: (questions: any) => void
   handleFormStatusUpdate: (status: any) => void
   handleFormUpdate: (form: any) => void
@@ -47,6 +49,7 @@ export const builderInitialState: BuilderProviderState = {
   availableFields: [],
   form: null,
   questions: {},
+  dndQuestions: {},
   pages: [],
   sObjects: null,
   connections: null,
@@ -58,6 +61,7 @@ export const builderInitialState: BuilderProviderState = {
   activeFields: [],
   navState: NavStates.QUESTIONS,
   setFormUpdate: (any) => void any,
+  setDndQuestion: (any) => void any,
   handleQuestionsUpdate: (any) => void any,
   handleFormStatusUpdate: (any) => void any,
   handleFormUpdate: (any) => void any,
@@ -82,6 +86,11 @@ export type BuilderAction =
     type: 'SET_QUESTIONS'
     questions: BuilderProviderState['questions'],
     pages: BuilderProviderState['pages'],
+    dndQuestions: BuilderProviderState['dndQuestions'],
+  }
+  | {
+    type: 'SET_DROP_QUESTION'
+    dndQuestions: BuilderProviderState['dndQuestions'],
   }
   | {
     type: 'UPDATE_QUESTIONS',
@@ -133,7 +142,9 @@ export function builderReducer(
     case 'SET_FORM':
       return { ...state, form: action.form }
     case 'SET_QUESTIONS':
-      return { ...state, questions: action.questions, pages: action.pages }
+      return { ...state, questions: action.questions, pages: action.pages, dndQuestions: action.dndQuestions }
+    case 'SET_DROP_QUESTION':
+      return { ...state, dndQuestions: action.dndQuestions }
     case 'UPDATE_QUESTIONS':
       return { ...state, questions: action.questions }
     case 'SET_CONNECTIONS':

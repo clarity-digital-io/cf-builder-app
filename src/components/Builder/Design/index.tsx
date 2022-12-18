@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 
 import View from "../../Elements/View";
 import Box from "../../Elements/Box";
+import styled from "styled-components";
 
 import { QuestionState } from "./FieldsPanel/Question/state";
 // import { ConnectState } from "./Connect";
@@ -50,22 +51,28 @@ const Design = () => {
   return (
     <View full main>
 
-      <View scroll>
-        <Fields />
-      </View>
+      <Fields />
 
       <EditFormContextProvider>
-        <View key={"QuestionDisplay"} form={true}>
-          <Box padding="0"><Test /></Box>
-        </View>
 
-        <View scroll>
-          <Edit />
-        </View>
+        <DisplayStyle key={"QuestionDisplay"} form={true}>
+          <Test />
+        </DisplayStyle>
+
+        <Edit />
+
       </EditFormContextProvider>
 
     </View>
   );
 };
+
+const DisplayStyle = styled.div`
+  flex-grow: 1;
+  margin-right: 0em;
+  margin-left: 0em;
+  padding: 0;
+  background: #d8e6fe; 
+`
 
 export default Design;

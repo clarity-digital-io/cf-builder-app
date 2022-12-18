@@ -23,6 +23,7 @@ export const useBuilder = () => {
     formId,
     availableFields,
     questions,
+    dndQuestions,
     pages,
     error,
     isLoading,
@@ -76,16 +77,21 @@ export const useBuilder = () => {
         const _questionsWithId = _questions.map((_question: Question__c) => ({ ..._question, id: _question.Id, cforms__Type__c: QuestionTypes[_question.cforms__Type__c] }));
 
         const questionsInPages = _questionsWithId.reduce((accum: Questions, question: Question__c) => {
+
           const { cforms__Page__c: key } = question;
-          const existing = accum[key] != null ?
-            [question].concat(accum[key]) : [question];
+
+          const existing = accum[key] != null ? [question.Id].concat(accum[key]) : [question.Id];
+
           return { ...accum, [key]: existing }
+
         }, {})
+
         console.log({ questionsInPages })
         dispatch({
           type: 'SET_QUESTIONS',
           questions: questionsInPages,
-          pages: Object.keys(questionsInPages)
+          pages: Object.keys(questionsInPages),
+          dndQuestions: questionsInPages
         })
       } catch (error: any) {
         dispatch({
@@ -217,10 +223,20 @@ export const useBuilder = () => {
     })
   }
 
+  // setDndQuestion
+  const setDndQuestion = (_dndQuestions) => {
+    console.log('setDndQuestion', { _dndQuestions })
+    dispatch({
+      type: 'SET_DROP_QUESTION',
+      dndQuestions: _dndQuestions
+    })
+  }
+
   return {
     formId,
     availableFields,
     questions,
+    dndQuestions,
     pages,
     error,
     isLoading,
@@ -233,6 +249,7 @@ export const useBuilder = () => {
     navState,
     sObjects,
     setFormUpdate,
+    setDndQuestion,
     handleQuestionsUpdate,
     handleFormStatusUpdate,
     handleFormUpdate,
