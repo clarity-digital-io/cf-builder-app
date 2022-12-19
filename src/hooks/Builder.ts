@@ -77,13 +77,14 @@ export const useBuilder = () => {
         const _questionsWithId = _questions.map((_question: Question__c) => ({ ..._question, id: _question.Id, cforms__Type__c: QuestionTypes[_question.cforms__Type__c] }));
 
         const questionsInPages = _questionsWithId.reduce((accum: Questions, question: Question__c) => {
+          const { Id: key } = question;
+          return { ...accum, [key]: question }
+        }, {});
 
+        const _dndQuestions = _questionsWithId.reduce((accum: Questions, question: Question__c) => {
           const { cforms__Page__c: key } = question;
-
           const existing = accum[key] != null ? [question.Id].concat(accum[key]) : [question.Id];
-
           return { ...accum, [key]: existing }
-
         }, {})
 
         console.log({ questionsInPages })
@@ -91,7 +92,7 @@ export const useBuilder = () => {
           type: 'SET_QUESTIONS',
           questions: questionsInPages,
           pages: Object.keys(questionsInPages),
-          dndQuestions: questionsInPages
+          dndQuestions: _dndQuestions
         })
       } catch (error: any) {
         dispatch({

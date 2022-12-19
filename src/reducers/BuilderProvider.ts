@@ -14,7 +14,7 @@ type Error = {
 }
 
 export type Questions = {
-  [key: string]: Question__c[]
+  [key: string]: Question__c
 }
 
 export type BuilderProviderState = {

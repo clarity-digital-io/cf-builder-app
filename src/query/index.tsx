@@ -73,83 +73,76 @@ const mockCall = (func: string, params: any[] | null | undefined, callback: (res
       break;
     case BuilderController.getQuestions:
       cb = callback({
-        result: [
-          {
-            Id: 1,
-            cforms__Logic__c: "AND",
-            cforms__Type__c: "Checkbox",
-            cforms__Title__c: "Checkbox",
-            cforms__Order__c: 0,
-            cforms__Max_Length__c: 10,
-            cforms__Min_Range__c: 0,
-            cforms__Max_Range__c: 100,
-            cforms__Step__c: 10,
-            cforms__Page__c: 0,
-            cforms__Question_Options__r: [],
-            cforms__Question_Criteria__r: [
-              {
-                Id: 31,
-                forms__Question__c: 3,
-                forms__Field__c: 1,
-                forms__Field_Type__c: "Comment",
-                forms__Operator__c: "Is Not Null",
-                forms__Type__c: "Boolean",
-                forms__Value__c: "True",
-              },
-              {
-                Id: 32,
-                forms__Question__c: 3,
-                forms__Field__c: 2,
-                forms__Field_Type__c: "Comment",
-                forms__Operator__c: "Is Not Null",
-                forms__Type__c: "Boolean",
-                forms__Value__c: "True",
-              },
-              {
-                Id: 33,
-                forms__Question__c: 3,
-                forms__Field__c: 3,
-                forms__Field_Type__c: "Comment",
-                forms__Operator__c: "Is Not Null",
-                forms__Type__c: "Boolean",
-                forms__Value__c: "True",
-              },
-            ],
-          },
-          {
-            Id: 2,
-            cforms__Logic__c: "AND",
-            cforms__Type__c: "Comment",
-            cforms__Title__c: "Comment",
-            cforms__Order__c: 1,
-            cforms__Max_Length__c: 10,
-            cforms__Min_Range__c: 0,
-            cforms__Max_Range__c: 100,
-            cforms__Step__c: 10,
-            cforms__Page__c: 1,
-          },
-          {
-            Id: 6,
-            cforms__Logic__c: "AND",
-            cforms__Type__c: "Lookup",
-            cforms__Title__c: "Lookup",
-            cforms__Lookup__c: "Case",
-            cforms__Order__c: 3,
-            cforms__Max_Length__c: 10,
-            cforms__Min_Range__c: 0,
-            cforms__Max_Range__c: 100,
-            cforms__Step__c: 10,
-            cforms__Page__c: 0,
-          },
-          {
-            Id: 9,
-            cforms__Logic__c: "AND",
-            cforms__Type__c: "Number",
-            cforms__Title__c: "Number",
-            cforms__Order__c: 2,
-            cforms__Page__c: 0,
-          },
-        ],
+        // result: [
+        //   {
+        //     Id: 1,
+        //     cforms__Logic__c: "AND",
+        //     cforms__Type__c: "Checkbox",
+        //     cforms__Title__c: "Checkbox",
+        //     cforms__Order__c: 0,
+        //     cforms__Max_Length__c: 10,
+        //     cforms__Min_Range__c: 0,
+        //     cforms__Max_Range__c: 100,
+        //     cforms__Step__c: 10,
+        //     cforms__Page__c: 0,
+        //     cforms__Question_Options__r: [],
+        //     cforms__Question_Criteria__r: [
+        //       {
+        //         Id: 31,
+        //         forms__Question__c: 3,
+        //         forms__Field__c: 1,
+        //         forms__Field_Type__c: "Comment",
+        //         forms__Operator__c: "Is Not Null",
+        //         forms__Type__c: "Boolean",
+        //         forms__Value__c: "True",
+        //       },
+        //       {
+        //         Id: 32,
+        //         forms__Question__c: 3,
+        //         forms__Field__c: 2,
+        //         forms__Field_Type__c: "Comment",
+        //         forms__Operator__c: "Is Not Null",
+        //         forms__Type__c: "Boolean",
+        //         forms__Value__c: "True",
+        //       },
+        //       {
+        //         Id: 33,
+        //         forms__Question__c: 3,
+        //         forms__Field__c: 3,
+        //         forms__Field_Type__c: "Comment",
+        //         forms__Operator__c: "Is Not Null",
+        //         forms__Type__c: "Boolean",
+        //         forms__Value__c: "True",
+        //       },
+        //     ],
+        //   },
+        //   {
+        //     Id: 2,
+        //     cforms__Logic__c: "AND",
+        //     cforms__Type__c: "Comment",
+        //     cforms__Title__c: "Comment",
+        //     cforms__Order__c: 1,
+        //     cforms__Max_Length__c: 10,
+        //     cforms__Min_Range__c: 0,
+        //     cforms__Max_Range__c: 100,
+        //     cforms__Step__c: 10,
+        //     cforms__Page__c: 1,
+        //   },
+        //   {
+        //     Id: 6,
+        //     cforms__Logic__c: "AND",
+        //     cforms__Type__c: "Lookup",
+        //     cforms__Title__c: "Lookup",
+        //     cforms__Lookup__c: "Case",
+        //     cforms__Order__c: 3,
+        //     cforms__Max_Length__c: 10,
+        //     cforms__Min_Range__c: 0,
+        //     cforms__Max_Range__c: 100,
+        //     cforms__Step__c: 10,
+        //     cforms__Page__c: 0,
+        //   }
+        // ],
+        result: buildExistingQuestions(10),
         event: { statusCode: 200 }
       });
       break;
@@ -798,3 +791,30 @@ const mockCall = (func: string, params: any[] | null | undefined, callback: (res
 //       break;
 //   }
 // };
+
+const obj = {
+  Id: 2,
+  cforms__Logic__c: "AND",
+  cforms__Type__c: "Comment",
+  cforms__Title__c: "Comment",
+  cforms__Order__c: 1,
+  cforms__Max_Length__c: 10,
+  cforms__Min_Range__c: 0,
+  cforms__Max_Range__c: 100,
+  cforms__Step__c: 10,
+  cforms__Page__c: 1,
+};
+
+const buildExistingQuestions = (qty: number) => {
+  const items = [];
+  for (let index = 0; index < qty; index++) {
+    const element = {
+      ...obj,
+      Id: index,
+      cforms__Page__c: Math.floor(index / 10),
+    }
+    items.push(element);
+  }
+  console.log({ items })
+  return items;
+}

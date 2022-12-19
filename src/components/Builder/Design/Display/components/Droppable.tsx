@@ -5,7 +5,7 @@ import { rectSortingStrategy, SortableContext } from "@dnd-kit/sortable";
 import SortableItem from "./SortableItem";
 
 import styled from "styled-components";
-import { Question__c } from "../../../../../../utils/types/sObjects";
+import { Question__c } from "../../../../../utils/types/sObjects";
 
 const Droppable = ({ id, items }) => {
   const { setNodeRef } = useDroppable({ id });

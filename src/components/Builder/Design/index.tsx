@@ -1,78 +1,189 @@
-import React, { useContext } from "react";
+import React, { useState } from "react";
 
 import View from "../../Elements/View";
-import Box from "../../Elements/Box";
-import styled from "styled-components";
 
-import { QuestionState } from "./FieldsPanel/Question/state";
-// import { ConnectState } from "./Connect";
-// import { MappingState } from "./Connect/mapping";
-// import { SettingsState } from "./Settings";
-import { EditPageState } from "./EditPanel/EditPage-Old";
-import { Display } from "./Display";
 import { useBuilderContext } from "../../../context/BuilderContext";
-import { NavStates } from "../../../reducers/BuilderProvider";
-import { BuilderDndContextProvider } from "../../../context/BuilderDndContext";
-import { Test } from "./Display/Test";
+import { Display } from "./Display";
 import {
   Modal
 } from "@salesforce/design-system-react";
-import { Fields } from "./FieldsPanel";
+import { FieldItem, Fields } from "./FieldsPanel";
 import { Edit } from "./EditPanel";
 import { EditFormContextProvider } from "../../../context/EditContext";
 
+import {
+  DndContext,
+  DragOverlay,
+  KeyboardSensor,
+  MouseSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
+import Item from "./Display/components/Item";
+import { insertAtIndex, removeAtIndex } from "./Display/utils/array";
+
 const Design = () => {
+  const { dndQuestions, setDndQuestion } = useBuilderContext();
 
-  // const { navState } = useBuilderContext();
+  const [activeId, setActiveId] = useState(null);
+  const [fieldActive, setFieldActive] = useState(null);
 
-  // const getNavState = (nav: NavStates) => {
-  //   console.log({ nav, q: NavStates.QUESTIONS })
-  //   switch (nav) {
-  //     case NavStates.CONNECT:
-  //     case NavStates.MAPPING:
-  //       return <ConnectState />;
-  //     case NavStates.SETTINGS:
-  //       return <SettingsState />;
-  //     case NavStates.EDIT:
-  //       return <EditPageState />;
-  //   }
-  // };
+  const sensors = useSensors(
+    useSensor(MouseSensor, {
+      activationConstraint: {
+        distance: 10,
+      },
+    }),
+    useSensor(TouchSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
 
-  // const getDisplayNavState = (nav: NavStates) => {
-  //   switch (nav) {
-  //     case NavStates.MAPPING:
-  //       return <Modal isOpen={true}><MappingState key={"MappingState"} /></Modal>
-  //     default:
-  //       return <Test />
+  const handleDragStart = ({ active }) => {
+    console.log({ active })
+    if (active.data.current.type == 'fields') {
+      setFieldActive(active.data.current.field);
 
-  //   }
-  // };
+    } else {
+      setActiveId(active.id)
+
+    }
+  };
+
+  const handleDragCancel = () => setActiveId(null);
+
+  const handleDragOver = ({ active, over }) => {
+    console.log({ active, over })
+    const overId = over?.id;
+
+    if (!overId) {
+      return;
+    }
+
+    if (active.data.current.type == 'fields') {
+      // need differetn process here 
+      // activecontainer will be undefined since fields-(id) are not sortable yet
+      // so need to drop them in state of questions
+      // activeContainer is 
+
+
+    } else {
+
+      const activeContainer = active.data.current.sortable.containerId;
+      const overContainer = over.data.current?.sortable.containerId || over.id;
+
+      if (activeContainer !== overContainer) {
+        const activeIndex = active.data.current.sortable.index;
+        console.log({ over });
+        const overIndex =
+          over.id in dndQuestions
+            ? dndQuestions[overContainer].length + 1
+            : over.data.current.sortable.index;
+
+        setDndQuestion(
+          moveBetweenContainers(
+            dndQuestions,
+            activeContainer,
+            activeIndex,
+            overContainer,
+            overIndex,
+            active.id
+          )
+        )
+      }
+    }
+  };
+
+  const handleDragEnd = ({ active, over }) => {
+    console.log("handledragend0", { active, over });
+
+
+    if (!over) {
+      if (active.data.current.type == 'fields') {
+        setFieldActive(null);
+      } else {
+        setActiveId(null);
+      }
+      return;
+    }
+    console.log("handledragend", { active, over });
+
+    if (active.id !== over.id) {
+      const activeContainer = active.data.current.sortable.containerId;
+      const overContainer = over.data.current?.sortable.containerId || over.id;
+      const activeIndex = active.data.current.sortable.index;
+      const overIndex =
+        over.id in dndQuestions
+          ? dndQuestions[overContainer].length + 1
+          : over.data.current.sortable.index;
+
+      let newItems;
+      if (activeContainer === overContainer) {
+        newItems = {
+          ...dndQuestions,
+          [overContainer]: arrayMove(
+            dndQuestions[overContainer],
+            activeIndex,
+            overIndex
+          )
+        };
+      } else {
+        console.log({ over });
+
+        newItems = moveBetweenContainers(
+          dndQuestions,
+          activeContainer,
+          activeIndex,
+          overContainer,
+          overIndex,
+          active.id
+        );
+      }
+      setDndQuestion(newItems);
+    }
+
+    setActiveId(null);
+  };
+
+  const moveBetweenContainers = (
+    items,
+    activeContainer,
+    activeIndex,
+    overContainer,
+    overIndex,
+    item
+  ) => {
+    return {
+      ...items,
+      [activeContainer]: removeAtIndex(items[activeContainer], activeIndex),
+      [overContainer]: insertAtIndex(items[overContainer], overIndex, item),
+    };
+  };
+
 
   return (
     <View full main>
+      <DndContext
+        sensors={sensors}
+        onDragStart={handleDragStart}
+        onDragCancel={handleDragCancel}
+        onDragOver={handleDragOver}
+        onDragEnd={handleDragEnd}
+      >
+        <Fields fieldActive={fieldActive} />
+        <EditFormContextProvider>
+          <Display activeId={activeId} />
+          <Edit />
+        </EditFormContextProvider>
+        <DragOverlay>{activeId ? <Item id={activeId} dragOverlay /> : null}</DragOverlay>
+        <DragOverlay>{fieldActive ? <FieldItem field={fieldActive} dragOverlay /> : null}</DragOverlay>
 
-      <Fields />
-
-      <EditFormContextProvider>
-
-        <DisplayStyle key={"QuestionDisplay"} form={true}>
-          <Test />
-        </DisplayStyle>
-
-        <Edit />
-
-      </EditFormContextProvider>
-
+      </DndContext>
     </View>
   );
 };
-
-const DisplayStyle = styled.div`
-  flex-grow: 1;
-  margin-right: 0em;
-  margin-left: 0em;
-  padding: 0;
-  background: #d8e6fe; 
-`
 
 export default Design;

@@ -3,7 +3,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
 import Item from "./Item";
-import { Question__c } from "../../../../../../utils/types/sObjects";
+import { Question__c } from "../../../../../utils/types/sObjects";
 import styled from "styled-components";
 
 const SortableItem = ({ id }: { id: string }) => {

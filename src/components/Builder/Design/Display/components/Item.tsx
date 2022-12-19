@@ -1,13 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useEditFormContext } from "../../../../../../context/EditContext";
-import { QuestionTypes } from "../../../../../../utils/types/fields";
+import { useBuilderContext } from "../../../../../context/BuilderContext";
+import { useEditFormContext } from "../../../../../context/EditContext";
+import { Question__c } from "../../../../../utils/types/sObjects";
 
 const Item = ({ id, dragOverlay }) => {
 
   const { initQuestionEdit } = useEditFormContext();
 
+  // const { questions } = useBuilderContext();
+
+  // const [fieldQuestion, setFieldQuestion] = useState<Question__c>(null);
+  // console.log({ fieldQuestion })
+  // useEffect(() => {
+  //   const question = questions[id];
+  //   setFieldQuestion(question);
+  // }, [questions])
+
   const [isHovering, setIsHovering] = useState(false);
+
   const handleMouseOver = () => {
     setIsHovering(true);
   };
@@ -20,10 +31,12 @@ const Item = ({ id, dragOverlay }) => {
     cursor: dragOverlay ? "grabbing" : "grab",
   };
 
+  // if (!fieldQuestion) {
+  //   return null;
+  // }
+
   return (
-
     <div style={style} className="slds-drop-zone__container slds-is-hovered" onMouseEnter={handleMouseOver} onMouseOut={handleMouseOut}>
-
       <div className="slds-drop-zone__label slds-drop-zone__label_container">
         <div className="slds-media slds-media_center">
           <div className="slds-media__figure">
@@ -35,16 +48,18 @@ const Item = ({ id, dragOverlay }) => {
           </div>
           <div className="slds-media__body" onMouseEnter={handleMouseOver} >
             <h2>
-              <button className="slds-drop-zone__label_button slds-button_reset" onClick={() => initQuestionEdit({ Id: '0', Name: 'Test', cforms__Title__c: 'test', cforms__Required__c: false, cforms__Type__c: QuestionTypes.InputField })}>
+              {/* <button className="slds-drop-zone__label_button slds-button_reset" onClick={() => initQuestionEdit(fieldQuestion)}>
                 <span className="slds-assistive-text">Edit: </span>
-                <span>{id}</span>
-              </button>
+                <span>{fieldQuestion.cforms__Type__c}</span>
+              </button> */}
             </h2>
           </div>
         </div>
       </div>
 
-      <div className="demo-only demo-component" style={{ width: '100%', height: '2rem', padding: '1rem' }}> Item {id} </div>
+      <div className="demo-only demo-component" style={{ width: '100%', height: '2rem', padding: '1rem' }}>
+        item
+      </div>
 
       {
         isHovering ?
@@ -70,13 +85,5 @@ const Item = ({ id, dragOverlay }) => {
     </div>
   );
 };
-
-
-
-
-
-const ItemStyle = styled.div`
-
-`
 
 export default Item;
