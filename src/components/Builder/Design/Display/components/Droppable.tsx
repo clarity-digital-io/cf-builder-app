@@ -9,7 +9,6 @@ import { Question__c } from "../../../../../utils/types/sObjects";
 
 const Droppable = ({ id, items }: { id: string, items: Question__c[] }) => {
   const { setNodeRef } = useDroppable({ id });
-  console.log({ items })
   return (
     <SortableContext id={id} items={items.map(({ id }) => id)} strategy={rectSortingStrategy}>
       <OuterPaddingBox className="slds-col slds-large-size_1-of-2">

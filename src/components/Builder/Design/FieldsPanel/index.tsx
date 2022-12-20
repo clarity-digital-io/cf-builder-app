@@ -58,14 +58,20 @@ const AvailableFieldItem = ({ field }: { field: any }) => {
       onMouseOver={handleMouseOver}
       onMouseOut={handleMouseOut}
     >
-      <FieldItem field={field} />
+      <FieldItem field={field} dragOverlay={false} />
     </div>
   </FieldListItem>
 
 }
 
 export const FieldItem = ({ field, dragOverlay }) => {
-  return <div className={dragOverlay ? "slds-theme_shade slds-p-around_x-small" : "slds-col slds-col_bump-left"}>
+  console.log({ dragOverlay })
+  const style = {
+    cursor: dragOverlay ? "grabbing" : "grab",
+    'z-index': dragOverlay ? 8001 : 0
+  };
+
+  return <div className={dragOverlay ? "slds-theme_shade slds-p-around_x-small" : "slds-col slds-col_bump-left"} style={style}>
     <span className="slds-p-right_xx-small slds-m-bottom_xx-small">
       <Icon
         assistiveText={{ label: field.type }}
