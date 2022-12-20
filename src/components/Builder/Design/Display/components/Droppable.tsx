@@ -7,20 +7,21 @@ import SortableItem from "./SortableItem";
 import styled from "styled-components";
 import { Question__c } from "../../../../../utils/types/sObjects";
 
-const Droppable = ({ id, items }) => {
+const Droppable = ({ id, items }: { id: string, items: Question__c[] }) => {
   const { setNodeRef } = useDroppable({ id });
   console.log({ items })
   return (
-    <SortableContext id={id} items={items} strategy={rectSortingStrategy}>
-      <OuterPaddingBox className="slds-col slds-size_1-of-2">
+    <SortableContext id={id} items={items.map(({ id }) => id)} strategy={rectSortingStrategy}>
+      <OuterPaddingBox className="slds-col slds-large-size_1-of-2">
         <DroppableUl ref={setNodeRef} >
           <InnerDroppableUl>
             {items.map((item) => (
-              <SortableItem key={item} id={item} />
+              <SortableItem key={item.id} id={item.id} data={item} />
             ))}
+
           </InnerDroppableUl>
-          <div className="">
-            Add field(s) here
+          <div className="slds-p-around_medium">
+            <span className="slds-align_absolute-center slds-text-body_small">Add field(s) here</span>
           </div>
         </DroppableUl>
       </OuterPaddingBox>

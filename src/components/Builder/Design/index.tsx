@@ -28,6 +28,8 @@ const Design = () => {
   const { dndQuestions, setDndQuestion } = useBuilderContext();
 
   const [activeId, setActiveId] = useState(null);
+  const [activeData, setActiveData] = useState(null);
+
   const [fieldActive, setFieldActive] = useState(null);
 
   const sensors = useSensors(
@@ -46,14 +48,15 @@ const Design = () => {
     console.log({ active })
     if (active.data.current.type == 'fields') {
       setFieldActive(active.data.current.field);
-
     } else {
       setActiveId(active.id)
-
+      setActiveData(active.data.current.question)
     }
   };
 
-  const handleDragCancel = () => setActiveId(null);
+  const handleDragCancel = () => {
+    setActiveId(null)
+  };
 
   const handleDragOver = ({ active, over }) => {
     console.log({ active, over })
@@ -71,6 +74,8 @@ const Design = () => {
 
 
     } else {
+
+      if (!active.data.current.sortable) return;
 
       const activeContainer = active.data.current.sortable.containerId;
       const overContainer = over.data.current?.sortable.containerId || over.id;
@@ -98,20 +103,20 @@ const Design = () => {
   };
 
   const handleDragEnd = ({ active, over }) => {
-    console.log("handledragend0", { active, over });
-
-
     if (!over) {
       if (active.data.current.type == 'fields') {
         setFieldActive(null);
       } else {
         setActiveId(null);
+        setActiveData(null);
       }
       return;
     }
     console.log("handledragend", { active, over });
 
     if (active.id !== over.id) {
+      if (!active.data.current.sortable) return;
+
       const activeContainer = active.data.current.sortable.containerId;
       const overContainer = over.data.current?.sortable.containerId || over.id;
       const activeIndex = active.data.current.sortable.index;
@@ -145,7 +150,12 @@ const Design = () => {
       setDndQuestion(newItems);
     }
 
-    setActiveId(null);
+    if (active.data.current.type == 'fields') {
+      setFieldActive(null);
+    } else {
+      setActiveId(null);
+      setActiveData(null);
+    }
   };
 
   const moveBetweenContainers = (
@@ -178,7 +188,7 @@ const Design = () => {
           <Display activeId={activeId} />
           <Edit />
         </EditFormContextProvider>
-        <DragOverlay>{activeId ? <Item id={activeId} dragOverlay /> : null}</DragOverlay>
+        <DragOverlay>{activeId && activeData ? <Item id={activeId} data={activeData} dragOverlay /> : null}</DragOverlay>
         <DragOverlay>{fieldActive ? <FieldItem field={fieldActive} dragOverlay /> : null}</DragOverlay>
 
       </DndContext>

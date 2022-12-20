@@ -83,11 +83,11 @@ export const useBuilder = () => {
 
         const _dndQuestions = _questionsWithId.reduce((accum: Questions, question: Question__c) => {
           const { cforms__Page__c: key } = question;
-          const existing = accum[key] != null ? [question.Id].concat(accum[key]) : [question.Id];
+          const existing = accum[key] != null ? [question].concat(accum[key]) : [question];
           return { ...accum, [key]: existing }
         }, {})
 
-        console.log({ questionsInPages })
+        console.log({ _dndQuestions })
         dispatch({
           type: 'SET_QUESTIONS',
           questions: questionsInPages,

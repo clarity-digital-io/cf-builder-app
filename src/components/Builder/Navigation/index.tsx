@@ -61,28 +61,13 @@ const Navigation = () => {
         back: "Back",
         help: "Help",
         pageType: form.Name,
-        title: "Clarity Forms",
+        title: "Clarity Forms Builder",
       }}
       events={{
         onClickBack: back,
         onClickHelp: help,
       }}
     >
-      <BuilderHeaderNav>
-        <BuilderHeaderNavDropdown
-          assistiveText={{ icon: "Dropdown" }}
-          iconCategory="utility"
-          iconName="page"
-          id="dropdown"
-          label="Options"
-          onSelect={(e: any) => handleNavigate(e.value)}
-          options={[
-            { label: "Add Questions", value: NavStates.QUESTIONS, key: 0 },
-            { label: "Connections", value: "CONNECT", key: 1 },
-            { label: "Settings", value: "SETTINGS", key: 2 },
-          ]}
-        />
-      </BuilderHeaderNav>
       <BuilderHeaderToolbar
         key={'2'}
         assistiveText={{
@@ -110,10 +95,14 @@ const Navigation = () => {
               ) : (
                 <Button
                   label="Publish"
-                  variant="brand"
+                  variant="neutral"
                   onClick={publish}
                 />
               )}
+            <Button
+              label="Save"
+              variant="brand"
+            />
           </div>
         )}
       ></BuilderHeaderToolbar>

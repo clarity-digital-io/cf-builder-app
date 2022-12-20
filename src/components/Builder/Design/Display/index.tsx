@@ -19,6 +19,12 @@ export const Display = ({ activeId }) => {
             key={group}
           />
         ))}
+        <Droppable
+          id={Object.keys(dndQuestions).length}
+          items={[]}
+          activeId={activeId}
+          key={Object.keys(dndQuestions).length}
+        />
       </Container>
     </DisplayStyle>
   );

@@ -6,7 +6,7 @@ import Item from "./Item";
 import { Question__c } from "../../../../../utils/types/sObjects";
 import styled from "styled-components";
 
-const SortableItem = ({ id }: { id: string }) => {
+const SortableItem = ({ id, data }: { id: string, data: Question__c }) => {
   const {
     attributes,
     listeners,
@@ -14,7 +14,13 @@ const SortableItem = ({ id }: { id: string }) => {
     transform,
     transition,
     isDragging,
-  } = useSortable({ id });
+  } = useSortable({
+    id,
+    data: {
+      question: data,
+      type: 'questions'
+    }
+  });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -29,7 +35,7 @@ const SortableItem = ({ id }: { id: string }) => {
       {...attributes}
       {...listeners}
     >
-      <Item id={id} dragOverlay={false} />
+      <Item id={id} dragOverlay={false} data={data} />
     </li>
   );
 };

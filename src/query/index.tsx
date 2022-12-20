@@ -142,7 +142,7 @@ const mockCall = (func: string, params: any[] | null | undefined, callback: (res
         //     cforms__Page__c: 0,
         //   }
         // ],
-        result: buildExistingQuestions(10),
+        result: buildExistingQuestions(12),
         event: { statusCode: 200 }
       });
       break;
@@ -815,6 +815,6 @@ const buildExistingQuestions = (qty: number) => {
     }
     items.push(element);
   }
-  console.log({ items })
+  console.log({ questionscreated: items })
   return items;
 }

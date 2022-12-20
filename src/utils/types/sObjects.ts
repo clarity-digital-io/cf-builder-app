@@ -4,7 +4,7 @@ import { QuestionTypes } from "./fields";
 export const namespace = 'cforms__';
 
 export type sObject = {
-  id?: string
+  id: string
   Id?: string // if it's a new record wont have a Id yet
   Name?: string
 }
