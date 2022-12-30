@@ -1,7 +1,9 @@
+import { Input } from "@salesforce/design-system-react";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useBuilderContext } from "../../../../../context/BuilderContext";
 import { useEditFormContext } from "../../../../../context/EditContext";
+import { QuestionTypes } from "../../../../../utils/types/fields";
 import { Question__c } from "../../../../../utils/types/sObjects";
 
 const Item = ({ id, data, dragOverlay }: { id: number | string, data: Question__c, dragOverlay: boolean }) => {
@@ -19,11 +21,17 @@ const Item = ({ id, data, dragOverlay }: { id: number | string, data: Question__
   const [isHovering, setIsHovering] = useState(false);
 
   const handleMouseOver = () => {
-    setIsHovering(true);
+    if (!dragOverlay) {
+      setIsHovering(true);
+
+    }
   };
 
   const handleMouseOut = () => {
-    setIsHovering(false);
+    if (!dragOverlay) {
+      setIsHovering(false);
+
+    }
   };
 
   const style = {
@@ -49,7 +57,7 @@ const Item = ({ id, data, dragOverlay }: { id: number | string, data: Question__
             <h2>
               <button className="slds-drop-zone__label_button slds-button_reset" onClick={() => initQuestionEdit(data)}>
                 <span className="slds-assistive-text">Edit: </span>
-                <span>{data.cforms__Type__c}</span>
+                <span>{data.id}</span>
               </button>
             </h2>
           </div>
@@ -57,7 +65,7 @@ const Item = ({ id, data, dragOverlay }: { id: number | string, data: Question__
       </div>
 
       <div className="slds-p-around_x-small" >
-        <span>{data.id}</span>
+        <QuestionComponent questionType={data.cforms__Type__c} />
       </div>
 
       {
@@ -84,5 +92,36 @@ const Item = ({ id, data, dragOverlay }: { id: number | string, data: Question__
     </div>
   );
 };
+
+const QuestionComponent = ({ questionType }: { questionType: QuestionTypes }) => {
+  switch (questionType) {
+    case QuestionTypes.MultipleChoice:
+    case QuestionTypes.Comment:
+    case QuestionTypes.Dropdown:
+    case QuestionTypes.Slider:
+    case QuestionTypes.Date:
+    case QuestionTypes.Email:
+    case QuestionTypes.Number:
+    case QuestionTypes.Lookup:
+    case QuestionTypes.RecordGroup:
+    case QuestionTypes.Image:
+    case QuestionTypes.Checkbox:
+    case QuestionTypes.FreeText:
+    case QuestionTypes.PictureChoice:
+    case QuestionTypes.InputField:
+    case QuestionTypes.GeoLocation:
+    case QuestionTypes.Attachments:
+      return <Input
+        type="text"
+        id="base-id"
+      />
+    default:
+      return <Input
+        type="text"
+        id="base-id"
+        label="Value"
+      />
+  }
+}
 
 export default Item;

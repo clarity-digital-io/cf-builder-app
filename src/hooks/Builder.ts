@@ -54,7 +54,7 @@ export const useBuilder = () => {
       try {
 
         const _availableOrgFields = await call(BuilderController.getAvailableFields, null);
-        console.log({ _availableOrgFields })
+
         dispatch({
           type: 'SET_AVAILABLE_FIELDS',
           availableFields: _availableOrgFields
@@ -87,7 +87,6 @@ export const useBuilder = () => {
           return { ...accum, [key]: existing }
         }, {})
 
-        console.log({ _dndQuestions })
         dispatch({
           type: 'SET_QUESTIONS',
           questions: questionsInPages,
@@ -217,7 +216,6 @@ export const useBuilder = () => {
 
   // handle questions update 
   const handleQuestionsUpdate = (questions: Questions) => {
-    console.log({ questions })
     dispatch({
       type: 'UPDATE_QUESTIONS',
       questions: questions
@@ -226,7 +224,6 @@ export const useBuilder = () => {
 
   // setDndQuestion
   const setDndQuestion = (_dndQuestions) => {
-    console.log('setDndQuestion', { _dndQuestions })
     dispatch({
       type: 'SET_DROP_QUESTION',
       dndQuestions: _dndQuestions

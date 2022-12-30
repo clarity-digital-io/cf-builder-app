@@ -1,5 +1,6 @@
 export enum QuestionTypes {
   None,
+  ConnectedObject,
   MultipleChoice,
   Comment,
   Dropdown,

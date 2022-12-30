@@ -5,15 +5,18 @@ import { Question_Criteria__c, Question__c } from "../../../../../../utils/types
 import { BuilderContextProvider } from "../../../../../../context/BuilderContext";
 import { VisibilityFilter } from "./filter";
 
-export const VisibilityFilterPopover = ({ question, criterion, children }: { question: Question__c, criterion: Question_Criteria__c, children: ReactElement }) => {
+export const VisibilityFilterPopover = ({ setNewCriterion, question, criterion, children }: { setNewCriterion, question: Question__c, criterion: Question_Criteria__c, children: ReactElement }) => {
 
-  const handleCriterionUpdate = (test) => {
-    console.log(test)
-  }
-
+  const [criterionUpdate, setCriterionUpdate] = useState();
   const [isOpen, setOpen] = useState(false);
 
+  const handleCriterionUpdate = (_criterionUpdate) => {
+    console.log({ _criterionUpdate });
+    setCriterionUpdate(_criterionUpdate);
+  }
+
   return <Popover
+    c
     position={'overflowBoundaryElement'}
     isOpen={isOpen}
     body={
@@ -24,14 +27,20 @@ export const VisibilityFilterPopover = ({ question, criterion, children }: { que
     footer={
       <div className="slds-text-align_right">
         <Button label="Cancel" onClick={() => setOpen(false)} />
+        <Button variant='brand' label="Done" onClick={() => {
+          if (criterionUpdate == null) return;
+          const { operatorSelection, selection } = criterionUpdate;
+          setOpen(false)
+          setNewCriterion({ ...criterion, cforms__Question__c: selection.id, cforms__Operator__c: operatorSelection.id })
+        }} />
       </div>
     }
     id="popover-controlled-with-footer"
     onClose={() => setOpen(false)}
     onRequestClose={() => setOpen(false)}
   >
-    <button onClick={() => setOpen(true)}>
+    <div className="slds-box slds-m-top_x-small" onClick={() => setOpen(true)}>
       {children}
-    </button>
+    </div>
   </Popover >
 }

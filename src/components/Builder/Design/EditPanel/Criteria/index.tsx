@@ -19,7 +19,8 @@ export const CriteriaEdit = () => {
     if (!question) return;
 
     const criterion: Question_Criteria__c = {
-      cforms__Field__c: question.Id || '',
+      id: `qc-${question.id}`,
+      cforms__Field__c: question.Id || question.id,
       cforms__Field_Type__c: question.cforms__Type__c,
       cforms__Operator__c: '',
       cforms__Question__c: '',
@@ -42,25 +43,28 @@ export const CriteriaEdit = () => {
           <label className="slds-form-element__label slds-no-flex">
             Filters
           </label>
-          <div>
+          <div className="slds-box slds-m-bottom_small">
 
             {
               criteria ?
-                criteria.map((criterion, index) => {
-                  return <VisibilityFilterPopover question={question} criterion={criterion} key={index}>
-                    <div>BUILD CRITERION NOTES FROM criterion object here</div>
+                criteria.map((criterion: Question_Criteria__c, index) => {
+                  const { cforms__Question__c, cforms__Operator__c } = criterion;
+                  return <VisibilityFilterPopover setNewCriterion={setNewCriterion} question={question} criterion={criterion} key={index}>
+                    <p>{`Question ${cforms__Question__c} ${cforms__Operator__c}`}</p>
                   </VisibilityFilterPopover>
                 })
                 : null
             }
 
-            <Button
-              iconCategory="utility"
-              iconName="add"
-              iconPosition="left"
-              label="Add Filter"
-              onClick={(e) => handleNewCriteria()} // add new criteria here setCriteria([].concat(newcriteria))
-            />
+            <div className="slds-m-top_x-small">
+              <Button
+                iconCategory="utility"
+                iconName="add"
+                iconPosition="left"
+                label="Add Filter"
+                onClick={(e) => handleNewCriteria()} // add new criteria here setCriteria([].concat(newcriteria))
+              />
+            </div>
           </div>
 
           {
@@ -87,7 +91,7 @@ const FilterLogic = () => {
 
   const [errorId, setErrorId] = useState(null);
 
-  return <div>
+  return <div className="slds-m-top_medium">
     <RadioGroup
       labels={{ label: 'Show question when:' }}
       onChange={(event) => setQuestionUpdate({ ...question, cforms__Logic__c: event.target.value })}
@@ -97,7 +101,6 @@ const FilterLogic = () => {
     >
       {
         (Object.keys(FilterLogicTypes) as Array<keyof typeof FilterLogicTypes>).map((key) => {
-          console.log({ key })
           const value = FilterLogicTypes[key];
           return <Radio
             key={key}
@@ -113,34 +116,36 @@ const FilterLogic = () => {
 
     {
       question?.cforms__Logic__c === FilterLogicTypes.Custom ?
-        <Input
-          type="text"
-          id="base-id"
-          label="Filter Logic"
-          placeholder=""
-          onBlur={(e) => {
-            // regex check first 
-            setTimeout(() => {
-              if (e.target.value.match("[^A-Za-z0-9)s]+") != null) {
-                const { valid, message } = validateCustomLogic(e.target.value);
-                if (valid) {
-                  console.log('update custom logic field on question', message)
-                } else {
-                  console.log('display error message ')
+        <div className="slds-m-top_x-small">
+          <Input
+            type="text"
+            id="base-id"
+            label="Filter Logic"
+            placeholder=""
+            onBlur={(e) => {
+              // regex check first 
+              setTimeout(() => {
+                if (e.target.value.match("[^A-Za-z0-9)s]+") != null) {
+                  const { valid, message } = validateCustomLogic(e.target.value);
+                  if (valid) {
+                    console.log('update custom logic field on question', message)
+                  } else {
+                    console.log('display error message ')
+                  }
                 }
-              }
-            }, 100)
-          }}
-          value={question?.cforms__Custom_Logic__c}
-          fieldLevelHelpTooltip={
-            <Tooltip
-              id="field-level-help-tooltip"
-              align="left"
-              position="overflowBoundaryElement"
-              content="Filter logic governs how and when your filter criteria let users see this component. Use the AND, OR, and NOT operators to fine tune your results."
-            />
-          }
-        /> :
+              }, 100)
+            }}
+            value={question?.cforms__Custom_Logic__c}
+            fieldLevelHelpTooltip={
+              <Tooltip
+                id="field-level-help-tooltip"
+                align="left"
+                position="overflowBoundaryElement"
+                content="Filter logic governs how and when your filter criteria let users see this component. Use the AND, OR, and NOT operators to fine tune your results."
+              />
+            }
+          />
+        </div> :
         null
     }
   </div>

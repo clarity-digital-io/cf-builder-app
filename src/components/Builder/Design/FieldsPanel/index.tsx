@@ -4,6 +4,7 @@ import { Icon } from "@salesforce/design-system-react";
 import React, { ReactElement, useState } from "react";
 import styled from "styled-components";
 import { useBuilderContext } from "../../../../context/BuilderContext";
+import { FieldType } from "../../../../utils/constants/fields";
 
 export const Fields = ({ fieldActive }) => {
   const { availableFields } = useBuilderContext();
@@ -26,17 +27,19 @@ const AvailableFieldItem = ({ field }: { field: any }) => {
     id: `field-${field.id}`,
     data: {
       field: field,
-      type: 'fields'
+      type: 'fields',
+      supports: ['fields']
     }
   });
 
   const style = {
     // transform: CSS.Transform.toString(transform),
-    opacity: isDragging ? 0.5 : 1,
+    opacity: 1,
   };
 
 
   const [isHovering, setIsHovering] = useState(false);
+
   const handleMouseOver = () => {
     setIsHovering(true);
   };
@@ -45,15 +48,16 @@ const AvailableFieldItem = ({ field }: { field: any }) => {
     setIsHovering(false);
   };
 
+  console.log({ setNodeRef, attributes, listeners })
   return <FieldListItem
     ref={setNodeRef}
-    {...attributes}
-    {...listeners}
     style={style}
     key={field.id}
     className={isHovering ? "slds-theme_shade slds-p-around_x-small" : "slds-p-around_x-small"}
   >
     <div
+      {...attributes}
+      {...listeners}
       className="slds-grid slds-grid_vertical-align-center slds-p-left_large"
       onMouseOver={handleMouseOver}
       onMouseOut={handleMouseOut}
@@ -64,28 +68,29 @@ const AvailableFieldItem = ({ field }: { field: any }) => {
 
 }
 
-export const FieldItem = ({ field, dragOverlay }) => {
+export const FieldItem = ({ field, dragOverlay }: { field: FieldType, dragOverlay: boolean }) => {
   console.log({ dragOverlay })
   const style = {
     cursor: dragOverlay ? "grabbing" : "grab",
-    'z-index': dragOverlay ? 8001 : 0
+    'zIndex': dragOverlay ? 8001 : 100
   };
 
   return <div className={dragOverlay ? "slds-theme_shade slds-p-around_x-small" : "slds-col slds-col_bump-left"} style={style}>
     <span className="slds-p-right_xx-small slds-m-bottom_xx-small">
       <Icon
-        assistiveText={{ label: field.type }}
+        assistiveText={{ label: field.name }}
         category="standard"
-        name={"account"}
+        name={field.icon}
         size="x-small"
       />
     </span>
-    <FieldListName className="slds-text-body_normal slds-m-top_medium">{field.type}</FieldListName>
+    <FieldListName className="slds-text-body_normal slds-m-top_medium">{field.name}</FieldListName>
   </div>
 }
 
 const FieldListItem = styled.li`
-cursor: grab
+cursor: grab;
+opacity: 1 !important
 `
 
 const FieldListName = styled.span`

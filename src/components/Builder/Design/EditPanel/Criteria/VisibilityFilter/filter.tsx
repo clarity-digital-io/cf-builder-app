@@ -65,6 +65,19 @@ export const VisibilityFilter = (
     }
   }, [selection, operatorSelection])
 
+  //check changes to selection, operatorSelection, and value selection
+  // to update handleCriterionUpdate
+  useEffect(() => {
+    if (selection.length > 0 && selection[0].id != '' && operatorSelection.length > 0 && valueFieldValue == '') {
+      console.log('criterionUpdate ')
+      handleCriterionUpdate({
+        selection: selection[0],
+        operatorSelection: operatorSelection[0],
+        valueFieldValue
+      })
+    }
+  }, [selection, operatorSelection])
+
   return <section className="slds-ui-gen__vertical-layout">
     <div className="slds-p-top_medium slds-ui-gen__layout-item">
       {/* for now only field type (future maybe device type / advanced (record parent based)) */}

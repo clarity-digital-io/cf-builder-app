@@ -11,7 +11,7 @@ import { FormEdit } from "./Form";
 export const Edit = () => {
 
   const { question } = useEditFormContext()
-  console.log({ question })
+
   return <Panel header="Form">
 
     {

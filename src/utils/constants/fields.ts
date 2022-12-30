@@ -1,16 +1,11 @@
 import { QuestionTypes } from "../types/fields";
 
-enum IconTypes {
-  picklist_type,
-
-}
-
-type FieldType = {
+export type FieldType = {
   id: number,
   active: boolean,
   name: string,
-  type: string | QuestionTypes,
-  icon?: IconTypes
+  type: QuestionTypes,
+  icon: string
 }
 
 export const types: FieldType[] = [
@@ -18,113 +13,113 @@ export const types: FieldType[] = [
     id: 1,
     active: false,
     name: "Connected Object",
-    type: "ConnectedObject",
-    icon: IconTypes.picklist_type
+    type: QuestionTypes.ConnectedObject,
+    icon: "account"
   },
   {
     id: 2,
     active: true,
     name: "Multiple Choice",
-    type: "MultipleChoice",
-    icon: IconTypes.picklist_type
+    type: QuestionTypes.MultipleChoice,
+    icon: "picklist_choice"
   },
   {
     id: 3,
     active: true,
     name: "Comment",
-    type: "Comment",
-    icon: IconTypes.picklist_type
+    type: QuestionTypes.Comment,
+    icon: "answer_public"
   },
   {
     id: 4,
     active: true,
     name: "Dropdown",
-    type: "Dropdown",
-    icon: IconTypes.picklist_type
+    type: QuestionTypes.Dropdown,
+    icon: 'multi_picklist'
   },
   {
     id: 5,
     active: true,
     name: "Slider",
-    type: "Slider",
-    icon: IconTypes.picklist_type
+    type: QuestionTypes.Slider,
+    icon: "product_transfer"
   },
   {
     id: 6,
     active: true,
     name: "Date",
-    type: "Date",
-    icon: IconTypes.picklist_type
+    type: QuestionTypes.Date,
+    icon: "event"
   },
   {
     id: 7,
     active: true,
     name: "Email",
-    type: "Email",
-    icon: IconTypes.picklist_type
+    type: QuestionTypes.Email,
+    icon: "email"
   },
   {
     id: 8,
     active: true,
     name: "Number",
-    type: "Number",
-    icon: IconTypes.picklist_type
+    type: QuestionTypes.Number,
+    icon: "number_input"
   },
   {
     id: 9,
     active: true,
     name: "Lookup",
-    type: "Lookup",
-    icon: IconTypes.picklist_type
+    type: QuestionTypes.Lookup,
+    icon: "record_lookup"
   },
   {
     id: 10,
     active: true,
     name: "Record Group",
-    type: "RecordGroup",
-    icon: IconTypes.picklist_type
+    type: QuestionTypes.RecordGroup,
+    icon: "record_create"
   },
   {
     id: 11,
     active: false,
     name: "Image",
-    type: "Image",
-    icon: IconTypes.picklist_type
+    type: QuestionTypes.Image,
+    icon: "photo"
   },
   {
     id: 12,
     active: true,
     name: "Checkbox",
-    type: "Checkbox",
-    icon: IconTypes.picklist_type
+    type: QuestionTypes.Checkbox,
+    icon: "multi_select_checkbox"
   },
   {
     id: 13,
     active: true,
     name: "Attachments",
-    type: "Attachments",
-    icon: IconTypes.picklist_type
+    type: QuestionTypes.Attachments,
+    icon: "file"
   },
   {
     id: 14,
     active: true,
     name: "Free Text",
-    type: "FreeText",
-    icon: IconTypes.picklist_type
+    type: QuestionTypes.FreeText,
+    icon: "display_text"
   },
   {
     id: 15,
     active: true,
     name: "Input Field",
-    type: "InputField",
-    icon: IconTypes.picklist_type
+    type: QuestionTypes.InputField,
+    icon: "textbox"
   },
   {
     id: 16,
     active: true,
     name: "Mobile Geo Location",
-    type: "GeoLocation",
-    icon: IconTypes.picklist_type
+    type: QuestionTypes.GeoLocation,
+    icon: "address"
   },
 ];
 

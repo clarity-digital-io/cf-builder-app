@@ -59,12 +59,20 @@ export const useEditForm = () => {
 
   // when new criteria is added
   const setNewCriterion = (_criterion: Question_Criteria__c) => {
+
+    // const  criteria != null ?
+
     dispatch({
       type: 'SET_NEW_CRITERION',
-      criteria: criteria != null ? criteria.concat([_criterion]) : [_criterion]
+      criteria: criteria != null ? criteria.map(c => {
+        if (c.id == _criterion.id) {
+          return _criterion;
+        } else {
+          return c;
+        }
+      }) : [_criterion]
     })
   }
-
   // BuilderController.saveQuestion
   const handleSaveQuestion = async () => {
     console.log('test')

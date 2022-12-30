@@ -25,10 +25,13 @@ import Item from "./Display/components/Item";
 import { insertAtIndex, removeAtIndex } from "./Display/utils/array";
 import { Question__c } from "../../../utils/types/sObjects";
 import { QuestionTypes } from "../../../utils/types/fields";
+import { FieldType } from "../../../utils/constants/fields";
 
 const Design = () => {
+
   const { dndQuestions, setDndQuestion } = useBuilderContext();
 
+  // field moving
   const [activeId, setActiveId] = useState(null);
   const [activeData, setActiveData] = useState(null);
 
@@ -47,7 +50,6 @@ const Design = () => {
   );
 
   const handleDragStart = ({ active }) => {
-    console.log({ active })
     if (active.data.current.type == 'fields') {
       setFieldActive(active.data.current.field);
     } else {
@@ -60,65 +62,63 @@ const Design = () => {
     setActiveId(null)
   };
 
-  const handleDragOver = ({ active, over }) => {
-    console.log({ active, over })
-    const overId = over?.id;
+  // const handleDragOver = ({ active, over }) => {
+  //   const overId = over?.id;
 
-    if (!overId) {
-      return;
-    }
+  //   if (!overId) {
+  //     return;
+  //   }
 
-    if (active.data.current.type == 'fields') {
-      // need differetn process here 
-      // activecontainer will be undefined since fields-(id) are not sortable yet
-      // so need to drop them in state of questions
-      // activeContainer is 
-      // const newQuestion = generateQuestionSObject(active.id, active.data.current.field);
-      // console.log({ newQuestion })
+  //   if (active.data.current.type == 'fields') {
+  //     // need differetn process here 
+  //     // activecontainer will be undefined since fields-(id) are not sortable yet
+  //     // so need to drop them in state of questions
+  //     // activeContainer is 
+  //     // const newQuestion = generateQuestionSObject(active.id, active.data.current.field);
+  //     // console.log({ newQuestion })
 
-      // const overContainer = over.data.current?.sortable.containerId || over.id;
-      // console.log({ overContainer, over, dndQuestions }) // this is the page
-      // const overIndex =
-      //   over.id in dndQuestions
-      //     ? dndQuestions[overContainer].length + 1
-      //     : over.data.current.sortable.index;
-      // console.log({ overIndex })
+  //     // const overContainer = over.data.current?.sortable.containerId || over.id;
+  //     // console.log({ overContainer, over, dndQuestions }) // this is the page
+  //     // const overIndex =
+  //     //   over.id in dndQuestions
+  //     //     ? dndQuestions[overContainer].length + 1
+  //     //     : over.data.current.sortable.index;
+  //     // console.log({ overIndex })
 
-      // const newItems = {
-      //   ...dndQuestions,
-      //   [overContainer]: insertAtIndex(dndQuestions[overContainer], overIndex, newQuestion),
-      // };
+  //     // const newItems = {
+  //     //   ...dndQuestions,
+  //     //   [overContainer]: insertAtIndex(dndQuestions[overContainer], overIndex, newQuestion),
+  //     // };
 
-      // setDndQuestion(newItems);
+  //     // setDndQuestion(newItems);
 
-    } else {
+  //   } else {
 
-      if (!active.data.current.sortable) return;
+  //     if (!active.data.current.sortable || !over.data.current) return;
 
-      const activeContainer = active.data.current.sortable.containerId;
-      const overContainer = over.data.current?.sortable.containerId || over.id;
+  //     const activeContainer = active.data.current.sortable.containerId;
+  //     const overContainer = over.data.current?.sortable.containerId || over.id;
 
-      if (activeContainer !== overContainer) {
-        const activeIndex = active.data.current.sortable.index;
-        console.log({ over });
-        const overIndex =
-          over.id in dndQuestions
-            ? dndQuestions[overContainer].length + 1
-            : over.data.current.sortable.index;
+  //     if (activeContainer !== overContainer) {
+  //       const activeIndex = active.data.current.sortable.index;
+  //       const overIndex =
+  //         over.id in dndQuestions
+  //           ? dndQuestions[overContainer].length + 1
+  //           : over.data.current.sortable.index;
 
-        setDndQuestion(
-          moveBetweenContainers(
-            dndQuestions,
-            activeContainer,
-            activeIndex,
-            overContainer,
-            overIndex,
-            active.id
-          )
-        )
-      }
-    }
-  };
+  //       setDndQuestion(
+  //         moveBetweenContainers(
+  //           dndQuestions,
+  //           activeContainer,
+  //           activeIndex,
+  //           overContainer,
+  //           overIndex,
+  //           active.id
+  //         )
+  //       )
+  //     }
+  //   }
+  // };
 
   // type DraggableField = {
   //   id: string, 
@@ -126,7 +126,7 @@ const Design = () => {
   //   type: QuestionTypes
   // }
 
-  const generateQuestionSObject: Question__c = (id: string, field: Record<string, string>) => {
+  const generateQuestionSObject = (id: string, field: FieldType): Question__c => {
     return { id: id + 'new', cforms__Title__c: field.name, cforms__Type__c: field.type }
   }
 
@@ -140,19 +140,15 @@ const Design = () => {
       }
       return;
     }
-    console.log("handledragend", { active, over });
 
     if (active.data.current.type == 'fields') {
       const newQuestion = generateQuestionSObject(active.id, active.data.current.field);
-      console.log({ newQuestion })
 
       const overContainer = over.data.current?.sortable.containerId || over.id;
-      console.log({ overContainer, over, dndQuestions }) // this is the page
       const overIndex =
         over.id in dndQuestions
           ? dndQuestions[overContainer].length + 1
           : over.data.current.sortable.index;
-      console.log({ overIndex })
 
       const newItems = {
         ...dndQuestions,
@@ -184,7 +180,6 @@ const Design = () => {
             )
           };
         } else {
-          console.log({ over });
 
           newItems = moveBetweenContainers(
             dndQuestions,
@@ -229,7 +224,7 @@ const Design = () => {
         sensors={sensors}
         onDragStart={handleDragStart}
         onDragCancel={handleDragCancel}
-        onDragOver={handleDragOver}
+        // onDragOver={handleDragOver}
         onDragEnd={handleDragEnd}
       >
         <Fields fieldActive={fieldActive} />
