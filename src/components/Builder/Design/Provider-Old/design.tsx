@@ -376,18 +376,14 @@ const resultHandler = (
   activePageQuestions,
   activePage = 0
 ) => {
-  console.log("result", result);
   setQuestions((questions) => {
-    console.log("questions", questions);
     const updated = questions.map((question, index) => {
-      console.log("question.Id", question.Id, index);
 
       if (question.Id == null) {
         question.Id = result[index];
       }
       return question;
     });
-    console.log("updated", updated);
 
     return updated;
   });

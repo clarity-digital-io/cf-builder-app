@@ -14,8 +14,8 @@ const Droppable = ({ id, items }: { id: string, items: Question__c[] }) => {
       <OuterPaddingBox className="slds-col slds-large-size_1-of-1 slds-card">
         <DroppableUl ref={setNodeRef} >
           <InnerDroppableUl>
-            {items.map((item) => (
-              <SortableItem key={item.id} id={item.id} data={item} />
+            {items.map((item, index) => (
+              <SortableItem droppableId={id} key={item.id} index={index} id={item.id} data={item} />
             ))}
 
           </InnerDroppableUl>

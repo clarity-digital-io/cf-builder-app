@@ -104,21 +104,20 @@ const ControlSelect = ({ order, row, sObject }) => {
 
   const setSelection = (value, order) => {
     setActiveRecordGroup((records) => {
-      let newFields = records.map((record, i) => {
-        let val = additionalFields.hasOwnProperty(value)
+      const newFields = records.map((record, i) => {
+        const val = additionalFields.hasOwnProperty(value)
           ? additionalFields[value]
           : "";
 
         if (val == "") return record;
 
-        let fieldType = Object.keys(val)[0];
+        const fieldType = Object.keys(val)[0];
 
         let lookupObject = null;
 
         if (val.hasOwnProperty("REFERENCE")) {
           lookupObject = val["REFERENCE"];
         }
-        console.log("sObject", value);
         if (i == order) {
           return {
             ...record,
@@ -145,7 +144,7 @@ const ControlSelect = ({ order, row, sObject }) => {
 
   const removeRow = (order) => {
     setActiveRecordGroup((activeRecordGroup) => {
-      let newRows = activeRecordGroup.filter((rec, i) => {
+      const newRows = activeRecordGroup.filter((rec, i) => {
         if (i != order) {
           return rec;
         }

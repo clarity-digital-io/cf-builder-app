@@ -134,6 +134,7 @@ const Design = () => {
     }
 
     if (active.data.current.type == 'fields') {
+      console.log({ activeId: active })
       const newQuestion = generateQuestionSObject(active.id, active.data.current.field);
 
       const overContainer = over.data.current?.sortable.containerId || over.id;
@@ -146,12 +147,13 @@ const Design = () => {
         ...dndQuestions,
         [overContainer]: insertAtIndex(dndQuestions[overContainer], overIndex, newQuestion),
       };
-      console.log("DROPPED IN A CORRECT SPOT THAT MEANS DONT SEND BACK")
 
       const updatedAvailableFields = availableFields.map(afield => {
         const { quantity, id } = afield;
         return { ...afield, id: id + '-' + quantity };
       })
+
+      console.log({ updatedAvailableFields })
 
       setDndQuestion(newItems, updatedAvailableFields);
 
@@ -199,7 +201,7 @@ const Design = () => {
       setActiveData(null);
     }
   };
-  console.log({ fieldActive })
+
   return (
     <View full main>
       <DndContext
@@ -223,6 +225,7 @@ const Design = () => {
 };
 
 const generateQuestionSObject = (id: string, field: FieldType): Question__c => {
+  console.log({ id })
   return { id: id + 'new', cforms__Title__c: field.name, cforms__Type__c: field.type }
 }
 

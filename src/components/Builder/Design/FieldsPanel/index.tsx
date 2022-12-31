@@ -31,10 +31,10 @@ const AvailableFieldItem = ({ field }: { field: any }) => {
       supports: ['fields']
     }
   });
-  console.log({ isDragging })
+
   const style = {
     // transform: CSS.Transform.toString(transform),
-    opacity: isDragging ? 0 : 1,
+    opacity: isDragging ? .5 : 1,
   };
 
 
@@ -48,7 +48,6 @@ const AvailableFieldItem = ({ field }: { field: any }) => {
     setIsHovering(false);
   };
 
-  console.log({ setNodeRef, attributes, listeners })
   return <FieldListItem
     ref={setNodeRef}
     style={style}
@@ -69,11 +68,11 @@ const AvailableFieldItem = ({ field }: { field: any }) => {
 }
 
 export const FieldItem = ({ field, dragOverlay }: { field: FieldType, dragOverlay: boolean }) => {
-  console.log({ field, dragOverlay })
+
   const style = {
     cursor: dragOverlay ? "grabbing" : "grab",
     'zIndex': dragOverlay ? 8001 : 100,
-    opacity: dragOverlay ? .5 : 1
+    opacity: dragOverlay ? .75 : 1
   };
 
   return <div className={dragOverlay ? "slds-theme_shade slds-p-around_x-small" : "slds-col slds-col_bump-left"} style={style}>

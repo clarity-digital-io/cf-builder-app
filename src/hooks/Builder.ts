@@ -57,7 +57,7 @@ export const useBuilder = () => {
         console.log({ _availableOrgFields })
         dispatch({
           type: 'SET_AVAILABLE_FIELDS',
-          availableFields: _availableOrgFields
+          availableFields: _availableOrgFields.map(_availableField => ({ ..._availableField, quantity: 0 }))
         })
 
         const _form = await call(BuilderController.getForm, [formId]);

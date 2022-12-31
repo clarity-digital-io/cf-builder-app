@@ -5,11 +5,12 @@ import { useBuilderContext } from "../../../../../context/BuilderContext";
 import { useEditFormContext } from "../../../../../context/EditContext";
 import { QuestionTypes } from "../../../../../utils/types/fields";
 import { Question__c } from "../../../../../utils/types/sObjects";
+import { removeAtIndex } from "../utils/array";
 
-const Item = ({ id, data, dragOverlay }: { id: number | string, data: Question__c, dragOverlay: boolean }) => {
+const Item = ({ droppableId, id, index, data, dragOverlay }: { droppableId: number | string, id: number | string, data: Question__c, index: number, dragOverlay: boolean }) => {
   const { initQuestionEdit } = useEditFormContext();
 
-  // const { questions } = useBuilderContext();
+  const { dndQuestions, setDndQuestion } = useBuilderContext();
 
   // const [fieldQuestion, setFieldQuestion] = useState<Question__c>(null);
   // console.log({ fieldQuestion })
@@ -23,24 +24,18 @@ const Item = ({ id, data, dragOverlay }: { id: number | string, data: Question__
   const handleMouseOver = () => {
     if (!dragOverlay) {
       setIsHovering(true);
-
     }
   };
 
   const handleMouseOut = () => {
     if (!dragOverlay) {
       setIsHovering(false);
-
     }
   };
 
   const style = {
     cursor: dragOverlay ? "grabbing" : "grab",
   };
-
-  // if (!fieldQuestion) {
-  //   return null;
-  // }
 
   return (
     <div style={style} className={isHovering ? 'slds-is-hovered slds-drop-zone__container slds-m-top_x-small' : 'slds-drop-zone__container slds-m-top_x-small'} onMouseEnter={handleMouseOver} onMouseOut={handleMouseOut}>
@@ -68,33 +63,39 @@ const Item = ({ id, data, dragOverlay }: { id: number | string, data: Question__
         <QuestionComponent questionType={data.cforms__Type__c} />
       </div>
 
-      {
-        isHovering ?
-          <div className="slds-drop-zone__actions">
-            <div className="slds-button-group" role="group">
-              <button className="slds-button slds-button_icon slds-button_icon-brand slds-button_icon-x-small" title="Move">
-                <svg className="slds-button__icon" aria-hidden="true">
-                  <use xlinkHref="/assets/icons/utility-sprite/svg/symbols.svg#move"></use>
-                </svg>
-                <span className="slds-assistive-text">Move</span>
-              </button>
-              <button className="slds-button slds-button_icon slds-button_icon-brand slds-button_icon-x-small" title="Close">
-                <svg className="slds-button__icon" aria-hidden="true">
-                  <use xlinkHref="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
-                </svg>
-                <span className="slds-assistive-text">Close</span>
-              </button>
-            </div>
-          </div> :
-          null
-      }
+      <div className="slds-drop-zone__actions">
+        <div className="slds-button-group" role="group">
+          <button className="slds-button slds-button_icon slds-button_icon-brand slds-button_icon-x-small" title="Move">
+            <svg className="slds-button__icon" aria-hidden="true">
+              <use xlinkHref="/assets/icons/utility-sprite/svg/symbols.svg#move"></use>
+            </svg>
+            <span className="slds-assistive-text">Move</span>
+          </button>
+          <button onClick={() => {
+            console.log('trying to remove', removeAtIndex(dndQuestions[droppableId], index), id, data, droppableId);
+
+            const newItems = {
+              ...dndQuestions,
+              [droppableId]: removeAtIndex(dndQuestions[droppableId], index),
+            };
+
+            setDndQuestion(newItems);
+            // setDndQuestion(dndQuestions.filter(q => q.id != id));
+          }}
+            className="slds-button slds-button_icon slds-button_icon-brand slds-button_icon-x-small" title="Close">
+            <svg className="slds-button__icon" aria-hidden="true">
+              <use xlinkHref="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+            </svg>
+            <span className="slds-assistive-text">Close</span>
+          </button>
+        </div>
+      </div>
 
     </div>
   );
 };
 
 const QuestionComponent = ({ questionType }: { questionType: QuestionTypes }) => {
-  console.log({ questionType })
   switch (questionType) {
     case QuestionTypes.MultipleChoice:
     case QuestionTypes.Comment:

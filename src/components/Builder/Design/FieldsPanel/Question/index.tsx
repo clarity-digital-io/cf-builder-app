@@ -118,7 +118,7 @@ const getSObjectFieldResultHandler = (
     const existing = recordGroup.has(activeQuestion.Id)
       ? recordGroup.get(activeQuestion.Id)
       : [];
-    console.log("existing", existing, recordGroup);
+
     if (existing.length > 0) {
       return existing;
     }

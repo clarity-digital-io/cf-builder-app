@@ -4,9 +4,8 @@ import { CSS } from "@dnd-kit/utilities";
 
 import Item from "./Item";
 import { Question__c } from "../../../../../utils/types/sObjects";
-import styled from "styled-components";
 
-const SortableItem = ({ id, data }: { id: string, data: Question__c }) => {
+const SortableItem = ({ droppableId, id, index, data }: { droppableId: string | number, id: string, index: number, data: Question__c }) => {
   const {
     attributes,
     listeners,
@@ -35,7 +34,7 @@ const SortableItem = ({ id, data }: { id: string, data: Question__c }) => {
       {...attributes}
       {...listeners}
     >
-      <Item id={id} dragOverlay={false} data={data} />
+      <Item droppableId={droppableId} id={id} dragOverlay={false} index={index} data={data} />
     </li>
   );
 };

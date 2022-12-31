@@ -24,7 +24,6 @@ export const QuestionState = () => {
   // const { activeQuestion, questionState } = useContext(DesignContext);
 
   const { questionState } = useDesignContext();
-  console.log({ questionState })
 
   switch (questionState) {
     case QuestionStates.NEW:
