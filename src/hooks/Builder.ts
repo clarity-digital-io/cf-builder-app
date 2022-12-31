@@ -54,7 +54,7 @@ export const useBuilder = () => {
       try {
 
         const _availableOrgFields = await call(BuilderController.getAvailableFields, null);
-
+        console.log({ _availableOrgFields })
         dispatch({
           type: 'SET_AVAILABLE_FIELDS',
           availableFields: _availableOrgFields
@@ -74,7 +74,7 @@ export const useBuilder = () => {
         const _questions = await call(BuilderController.getQuestions, [formId]);
 
         // needed for sortable context to work properly
-        const _questionsWithId = _questions.map((_question: Question__c) => ({ ..._question, id: _question.Id, cforms__Type__c: QuestionTypes[_question.cforms__Type__c] }));
+        const _questionsWithId = _questions.map((_question: Question__c) => ({ ..._question, id: _question.Id }));
 
         const questionsInPages = _questionsWithId.reduce((accum: Questions, question: Question__c) => {
           const { Id: key } = question;
@@ -223,11 +223,17 @@ export const useBuilder = () => {
   }
 
   // setDndQuestion
-  const setDndQuestion = (_dndQuestions) => {
+  const setDndQuestion = (_dndQuestions, _updatedAvailableFields) => {
     dispatch({
       type: 'SET_DROP_QUESTION',
       dndQuestions: _dndQuestions
     })
+    if (_updatedAvailableFields.length > 0) {
+      dispatch({
+        type: 'SET_AVAILABLE_FIELDS',
+        availableFields: _updatedAvailableFields
+      })
+    }
   }
 
   return {

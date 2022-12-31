@@ -1,6 +1,7 @@
 import LCC from "lightning-container";
 import { types } from "../utils/constants/fields";
 import { BuilderController } from "../utils/constants/methods";
+import { QuestionTypes } from "../utils/types/fields";
 const extraParams = { buffer: false, escape: false, timeout: 12000 };
 
 export const call = async (func: any, params: any[] | null): Promise<any> => {
@@ -795,7 +796,7 @@ const mockCall = (func: string, params: any[] | null | undefined, callback: (res
 const obj = {
   Id: 2,
   cforms__Logic__c: "AND",
-  cforms__Type__c: 3,
+  cforms__Type__c: QuestionTypes.Comment,
   cforms__Title__c: "Comment",
   cforms__Order__c: 1,
   cforms__Max_Length__c: 10,

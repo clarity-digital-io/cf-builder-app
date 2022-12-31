@@ -35,7 +35,7 @@ export type BuilderProviderState = {
   activeFieldPrefills: any | null | undefined // may move
   activeFields: any | null | undefined // may move
   setFormUpdate: (form: any) => void
-  setDndQuestion: (questions: any) => void
+  setDndQuestion: (questions: any, availableFields?: any) => void
   handleQuestionsUpdate: (questions: any) => void
   handleFormStatusUpdate: (status: any) => void
   handleFormUpdate: (form: any) => void

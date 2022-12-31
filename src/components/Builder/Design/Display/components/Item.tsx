@@ -57,7 +57,7 @@ const Item = ({ id, data, dragOverlay }: { id: number | string, data: Question__
             <h2>
               <button className="slds-drop-zone__label_button slds-button_reset" onClick={() => initQuestionEdit(data)}>
                 <span className="slds-assistive-text">Edit: </span>
-                <span>{data.id}</span>
+                <span>{data.id} id</span>
               </button>
             </h2>
           </div>
@@ -94,6 +94,7 @@ const Item = ({ id, data, dragOverlay }: { id: number | string, data: Question__
 };
 
 const QuestionComponent = ({ questionType }: { questionType: QuestionTypes }) => {
+  console.log({ questionType })
   switch (questionType) {
     case QuestionTypes.MultipleChoice:
     case QuestionTypes.Comment:
@@ -114,6 +115,7 @@ const QuestionComponent = ({ questionType }: { questionType: QuestionTypes }) =>
       return <Input
         type="text"
         id="base-id"
+        label={questionType.toString()}
       />
     default:
       return <Input

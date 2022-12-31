@@ -11,7 +11,7 @@ const Droppable = ({ id, items }: { id: string, items: Question__c[] }) => {
   const { setNodeRef } = useDroppable({ id, data: { type: 'fields' } });
   return (
     <SortableContext id={id} items={items.map(({ id }) => id)} strategy={rectSortingStrategy}>
-      <OuterPaddingBox className="slds-col slds-large-size_1-of-2">
+      <OuterPaddingBox className="slds-col slds-large-size_1-of-1 slds-card">
         <DroppableUl ref={setNodeRef} >
           <InnerDroppableUl>
             {items.map((item) => (

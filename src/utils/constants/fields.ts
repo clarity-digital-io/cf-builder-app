@@ -6,6 +6,7 @@ export type FieldType = {
   name: string,
   type: QuestionTypes,
   icon: string
+  quantity?: number
 }
 
 export const types: FieldType[] = [
