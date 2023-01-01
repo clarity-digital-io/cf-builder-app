@@ -1,19 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import { Textarea as SalesforceTextarea } from "@salesforce/design-system-react";
+import { Question__c } from "../../../utils/types/sObjects";
 
-export const Comment = ({ question }) => {
-  const [value, setValue] = useState("");
-
+export const Comment = ({ question }: { question: Question__c }) => {
   return (
     <SalesforceTextarea
       aria-describedby={question.Id}
       id={question.Name}
       name={question.Name}
-      label={question.forms__Title__c}
-      required={question.forms__Required__c}
-      placeholder={question.forms__Placeholder__c}
-      onChange={(e) => setValue(e.target.value)}
-      value={value}
+      label={question.cforms__Title__c}
+      required={question.cforms__Required__c}
     />
   );
 };

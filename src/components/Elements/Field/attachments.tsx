@@ -1,43 +1,19 @@
-import React, { useState } from "react";
+import React from "react";
+import { Question__c } from "../../../utils/types/sObjects";
 
-export const Attachments = ({ question }) => {
-  const [open, setOpen] = useState(false);
-
-  const [files, setFiles] = useState([]);
-
-  const [fileName, setFileName] = useState("");
-
-  const onChangeHandler = (e) => {
-    setOpen(true);
-
-    uploadFile(e.target.files[0]);
-  };
-
-  const uploadFile = (file) => {
-    setFiles([file]);
-
-    let reader = new window.FileReader();
-
-    reader.readAsDataURL(file);
-
-    reader.onload = (...args) => {
-      let fileContents = reader.result;
-    };
-  };
-
+export const Attachments = ({ question }: { question: Question__c }) => {
   return (
-    <div className="slds-form-element" key={question.Id}>
+    <div className="slds-form-element" key={question.id}>
       <span
         className="slds-form-element__label"
         id="file-selector-primary-label"
       >
-        {question.forms__Title__c}
+        {question.cforms__Title__c}
       </span>
       <div className="slds-form-element__control">
         <div className="slds-file-selector slds-file-selector_images">
           <div className="slds-file-selector__dropzone">
             <input
-              onChange={(e) => onChangeHandler(e)}
               type="file"
               className="slds-file-selector__input slds-assistive-text"
               accept="image/png"

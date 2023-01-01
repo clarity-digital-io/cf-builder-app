@@ -1,33 +1,24 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Checkbox as SalesforceCheckbox } from "@salesforce/design-system-react";
-import { DesignContext } from "../../../context";
+import { Question__c } from "../../../utils/types/sObjects";
 
-export const Checkbox = ({ question }) => {
-  const { questionOptions } = useContext(DesignContext);
-
+export const Checkbox = ({ question }: { question: Question__c }) => {
   return (
     <fieldset className="slds-form-element slds-form-element_stacked">
       <legend className="slds-form-element__legend slds-form-element__label">
-        {question.forms__Title__c}
+        {question.cforms__Title__c}
       </legend>
-      {questionOptions.get(question.Id) != null
-        ? questionOptions.get(question.Id).map((option, index) => {
-          return (
-            <SalesforceCheckbox
-              key={index}
-              assistiveText={{
-                label: option.forms__Label__c,
-              }}
-              id={option.Id}
-              labels={{
-                label: option.forms__Label__c,
-              }}
-              onChange={(e, status) => { }}
-              checked={false}
-            />
-          );
-        })
-        : []}
+      <SalesforceCheckbox
+        key={0}
+        assistiveText={{
+          label: 'Checkbox 1'
+        }}
+        id={0}
+        labels={{
+          label: 'Checkbox 1'
+        }}
+        checked={false}
+      />
     </fieldset>
   );
 };

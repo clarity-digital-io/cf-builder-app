@@ -1,9 +1,10 @@
 import React, { ReactElement, useState } from "react";
 
-import { Popover, Button } from "@salesforce/design-system-react";
+import { Popover as SalesforcePopover, Button } from "@salesforce/design-system-react";
 import { Question_Criteria__c, Question__c } from "../../../../../../utils/types/sObjects";
 import { BuilderContextProvider } from "../../../../../../context/BuilderContext";
 import { VisibilityFilter } from "./filter";
+import styled from "styled-components";
 
 export const VisibilityFilterPopover = ({ setNewCriterion, question, criterion, children }: { setNewCriterion, question: Question__c, criterion: Question_Criteria__c, children: ReactElement }) => {
 
@@ -16,7 +17,6 @@ export const VisibilityFilterPopover = ({ setNewCriterion, question, criterion, 
   }
 
   return <Popover
-    c
     position={'overflowBoundaryElement'}
     isOpen={isOpen}
     body={
@@ -44,3 +44,7 @@ export const VisibilityFilterPopover = ({ setNewCriterion, question, criterion, 
     </div>
   </Popover >
 }
+
+const Popover = styled(SalesforcePopover)`
+  z-index: 9999 !important;
+`;

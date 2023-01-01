@@ -3,10 +3,7 @@ import { CenterSpinner } from "../Elements/Spinner";
 import { IconSettings } from "@salesforce/design-system-react";
 import { useBuilderContext } from "../../context/BuilderContext";
 import Navigation from "./Navigation";
-
-import { DesignContextProvider } from "../../context/DesignContext";
 import Design from "./Design"
-
 import styled from "styled-components";
 
 const Builder = () => {

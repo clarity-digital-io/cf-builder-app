@@ -5,19 +5,13 @@ import { useBuilderContext } from "../../../../../context/BuilderContext";
 import { useEditFormContext } from "../../../../../context/EditContext";
 import { QuestionTypes } from "../../../../../utils/types/fields";
 import { Question__c } from "../../../../../utils/types/sObjects";
+import { Lookup, Attachments, MultipleChoice, Dropdown, Slider, Comment, Checkbox, RecordGroup } from "../../../../Elements/Field";
 import { removeAtIndex } from "../utils/array";
 
 const Item = ({ droppableId, id, index, data, dragOverlay }: { droppableId: number | string, id: number | string, data: Question__c, index: number, dragOverlay: boolean }) => {
   const { initQuestionEdit } = useEditFormContext();
 
   const { dndQuestions, setDndQuestion } = useBuilderContext();
-
-  // const [fieldQuestion, setFieldQuestion] = useState<Question__c>(null);
-  // console.log({ fieldQuestion })
-  // useEffect(() => {
-  //   const question = questions[id];
-  //   setFieldQuestion(question);
-  // }, [questions])
 
   const [isHovering, setIsHovering] = useState(false);
 
@@ -60,33 +54,29 @@ const Item = ({ droppableId, id, index, data, dragOverlay }: { droppableId: numb
       </div>
 
       <div className="slds-p-around_x-small" >
-        <QuestionComponent questionType={data.cforms__Type__c} />
+        <QuestionComponent question={data} questionType={data.cforms__Type__c} />
       </div>
 
       <div className="slds-drop-zone__actions">
         <div className="slds-button-group" role="group">
-          <button className="slds-button slds-button_icon slds-button_icon-brand slds-button_icon-x-small" title="Move">
+          <button className="slds-button slds-button_icon slds-button_icon-brand slds-button_icon-x-medium" title="Move">
             <svg className="slds-button__icon" aria-hidden="true">
               <use xlinkHref="/assets/icons/utility-sprite/svg/symbols.svg#move"></use>
             </svg>
             <span className="slds-assistive-text">Move</span>
           </button>
           <button onClick={() => {
-            console.log('trying to remove', removeAtIndex(dndQuestions[droppableId], index), id, data, droppableId);
-
             const newItems = {
               ...dndQuestions,
               [droppableId]: removeAtIndex(dndQuestions[droppableId], index),
             };
-
             setDndQuestion(newItems);
-            // setDndQuestion(dndQuestions.filter(q => q.id != id));
           }}
-            className="slds-button slds-button_icon slds-button_icon-brand slds-button_icon-x-small" title="Close">
+            className="slds-button slds-button_icon slds-button_icon-brand slds-button_icon-x-medium" title="Close">
             <svg className="slds-button__icon" aria-hidden="true">
               <use xlinkHref="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
             </svg>
-            <span className="slds-assistive-text">Close</span>
+            <span className="slds-assistive-text">Delete</span>
           </button>
         </div>
       </div>
@@ -95,35 +85,35 @@ const Item = ({ droppableId, id, index, data, dragOverlay }: { droppableId: numb
   );
 };
 
-const QuestionComponent = ({ questionType }: { questionType: QuestionTypes }) => {
+const QuestionComponent = ({ question, questionType }: { question: Question__c, questionType: QuestionTypes }) => {
   switch (questionType) {
     case QuestionTypes.MultipleChoice:
+      return <MultipleChoice question={question} />
     case QuestionTypes.Comment:
+      return <Comment question={question} />
     case QuestionTypes.Dropdown:
+      return <Dropdown question={question} />
     case QuestionTypes.Slider:
-    case QuestionTypes.Date:
-    case QuestionTypes.Email:
-    case QuestionTypes.Number:
+      return <Slider question={question} />
     case QuestionTypes.Lookup:
+      return <Lookup question={question} />
     case QuestionTypes.RecordGroup:
+      return <RecordGroup question={question} />
     case QuestionTypes.Image:
     case QuestionTypes.Checkbox:
+      return <Checkbox question={question} />
     case QuestionTypes.FreeText:
     case QuestionTypes.PictureChoice:
-    case QuestionTypes.InputField:
     case QuestionTypes.GeoLocation:
     case QuestionTypes.Attachments:
-      return <Input
-        type="text"
-        id="base-id"
-        label={questionType.toString()}
-      />
+      return <Attachments question={question} />
+    case QuestionTypes.InputField:
+    case QuestionTypes.Email:
+    case QuestionTypes.Number:
+    case QuestionTypes.Date:
+      return <Input type="text" label={questionType.toString()} />
     default:
-      return <Input
-        type="text"
-        id="base-id"
-        label="Value"
-      />
+      return <Input type="text" label="Value" />
   }
 }
 
