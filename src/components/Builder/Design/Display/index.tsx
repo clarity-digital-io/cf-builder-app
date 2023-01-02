@@ -19,6 +19,7 @@ export const Display = ({ activeId }) => {
             key={group}
           />
         ))}
+        {/* add page button below */}
         {/* <Droppable
           id={Object.keys(dndQuestions).length}
           items={[]}

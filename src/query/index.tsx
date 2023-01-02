@@ -2,6 +2,7 @@ import LCC from "lightning-container";
 import { types } from "../utils/constants/fields";
 import { BuilderController } from "../utils/constants/methods";
 import { QuestionTypes } from "../utils/types/fields";
+import { Question__c } from "../utils/types/sObjects";
 const extraParams = { buffer: false, escape: false, timeout: 12000 };
 
 export const call = async (func: any, params: any[] | null): Promise<any> => {
@@ -143,7 +144,7 @@ const mockCall = (func: string, params: any[] | null | undefined, callback: (res
         //     cforms__Page__c: 0,
         //   }
         // ],
-        result: buildExistingQuestions(2),
+        result: buildExistingQuestions(3),
         event: { statusCode: 200 }
       });
       break;
@@ -793,29 +794,30 @@ const mockCall = (func: string, params: any[] | null | undefined, callback: (res
 //   }
 // };
 
-const obj = {
-  Id: 2,
-  cforms__Logic__c: "AND",
-  cforms__Type__c: QuestionTypes.Comment,
-  cforms__Title__c: "Comment",
-  cforms__Order__c: 1,
-  cforms__Max_Length__c: 10,
-  cforms__Min_Range__c: 0,
-  cforms__Max_Range__c: 100,
-  cforms__Step__c: 10,
-  cforms__Page__c: 1,
-};
+const buildExistingQuestions = (qty: number): Array<Question__c> => {
+  const obj = {
+    Id: 2,
+    cforms__Logic__c: "AND",
+  };
 
-const buildExistingQuestions = (qty: number) => {
-  const items = [];
-  for (let index = 0; index < qty; index++) {
-    const element = {
+  const items: Array<Question__c> = [];
+  const types: Record<number, QuestionTypes> = Object.keys(QuestionTypes).reduce((accum, val, index) => {
+    return { ...accum, [index]: val }
+  }, {})
+  for (let index = 1; index <= qty; index++) {
+    const questionType: QuestionTypes = types[Math.floor(Math.random() * 10)];
+
+    const element: Question__c = {
       ...obj,
-      Id: index,
+      id: index.toString(),
+      Id: index.toString(),
+      cforms__Title__c: 'Title',
+      cforms__Order__c: index,
+      cforms__Type__c: questionType,
       cforms__Page__c: Math.floor(index / 10),
     }
     items.push(element);
   }
-  console.log({ questionscreated: items })
+
   return items;
 }

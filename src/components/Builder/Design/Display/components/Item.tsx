@@ -1,15 +1,13 @@
 import { Input } from "@salesforce/design-system-react";
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
+import React, { useState } from "react";
 import { useBuilderContext } from "../../../../../context/BuilderContext";
-import { useEditFormContext } from "../../../../../context/EditContext";
 import { QuestionTypes } from "../../../../../utils/types/fields";
 import { Question__c } from "../../../../../utils/types/sObjects";
-import { Lookup, Attachments, MultipleChoice, Dropdown, Slider, Comment, Checkbox, RecordGroup } from "../../../../Elements/Field";
+import { Lookup, Attachments, MultipleChoice, Dropdown, Slider, Comment, Checkbox, RecordGroup, Date } from "../../../../Elements/Field";
 import { removeAtIndex } from "../utils/array";
 
 const Item = ({ droppableId, id, index, data, dragOverlay }: { droppableId: number | string, id: number | string, data: Question__c, index: number, dragOverlay: boolean }) => {
-  const { initQuestionEdit } = useEditFormContext();
+  const { initQuestionEdit } = useBuilderContext();
 
   const { dndQuestions, setDndQuestion } = useBuilderContext();
 
@@ -85,8 +83,8 @@ const Item = ({ droppableId, id, index, data, dragOverlay }: { droppableId: numb
   );
 };
 
-const QuestionComponent = ({ question, questionType }: { question: Question__c, questionType: QuestionTypes }) => {
-  switch (questionType) {
+const QuestionComponent = ({ question, questionType }: { question: Question__c, questionType: QuestionTypes | string }) => {
+  switch (typeof questionType === 'string' ? parseInt(questionType) : questionType) {
     case QuestionTypes.MultipleChoice:
       return <MultipleChoice question={question} />
     case QuestionTypes.Comment:
@@ -107,10 +105,12 @@ const QuestionComponent = ({ question, questionType }: { question: Question__c, 
     case QuestionTypes.GeoLocation:
     case QuestionTypes.Attachments:
       return <Attachments question={question} />
+    case QuestionTypes.Date:
+      return <Date question={question} />
     case QuestionTypes.InputField:
     case QuestionTypes.Email:
     case QuestionTypes.Number:
-    case QuestionTypes.Date:
+
       return <Input type="text" label={questionType.toString()} />
     default:
       return <Input type="text" label="Value" />

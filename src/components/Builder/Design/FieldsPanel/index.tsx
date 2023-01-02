@@ -33,7 +33,6 @@ const AvailableFieldItem = ({ field }: { field: any }) => {
   });
 
   const style = {
-    // transform: CSS.Transform.toString(transform),
     opacity: isDragging ? .5 : 1,
   };
 
@@ -89,9 +88,9 @@ export const FieldItem = ({ field, dragOverlay }: { field: FieldType, dragOverla
 }
 
 const FieldListItem = styled.li`
-cursor: grab;
-opacity: 1 !important;
-user-select: none;
+  cursor: grab;
+  opacity: 1 !important;
+  user-select: none;
 `
 
 const FieldListName = styled.span`

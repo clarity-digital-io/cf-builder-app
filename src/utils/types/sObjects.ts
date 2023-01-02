@@ -84,8 +84,8 @@ export type Question__c = {
   cforms__Max_Length__c?: string
   cforms__Max_Range__c?: string
   cforms__Min_Range__c?: string
-  cforms__Order__c?: string
-  cforms__Page__c?: number
+  cforms__Order__c: number
+  cforms__Page__c: number
   cforms__Prefill_Type__c?: boolean
   cforms__Record_Group__c?: string
   cforms__Required__c?: boolean
@@ -115,10 +115,10 @@ export type Question_Filter__c = {
 } & sObject;
 
 export type Question_Option__c = {
-  cforms__Active_Flow__c: string
-  cforms__Choice_Image__c: string
+  cforms__Active_Flow__c?: string
+  cforms__Choice_Image__c?: string
   cforms__Label__c: string
-  cforms__Order__c: string
+  cforms__Order__c: number
   cforms__Question__c: string
 } & sObject;
 

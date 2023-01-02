@@ -9,7 +9,6 @@ import {
 } from "@salesforce/design-system-react";
 import { FieldItem, Fields } from "./FieldsPanel";
 import { Edit } from "./EditPanel";
-import { EditFormContextProvider } from "../../../context/EditContext";
 
 import {
   DndContext,
@@ -65,12 +64,15 @@ const Design = () => {
   };
 
   const handleDragOver = ({ active, over }) => {
+
+    // handle drag end 
+    console.log('handle drag over', { active, over })
+
+    // handle when it's not over a droppable region
     const overId = over?.id;
+    if (!overId) return;
 
-    if (!overId) {
-      return;
-    }
-
+    // handle 2 types fields (left panel) and questions (main display panel)
     if (active.data.current.type == 'fields') {
       // need differetn process here 
       // activecontainer will be undefined since fields-(id) are not sortable yet
@@ -79,50 +81,60 @@ const Design = () => {
       // const newQuestion = generateQuestionSObject(active.id, active.data.current.field);
       // console.log({ newQuestion })
 
-      // const overContainer = over.data.current?.sortable.containerId || over.id;
-      // console.log({ overContainer, over, dndQuestions }) // this is the page
+      // const overContainer = over.data.current?.sortable ? over.data.current?.sortable.containerId : over.id;
+      // // console.log({ overContainer, over, dndQuestions }) // this is the page
       // const overIndex =
       //   over.id in dndQuestions
       //     ? dndQuestions[overContainer].length + 1
       //     : over.data.current.sortable.index;
-      // console.log({ overIndex })
+      // // console.log({ overIndex })
+
+      // console.log({ dndQuestions })
+
 
       // const newItems = {
       //   ...dndQuestions,
       //   [overContainer]: insertAtIndex(dndQuestions[overContainer], overIndex, newQuestion),
       // };
-
+      // console.log({ newItems })
       // setDndQuestion(newItems);
 
-    } else {
-
-      if (!active.data.current.sortable || !over.data.current) return;
-
-      const activeContainer = active.data.current.sortable.containerId;
-      const overContainer = over.data.current?.sortable.containerId || over.id;
-
-      if (activeContainer !== overContainer) {
-        const activeIndex = active.data.current.sortable.index;
-        const overIndex =
-          over.id in dndQuestions
-            ? dndQuestions[overContainer].length + 1
-            : over.data.current.sortable.index;
-
-        setDndQuestion(
-          moveBetweenContainers(
-            dndQuestions,
-            activeContainer,
-            activeIndex,
-            overContainer,
-            overIndex,
-            active.id
-          )
-        )
-      }
     }
+
+    if (active.data.current.type == 'questions') { // update to enum
+      // if (!active.data.current.sortable || !over.data.current) return;
+
+      // const activeContainer = active.data.current.sortable.containerId;
+      // const overContainer = over.data.current?.sortable.containerId || over.id;
+
+      // if (activeContainer !== overContainer) {
+      //   const activeIndex = active.data.current.sortable.index;
+      //   const overIndex =
+      //     over.id in dndQuestions
+      //       ? dndQuestions[overContainer].length + 1
+      //       : over.data.current.sortable.index;
+
+      //   setDndQuestion(
+      //     moveBetweenContainers(
+      //       dndQuestions,
+      //       activeContainer,
+      //       activeIndex,
+      //       overContainer,
+      //       overIndex,
+      //       active.id
+      //     )
+      //   )
+      // }
+
+    }
+
   };
 
   const handleDragEnd = ({ active, over }) => {
+
+    // handle drag end 
+    console.log('handle drag end', { active, over })
+
     if (!over) {
       if (active.data.current.type == 'fields') {
         setFieldActive(null);
@@ -133,15 +145,58 @@ const Design = () => {
       return;
     }
 
-    if (active.data.current.type == 'fields') {
-      console.log({ activeId: active })
-      const newQuestion = generateQuestionSObject(active.id, active.data.current.field);
+    if (
+      active.data.current.type == 'questions' &&
+      over.data.current.type == 'questions' &&
+      active.id !== over.id
+    ) {
 
+      if (!active.data.current.sortable) return;
+
+      const activeContainer = active.data.current.sortable.containerId;
+      const overContainer = over.data.current?.sortable.containerId || over.id;
+      const activeIndex = active.data.current.sortable.index;
+      const overIndex =
+        over.id in dndQuestions
+          ? dndQuestions[overContainer].length + 1
+          : over.data.current.sortable.index;
+
+      if (activeContainer === overContainer) {
+        setDndQuestion({
+          ...dndQuestions,
+          [overContainer]: arrayMove(
+            dndQuestions[overContainer],
+            activeIndex,
+            overIndex
+          )
+        });
+      } else {
+        setDndQuestion(moveBetweenContainers(
+          dndQuestions,
+          activeContainer,
+          activeIndex,
+          overContainer,
+          overIndex,
+          active.id
+        ));
+      }
+
+    }
+
+    if (
+      active.data.current.type == 'fields' &&
+      over.data.current.type == 'questions'
+    ) {
+
+      console.log({ activeId: active })
+      const orderIndexAt = over.data.current.sortable.index;
       const overContainer = over.data.current?.sortable.containerId || over.id;
       const overIndex =
         over.id in dndQuestions
           ? dndQuestions[overContainer].length + 1
           : over.data.current.sortable.index;
+
+      const newQuestion = generateQuestionSObject(active.id, overContainer, orderIndexAt, active.data.current.field);
 
       const newItems = {
         ...dndQuestions,
@@ -156,42 +211,6 @@ const Design = () => {
       console.log({ updatedAvailableFields })
 
       setDndQuestion(newItems, updatedAvailableFields);
-
-    } else {
-      if (active.id !== over.id) {
-        if (!active.data.current.sortable) return;
-
-        const activeContainer = active.data.current.sortable.containerId;
-        const overContainer = over.data.current?.sortable.containerId || over.id;
-        const activeIndex = active.data.current.sortable.index;
-        const overIndex =
-          over.id in dndQuestions
-            ? dndQuestions[overContainer].length + 1
-            : over.data.current.sortable.index;
-
-        let newItems;
-        if (activeContainer === overContainer) {
-          newItems = {
-            ...dndQuestions,
-            [overContainer]: arrayMove(
-              dndQuestions[overContainer],
-              activeIndex,
-              overIndex
-            )
-          };
-        } else {
-
-          newItems = moveBetweenContainers(
-            dndQuestions,
-            activeContainer,
-            activeIndex,
-            overContainer,
-            overIndex,
-            active.id
-          );
-        }
-        setDndQuestion(newItems);
-      }
     }
 
     if (active.data.current.type == 'fields') {
@@ -212,10 +231,8 @@ const Design = () => {
         onDragEnd={handleDragEnd}
       >
         <Fields fieldActive={fieldActive} />
-        <EditFormContextProvider>
-          <Display activeId={activeId} />
-          <Edit />
-        </EditFormContextProvider>
+        <Display activeId={activeId} />
+        <Edit />
         <DragOverlay>{activeId && activeData ? <Item id={activeId} data={activeData} dragOverlay={true} /> : null}</DragOverlay>
         <DragOverlay>{fieldActive ? <FieldItem field={fieldActive} dragOverlay={true} /> : null}</DragOverlay>
 
@@ -224,18 +241,24 @@ const Design = () => {
   );
 };
 
-const generateQuestionSObject = (id: string, field: FieldType): Question__c => {
+const generateQuestionSObject = (id: string, page: number, order: number, field: FieldType): Question__c => {
   console.log({ id })
-  return { id: id + 'new', cforms__Title__c: field.name, cforms__Type__c: field.type }
+  return {
+    id: id + 'new',
+    cforms__Order__c: order,
+    cforms__Page__c: page,
+    cforms__Title__c: field.name,
+    cforms__Type__c: field.type
+  }
 }
 
 const moveBetweenContainers = (
-  items,
-  activeContainer,
-  activeIndex,
-  overContainer,
-  overIndex,
-  item
+  items: Record<number, Array<Question__c>>,
+  activeContainer: number,
+  activeIndex: number,
+  overContainer: number,
+  overIndex: number,
+  item: Question__c
 ) => {
   return {
     ...items,
@@ -243,6 +266,5 @@ const moveBetweenContainers = (
     [overContainer]: insertAtIndex(items[overContainer], overIndex, item),
   };
 };
-
 
 export default Design;

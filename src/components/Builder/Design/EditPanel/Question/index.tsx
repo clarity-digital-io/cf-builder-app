@@ -1,10 +1,10 @@
 import React from "react";
-import { useEditFormContext } from "../../../../../context/EditContext";
 
 import { Input, Checkbox } from "@salesforce/design-system-react";
+import { useBuilderContext } from "../../../../../context/BuilderContext";
 
 export const QuestionEdit = () => {
-  const { question, setQuestionUpdate } = useEditFormContext();
+  const { question, setQuestionUpdate } = useBuilderContext();
 
   if (!question) {
     return <div>

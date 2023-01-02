@@ -1,4 +1,4 @@
-import { Question__c } from "../utils/types/sObjects"
+import { Question_Criteria__c, Question_Option__c, Question__c } from "../utils/types/sObjects"
 
 export enum NavStates {
   QUESTIONS,
@@ -23,7 +23,7 @@ export type BuilderProviderState = {
   availableFields: Array<any>
   form: any | null | undefined
   questions: Questions
-  dndQuestions: Record<number, number[]>
+  dndQuestions: Record<number, Array<Question__c>> // questions by page 
   pages: Array<any>
   sObjects: any | null | undefined
   connections: any | null | undefined
@@ -34,12 +34,25 @@ export type BuilderProviderState = {
   activeFieldMapping: any | null | undefined // may move
   activeFieldPrefills: any | null | undefined // may move
   activeFields: any | null | undefined // may move
+
+  question: Question__c | null
+  options: Array<any> | null
+  criteria: Array<any> | null
+
+  setNewCriterion: (criterion: Question_Criteria__c) => void
+  setNewOption: (option: Question_Option__c) => void
+  handleUpdateOptions: (options: Question_Option__c[]) => void
+
+  initQuestionEdit: (question: Question__c | null) => void
+  setQuestionUpdate: (question: Question__c | null) => void
+
   setFormUpdate: (form: any) => void
   setDndQuestion: (questions: any, availableFields?: any) => void
   handleQuestionsUpdate: (questions: any) => void
   handleFormStatusUpdate: (status: any) => void
   handleFormUpdate: (form: any) => void
   handleNavigate: (location: any) => void
+  handleSave: (values: any) => void
   handleError: (message: any) => void
 }
 
@@ -60,12 +73,26 @@ export const builderInitialState: BuilderProviderState = {
   activeFieldPrefills: null,
   activeFields: [],
   navState: NavStates.QUESTIONS,
+
+  question: null,
+  options: null,
+  criteria: null,
+
+  setNewCriterion: (any) => void any,
+  setNewOption: (any) => void any,
+  handleUpdateOptions: (any) => void any,
+
+  initQuestionEdit: (any) => void any,
+  setQuestionUpdate: (any) => void any,
+
   setFormUpdate: (any) => void any,
   setDndQuestion: (any) => void any,
   handleQuestionsUpdate: (any) => void any,
   handleFormStatusUpdate: (any) => void any,
   handleFormUpdate: (any) => void any,
   handleNavigate: (any) => void any,
+  handleSave: (any) => void any,
+
   handleError: (any) => void any
 }
 
@@ -105,6 +132,28 @@ export type BuilderAction =
     connections?: BuilderProviderState['connections']
   }
   | {
+    type: 'INIT_QUESTION',
+    question: BuilderProviderState['question']
+    options: BuilderProviderState['options']
+    criteria: BuilderProviderState['criteria']
+  }
+  | {
+    type: 'SET_QUESTION',
+    question: BuilderProviderState['question']
+  }
+  | {
+    type: 'SET_NEW_CRITERION',
+    criteria: BuilderProviderState['criteria']
+  }
+  | {
+    type: 'SET_NEW_OPTION',
+    options: BuilderProviderState['options']
+  }
+  | {
+    type: 'SET_UPDATE_OPTIONS',
+    options: BuilderProviderState['options']
+  }
+  | {
     type: 'SET_LOADING'
     isLoading?: BuilderProviderState['isLoading']
   }
@@ -140,6 +189,7 @@ export function builderReducer(
     case 'SET_AVAILABLE_FIELDS':
       return { ...state, availableFields: action.availableFields }
     case 'SET_FORM':
+      console.log('set_form', action)
       return { ...state, form: action.form }
     case 'SET_QUESTIONS':
       return { ...state, questions: action.questions, pages: action.pages, dndQuestions: action.dndQuestions }
@@ -162,6 +212,15 @@ export function builderReducer(
         activeFieldMapping: action.activeFieldMapping,
         activeFieldPrefills: action.activeFieldPrefills
       }
+    case 'INIT_QUESTION':
+      return { ...state, question: action.question, criteria: action.criteria, options: action.options }
+    case 'SET_QUESTION':
+      return { ...state, question: action.question }
+    case 'SET_NEW_CRITERION':
+      return { ...state, criteria: action.criteria }
+    case 'SET_NEW_OPTION':
+    case 'SET_UPDATE_OPTIONS':
+      return { ...state, options: action.options }
     case 'SET_LOADING':
       return { ...state, isLoading: action.isLoading }
     case 'SET_ERROR':

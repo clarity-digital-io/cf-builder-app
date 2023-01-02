@@ -1,20 +1,16 @@
 import React from "react";
 import moment from "moment";
 import { Datepicker } from "@salesforce/design-system-react";
+import { Question__c } from "../../../utils/types/sObjects";
 
-export const Date = ({ question, disabled = false }) => {
+export const Date = ({ question }: { question: Question__c }) => {
   return (
     <Datepicker
-      required={question.forms__Required__c}
+      required={question.cforms__Required__c}
       labels={{
-        label: question.forms__Title__c,
+        label: question.cforms__Title__c,
       }}
-      onChange={(event, data) => { }}
-      onCalendarFocus={(event, data) => { }}
-      formatter={(date) => {
-        return date ? moment(date).format("M/D/YYYY") : "";
-      }}
-      parser={(dateString) => {
+      parser={(dateString: string) => {
         return moment(dateString, "MM-DD-YYYY").toDate();
       }}
       value={""}

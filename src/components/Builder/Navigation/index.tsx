@@ -13,7 +13,6 @@ import {
 } from "@salesforce/design-system-react";
 import { useBuilderContext } from "../../../context/BuilderContext";
 import { FORMSTATUS } from "../../../hooks/Builder";
-import { useDesignContext } from "../../../context/DesignContext";
 import { NavStates } from "../../../reducers/BuilderProvider";
 
 enum PUBLISHMODAL {
@@ -27,7 +26,7 @@ const Navigation = () => {
 
   const [isPublishModalOpen, setPublishModalOpen] = useState(false);
 
-  const { form, error, handleError, handleNavigate, handleFormStatusUpdate } = useBuilderContext();
+  const { form, error, handleError, handleNavigate, handleSave, handleFormStatusUpdate } = useBuilderContext();
 
   const { questions } = useBuilderContext();
 
@@ -86,22 +85,15 @@ const Navigation = () => {
             {/* <span className="slds-color__text_gray-10 slds-align-middle slds-m-right_small">
               {update ? "Saving..." : "Saved"}
             </span> */}
-            {
-              form.forms__Status__c == "Published" ? (
-                <Button
-                  label="Set to Draft"
-                  onClick={() => () => handleFormStatusUpdate(FORMSTATUS.DRAFT)}
-                />
-              ) : (
-                <Button
-                  label="Publish"
-                  variant="neutral"
-                  onClick={publish}
-                />
-              )}
+            <Button
+              label="Activation..."
+              variant="neutral"
+              onClick={publish}
+            />
             <Button
               label="Save"
               variant="brand"
+              onClick={handleSave}
             />
           </div>
         )}

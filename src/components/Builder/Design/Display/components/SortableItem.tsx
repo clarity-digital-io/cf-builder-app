@@ -1,6 +1,7 @@
 import React from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import styled from "styled-components";
 
 import Item from "./Item";
 import { Question__c } from "../../../../../utils/types/sObjects";
@@ -10,8 +11,6 @@ const SortableItem = ({ droppableId, id, index, data }: { droppableId: string | 
     attributes,
     listeners,
     setNodeRef,
-    transform,
-    transition,
     isDragging,
   } = useSortable({
     id,
@@ -22,22 +21,25 @@ const SortableItem = ({ droppableId, id, index, data }: { droppableId: string | 
   });
 
   const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
     opacity: isDragging ? 0.5 : 1,
   };
 
   return (
-    <li
+    <QuestionListItem
       style={style}
       ref={setNodeRef}
       {...attributes}
       {...listeners}
     >
       <Item droppableId={droppableId} id={id} dragOverlay={false} index={index} data={data} />
-    </li>
+    </QuestionListItem>
   );
 };
 
+const QuestionListItem = styled.li`
+  cursor: grab;
+  opacity: 1 !important;
+  user-select: none;
+`
 
 export default SortableItem;

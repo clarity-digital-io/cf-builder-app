@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import { useEditFormContext } from "../../../../../context/EditContext";
 
 import { ExpandableSection, Button, RadioGroup, Radio, Input, Tooltip } from "@salesforce/design-system-react";
 import { Question_Criteria__c } from "../../../../../utils/types/sObjects";
 import { VisibilityFilterPopover } from "./VisibilityFilter/popover";
 import { FilterLogicTypes } from "../../../../../utils/criteria";
+import { useBuilderContext } from "../../../../../context/BuilderContext";
 
 export const CriteriaEdit = () => {
 
-  const { question, criteria, setNewCriterion } = useEditFormContext();
+  const { question, criteria, setNewCriterion } = useBuilderContext();
 
   if (!question) return null;
 
@@ -87,7 +87,7 @@ enum LogicOperators {
 
 const FilterLogic = () => {
 
-  const { criteria, question, setQuestionUpdate } = useEditFormContext();
+  const { criteria, question, setQuestionUpdate } = useBuilderContext();
 
   const [errorId, setErrorId] = useState(null);
 

@@ -53,7 +53,7 @@ export const VisibilityFilter = (
   // comparison value select
   const [valueFieldValue, setValueFieldValue] = useState('');
   const [valueType, setValueType] = useState<ValueTypes>(ValueTypes.None);
-  console.log('valueType', { valueType })
+
   const calculateValueTypeForQuestionOperator = useCallback((questionType: QuestionTypes, operatorType: OperatorTypes) => {
     const validValueType: ValueTypes = validValueForOperatorTypes(questionType, operatorType);
     setValueType(validValueType);
@@ -69,7 +69,6 @@ export const VisibilityFilter = (
   // to update handleCriterionUpdate
   useEffect(() => {
     if (selection.length > 0 && selection[0].id != '' && operatorSelection.length > 0 && valueFieldValue == '') {
-      console.log('criterionUpdate ')
       handleCriterionUpdate({
         selection: selection[0],
         operatorSelection: operatorSelection[0],
@@ -94,7 +93,6 @@ export const VisibilityFilter = (
       <div className="slds-p-top_medium slds-ui-gen__layout-item">
         {/* depending on button field type display here field
       for now show other form questions */}
-
         <Combobox
           id="Questions"
           events={{
@@ -122,7 +120,6 @@ export const VisibilityFilter = (
           value={inputValue} // add check for has selection option
           variant="inline-listbox"
         />
-
       </div>
       <div className="slds-p-top_medium slds-ui-gen__layout-item">
         {/* depending on previous field value choose type of operators allowed  */}

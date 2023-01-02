@@ -140,7 +140,7 @@ export const ConnectState = () => {
 
           <p>
             When connecting existing Salesforce records, we can use those values
-            to prepopulate Clarity Form Questions.
+            to prepopulate/prefill Clarity Form Questions.
           </p>
         </ViewStyle>
 

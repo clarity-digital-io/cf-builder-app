@@ -1,16 +1,15 @@
 import React, { ReactElement, useCallback, useEffect, useState } from "react";
 import { BreadCrumb } from "@salesforce/design-system-react";
 
-import { useEditFormContext } from "../../../../context/EditContext";
-
 import { OptionsEdit } from "./Options";
 import { CriteriaEdit } from "./Criteria";
 import { QuestionEdit } from "./Question";
 import { FormEdit } from "./Form";
+import { useBuilderContext } from "../../../../context/BuilderContext";
 
 export const Edit = () => {
 
-  const { question } = useEditFormContext()
+  const { question } = useBuilderContext()
 
   return <Panel header="Form">
 
@@ -24,42 +23,12 @@ export const Edit = () => {
         <FormEdit />
     }
 
-    {/* <div>
-      edit question
-      <span>
-        -- edit question logic criteria
-      </span>
-      <span>
-        -- edit record group question
-      </span>
-      <span>
-        -- useQuestionContext to manage state HERE
-      </span>
-    </div>
-    <div>
-      <span>
-        !! maybe to be done here not sure yet
-      </span>
-
-      <span>
-        need to set a form connection too
-      </span>
-      <span>
-        (prefill) question
-      </span>
-      <span>
-        (mapping) question answer to a new object or a existing one (update)
-      </span>
-      <span>
-        prefill and mapping use the same object to store info
-      </span>
-    </div> */}
   </Panel>
 }
 
 const Panel = ({ header, children }: { header: string, children: ReactElement[] | ReactElement }) => {
 
-  const { question, initQuestionEdit } = useEditFormContext();
+  const { question, initQuestionEdit } = useBuilderContext();
 
   const [trail, setTrail] = useState<Array<JSX.Element>>([
     <a key={'parent'} id="parent-entity">{header}</a>
