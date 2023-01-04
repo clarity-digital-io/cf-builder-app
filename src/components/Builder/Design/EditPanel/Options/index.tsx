@@ -4,7 +4,7 @@ import { BuilderContextProvider, useBuilderContext } from "../../../../../contex
 import { QuestionOptionTypes } from "../../../../../utils/options";
 import styled from "styled-components";
 import { Question_Option__c } from "../../../../../utils/types/sObjects";
-import { DndContext, KeyboardSensor, MouseSensor, TouchSensor, useDroppable, useSensor, useSensors } from "@dnd-kit/core";
+import { DndContext, DragOverlay, KeyboardSensor, MouseSensor, TouchSensor, useDroppable, useSensor, useSensors } from "@dnd-kit/core";
 import { arrayMove, rectSortingStrategy, SortableContext, sortableKeyboardCoordinates, useSortable } from "@dnd-kit/sortable";
 
 export const OptionsEdit = () => {
@@ -23,7 +23,7 @@ export const OptionsEdit = () => {
     setNewOption(option)
   }
 
-  const [activeId, setActiveId] = useState(null);
+  const [activeOption, setActiveOption] = useState(null);
 
   const sensors = useSensors(
     useSensor(MouseSensor, {
@@ -36,6 +36,11 @@ export const OptionsEdit = () => {
       coordinateGetter: sortableKeyboardCoordinates,
     })
   );
+
+  const handleDragStart = ({ active }) => {
+    const _activeOption = options?.find(_option => _option.id == active.id);
+    setActiveOption(active.id)
+  };
 
   const handleDragOver = ({ active, over }) => {
     console.log({ active, over })
@@ -55,6 +60,11 @@ export const OptionsEdit = () => {
     handleUpdateOptions(newOptions)
   }
 
+  const handleDragCancel = () => {
+    setActiveOption(null)
+  };
+
+
   if (question != null && (Object).values(QuestionOptionTypes).includes(question.cforms__Type__c)) {
     return <section className="slds-box slds-ui-gen__vertical-layout slds-m-top_small">
       <div className="slds-grid slds-grid_vertical">
@@ -65,6 +75,8 @@ export const OptionsEdit = () => {
 
         <DndContext
           sensors={sensors}
+          onDragCancel={handleDragCancel}
+          onDragStart={handleDragStart}
           onDragOver={handleDragOver}
           onDragEnd={handleDragEnd}
         >
@@ -73,6 +85,8 @@ export const OptionsEdit = () => {
             options && options.length > 0 &&
             <OptionsDroppable id={question.id} options={options} />
           }
+
+          <DragOverlay>{activeOption ? <OptionItem option={activeOption} dragOverlay={true} /> : null}</DragOverlay>
 
         </DndContext>
 
@@ -97,10 +111,10 @@ const OptionsEditPopover = ({ option, children }: { option: Question_Option__c, 
   const { options, handleUpdateOptions } = useBuilderContext();
 
   return <Popover
+    hasNoTriggerStyles={true}
     position={'overflowBoundaryElement'}
     isOpen={isOpen}
     body={
-
       <div className="slds-p-top_medium slds-ui-gen__layout-item">
         <Input
           type="text"
@@ -109,7 +123,6 @@ const OptionsEditPopover = ({ option, children }: { option: Question_Option__c, 
           onChange={(e) => setOptionLabel(e.target.value)}
         />
       </div>
-
     }
     footer={
       <div className="slds-text-align_right">
@@ -154,6 +167,8 @@ const OptionsDroppable = ({ id, options }: { id: string, options: Question_Optio
 
 const SortableOptionItem = ({ id, option, index }: { id: string, option: Question_Option__c, index: number }) => {
 
+  const { options, handleUpdateOptions } = useBuilderContext();
+
   const {
     attributes,
     listeners,
@@ -167,6 +182,13 @@ const SortableOptionItem = ({ id, option, index }: { id: string, option: Questio
     opacity: isDragging ? 0.5 : 1,
   };
 
+  const handleRemove = () => {
+    if (!options) return;
+    handleUpdateOptions(options.filter((_option: Question_Option__c, _index: number) => {
+      return _index != index;
+    }))
+  }
+
   return <li style={style}
     ref={setNodeRef}
     {...attributes}
@@ -175,15 +197,44 @@ const SortableOptionItem = ({ id, option, index }: { id: string, option: Questio
     className="slds-m-top_xx-small"
   >
     <OptionsEditPopover option={option}>
-      <Button
-        iconCategory="utility"
-        iconName="drag_and_drop"
-        iconPosition="left"
-        label={option.cforms__Label__c}
-      />
+      <OptionItem option={option} dragOverlay={false} handleRemove={handleRemove} />
     </OptionsEditPopover>
+
   </li>
 }
+
+const OptionItem = ({ option, dragOverlay, handleRemove }: { option: Question_Option__c, dragOverlay: boolean, handleRemove?: any }) => {
+
+  const style = {
+    cursor: dragOverlay ? "grabbing" : "grab",
+  };
+
+  return (
+    <div className="slds-grid slds-box slds-box_xx-small slds-grid_align-spread">
+      <Drag className="slds-col slds-large-size_1-of-5">
+        <svg className="slds-button__icon" aria-hidden="true">
+          <use xlinkHref="/assets/icons/utility-sprite/svg/symbols.svg#drag_and_drop"></use>
+        </svg>
+      </Drag>
+      <Point className="slds-col slds-large-size_3-of-5">
+        {option.cforms__Label__c}
+      </Point>
+      <Point onClick={handleRemove} className="slds-col slds-large-size_1-of-5">
+        <svg className="slds-button__icon slds-float_right slds-align_absolute-center" aria-hidden="true">
+          <use xlinkHref="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+        </svg>
+      </Point>
+    </div>
+  )
+}
+
+const Drag = styled.div`
+  cursor: grab;
+`
+
+const Point = styled.div`
+  cursor: pointer; 
+`
 
 const Popover = styled(SalesforcePopover)`
   z-index: 9999 !important;

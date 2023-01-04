@@ -73,59 +73,9 @@ const Design = () => {
     if (!overId) return;
 
     // handle 2 types fields (left panel) and questions (main display panel)
-    if (active.data.current.type == 'fields') {
-      // need differetn process here 
-      // activecontainer will be undefined since fields-(id) are not sortable yet
-      // so need to drop them in state of questions
-      // activeContainer is 
-      // const newQuestion = generateQuestionSObject(active.id, active.data.current.field);
-      // console.log({ newQuestion })
-
-      // const overContainer = over.data.current?.sortable ? over.data.current?.sortable.containerId : over.id;
-      // // console.log({ overContainer, over, dndQuestions }) // this is the page
-      // const overIndex =
-      //   over.id in dndQuestions
-      //     ? dndQuestions[overContainer].length + 1
-      //     : over.data.current.sortable.index;
-      // // console.log({ overIndex })
-
-      // console.log({ dndQuestions })
-
-
-      // const newItems = {
-      //   ...dndQuestions,
-      //   [overContainer]: insertAtIndex(dndQuestions[overContainer], overIndex, newQuestion),
-      // };
-      // console.log({ newItems })
-      // setDndQuestion(newItems);
-
-    }
+    if (active.data.current.type == 'fields') { }
 
     if (active.data.current.type == 'questions') { // update to enum
-      // if (!active.data.current.sortable || !over.data.current) return;
-
-      // const activeContainer = active.data.current.sortable.containerId;
-      // const overContainer = over.data.current?.sortable.containerId || over.id;
-
-      // if (activeContainer !== overContainer) {
-      //   const activeIndex = active.data.current.sortable.index;
-      //   const overIndex =
-      //     over.id in dndQuestions
-      //       ? dndQuestions[overContainer].length + 1
-      //       : over.data.current.sortable.index;
-
-      //   setDndQuestion(
-      //     moveBetweenContainers(
-      //       dndQuestions,
-      //       activeContainer,
-      //       activeIndex,
-      //       overContainer,
-      //       overIndex,
-      //       active.id
-      //     )
-      //   )
-      // }
-
     }
 
   };
