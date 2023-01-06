@@ -10,6 +10,7 @@ import { FORMSTATUS } from '../Builder';
 import { Question__c } from '../../utils/types/sObjects';
 import { Questions } from '../../reducers/BuilderProvider';
 import { removeAtIndex } from '../../components/Builder/Design/Display/utils/array';
+import { FieldType } from '../../utils/constants/fields';
 
 export const useForm = (reducer: [BuilderProviderState, React.Dispatch<BuilderAction>]) => {
 
@@ -21,7 +22,6 @@ export const useForm = (reducer: [BuilderProviderState, React.Dispatch<BuilderAc
     availableFields,
     questions,
     dndQuestions,
-    pages,
     question,
     isLoading
   } = state;
@@ -45,19 +45,14 @@ export const useForm = (reducer: [BuilderProviderState, React.Dispatch<BuilderAc
         console.log({ _availableOrgFields })
         dispatch({
           type: 'SET_AVAILABLE_FIELDS',
-          availableFields: _availableOrgFields.map(_availableField => ({ ..._availableField, quantity: 0 }))
+          availableFields: _availableOrgFields.map((_availableField: FieldType) => ({ ..._availableField, quantity: 0 }))
         })
 
         const _form = await call(BuilderController.getForm, [formId]);
-        console.log({ _form })
+
         dispatch({
           type: 'SET_FORM',
           form: _form
-        } as BuilderAction)
-        const _sObjects = await call(BuilderController.getSObjectsAvailable, []);
-        dispatch({
-          type: 'SET_SOBJECTS',
-          sObjects: _sObjects
         } as BuilderAction)
 
         const _questions: Array<Question__c> = await call(BuilderController.getQuestions, [formId]);
@@ -75,6 +70,7 @@ export const useForm = (reducer: [BuilderProviderState, React.Dispatch<BuilderAc
             return 0;
           });
 
+        console.log({ _questionsWithId })
         const questionsInPages = _questionsWithId.reduce((accum: Questions, question: Question__c) => {
           const { id: key } = question;
           return { ...accum, [key]: question }
@@ -88,8 +84,7 @@ export const useForm = (reducer: [BuilderProviderState, React.Dispatch<BuilderAc
 
         dispatch({
           type: 'SET_QUESTIONS',
-          questions: questionsInPages,
-          pages: Object.keys(questionsInPages),
+          questions: _questionsWithId,
           dndQuestions: _dndQuestions
         })
       } catch (error: any) {
@@ -192,7 +187,6 @@ export const useForm = (reducer: [BuilderProviderState, React.Dispatch<BuilderAc
     availableFields,
     questions,
     dndQuestions,
-    pages,
     isLoading,
     setDndQuestion,
     setFormUpdate,

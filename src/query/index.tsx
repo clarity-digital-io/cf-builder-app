@@ -6,7 +6,7 @@ import { Question__c } from "../utils/types/sObjects";
 const extraParams = { buffer: false, escape: false, timeout: 12000 };
 
 export const call = async (func: any, params: any[] | null): Promise<any> => {
-  console.log('process.env.NODE_ENV', process.env.NODE_ENV);
+  console.log('process.env.NODE_ENV', process.env.NODE_ENV, func);
   return process.env.NODE_ENV == "development" ?
     await devCall(func, params) :
     await prodCall(func, params);
@@ -158,6 +158,32 @@ const mockCall = (func: string, params: any[] | null | undefined, callback: (res
           "AccountRole",
           "OpportunityLineItem",
           "Service_Request__c",
+        ],
+        event: { statusCode: 200 }
+      })
+      break;
+    case BuilderController.getSObjectFields:
+      // cb = callback({
+      //   result: {
+      //     Required: {
+      //       OwnerId: { REFERENCE: "User" },
+      //       Name: { Text: null }
+      //     },
+      //     NotRequired: {
+      //       OpportunityId: { REFERENCE: "Opportunity" },
+      //       UnitPrice: { Currency: null },
+      //       Product2Id: { REFERENCE: "Product2" },
+      //       Quantity: { Number: null },
+      //     },
+      //   },
+      cb = callback({
+        result: [
+          { field: 'OwnerId', required: true, type: 'REFERENCE', reference: 'User' },
+          { field: 'Name', required: true, type: 'Text' },
+          { field: 'OpportunityId', required: false, type: 'REFERENCE', reference: 'Opportunity' },
+          { field: 'UnitPrice', required: false, type: 'Currency', reference: null },
+          { field: 'Product2Id', required: false, type: 'REFERENCE', reference: 'Product2' },
+          { field: 'Quantity', required: false, type: 'Number', reference: null }
         ],
         event: { statusCode: 200 }
       })

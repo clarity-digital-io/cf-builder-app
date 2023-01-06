@@ -3,14 +3,23 @@ import React from "react";
 import Droppable from "./components/Droppable";
 import styled from "styled-components";
 import { useBuilderContext } from "../../../../context/BuilderContext";
+import { Button } from "@salesforce/design-system-react";
 
 export const Display = ({ activeId }) => {
 
-  const { dndQuestions } = useBuilderContext();
+  const { dndQuestions, setDndQuestion } = useBuilderContext();
+  console.log({ dndQuestions })
 
+  const handleAddPage = () => {
+    const len = Object.keys(dndQuestions).length;
+    setDndQuestion({
+      ...dndQuestions,
+      [len]: []
+    });
+  }
   return (
     <DisplayStyle>
-      <Container className="slds-grid slds-wrap">
+      <Container className="slds-grid slds-wrap slds-p-around_small">
         {Object.keys(dndQuestions).map((group: any) => (
           <Droppable
             id={group}
@@ -26,6 +35,20 @@ export const Display = ({ activeId }) => {
           activeId={activeId}
           key={Object.keys(dndQuestions).length}
         /> */}
+        <div className="slds-col">
+          <div className="slds-grid slds-grid_align-end">
+            <div className="slds-col slds-p-top_small">
+              <Button
+                onClick={() => handleAddPage()}
+                variant="brand"
+                iconCategory="utility"
+                iconName="new"
+                iconPosition="left"
+                label="Add Page"
+              />
+            </div>
+          </div>
+        </div>
       </Container>
     </DisplayStyle>
   );

@@ -1,4 +1,4 @@
-import { Question_Criteria__c, Question_Option__c, Question__c } from "../utils/types/sObjects"
+import { Form_Connection_Field__c, Form_Connection__c, Question_Criteria__c, Question_Option__c, Question__c } from "../utils/types/sObjects"
 
 export enum NavStates {
   QUESTIONS,
@@ -22,15 +22,13 @@ export type BuilderProviderState = {
   formId: any | null | undefined
   availableFields: Array<any>
   form: any | null | undefined
-  questions: Questions
+  questions: Question__c[]
   dndQuestions: Record<number, Array<Question__c>> // questions by page 
-  pages: Array<any>
-  sObjects: any | null | undefined
   connections: any | null | undefined
   error: Error
   isLoading: any | null | undefined
   navState: NavStates // may move
-  activeConnection: any | null | undefined // may move
+  // activeConnection: any | null | undefined // may move
   activeFieldMapping: any | null | undefined // may move
   activeFieldPrefills: any | null | undefined // may move
   activeFields: any | null | undefined // may move
@@ -38,6 +36,14 @@ export type BuilderProviderState = {
   question: Question__c | null
   options: Array<any> | null
   criteria: Array<any> | null
+
+  // form connections
+  activeFormConnection: Form_Connection__c | null,
+  formConnections: Array<Form_Connection__c>
+  formConnectionFields: Array<Form_Connection_Field__c>
+
+  addFormConnection: () => void
+  setFormConnection: (connection: Form_Connection__c) => void,
 
   setNewCriterion: (criterion: Question_Criteria__c) => void
   setNewOption: (option: Question_Option__c) => void
@@ -63,12 +69,10 @@ export const builderInitialState: BuilderProviderState = {
   form: null,
   questions: {},
   dndQuestions: {},
-  pages: [],
-  sObjects: null,
   connections: null,
   error: { message: '', display: false },
   isLoading: true,
-  activeConnection: [],
+  // activeConnection: [],
   activeFieldMapping: [],
   activeFieldPrefills: null,
   activeFields: [],
@@ -77,6 +81,13 @@ export const builderInitialState: BuilderProviderState = {
   question: null,
   options: null,
   criteria: null,
+
+  activeFormConnection: null,
+  formConnections: [],
+  formConnectionFields: [],
+
+  addFormConnection: () => void {},
+  setFormConnection: (any) => void any,
 
   setNewCriterion: (any) => void any,
   setNewOption: (any) => void any,
@@ -112,7 +123,6 @@ export type BuilderAction =
   | {
     type: 'SET_QUESTIONS'
     questions: BuilderProviderState['questions'],
-    pages: BuilderProviderState['pages'],
     dndQuestions: BuilderProviderState['dndQuestions'],
   }
   | {
@@ -122,10 +132,6 @@ export type BuilderAction =
   | {
     type: 'UPDATE_QUESTIONS',
     questions: BuilderProviderState['questions']
-  }
-  | {
-    type: 'SET_SOBJECTS'
-    sObjects?: BuilderProviderState['sObjects']
   }
   | {
     type: 'SET_CONNECTIONS'
@@ -165,15 +171,23 @@ export type BuilderAction =
     type: 'SET_NAV_STATE'
     navState: BuilderProviderState['navState']
   }
-  | {
-    type: 'SET_ACTIVE_CONNECTIONS'
-    activeConnection?: BuilderProviderState['activeConnection']
-  }
+  // | {
+  //   type: 'SET_ACTIVE_CONNECTIONS'
+  //   activeConnection?: BuilderProviderState['activeConnection']
+  // }
   | {
     type: 'SET_ACTIVE_FIELDS'
     activeFields?: BuilderProviderState['activeFields']
     activeFieldMapping?: BuilderProviderState['activeFieldMapping']
     activeFieldPrefills?: BuilderProviderState['activeFieldPrefills']
+  }
+  | {
+    type: 'SET_FORM_CONNECTIONS',
+    formConnections: BuilderProviderState['formConnections']
+  }
+  | {
+    type: 'SET_FORM_CONNECTION',
+    activeFormConnection: BuilderProviderState['activeFormConnection']
   }
   | {
     type: 'RESET_BUILDER_PROVIDER'
@@ -192,25 +206,33 @@ export function builderReducer(
       console.log('set_form', action)
       return { ...state, form: action.form }
     case 'SET_QUESTIONS':
-      return { ...state, questions: action.questions, pages: action.pages, dndQuestions: action.dndQuestions }
+      return { ...state, questions: action.questions, dndQuestions: action.dndQuestions }
     case 'SET_DROP_QUESTION':
       return { ...state, dndQuestions: action.dndQuestions }
     case 'UPDATE_QUESTIONS':
       return { ...state, questions: action.questions }
     case 'SET_CONNECTIONS':
       return { ...state, connections: action.connections }
-    case 'SET_SOBJECTS':
-      return { ...state, sObjects: action.sObjects }
     case 'SET_NAV_STATE':
       return { ...state, navState: action.navState }
-    case 'SET_ACTIVE_CONNECTIONS':
-      return { ...state, activeConnection: action.activeConnection }
+    // case 'SET_ACTIVE_CONNECTIONS':
+    //   return { ...state, activeConnection: action.activeConnection }
     case 'SET_ACTIVE_FIELDS':
       return {
         ...state,
         activeFields: action.activeFields,
         activeFieldMapping: action.activeFieldMapping,
         activeFieldPrefills: action.activeFieldPrefills
+      }
+    case 'SET_FORM_CONNECTIONS':
+      return {
+        ...state,
+        formConnections: action.formConnections
+      }
+    case 'SET_FORM_CONNECTION':
+      return {
+        ...state,
+        activeFormConnection: action.activeFormConnection,
       }
     case 'INIT_QUESTION':
       return { ...state, question: action.question, criteria: action.criteria, options: action.options }

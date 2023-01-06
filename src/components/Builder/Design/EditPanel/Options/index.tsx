@@ -6,6 +6,7 @@ import styled from "styled-components";
 import { Question_Option__c } from "../../../../../utils/types/sObjects";
 import { DndContext, DragOverlay, KeyboardSensor, MouseSensor, TouchSensor, useDroppable, useSensor, useSensors } from "@dnd-kit/core";
 import { arrayMove, rectSortingStrategy, SortableContext, sortableKeyboardCoordinates, useSortable } from "@dnd-kit/sortable";
+import { QuestionTypes } from "../../../../../utils/types/fields";
 
 export const OptionsEdit = () => {
   const { question, options, setNewOption, handleUpdateOptions } = useBuilderContext();
@@ -65,43 +66,40 @@ export const OptionsEdit = () => {
   };
 
 
-  if (question != null && (Object).values(QuestionOptionTypes).includes(question.cforms__Type__c)) {
-    return <section className="slds-box slds-ui-gen__vertical-layout slds-m-top_small">
-      <div className="slds-grid slds-grid_vertical">
+  return <section className="slds-box slds-ui-gen__vertical-layout slds-m-top_small">
+    <div className="slds-grid slds-grid_vertical">
 
-        <div className="slds-text-title slds-m-bottom_xx-small">
-          Question Options
-        </div>
-
-        <DndContext
-          sensors={sensors}
-          onDragCancel={handleDragCancel}
-          onDragStart={handleDragStart}
-          onDragOver={handleDragOver}
-          onDragEnd={handleDragEnd}
-        >
-
-          {
-            options && options.length > 0 &&
-            <OptionsDroppable id={question.id} options={options} />
-          }
-
-          <DragOverlay>{activeOption ? <OptionItem option={activeOption} dragOverlay={true} /> : null}</DragOverlay>
-
-        </DndContext>
-
-        <div className="slds-m-top_x-small">
-          <Button
-            label="Add Option"
-            onClick={(e) => handleNewOption()} // add new criteria here setCriteria([].concat(newcriteria))
-          />
-        </div>
-
+      <div className="slds-text-title slds-m-bottom_xx-small">
+        Question Options
       </div>
-    </section>
-  }
 
-  return null;
+      <DndContext
+        sensors={sensors}
+        onDragCancel={handleDragCancel}
+        onDragStart={handleDragStart}
+        onDragOver={handleDragOver}
+        onDragEnd={handleDragEnd}
+      >
+
+        {
+          options && options.length > 0 && question &&
+          <OptionsDroppable id={question.id} options={options} optionType={question.cforms__Type__c} />
+        }
+
+        <DragOverlay>{activeOption ? <OptionItem option={activeOption} dragOverlay={true} /> : null}</DragOverlay>
+
+      </DndContext>
+
+      <div className="slds-m-top_x-small">
+        <Button
+          label="Add Option"
+          onClick={(e) => handleNewOption()} // add new criteria here setCriteria([].concat(newcriteria))
+        />
+      </div>
+
+    </div>
+  </section>
+
 }
 
 const OptionsEditPopover = ({ option, children }: { option: Question_Option__c, children: ReactElement | ReactElement[] }) => {
@@ -147,7 +145,7 @@ const OptionsEditPopover = ({ option, children }: { option: Question_Option__c, 
   </Popover>
 }
 
-const OptionsDroppable = ({ id, options }: { id: string, options: Question_Option__c[] }) => {
+const OptionsDroppable = ({ id, options, optionType }: { id: string, options: Question_Option__c[], optionType: QuestionTypes }) => {
 
   const { setNodeRef } = useDroppable({ id, data: { type: 'options' } });
 
@@ -156,7 +154,7 @@ const OptionsDroppable = ({ id, options }: { id: string, options: Question_Optio
       <ul>
         {
           options.map((option, index) => {
-            return <SortableOptionItem id={option.id} option={option} key={index} index={index} />
+            return <SortableOptionItem id={option.id} option={option} key={index} index={index} optionType={optionType} />
           })
         }
       </ul>
@@ -165,7 +163,7 @@ const OptionsDroppable = ({ id, options }: { id: string, options: Question_Optio
 
 }
 
-const SortableOptionItem = ({ id, option, index }: { id: string, option: Question_Option__c, index: number }) => {
+const SortableOptionItem = ({ id, option, index, optionType }: { id: string, option: Question_Option__c, index: number, optionType: QuestionTypes }) => {
 
   const { options, handleUpdateOptions } = useBuilderContext();
 
@@ -199,6 +197,10 @@ const SortableOptionItem = ({ id, option, index }: { id: string, option: Questio
     <OptionsEditPopover option={option}>
       <OptionItem option={option} dragOverlay={false} handleRemove={handleRemove} />
     </OptionsEditPopover>
+
+    {
+      QuestionTypes.PictureChoice == optionType && <div>add image</div>
+    }
 
   </li>
 }

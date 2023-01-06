@@ -5,6 +5,7 @@ import styled from "styled-components";
 import Main from "./components/Elements/Theme";
 import Builder from "./components/Builder";
 import { BuilderContextProvider } from "./context/BuilderContext";
+import { SetupContextProvider } from "./context/SetupContext";
 
 const Layout = styled.div`
   background: ${Main.color.white};
@@ -14,9 +15,11 @@ const Layout = styled.div`
 
 ReactDOM.render(
   <Layout>
-    <BuilderContextProvider>
-      <Builder />
-    </BuilderContextProvider>
+    <SetupContextProvider>
+      <BuilderContextProvider>
+        <Builder />
+      </BuilderContextProvider>
+    </SetupContextProvider>
   </Layout>,
   document.getElementById("app")
 );

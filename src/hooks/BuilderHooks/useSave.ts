@@ -15,6 +15,8 @@ export const useSave = (reducer: [BuilderProviderState, React.Dispatch<BuilderAc
   const {
     dndQuestions,
     form,
+    formConnections,
+    formConnectionFields,
     question,
     options,
     criteria,
@@ -51,8 +53,10 @@ export const useSave = (reducer: [BuilderProviderState, React.Dispatch<BuilderAc
       }, [] as Question__c[]);
 
     if (questions.length > 0) {
+
+      console.log({ questions })
       // save
-      await call(BuilderController.save, [questions]);
+      // await call(BuilderController.save, [questions]);
 
     }
 

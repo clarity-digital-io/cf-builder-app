@@ -1,4 +1,4 @@
-import React, { ReactElement, useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import { Combobox, ButtonGroup, Button, Input, comboboxFilterAndLimit } from "@salesforce/design-system-react";
 import { Question_Criteria__c, Question__c } from "../../../../../../utils/types/sObjects";
@@ -6,34 +6,40 @@ import { useBuilderContext } from "../../../../../../context/BuilderContext";
 import { OperatorTypes, validOperatorsForTypes, ValueTypes, validValueForOperatorTypes } from "../../../../../../utils/criteria";
 import { QuestionTypes } from "../../../../../../utils/types/fields";
 
+export const VisibilityFilterContainer = () => {
+
+}
+
 export const VisibilityFilter = (
   { question, criterion, handleCriterionUpdate }:
     { question: Question__c, criterion: Question_Criteria__c, handleCriterionUpdate: (a: any) => void }
 ) => {
 
-  const { questions } = useBuilderContext();
+  const { dndQuestions } = useBuilderContext();
 
   const [allPageQuestions, setAllPageQuestions] = useState<ComboQuestion[]>([]);
   const [formFieldValidOperators, setFormFieldValidOperators] = useState<ComboOperator[]>([]);
 
   const combineAllQuestions = useCallback(() => {
-    const _questions = Object.values(questions).flat().map((question: Question__c, index) => {
+    const _questions = Object.values(dndQuestions).flat().map((question: Question__c, index) => {
       return { id: question.Id?.toString() || index.toString(), label: question.cforms__Title__c, type: question.cforms__Type__c }
     });
+    console.log({ dndQuestions, _questions })
     setAllPageQuestions(_questions);
-  }, [questions]);
+  }, [dndQuestions]);
 
   useEffect(() => {
     combineAllQuestions();
-  }, [questions])
+  }, [dndQuestions])
 
   // form field selection
   const [inputValue, setInputValue] = useState('');
-  const [selection, setSelection] = useState<ComboQuestion[]>([{ id: '', label: '', type: QuestionTypes.None }])
+  // if trying to fix preselect error set array as empty
+  const [selection, setSelection] = useState<ComboQuestion[]>([])
 
   // operator selection
   const [operatorInputValue, setOperatorInputValue] = useState('');
-  const [operatorSelection, setOperatorSelection] = useState<ComboOperator[]>([{ id: '', label: '', type: OperatorTypes.EMPTY }])
+  const [operatorSelection, setOperatorSelection] = useState<ComboOperator[]>([])
 
   const calculateValidOperators = useCallback((type: QuestionTypes) => {
     const validOperators: OperatorTypes[] = validOperatorsForTypes(type);

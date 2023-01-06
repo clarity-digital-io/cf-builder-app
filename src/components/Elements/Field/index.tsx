@@ -1,7 +1,8 @@
 export { Attachments } from "./attachments";
 export { Checkbox } from "./checkbox";
+export { PictureChoice } from "./picturechoice";
+
 export { Comment } from "./comment";
-export { ConnectedObject } from "./connectedobject";
 export { Date } from "./date";
 export { Dropdown } from "./dropdown";
 export { Email } from "./email";

@@ -1,18 +1,12 @@
-import { useCallback, useEffect, useReducer } from 'react'
-import { call } from '../query';
+import { useReducer } from 'react'
 
 import {
   BuilderProviderState,
-  BuilderAction,
   builderInitialState,
   builderReducer,
 } from '../reducers'
-import { NavStates, Questions } from '../reducers/BuilderProvider';
-import { BuilderController } from '../utils/constants/methods';
-import { Error } from '../utils/messages/error';
-import { QuestionTypes } from '../utils/types/fields';
-import { Question_Criteria__c, Question__c } from '../utils/types/sObjects';
 import { useEdit, useError, useForm, useNavigate, useSave } from './BuilderHooks';
+import { useFormConnections } from './BuilderHooks/useFormConnections';
 
 export const useBuilder = () => {
   const [state, dispatch] = useReducer(
@@ -22,21 +16,12 @@ export const useBuilder = () => {
 
   const {
     error,
-    activeConnection,
     activeFieldMapping,
     activeFieldPrefills,
     activeFields,
     connections,
     navState,
-    sObjects
   } = state;
-
-  // split this up into multiple hooks 
-  // useEdit
-  // useSave
-  // useMapping
-  // useNavigation
-  // useError
 
   const {
     formId,
@@ -44,7 +29,6 @@ export const useBuilder = () => {
     availableFields,
     questions,
     dndQuestions,
-    pages,
     isLoading,
     setDndQuestion,
     setFormUpdate,
@@ -52,7 +36,17 @@ export const useBuilder = () => {
     handleFormUpdate
   } = useForm([state, dispatch]);
 
-  const { handleSave } = useSave([state, dispatch]);
+  const {
+    activeFormConnection,
+    formConnections,
+    formConnectionFields,
+    addFormConnection,
+    setFormConnection
+  } = useFormConnections([state, dispatch]);
+
+  const {
+    handleSave
+  } = useSave([state, dispatch]);
 
   const {
     question,
@@ -76,10 +70,8 @@ export const useBuilder = () => {
     availableFields,
     questions,
     dndQuestions,
-    pages,
     error,
     isLoading,
-    activeConnection,
     activeFieldMapping,
     activeFieldPrefills,
     activeFields,
@@ -89,7 +81,11 @@ export const useBuilder = () => {
     question,
     options,
     criteria,
-    sObjects,
+    formConnections,
+    formConnectionFields,
+    activeFormConnection,
+    setFormConnection,
+    addFormConnection,
     setNewCriterion,
     setNewOption,
     handleUpdateOptions,

@@ -2,11 +2,14 @@ import React, { ReactElement, useState } from "react";
 
 import { Popover as SalesforcePopover, Button } from "@salesforce/design-system-react";
 import { Question_Criteria__c, Question__c } from "../../../../../../utils/types/sObjects";
-import { BuilderContextProvider } from "../../../../../../context/BuilderContext";
+import { BuilderContextProvider, useBuilderContext } from "../../../../../../context/BuilderContext";
 import { VisibilityFilter } from "./filter";
 import styled from "styled-components";
 
 export const VisibilityFilterPopover = ({ setNewCriterion, question, criterion, children }: { setNewCriterion, question: Question__c, criterion: Question_Criteria__c, children: ReactElement }) => {
+
+  const { dndQuestions } = useBuilderContext();
+  console.log('VisibilityFilterPopover', { dndQuestions })
 
   const [criterionUpdate, setCriterionUpdate] = useState();
   const [isOpen, setOpen] = useState(false);

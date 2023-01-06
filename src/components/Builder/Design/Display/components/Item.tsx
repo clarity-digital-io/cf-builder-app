@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useBuilderContext } from "../../../../../context/BuilderContext";
 import { QuestionTypes } from "../../../../../utils/types/fields";
 import { Question__c } from "../../../../../utils/types/sObjects";
-import { Lookup, Attachments, MultipleChoice, Dropdown, Slider, Comment, Checkbox, RecordGroup, Date } from "../../../../Elements/Field";
+import { Lookup, Attachments, MultipleChoice, Dropdown, Slider, Comment, Checkbox, RecordGroup, Date, PictureChoice } from "../../../../Elements/Field";
 import { removeAtIndex } from "../utils/array";
 
 const Item = ({ droppableId, id, index, data, dragOverlay }: { droppableId: number | string, id: number | string, data: Question__c, index: number, dragOverlay: boolean }) => {
@@ -102,6 +102,7 @@ const QuestionComponent = ({ question, questionType }: { question: Question__c, 
       return <Checkbox question={question} />
     case QuestionTypes.FreeText:
     case QuestionTypes.PictureChoice:
+      return <PictureChoice question={question} />
     case QuestionTypes.GeoLocation:
     case QuestionTypes.Attachments:
       return <Attachments question={question} />

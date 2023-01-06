@@ -13,8 +13,8 @@ export const types: FieldType[] = [
   {
     id: 1,
     active: false,
-    name: "Connected Object",
-    type: QuestionTypes.ConnectedObject,
+    name: "Picture Choice",
+    type: QuestionTypes.PictureChoice,
     icon: "account"
   },
   {
@@ -135,3 +135,10 @@ export const sortedTypes = types
     }
   })
   .filter((type) => type.active);
+
+export type FieldMap = {
+  field: string,
+  required: boolean,
+  type: string,
+  reference: string | null
+}

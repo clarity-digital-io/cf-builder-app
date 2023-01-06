@@ -6,10 +6,13 @@ import { CriteriaEdit } from "./Criteria";
 import { QuestionEdit } from "./Question";
 import { FormEdit } from "./Form";
 import { useBuilderContext } from "../../../../context/BuilderContext";
+import { QuestionOptionTypes } from "../../../../utils/options";
 
 export const Edit = () => {
 
   const { question } = useBuilderContext()
+
+  const isOptionsType = question != null && (Object).values(QuestionOptionTypes).includes(question.cforms__Type__c)
 
   return <Panel header="Form">
 
@@ -17,7 +20,7 @@ export const Edit = () => {
       question ?
         <>
           <QuestionEdit />
-          <OptionsEdit />
+          {isOptionsType && <OptionsEdit />}
           <CriteriaEdit />
         </> :
         <FormEdit />

@@ -138,16 +138,16 @@ const Design = () => {
       over.data.current.type == 'questions'
     ) {
 
-      console.log({ activeId: active })
-      const orderIndexAt = over.data.current.sortable.index;
-      const overContainer = over.data.current?.sortable.containerId || over.id;
+      console.log({ activeId: active, over })
+      const orderIndexAt = over.data.current.sortable ? over.data.current.sortable.index : 0;
+      const overContainer = over.data.current?.sortable ? over.data.current.sortable.containerId : over.id;
       const overIndex =
         over.id in dndQuestions
           ? dndQuestions[overContainer].length + 1
           : over.data.current.sortable.index;
 
       const newQuestion = generateQuestionSObject(active.id, overContainer, orderIndexAt, active.data.current.field);
-
+      console.log('overContainer', { overContainer })
       const newItems = {
         ...dndQuestions,
         [overContainer]: insertAtIndex(dndQuestions[overContainer], overIndex, newQuestion),
