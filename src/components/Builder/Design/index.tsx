@@ -65,9 +65,6 @@ const Design = () => {
 
   const handleDragOver = ({ active, over }) => {
 
-    // handle drag end 
-    console.log('handle drag over', { active, over })
-
     // handle when it's not over a droppable region
     const overId = over?.id;
     if (!overId) return;
@@ -81,9 +78,6 @@ const Design = () => {
   };
 
   const handleDragEnd = ({ active, over }) => {
-
-    // handle drag end 
-    console.log('handle drag end', { active, over })
 
     if (!over) {
       if (active.data.current.type == 'fields') {
@@ -138,7 +132,6 @@ const Design = () => {
       over.data.current.type == 'questions'
     ) {
 
-      console.log({ activeId: active, over })
       const orderIndexAt = over.data.current.sortable ? over.data.current.sortable.index : 0;
       const overContainer = over.data.current?.sortable ? over.data.current.sortable.containerId : over.id;
       const overIndex =
@@ -147,7 +140,6 @@ const Design = () => {
           : over.data.current.sortable.index;
 
       const newQuestion = generateQuestionSObject(active.id, overContainer, orderIndexAt, active.data.current.field);
-      console.log('overContainer', { overContainer })
       const newItems = {
         ...dndQuestions,
         [overContainer]: insertAtIndex(dndQuestions[overContainer], overIndex, newQuestion),
@@ -157,8 +149,6 @@ const Design = () => {
         const { quantity, id } = afield;
         return { ...afield, id: id + '-' + quantity };
       })
-
-      console.log({ updatedAvailableFields })
 
       setDndQuestion(newItems, updatedAvailableFields);
     }
@@ -192,7 +182,7 @@ const Design = () => {
 };
 
 const generateQuestionSObject = (id: string, page: number, order: number, field: FieldType): Question__c => {
-  console.log({ id })
+
   return {
     id: id + 'new',
     cforms__Order__c: order,

@@ -1,0 +1,1 @@
+export const MAX_PICTURE_CHOICE = 8;

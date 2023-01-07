@@ -8,7 +8,6 @@ import { Button } from "@salesforce/design-system-react";
 export const Display = ({ activeId }) => {
 
   const { dndQuestions, setDndQuestion } = useBuilderContext();
-  console.log({ dndQuestions })
 
   const handleAddPage = () => {
     const len = Object.keys(dndQuestions).length;

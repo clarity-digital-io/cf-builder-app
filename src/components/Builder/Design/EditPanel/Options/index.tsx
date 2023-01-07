@@ -1,18 +1,20 @@
 import { Popover as SalesforcePopover, Input, Button } from "@salesforce/design-system-react";
 import React, { ReactElement, useState } from "react";
-import { BuilderContextProvider, useBuilderContext } from "../../../../../context/BuilderContext";
-import { QuestionOptionTypes } from "../../../../../utils/options";
-import styled from "styled-components";
+import { useBuilderContext } from "../../../../../context/BuilderContext";
 import { Question_Option__c } from "../../../../../utils/types/sObjects";
-import { DndContext, DragOverlay, KeyboardSensor, MouseSensor, TouchSensor, useDroppable, useSensor, useSensors } from "@dnd-kit/core";
-import { arrayMove, rectSortingStrategy, SortableContext, sortableKeyboardCoordinates, useSortable } from "@dnd-kit/sortable";
+import { DndContext, DragOverlay, KeyboardSensor, MouseSensor, TouchSensor, useSensor, useSensors } from "@dnd-kit/core";
+import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { QuestionTypes } from "../../../../../utils/types/fields";
+import styled from "styled-components";
+import { PictureOptionsDroppable } from "./picturechoice";
+import { OptionsDroppable } from "./option";
 
 export const OptionsEdit = () => {
-  const { question, options, setNewOption, handleUpdateOptions } = useBuilderContext();
-  console.log({ options })
+  const { question, options, setNewOption, handleDrageUpdateOptions } = useBuilderContext();
 
-  const handleNewOption = () => {
+  const isPictureChoice = question?.cforms__Type__c === QuestionTypes.PictureChoice;
+
+  const handleNewOption = (isPictureChoice: boolean) => {
     if (!question) return;
     const order = options && options.length > 0 ? options.length : 0;
     const option: Question_Option__c = {
@@ -21,7 +23,7 @@ export const OptionsEdit = () => {
       cforms__Label__c: `qo-${question.id}-${order}`,
       cforms__Order__c: order
     }
-    setNewOption(option)
+    setNewOption(option, isPictureChoice)
   }
 
   const [activeOption, setActiveOption] = useState(null);
@@ -45,7 +47,6 @@ export const OptionsEdit = () => {
 
   const handleDragOver = ({ active, over }) => {
     console.log({ active, over })
-
   }
 
   const handleDragEnd = ({ active, over }) => {
@@ -58,7 +59,8 @@ export const OptionsEdit = () => {
       overIndex
     )
 
-    handleUpdateOptions(newOptions)
+    handleDrageUpdateOptions(activeIndex, overIndex, isPictureChoice)
+
   }
 
   const handleDragCancel = () => {
@@ -82,8 +84,13 @@ export const OptionsEdit = () => {
       >
 
         {
-          options && options.length > 0 && question &&
-          <OptionsDroppable id={question.id} options={options} optionType={question.cforms__Type__c} />
+          options && options.length > 0 && question && question.cforms__Type__c !== QuestionTypes.PictureChoice &&
+          <OptionsDroppable id={question.id} options={options} />
+        }
+
+        {
+          options && options.length > 0 && question && question.cforms__Type__c === QuestionTypes.PictureChoice &&
+          <PictureOptionsDroppable id={question.id} options={options} />
         }
 
         <DragOverlay>{activeOption ? <OptionItem option={activeOption} dragOverlay={true} /> : null}</DragOverlay>
@@ -93,7 +100,7 @@ export const OptionsEdit = () => {
       <div className="slds-m-top_x-small">
         <Button
           label="Add Option"
-          onClick={(e) => handleNewOption()} // add new criteria here setCriteria([].concat(newcriteria))
+          onClick={(e) => handleNewOption(question?.cforms__Type__c === QuestionTypes.PictureChoice)}
         />
       </div>
 
@@ -102,7 +109,7 @@ export const OptionsEdit = () => {
 
 }
 
-const OptionsEditPopover = ({ option, children }: { option: Question_Option__c, children: ReactElement | ReactElement[] }) => {
+export const OptionsEditPopover = ({ option, children }: { option: Question_Option__c, children: ReactElement | ReactElement[] }) => {
 
   const [isOpen, setOpen] = useState(false);
   const [optionLabel, setOptionLabel] = useState('');
@@ -145,67 +152,7 @@ const OptionsEditPopover = ({ option, children }: { option: Question_Option__c, 
   </Popover>
 }
 
-const OptionsDroppable = ({ id, options, optionType }: { id: string, options: Question_Option__c[], optionType: QuestionTypes }) => {
-
-  const { setNodeRef } = useDroppable({ id, data: { type: 'options' } });
-
-  return <SortableContext id={id} items={options.map(({ id }) => id)} strategy={rectSortingStrategy}>
-    <div ref={setNodeRef} >
-      <ul>
-        {
-          options.map((option, index) => {
-            return <SortableOptionItem id={option.id} option={option} key={index} index={index} optionType={optionType} />
-          })
-        }
-      </ul>
-    </div>
-  </SortableContext>
-
-}
-
-const SortableOptionItem = ({ id, option, index, optionType }: { id: string, option: Question_Option__c, index: number, optionType: QuestionTypes }) => {
-
-  const { options, handleUpdateOptions } = useBuilderContext();
-
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    isDragging,
-  } = useSortable({
-    id
-  });
-
-  const style = {
-    opacity: isDragging ? 0.5 : 1,
-  };
-
-  const handleRemove = () => {
-    if (!options) return;
-    handleUpdateOptions(options.filter((_option: Question_Option__c, _index: number) => {
-      return _index != index;
-    }))
-  }
-
-  return <li style={style}
-    ref={setNodeRef}
-    {...attributes}
-    {...listeners}
-    key={index}
-    className="slds-m-top_xx-small"
-  >
-    <OptionsEditPopover option={option}>
-      <OptionItem option={option} dragOverlay={false} handleRemove={handleRemove} />
-    </OptionsEditPopover>
-
-    {
-      QuestionTypes.PictureChoice == optionType && <div>add image</div>
-    }
-
-  </li>
-}
-
-const OptionItem = ({ option, dragOverlay, handleRemove }: { option: Question_Option__c, dragOverlay: boolean, handleRemove?: any }) => {
+export const OptionItem = ({ option, dragOverlay, handleRemove }: { option: Question_Option__c, dragOverlay: boolean, handleRemove?: any }) => {
 
   const style = {
     cursor: dragOverlay ? "grabbing" : "grab",

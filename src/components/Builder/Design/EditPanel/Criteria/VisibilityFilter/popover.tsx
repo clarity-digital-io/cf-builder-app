@@ -9,13 +9,11 @@ import styled from "styled-components";
 export const VisibilityFilterPopover = ({ setNewCriterion, question, criterion, children }: { setNewCriterion, question: Question__c, criterion: Question_Criteria__c, children: ReactElement }) => {
 
   const { dndQuestions } = useBuilderContext();
-  console.log('VisibilityFilterPopover', { dndQuestions })
 
   const [criterionUpdate, setCriterionUpdate] = useState();
   const [isOpen, setOpen] = useState(false);
 
   const handleCriterionUpdate = (_criterionUpdate) => {
-    console.log({ _criterionUpdate });
     setCriterionUpdate(_criterionUpdate);
   }
 

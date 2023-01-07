@@ -1,3 +1,4 @@
+import { ImageListType } from "react-images-uploading"
 import { Form_Connection_Field__c, Form_Connection__c, Question_Criteria__c, Question_Option__c, Question__c } from "../utils/types/sObjects"
 
 export enum NavStates {
@@ -34,8 +35,13 @@ export type BuilderProviderState = {
   activeFields: any | null | undefined // may move
 
   question: Question__c | null
-  options: Array<any> | null
+
+  //criteria 
   criteria: Array<any> | null
+
+  // question options 
+  options: Array<any>
+  pictureOptions: ImageListType
 
   // form connections
   activeFormConnection: Form_Connection__c | null,
@@ -46,8 +52,12 @@ export type BuilderProviderState = {
   setFormConnection: (connection: Form_Connection__c) => void,
 
   setNewCriterion: (criterion: Question_Criteria__c) => void
-  setNewOption: (option: Question_Option__c) => void
+  setNewOption: (option: Question_Option__c, isPictureChoice: boolean) => void
+
+  handleDrageUpdateOptions: (activeIndex: number, overIndex: number, isPictureChoice?: boolean) => void
+  handleUpdatePictureOption: (pictureOptions: ImageListType) => void
   handleUpdateOptions: (options: Question_Option__c[]) => void
+  handleRemoveOptions: (index: number, isPictureChoice?: boolean) => void
 
   initQuestionEdit: (question: Question__c | null) => void
   setQuestionUpdate: (question: Question__c | null) => void
@@ -67,7 +77,7 @@ export const builderInitialState: BuilderProviderState = {
   formId: null,
   availableFields: [],
   form: null,
-  questions: {},
+  questions: [],
   dndQuestions: {},
   connections: null,
   error: { message: '', display: false },
@@ -79,8 +89,10 @@ export const builderInitialState: BuilderProviderState = {
   navState: NavStates.QUESTIONS,
 
   question: null,
-  options: null,
   criteria: null,
+
+  options: [],
+  pictureOptions: [],
 
   activeFormConnection: null,
   formConnections: [],
@@ -90,8 +102,12 @@ export const builderInitialState: BuilderProviderState = {
   setFormConnection: (any) => void any,
 
   setNewCriterion: (any) => void any,
+
   setNewOption: (any) => void any,
+  handleDrageUpdateOptions: (any) => void any,
+  handleUpdatePictureOption: (any) => void any,
   handleUpdateOptions: (any) => void any,
+  handleRemoveOptions: (any) => void any,
 
   initQuestionEdit: (any) => void any,
   setQuestionUpdate: (any) => void any,
@@ -153,11 +169,19 @@ export type BuilderAction =
   }
   | {
     type: 'SET_NEW_OPTION',
-    options: BuilderProviderState['options']
+    options: BuilderProviderState['options'],
   }
   | {
     type: 'SET_UPDATE_OPTIONS',
-    options: BuilderProviderState['options']
+    options: BuilderProviderState['options'],
+  }
+  | {
+    type: 'SET_NEW_PICTURE_OPTION',
+    pictureOptions: BuilderProviderState['pictureOptions']
+  }
+  | {
+    type: 'SET_UPDATE_PICTURE_OPTIONS',
+    pictureOptions: BuilderProviderState['pictureOptions']
   }
   | {
     type: 'SET_LOADING'
@@ -243,6 +267,9 @@ export function builderReducer(
     case 'SET_NEW_OPTION':
     case 'SET_UPDATE_OPTIONS':
       return { ...state, options: action.options }
+    case 'SET_NEW_PICTURE_OPTION':
+    case 'SET_UPDATE_PICTURE_OPTIONS':
+      return { ...state, pictureOptions: action.pictureOptions }
     case 'SET_LOADING':
       return { ...state, isLoading: action.isLoading }
     case 'SET_ERROR':

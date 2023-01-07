@@ -24,7 +24,7 @@ export const VisibilityFilter = (
     const _questions = Object.values(dndQuestions).flat().map((question: Question__c, index) => {
       return { id: question.Id?.toString() || index.toString(), label: question.cforms__Title__c, type: question.cforms__Type__c }
     });
-    console.log({ dndQuestions, _questions })
+
     setAllPageQuestions(_questions);
   }, [dndQuestions]);
 

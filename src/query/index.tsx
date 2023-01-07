@@ -6,14 +6,12 @@ import { Question__c } from "../utils/types/sObjects";
 const extraParams = { buffer: false, escape: false, timeout: 12000 };
 
 export const call = async (func: any, params: any[] | null): Promise<any> => {
-  console.log('process.env.NODE_ENV', process.env.NODE_ENV, func);
   return process.env.NODE_ENV == "development" ?
     await devCall(func, params) :
     await prodCall(func, params);
 };
 
 const prodCall = async (func: string, params: any[] | null): Promise<any> => {
-  console.log('prodCall', { params })
   const result = await new Promise((resolve, reject) => {
     try {
       if (params == null || params.length == 0) {
@@ -26,12 +24,9 @@ const prodCall = async (func: string, params: any[] | null): Promise<any> => {
       }
 
     } catch (error) {
-      console.log({ error })
       reject(error);
     }
   })
-
-  console.log({ result })
 
   return result;
   // if (result && event && event.statusCode == 200) {
@@ -200,7 +195,6 @@ const mockCall = (func: string, params: any[] | null | undefined, callback: (res
 
   if (cb != null) {
     setTimeout(() => {
-      console.log('settimeout', callback)
       cb();
     }, 200)
   }

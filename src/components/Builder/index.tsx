@@ -9,7 +9,7 @@ import styled from "styled-components";
 const Builder = () => {
 
   const { form, isLoading } = useBuilderContext();
-  console.log({ form, isLoading })
+
   return (
     <Layout>
       <IconSettings iconPath={getIconPath()}>
