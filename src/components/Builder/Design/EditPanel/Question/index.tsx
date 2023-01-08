@@ -8,7 +8,7 @@ export const QuestionEdit = () => {
 
   if (!question) {
     return <div>
-      no question selected
+      No question selected
     </div>
   }
 

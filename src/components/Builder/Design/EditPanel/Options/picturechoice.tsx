@@ -1,13 +1,13 @@
-import { Popover as SalesforcePopover, Input, Button } from "@salesforce/design-system-react";
-import React, { ReactElement, useState } from "react";
+import { Button } from "@salesforce/design-system-react";
+import React from "react";
 import { useBuilderContext } from "../../../../../context/BuilderContext";
 import { Question_Option__c } from "../../../../../utils/types/sObjects";
 import { useDroppable } from "@dnd-kit/core";
 import { rectSortingStrategy, SortableContext, useSortable } from "@dnd-kit/sortable";
-import { QuestionTypes } from "../../../../../utils/types/fields";
 import ImageUploading, { ImageListType } from "react-images-uploading";
 import { MAX_PICTURE_CHOICE } from "../../../../../utils/constants/app";
 import { OptionItem, OptionsEditPopover } from ".";
+import styled from "styled-components";
 
 // create one for PictureOptionsDroppable
 export const PictureOptionsDroppable = ({ id, options }: { id: string, options: Question_Option__c[] }) => {
@@ -94,12 +94,16 @@ const SortablePictureOptionItem = ({ id, option, index, uploadFunctions }: { id:
       <div className="slds-col_bump-lef">
         {
           imageList[index].data_url ?
-            <img src={imageList[index].data_url} /> :
+            <img
+              onClick={() => {
+                onImageUpdate(index);
+              }}
+              src={imageList[index].data_url}
+              width='100px'
+            /> :
             <Button
               assistiveText={{ icon: 'Icon Container Small' }}
               onClick={() => {
-                console.log({ imageList, index })
-
                 onImageUpdate(index);
               }}
               iconCategory="utility"

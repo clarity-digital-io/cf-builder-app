@@ -7,7 +7,7 @@ import { Lookup, Attachments, MultipleChoice, Dropdown, Slider, Comment, Checkbo
 import { removeAtIndex } from "../utils/array";
 
 const Item = ({ droppableId, id, index, data, dragOverlay }: { droppableId: number | string, id: number | string, data: Question__c, index: number, dragOverlay: boolean }) => {
-  const { initQuestionEdit } = useBuilderContext();
+  const { question, initQuestionEdit } = useBuilderContext();
 
   const { dndQuestions, setDndQuestion } = useBuilderContext();
 
@@ -29,8 +29,10 @@ const Item = ({ droppableId, id, index, data, dragOverlay }: { droppableId: numb
     cursor: dragOverlay ? "grabbing" : "grab",
   };
 
+  console.log('item', { id, question, isActive: question?.Id === id })
+
   return (
-    <div style={style} className={isHovering ? 'slds-is-hovered slds-drop-zone__container slds-m-top_x-small' : 'slds-drop-zone__container slds-m-top_x-small'} onMouseEnter={handleMouseOver} onMouseOut={handleMouseOut}>
+    <div style={style} className={isHovering || question?.id === id ? 'slds-is-hovered slds-drop-zone__container slds-m-top_x-small' : 'slds-drop-zone__container slds-m-top_x-small'} onMouseEnter={handleMouseOver} onMouseOut={handleMouseOut}>
       <div className="slds-drop-zone__label slds-drop-zone__label_container">
         <div className="slds-media slds-media_center">
           <div className="slds-media__figure">

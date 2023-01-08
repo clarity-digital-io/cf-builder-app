@@ -85,7 +85,7 @@ export const types: FieldType[] = [
     active: false,
     name: "Image",
     type: QuestionTypes.Image,
-    icon: "photo"
+    icon: "file"
   },
   {
     id: 12,
@@ -121,6 +121,13 @@ export const types: FieldType[] = [
     name: "Mobile Geo Location",
     type: QuestionTypes.GeoLocation,
     icon: "address"
+  },
+  {
+    id: 17,
+    active: true,
+    name: "Photo",
+    type: QuestionTypes.Photo,
+    icon: "file"
   },
 ];
 

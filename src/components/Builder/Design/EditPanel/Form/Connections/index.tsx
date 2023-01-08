@@ -15,7 +15,6 @@ export const Connections = ({ isOpen, setOpen }: { isOpen: boolean, setOpen: Dis
   const { activeFormConnection, setFormConnection } = useBuilderContext();
 
   const handleNewRecordCheck = (checked: boolean) => {
-    console.log('handleNewrecordcheck', checked)
     if (!activeFormConnection) return;
     setFormConnection({ ...activeFormConnection, cforms__New__c: checked })
   }
@@ -156,7 +155,6 @@ const ConnectionTabs = () => {
         type: question.cforms__Type__c
       }
     });
-    console.log({ _formattedQuestions })
     _setQuestions(_formattedQuestions)
   }, [questions]);
 
@@ -165,7 +163,6 @@ const ConnectionTabs = () => {
       formatQuestions()
     }
   }, [questions])
-  console.log({ _questions })
 
   return <Tabs id="tabs-connections" defaultSelectedIndex={1}>
     <TabsPanel disabled={activeFormConnection?.cforms__New__c} label={activeFormConnection?.cforms__New__c ? "Prefill *Not Available" : "Prefill"}>
@@ -270,7 +267,6 @@ const FieldMapping = ({ questions, sObjectFields }: { questions: Array<ComboQues
 }
 
 const FieldMappingRow = ({ questions, sObjectFields }: { questions: Array<ComboQuestionField>, sObjectFields: Array<ComboSObjectField> }) => {
-  console.log({ questions })
   //connection question
   const [inputValue, setInputValue] = useState('');
   const [selection, setSelection] = useState<ComboQuestionField[]>([])

@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { useBuilderContext } from "../../../../context/BuilderContext";
 import { FieldType } from "../../../../utils/constants/fields";
 
-export const Fields = ({ fieldActive }) => {
+export const Fields = () => {
   const { availableFields } = useBuilderContext();
 
   return <Panel header="Fields">
@@ -23,7 +23,7 @@ export const Fields = ({ fieldActive }) => {
 
 const AvailableFieldItem = ({ field }: { field: any }) => {
 
-  const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
+  const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
     id: `field-${field.id}`,
     data: {
       field: field,

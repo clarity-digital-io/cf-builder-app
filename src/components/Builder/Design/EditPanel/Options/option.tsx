@@ -1,14 +1,8 @@
-import { Popover as SalesforcePopover, Input, Button } from "@salesforce/design-system-react";
-import React, { ReactElement, useState } from "react";
-import { BuilderContextProvider, useBuilderContext } from "../../../../../context/BuilderContext";
-import { QuestionOptionTypes } from "../../../../../utils/options";
-import styled from "styled-components";
+import React from "react";
+import { useBuilderContext } from "../../../../../context/BuilderContext";
 import { Question_Option__c } from "../../../../../utils/types/sObjects";
-import { DndContext, DragOverlay, KeyboardSensor, MouseSensor, TouchSensor, useDroppable, useSensor, useSensors } from "@dnd-kit/core";
-import { arrayMove, rectSortingStrategy, SortableContext, sortableKeyboardCoordinates, useSortable } from "@dnd-kit/sortable";
-import { QuestionTypes } from "../../../../../utils/types/fields";
-import ImageUploading, { ImageListType } from "react-images-uploading";
-import { MAX_PICTURE_CHOICE } from "../../../../../utils/constants/app";
+import { useDroppable } from "@dnd-kit/core";
+import { rectSortingStrategy, SortableContext, useSortable } from "@dnd-kit/sortable";
 import { OptionItem, OptionsEditPopover } from ".";
 
 export const OptionsDroppable = ({ id, options }: { id: string, options: Question_Option__c[] }) => {

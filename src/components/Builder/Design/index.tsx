@@ -28,7 +28,7 @@ import { FieldType } from "../../../utils/constants/fields";
 
 const Design = () => {
 
-  const { availableFields, dndQuestions, setDndQuestion } = useBuilderContext();
+  const { availableFields, dndQuestions, setDndQuestion, initQuestionEdit } = useBuilderContext();
 
   // field moving
   const [activeId, setActiveId] = useState(null);
@@ -151,6 +151,8 @@ const Design = () => {
       })
 
       setDndQuestion(newItems, updatedAvailableFields);
+
+      initQuestionEdit(newQuestion)
     }
 
     if (active.data.current.type == 'fields') {

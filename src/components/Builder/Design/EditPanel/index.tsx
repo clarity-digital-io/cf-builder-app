@@ -7,12 +7,14 @@ import { QuestionEdit } from "./Question";
 import { FormEdit } from "./Form";
 import { useBuilderContext } from "../../../../context/BuilderContext";
 import { QuestionOptionTypes } from "../../../../utils/options";
+import { QuestionTypes } from "../../../../utils/types/fields";
 
 export const Edit = () => {
 
   const { question } = useBuilderContext()
 
   const isOptionsType = question != null && (Object).values(QuestionOptionTypes).includes(question.cforms__Type__c)
+  const isAttachmentType = question != null && question.cforms__Type__c === QuestionTypes.Attachments;
 
   return <Panel header="Form">
 
@@ -21,6 +23,7 @@ export const Edit = () => {
         <>
           <QuestionEdit />
           {isOptionsType && <OptionsEdit />}
+          {isAttachmentType && <AttachmentsEdit />}
           <CriteriaEdit />
         </> :
         <FormEdit />

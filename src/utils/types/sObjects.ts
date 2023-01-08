@@ -76,7 +76,7 @@ export type Form_Connection_Process__c = {
 } & sObject;
 
 export type Question__c = {
-  cforms__Attachment_Type__c?: string
+  cforms__Attachment_Type__c?: string[] // allowed types
   cforms__Connected_Object__c?: string
   cforms__Form__c?: string
   cforms__FreeText_Type__c?: string

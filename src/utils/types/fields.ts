@@ -17,6 +17,7 @@ export enum QuestionTypes {
   InputField,
   GeoLocation,
   Attachments,
+  Photo,
   BOOLEAN,
   DATETIME,
   CURRENCY,
