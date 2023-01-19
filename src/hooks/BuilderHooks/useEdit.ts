@@ -18,33 +18,30 @@ export const useEdit = (reducer: [BuilderProviderState, React.Dispatch<BuilderAc
     question,
     options,
     pictureOptions,
-    criteria
+    criteria,
+    allOptions,
+    allCriteria
   } = state;
-
-  // handle questions update 
-  const handleQuestionsUpdate = (questions: Questions) => {
-    // NOT USED
-    dispatch({
-      type: 'UPDATE_QUESTIONS',
-      questions: questions
-    })
-  }
-
 
   // set questions 
   const initQuestionEdit = (_question: Question__c) => {
     if (_question != null) {
+
+      // on load of questions will set allOptions and allCriteria
+      const editOptions = allOptions.filter(option => _question.id == option.cforms__Question__c);
+      const editCriteria = allCriteria.filter(criterion => _question.id == criterion.cforms__Question__c);
+
       dispatch({
         type: 'INIT_QUESTION',
         question: _question,
-        criteria: _question.cforms__Question_Criteria__r != null ? _question.cforms__Question_Criteria__r : null,
-        options: _question.cforms__Question_Options__r != null ? _question.cforms__Question_Options__r : []
+        criteria: editCriteria,
+        options: editOptions
       })
     } else {
       dispatch({
         type: 'INIT_QUESTION',
         question: null,
-        criteria: null,
+        criteria: [],
         options: []
       })
     }
@@ -62,13 +59,23 @@ export const useEdit = (reducer: [BuilderProviderState, React.Dispatch<BuilderAc
   const setNewCriterion = (_criterion: Question_Criteria__c) => {
     dispatch({
       type: 'SET_NEW_CRITERION',
-      criteria: criteria != null ? criteria.map(c => {
-        if (c.id == _criterion.id) {
-          return _criterion;
-        } else {
-          return c;
-        }
-      }) : [_criterion]
+      criteria: criteria.concat(_criterion)
+    })
+  }
+
+  const handleRemoveCriterion = (index: number) => {
+    dispatch({
+      type: 'SET_UPDATE_CRITERIA',
+      criteria: criteria.filter((_criterion: Question_Criteria__c, _index: number) => {
+        return _index != index;
+      })
+    })
+  }
+
+  const handleUpdateCriteria = (_criteria: Question_Criteria__c[]) => {
+    dispatch({
+      type: 'SET_UPDATE_CRITERIA',
+      criteria: _criteria
     })
   }
 
@@ -153,7 +160,11 @@ export const useEdit = (reducer: [BuilderProviderState, React.Dispatch<BuilderAc
     criteria,
     options,
     pictureOptions,
+    allOptions,
+    allCriteria,
     setNewCriterion,
+    handleRemoveCriterion,
+    handleUpdateCriteria,
     setNewOption,
     handleRemoveOptions,
     handleUpdatePictureOption,
@@ -161,6 +172,5 @@ export const useEdit = (reducer: [BuilderProviderState, React.Dispatch<BuilderAc
     handleUpdateOptions,
     setQuestionUpdate,
     initQuestionEdit,
-    handleQuestionsUpdate
   }
 }

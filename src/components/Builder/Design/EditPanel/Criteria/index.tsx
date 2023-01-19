@@ -5,10 +5,11 @@ import { Question_Criteria__c } from "../../../../../utils/types/sObjects";
 import { VisibilityFilterPopover } from "./VisibilityFilter/popover";
 import { FilterLogicTypes } from "../../../../../utils/criteria";
 import { useBuilderContext } from "../../../../../context/BuilderContext";
+import styled from "styled-components";
 
 export const CriteriaEdit = () => {
 
-  const { question, criteria, setNewCriterion } = useBuilderContext();
+  const { question, criteria, setNewCriterion, handleUpdateCriteria, handleRemoveCriterion } = useBuilderContext();
 
   if (!question) return null;
 
@@ -19,7 +20,7 @@ export const CriteriaEdit = () => {
     if (!question) return;
 
     const criterion: Question_Criteria__c = {
-      id: `qc-${question.id}`,
+      id: `qc-${question.id}-${Date.now()}`,
       cforms__Field__c: question.Id || question.id,
       cforms__Field_Type__c: question.cforms__Type__c,
       cforms__Operator__c: '',
@@ -28,6 +29,23 @@ export const CriteriaEdit = () => {
       cforms__Value__c: ''
     }
     setNewCriterion(criterion)
+  }
+
+  const handleUpdateCriterion = (criterion: Question_Criteria__c) => {
+    handleUpdateCriteria(
+      criteria.map(_criterion => {
+        if (_criterion.id == criterion.id) {
+          return criterion
+        } else {
+          return _criterion;
+        }
+      })
+    );
+  }
+
+  const handleRemove = (index: number) => {
+    if (!criteria) return;
+    handleRemoveCriterion(index)
   }
 
   return <section className="slds-ui-gen__vertical-layout">
@@ -44,13 +62,26 @@ export const CriteriaEdit = () => {
             Filters
           </label>
           <div className="slds-box slds-m-bottom_small">
-
             {
               criteria ?
                 criteria.map((criterion: Question_Criteria__c, index) => {
                   const { cforms__Question__c, cforms__Operator__c } = criterion;
-                  return <VisibilityFilterPopover setNewCriterion={setNewCriterion} question={question} criterion={criterion} key={index}>
-                    <p>{`Question ${cforms__Question__c} ${cforms__Operator__c}`}</p>
+                  return <VisibilityFilterPopover
+                    handleUpdateCriterion={handleUpdateCriterion}
+                    question={question}
+                    criterion={criterion}
+                    key={index}
+                  >
+                    <div className="slds-grid slds-box slds-box_xx-small slds-grid_align-spread">
+                      <Point className="slds-col slds-large-size_4-of-5">
+                        {`Question ${cforms__Question__c} ${cforms__Operator__c}`}
+                      </Point>
+                      <Point onClick={() => handleRemove(index)} className="slds-col slds-large-size_1-of-5">
+                        <svg className="slds-button__icon slds-float_right slds-align_absolute-center" aria-hidden="true">
+                          <use xlinkHref="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+                        </svg>
+                      </Point>
+                    </div>
                   </VisibilityFilterPopover>
                 })
                 : null
@@ -73,11 +104,14 @@ export const CriteriaEdit = () => {
               null
           }
         </div>
-
       </ExpandableSection>
     </div>
   </section>
 }
+
+const Point = styled.div`
+  cursor: pointer; 
+`
 
 enum LogicOperators {
   AND,

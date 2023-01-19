@@ -27,13 +27,6 @@ export const Display = ({ activeId }) => {
             key={group}
           />
         ))}
-        {/* add page button below */}
-        {/* <Droppable
-          id={Object.keys(dndQuestions).length}
-          items={[]}
-          activeId={activeId}
-          key={Object.keys(dndQuestions).length}
-        /> */}
         <div className="slds-col">
           <div className="slds-grid slds-grid_align-end">
             <div className="slds-col slds-p-top_small">

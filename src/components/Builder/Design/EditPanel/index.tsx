@@ -8,6 +8,7 @@ import { FormEdit } from "./Form";
 import { useBuilderContext } from "../../../../context/BuilderContext";
 import { QuestionOptionTypes } from "../../../../utils/options";
 import { QuestionTypes } from "../../../../utils/types/fields";
+import { AttachmentsEdit } from "./Attachments";
 
 export const Edit = () => {
 

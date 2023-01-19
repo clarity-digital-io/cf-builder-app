@@ -1,6 +1,5 @@
 export enum QuestionTypes {
   None,
-  ConnectedObject,
   MultipleChoice,
   Comment,
   Dropdown,
@@ -18,6 +17,7 @@ export enum QuestionTypes {
   GeoLocation,
   Attachments,
   Photo,
+  File,
   BOOLEAN,
   DATETIME,
   CURRENCY,
@@ -38,4 +38,26 @@ export enum QuestionTypes {
   URL,
   REFERENCE,
   STRING
+}
+
+export enum QuestionCategory {
+  Input,
+  Display,
+  Guide
+}
+
+export type Category = {
+  [key: string]: QuestionCategory
+}
+
+export type ComboQuestionField = {
+  id: string,
+  label: string
+  type: QuestionTypes
+}
+
+export type ComboSObjectField = {
+  id: string,
+  label: string
+  type: string
 }

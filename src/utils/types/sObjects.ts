@@ -3,6 +3,16 @@ import { QuestionTypes } from "./fields";
 
 export const namespace = 'cforms__';
 
+export type sObjectMetaData = {
+  Id: string,
+  DeveloperName: string
+}
+
+export type Field__mdt = {
+  cforms__Level__c: string,
+  cforms__Type__c: string
+} & sObjectMetaData;
+
 export type sObject = {
   id: string
   Id?: string // if it's a new record wont have a Id yet
@@ -60,11 +70,11 @@ export type Form_Connection__c = {
 } & sObject;
 
 export type Form_Connection_Field__c = {
-  cforms__Custom_Value__c: string
+  cforms__Custom_Value__c?: string
   cforms__Form_Connection__c: string
-  cforms__PreFill__c: string
-  cforms__Question__c: string
-  cforms__Salesforce_Field__c: string
+  cforms__PreFill__c: boolean
+  cforms__Question__c?: string
+  cforms__Salesforce_Field__c?: string
 } & sObject;
 
 export type Form_Connection_Process__c = {
@@ -102,7 +112,6 @@ export type Question__c = {
 
 export type Question_Criteria__c = {
   cforms__Field__c: string
-  cforms__Field_Type__c: QuestionTypes
   cforms__Operator__c: OperatorTypes | string
   cforms__Question__c: string
   cforms__Type__c: string

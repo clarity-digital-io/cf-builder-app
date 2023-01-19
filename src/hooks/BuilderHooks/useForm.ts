@@ -7,10 +7,11 @@ import {
   BuilderAction,
 } from '../../reducers'
 import { FORMSTATUS } from '../Builder';
-import { Question__c } from '../../utils/types/sObjects';
+import { Field__mdt, Question__c } from '../../utils/types/sObjects';
 import { Questions } from '../../reducers/BuilderProvider';
 import { removeAtIndex } from '../../components/Builder/Design/Display/utils/array';
-import { FieldType } from '../../utils/constants/fields';
+import { FieldCategories, FieldType, iconTypes, questionTypes } from '../../utils/constants/fields';
+import { QuestionTypes } from '../../utils/types/fields';
 
 export const useForm = (reducer: [BuilderProviderState, React.Dispatch<BuilderAction>]) => {
 
@@ -33,19 +34,30 @@ export const useForm = (reducer: [BuilderProviderState, React.Dispatch<BuilderAc
 
     dispatch({
       type: 'SET_FORM_ID',
-      formId
+      formId: formId
     });
   }, [])
 
   const getForm = useCallback(async () => {
     if (formId) {
       try {
+        const _availableOrgFields = await call(BuilderController.getAvailableFields, []);
+        const _availableFields: FieldType[] = _availableOrgFields
+          .map(({ DeveloperName, cforms__Type__c, Id }: Field__mdt) => {
+            return {
+              id: Id,
+              active: true,
+              name: DeveloperName,
+              type: questionTypes[DeveloperName],
+              icon: iconTypes[DeveloperName],
+              quantity: 0,
+              category: FieldCategories[cforms__Type__c]
+            }
+          });
 
-        const _availableOrgFields = await call(BuilderController.getAvailableFields, null);
-        console.log({ _availableOrgFields })
         dispatch({
           type: 'SET_AVAILABLE_FIELDS',
-          availableFields: _availableOrgFields.map((_availableField: FieldType) => ({ ..._availableField, quantity: 0 }))
+          availableFields: _availableFields
         })
 
         const _form = await call(BuilderController.getForm, [formId]);
@@ -60,7 +72,7 @@ export const useForm = (reducer: [BuilderProviderState, React.Dispatch<BuilderAc
         // needed for sortable context to work properly
         const _questionsWithId: Array<Question__c> = _questions
           .map((_question: Question__c) => ({ ..._question, id: _question.Id }))
-          .sort((a: Question__c, b: Question__c) => {
+          .sort((a, b) => {
             if (a.cforms__Order__c > b.cforms__Order__c) {
               return 1;
             }
@@ -70,12 +82,6 @@ export const useForm = (reducer: [BuilderProviderState, React.Dispatch<BuilderAc
             return 0;
           });
 
-        console.log({ _questionsWithId })
-        const questionsInPages = _questionsWithId.reduce((accum: Questions, question: Question__c) => {
-          const { id: key } = question;
-          return { ...accum, [key]: question }
-        }, {});
-
         const _dndQuestions = _questionsWithId.reduce((accum: Questions, question: Question__c) => {
           const { cforms__Page__c: key } = question;
           const existing = accum[key] != null ? [question].concat(accum[key]) : [question];
@@ -84,7 +90,7 @@ export const useForm = (reducer: [BuilderProviderState, React.Dispatch<BuilderAc
 
         dispatch({
           type: 'SET_QUESTIONS',
-          questions: _questionsWithId,
+          allQuestions: _questionsWithId,
           dndQuestions: _dndQuestions
         })
       } catch (error: any) {

@@ -1,6 +1,12 @@
+export type ComboSObject = {
+  id: number,
+  label: string
+  type: string
+}
+
 export type SetupProviderState = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  sObjects: Array<string>
+  sObjects: Array<ComboSObject>
   sObjectFields: Array<string>
   handleError: (message: any) => void
 }

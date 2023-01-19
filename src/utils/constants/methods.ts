@@ -1,4 +1,4 @@
-type ApexMethod = {
+export type ApexMethod = {
   [key: string]: string
 }
 

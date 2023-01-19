@@ -3,9 +3,9 @@ import { types } from "../utils/constants/fields";
 import { BuilderController } from "../utils/constants/methods";
 import { QuestionTypes } from "../utils/types/fields";
 import { Question__c } from "../utils/types/sObjects";
-const extraParams = { buffer: false, escape: false, timeout: 12000 };
+const extraParams = { buffer: false, escape: true, timeout: 12000 };
 
-export const call = async (func: any, params: any[] | null): Promise<any> => {
+export const call = async (func: string, params: any[] | null): Promise<any> => {
   return process.env.NODE_ENV == "development" ?
     await devCall(func, params) :
     await prodCall(func, params);
@@ -14,20 +14,21 @@ export const call = async (func: any, params: any[] | null): Promise<any> => {
 const prodCall = async (func: string, params: any[] | null): Promise<any> => {
   const result = await new Promise((resolve, reject) => {
     try {
-      if (params == null || params.length == 0) {
-        // @ts-expect-error: Unreachable code error
-        LCC.callApex(func, (r: any, e: any) => [resolve(r), e], extraParams, undefined);
-      } else {
-        LCC.callApex(func, params, (response, event) =>
-          [resolve(response), event]
-          , extraParams);
-      }
+      console.log('1', { func }, params)
+
+      LCC.callApex(
+        func,
+        params,
+        (response, event) => [resolve(response), event],
+        extraParams
+      );
 
     } catch (error) {
+      console.log({ error })
       reject(error);
     }
   })
-
+  console.log(func, { result })
   return result;
   // if (result && event && event.statusCode == 200) {
   //   return result;

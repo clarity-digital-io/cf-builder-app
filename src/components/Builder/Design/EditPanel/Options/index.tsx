@@ -116,6 +116,7 @@ export const OptionsEditPopover = ({ option, children }: { option: Question_Opti
   const { options, handleUpdateOptions } = useBuilderContext();
 
   return <Popover
+    onRequestClose={() => setOpen(false)}
     hasNoTriggerStyles={true}
     position={'overflowBoundaryElement'}
     isOpen={isOpen}
@@ -134,7 +135,7 @@ export const OptionsEditPopover = ({ option, children }: { option: Question_Opti
         <Button label="Cancel" onClick={() => setOpen(false)} />
         <Button variant='brand' label="Done" onClick={() => {
           setOpen(false)
-          handleUpdateOptions(options?.map(_option => {
+          handleUpdateOptions(options.map(_option => {
             if (option.id == _option.id) {
               return { ...option, cforms__Label__c: optionLabel }
             } else {

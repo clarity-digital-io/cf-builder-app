@@ -21,11 +21,11 @@ type CheckedType = {
 export const AttachmentsEdit = () => {
   const { question, setQuestionUpdate } = useBuilderContext();
 
-  const [checkedTypes, setCheckedTypes] = useState<>({});
+  // const [checkedTypes, setCheckedTypes] = useState<>({});
 
   return <section className="slds-box slds-ui-gen__vertical-layout slds-m-top_small">
     <div className="slds-p-top_medium slds-ui-gen__layout-item">
-      <Checkbox
+      {/* <Checkbox
         aria-checked={allCondimentsStatus}
         aria-controls="checkbox-mayonnaise checkbox-mustard checkbox-oil checkbox-vinegar"
         assistiveText={{
@@ -40,7 +40,7 @@ export const AttachmentsEdit = () => {
         onChange={() => {
           console.log('test all ')
         }}
-      />
+      /> */}
 
       <ul className="slds-p-left_large slds-p-top_xx-small">
         {

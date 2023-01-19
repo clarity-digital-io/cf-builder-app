@@ -29,8 +29,6 @@ const Item = ({ droppableId, id, index, data, dragOverlay }: { droppableId: numb
     cursor: dragOverlay ? "grabbing" : "grab",
   };
 
-  console.log('item', { id, question, isActive: question?.Id === id })
-
   return (
     <div style={style} className={isHovering || question?.id === id ? 'slds-is-hovered slds-drop-zone__container slds-m-top_x-small' : 'slds-drop-zone__container slds-m-top_x-small'} onMouseEnter={handleMouseOver} onMouseOut={handleMouseOut}>
       <div className="slds-drop-zone__label slds-drop-zone__label_container">
@@ -86,7 +84,7 @@ const Item = ({ droppableId, id, index, data, dragOverlay }: { droppableId: numb
 };
 
 const QuestionComponent = ({ question, questionType }: { question: Question__c, questionType: QuestionTypes | string }) => {
-  switch (typeof questionType === 'string' ? parseInt(questionType) : questionType) {
+  switch (questionType) {
     case QuestionTypes.MultipleChoice:
       return <MultipleChoice question={question} />
     case QuestionTypes.Comment:
@@ -113,8 +111,9 @@ const QuestionComponent = ({ question, questionType }: { question: Question__c, 
     case QuestionTypes.InputField:
     case QuestionTypes.Email:
     case QuestionTypes.Number:
-
       return <Input type="text" label={questionType.toString()} />
+    case QuestionTypes.File:
+      return 'Not able to display'
     default:
       return <Input type="text" label="Value" />
   }

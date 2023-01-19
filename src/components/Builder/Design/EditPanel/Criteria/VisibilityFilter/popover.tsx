@@ -6,18 +6,18 @@ import { BuilderContextProvider, useBuilderContext } from "../../../../../../con
 import { VisibilityFilter } from "./filter";
 import styled from "styled-components";
 
-export const VisibilityFilterPopover = ({ setNewCriterion, question, criterion, children }: { setNewCriterion, question: Question__c, criterion: Question_Criteria__c, children: ReactElement }) => {
+export const VisibilityFilterPopover = ({ handleUpdateCriterion, question, criterion, children }: { handleUpdateCriterion: (criterion: Question_Criteria__c) => void, question: Question__c, criterion: Question_Criteria__c, children: ReactElement }) => {
 
-  const { dndQuestions } = useBuilderContext();
-
-  const [criterionUpdate, setCriterionUpdate] = useState();
+  const [criterionUpdate, setCriterionUpdate] = useState<Question_Criteria__c>();
   const [isOpen, setOpen] = useState(false);
 
-  const handleCriterionUpdate = (_criterionUpdate) => {
+  const handleCriterionUpdate = (_criterionUpdate: Question_Criteria__c) => {
     setCriterionUpdate(_criterionUpdate);
   }
 
   return <Popover
+    hasNoTriggerStyles={true}
+    onRequestClose={() => setOpen(false)}
     position={'overflowBoundaryElement'}
     isOpen={isOpen}
     body={
@@ -32,15 +32,14 @@ export const VisibilityFilterPopover = ({ setNewCriterion, question, criterion, 
           if (criterionUpdate == null) return;
           const { operatorSelection, selection } = criterionUpdate;
           setOpen(false)
-          setNewCriterion({ ...criterion, cforms__Question__c: selection.id, cforms__Operator__c: operatorSelection.id })
+          handleUpdateCriterion({ ...criterion, cforms__Question__c: selection.id, cforms__Operator__c: operatorSelection.id })
         }} />
       </div>
     }
     id="popover-controlled-with-footer"
     onClose={() => setOpen(false)}
-    onRequestClose={() => setOpen(false)}
   >
-    <div className="slds-box slds-m-top_x-small" onClick={() => setOpen(true)}>
+    <div className="slds-m-top_x-small" onClick={() => setOpen(true)}>
       {children}
     </div>
   </Popover >

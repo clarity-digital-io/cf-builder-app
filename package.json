@@ -9,7 +9,7 @@
     "tscheck": "tsc",
     "lint": "eslint --ext .js,.ts,.jsx,.tsx src",
     "format": "yarn run lint --fix & yarn prettier --write 'src/**/*.{js,jsx,ts,tsx}'",
-    "build": "webpack --config ./webpack.config.cjs --mode production && cp dist/bundle.js ../cf-scratch-org/force-app/main/default/staticresources/ClarityFormsBuilder && cd .. && cd cf-scratch-org && sfdx force:source:push && cd .. && cd cf-builder-app"
+    "build": "webpack --config ./webpack.config.cjs --mode production && cp dist/bundle.js ../../../../../../mnt/c/Users/Befig/Desktop/Development/ClarityDigital/ClarityForms/cf-scratch-org/force-app/main/default/staticresources/ClarityFormsBuilder && cd ../../../../../../ && cd cf-scratch-org/ && sfdx force:source:push"
   },
   "devDependencies": {
     "@babel/core": "^7.20.2",

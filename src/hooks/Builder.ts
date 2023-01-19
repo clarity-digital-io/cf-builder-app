@@ -16,11 +16,9 @@ export const useBuilder = () => {
 
   const {
     error,
-    activeFieldMapping,
-    activeFieldPrefills,
-    activeFields,
-    connections,
     navState,
+    allQuestionsCombo,
+    allQuestions,
   } = state;
 
   const {
@@ -37,11 +35,18 @@ export const useBuilder = () => {
   } = useForm([state, dispatch]);
 
   const {
-    activeFormConnection,
+    formConnectionId,
     formConnections,
     formConnectionFields,
-    addFormConnection,
-    setFormConnection
+    allFormConnections,
+    allFormConnectionFields,
+    initFormConnection,
+    setNewFormConnection,
+    handleUpdateFormConnections,
+    handleRemoveFormConnection,
+    setNewFormConnectionField,
+    handleUpdateFormConnectionField,
+    handleRemoveFormConnectionField
   } = useFormConnections([state, dispatch]);
 
   const {
@@ -53,7 +58,11 @@ export const useBuilder = () => {
     options,
     pictureOptions,
     criteria,
+    allOptions,
+    allCriteria,
     setNewCriterion,
+    handleRemoveCriterion,
+    handleUpdateCriteria,
     setNewOption,
     handleUpdateOptions,
     handleUpdatePictureOption,
@@ -61,7 +70,6 @@ export const useBuilder = () => {
     handleRemoveOptions,
     setQuestionUpdate,
     initQuestionEdit,
-    handleQuestionsUpdate
   } = useEdit([state, dispatch]);
 
 
@@ -76,22 +84,31 @@ export const useBuilder = () => {
     dndQuestions,
     error,
     isLoading,
-    activeFieldMapping,
-    activeFieldPrefills,
-    activeFields,
-    connections,
     form,
     navState,
     question,
     options,
     pictureOptions,
     criteria,
+    formConnectionId,
     formConnections,
     formConnectionFields,
-    activeFormConnection,
-    setFormConnection,
-    addFormConnection,
+    allQuestionsCombo,
+    allQuestions,
+    allOptions,
+    allCriteria,
+    allFormConnections,
+    allFormConnectionFields,
+    initFormConnection,
+    setNewFormConnection,
+    handleUpdateFormConnections,
+    handleRemoveFormConnection,
+    setNewFormConnectionField,
+    handleUpdateFormConnectionField,
+    handleRemoveFormConnectionField,
     setNewCriterion,
+    handleRemoveCriterion,
+    handleUpdateCriteria,
     setNewOption,
     handleUpdateOptions,
     handleUpdatePictureOption,
@@ -101,7 +118,6 @@ export const useBuilder = () => {
     initQuestionEdit,
     setFormUpdate,
     setDndQuestion,
-    handleQuestionsUpdate,
     handleFormStatusUpdate,
     handleFormUpdate,
     handleNavigate,

@@ -3,13 +3,29 @@ import { useBuilderContext } from "../../../../../context/BuilderContext";
 
 import { Input, Button } from "@salesforce/design-system-react";
 import styled from "styled-components";
-import { Connections } from "./Connections";
+import { FormConnections } from "./FormConnections";
 import { Form_Connection__c } from "../../../../../utils/types/sObjects";
 
+
 export const FormEdit = () => {
-  const { form, formConnections, setFormUpdate, addFormConnection, setFormConnection } = useBuilderContext();
+  const { formId, form, formConnections, setFormUpdate, setNewFormConnection, initFormConnection } = useBuilderContext();
 
   const [isOpen, setOpen] = useState(false);
+
+  const handleNewFormConnection = () => {
+    const _formConnectionId = formConnections.length.toString();
+    const formConnectionSObject: Form_Connection__c = {
+      id: _formConnectionId,
+      cforms__Form__c: formId,
+      cforms__New__c: false,
+      cforms__Result_Holder__c: '',
+      cforms__Salesforce_Object__c: '',
+      cforms__End_Date__c: ''
+    }
+
+    setNewFormConnection(formConnectionSObject);
+    initFormConnection(_formConnectionId);
+  }
 
   return <section className="slds-ui-gen__vertical-layout">
     <div className="slds-p-top_medium slds-ui-gen__layout-item">
@@ -40,34 +56,43 @@ export const FormEdit = () => {
 
       <div className="slds-form-element">
         <label className="slds-form-element__label" htmlFor="text-input-id-49">Connections</label>
-        <div className="slds-form-element__control">
 
-          {
-            formConnections.map((formConnection: Form_Connection__c, index: number) => {
-              return <FullWidthButton key={index} variant="neutral"
+
+        {
+          formConnections.map((formConnection: Form_Connection__c, index: number) => {
+            return <div key={index} className="slds-form-element__control">
+              <FullWidthButton key={index} variant="neutral"
                 onClick={() => {
                   setOpen(!isOpen)
                   // set index to find connections
-                  setFormConnection(formConnection);
+                  initFormConnection(formConnection.id);
                 }}
               >
                 Connection: {formConnection.cforms__Salesforce_Object__c}
               </FullWidthButton>
-            })
-          }
+            </div>
+          })
+        }
 
-          <FullWidthButton variant="neutral"
+
+        <div className="slds-form-element__control">
+
+          <FullWidthButton
+            variant="brand"
             onClick={() => {
               setOpen(!isOpen)
-              // set index to find connections
-              addFormConnection();
+              handleNewFormConnection();
             }}
-          >
-            Add Connection
-          </FullWidthButton>
-          <Connections isOpen={isOpen} setOpen={setOpen} />
+            iconCategory="utility"
+            iconName="new"
+            iconPosition="left"
+            label="Add Form Connection"
+          />
 
         </div>
+
+        <FormConnections isOpen={isOpen} setOpen={setOpen} />
+
       </div>
 
     </div>

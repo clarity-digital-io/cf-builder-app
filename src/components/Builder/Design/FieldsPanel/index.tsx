@@ -1,20 +1,61 @@
 import { DragOverlay, useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
-import { Icon } from "@salesforce/design-system-react";
+import { Icon, Accordion, AccordionPanel } from "@salesforce/design-system-react";
 import React, { ReactElement, useState } from "react";
 import styled from "styled-components";
 import { useBuilderContext } from "../../../../context/BuilderContext";
 import { FieldType } from "../../../../utils/constants/fields";
+import { QuestionCategory } from "../../../../utils/types/fields";
 
 export const Fields = () => {
   const { availableFields } = useBuilderContext();
 
+  const [expandedPanelInput, setExpandedPanelInput] = useState(true);
+  const [expandedPanelDisplay, setExpandedPanelDisplay] = useState(false);
+  const [expandedPanelGuide, setExpandedPanelGuide] = useState(false);
+
   return <Panel header="Fields">
     <section>
       <ul>
-        {
-          availableFields.map((field, index) => <AvailableFieldItem key={index} field={field} />)
-        }
+
+        <Accordion id="base-example-accordion">
+
+          <AccordionPanel
+            expanded={!!expandedPanelInput}
+            id={1}
+            key={1}
+            onTogglePanel={(event: any) => setExpandedPanelInput(!expandedPanelInput)}
+            summary={'Input'}
+          >
+            {
+              availableFields.filter((field: FieldType) => field.category === QuestionCategory.Input).map((field, index) => <AvailableFieldItem key={index} field={field} />)
+            }
+          </AccordionPanel>
+
+          <AccordionPanel
+            expanded={!!expandedPanelDisplay}
+            id={2}
+            key={2}
+            onTogglePanel={(event: any) => setExpandedPanelDisplay(!expandedPanelDisplay)}
+            summary={'Display'}
+          >
+            {
+              availableFields.filter((field: FieldType) => field.category === QuestionCategory.Display).map((field, index) => <AvailableFieldItem key={index} field={field} />)
+            }
+          </AccordionPanel>
+
+          <AccordionPanel
+            expanded={!!expandedPanelGuide}
+            id={3}
+            key={3}
+            onTogglePanel={(event: any) => setExpandedPanelGuide(!expandedPanelGuide)}
+            summary={'Guide'}
+          >
+            {
+              availableFields.filter((field: FieldType) => field.category === QuestionCategory.Guide).map((field, index) => <AvailableFieldItem key={index} field={field} />)
+            }
+          </AccordionPanel>
+        </Accordion>
       </ul>
     </section>
 
@@ -91,6 +132,7 @@ const FieldListItem = styled.li`
   cursor: grab;
   opacity: 1 !important;
   user-select: none;
+  padding-left: .5em !important; 
 `
 
 const FieldListName = styled.span`

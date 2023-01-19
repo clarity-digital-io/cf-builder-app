@@ -172,7 +172,7 @@ const Design = () => {
         onDragOver={handleDragOver}
         onDragEnd={handleDragEnd}
       >
-        <Fields fieldActive={fieldActive} />
+        <Fields />
         <Display activeId={activeId} />
         <Edit />
         <DragOverlay>{activeId && activeData ? <Item id={activeId} data={activeData} dragOverlay={true} /> : null}</DragOverlay>
